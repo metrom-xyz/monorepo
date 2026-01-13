@@ -368,14 +368,17 @@ export function AccountRow({
 export function AccountRowSkeleton() {
     return (
         <div className={styles.accountRow}>
+            <Skeleton width={42} />
+            <Skeleton width={42} />
             <div className={styles.account}>
-                <Skeleton width={380} size="sm" />
+                <Skeleton width={20} />
+                <Skeleton width={380} />
             </div>
             <div className={classNames(styles.amount, styles.loading)}>
-                <Skeleton width={100} size="sm" />
-                <Skeleton width={25} size="xs" />
+                <Skeleton width={100} />
+                <Skeleton width={60} />
             </div>
-            <Skeleton width={100} size="sm" />
+            <Skeleton width={80} />
         </div>
     );
 }
