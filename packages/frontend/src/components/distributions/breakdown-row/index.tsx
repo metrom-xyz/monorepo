@@ -1,7 +1,4 @@
-import { RemoteLogo } from "../../remote-logo";
 import { type Address } from "viem";
-import { Skeleton } from "@metrom-xyz/ui";
-import classNames from "classnames";
 import { useAccount } from "@/src/hooks/useAccount";
 import { AccountRow, AccountRowSkeleton } from "./account-row";
 import type { RowComponentProps } from "react-window";
@@ -52,22 +49,7 @@ export function BreakdownRow({
 export function BreakdownRowSkeleton() {
     return (
         <div className={styles.root}>
-            <div className={styles.tokenColumn}>
-                <div className={classNames(styles.title, styles.loading)}>
-                    <RemoteLogo loading />
-                    <Skeleton width={150} size="lg" />
-                </div>
-                <div className={styles.header}>
-                    <Skeleton width={100} size="sm" />
-                    <Skeleton width={100} size="sm" />
-                    <Skeleton width={100} size="sm" />
-                </div>
-                <div className={styles.accounts}>
-                    {Array.from({ length: 17 }).map((_, index) => (
-                        <AccountRowSkeleton key={index} />
-                    ))}
-                </div>
-            </div>
+            <AccountRowSkeleton />
         </div>
     );
 }

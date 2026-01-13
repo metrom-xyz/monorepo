@@ -400,7 +400,9 @@ export function Distributions({
                                 </Typography>
                             </div>
                             {loading ? (
-                                <BreakdownRowSkeleton />
+                                Array.from({ length: 8}).map((_, index) => (
+                                    <BreakdownRowSkeleton key={index} />
+                                ))
                             ) : Object.keys(activeDistroWeights).length > 0 ? (
                                 <List
                                     rowCount={activeDistroWeights.length}
