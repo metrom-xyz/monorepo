@@ -16,13 +16,16 @@ import type { DistributedErc20Token, Weight } from "@/src/types/distributions";
 import { RemoteLogo } from "../../remote-logo";
 import { TrendUpIcon } from "@/src/assets/trend-up";
 import { TrendDownIcon } from "@/src/assets/trend-down";
-import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import type { ChainType, UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import { getExplorerLink } from "@/src/utils/explorer";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 
 interface AccountRowProps {
     rank: number;
     chainId: number;
+    chainType: ChainType;
     account: Address;
     connected: boolean;
     totalUsdAmount: number;
@@ -37,6 +40,7 @@ interface AccountRowProps {
 export function AccountRow({
     rank,
     chainId,
+    chainType,
     account,
     connected,
     totalUsdAmount,
@@ -81,7 +85,9 @@ export function AccountRow({
             <Typography variant="tertiary" weight="medium">
                 #{rank + 1}
             </Typography>
-            <Typography>{formatPercentage({ percentage })}</Typography>
+            <Typography weight="medium">
+                {formatPercentage({ percentage })}
+            </Typography>
             <div className={styles.account}>
                 <div
                     className={styles.legend}
@@ -93,8 +99,6 @@ export function AccountRow({
                     }}
                 ></div>
                 <Typography
-                    size="sm"
-                    variant="tertiary"
                     weight="medium"
                     className={classNames({
                         [styles.connected]: connected,
@@ -102,6 +106,13 @@ export function AccountRow({
                 >
                     {isZeroAddress(account) ? t("reimbursed") : account}
                 </Typography>
+                <a
+                    href={getExplorerLink(account, chainId, chainType)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <ArrowRightIcon className={styles.externalLinkIcon} />
+                </a>
             </div>
             <Popover
                 ref={currentDistroPopoverRef}
@@ -246,7 +257,7 @@ export function AccountRow({
                 onMouseLeave={handleCurrentDistroPopoverClose}
                 className={styles.amount}
             >
-                <Typography>
+                <Typography weight="medium">
                     {formatUsdAmount({ amount: usdAmount })}
                 </Typography>
                 {usdAmountChange !== 0 && (
@@ -346,7 +357,7 @@ export function AccountRow({
                 onMouseLeave={handleTotalDistroPopoverClose}
                 className={styles.amount}
             >
-                <Typography>
+                <Typography weight="medium">
                     {formatUsdAmount({ amount: totalUsdAmount })}
                 </Typography>
             </div>
