@@ -17,7 +17,7 @@
 }
 
 .accountRow {
-    @apply w-full grid items-center grid-cols-[0.15fr_0.2fr_1.2fr_0.7fr_0.3fr];
+    @apply w-full grid items-center grid-cols-[0.15fr_0.2fr_1.5fr_0.5fr_0.3fr];
 }
 
 .rank {
