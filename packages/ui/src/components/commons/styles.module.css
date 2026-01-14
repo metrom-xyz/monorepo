@@ -72,6 +72,10 @@
         ease-in-out;
 }
 
+.input:read-only {
+    @apply caret-transparent;
+}
+
 .input.xs {
     @apply px-2 py-1.5;
 }
@@ -103,6 +107,10 @@
 
 .inputIcon {
     @apply text-tertiary stroke-2;
+}
+
+.inputIcon.filled {
+    @apply text-primary;
 }
 
 .inputIcon.xs {

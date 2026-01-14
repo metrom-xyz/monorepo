@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import styles from "./commons/styles.module.css";
 
-export type TextInputProps = Omit<BaseInputProps<string>, "id"> & {
+export type TextInputProps = Omit<BaseInputProps<string>, "id" | "filled"> & {
     id?: string;
 };
 
@@ -37,6 +37,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         return (
             <BaseInputWrapper
                 id={resolvedId}
+                filled={!!value}
                 label={label}
                 hideLabel={hideLabel}
                 size={size}
