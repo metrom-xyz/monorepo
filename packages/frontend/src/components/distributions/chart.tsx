@@ -2,7 +2,6 @@ import type { ProcessedDistribution } from "@/src/types/distributions";
 import {
     Bar,
     BarChart,
-    BarStack,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -13,7 +12,7 @@ import { TooltipContent } from "./tooltip";
 import { getColorFromAddress } from "@/src/utils/address";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import type { StackedBar } from ".";
 import { useTheme } from "next-themes";
 import type { Theme } from "@metrom-xyz/ui";
@@ -42,7 +41,14 @@ interface ChartProps {
 
 const CHART_STYLES = { cursor: "pointer" };
 const X_AXIS_PADDINGS = { left: 0, right: 0 };
-const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
+// const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
+
+const MemoizedTooltipContent = memo(function MemoizedTooltipContent(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    props: any,
+) {
+    return <TooltipContent {...props} />;
+});
 
 const Chart = memo(function Chart({
     chain,
@@ -62,10 +68,27 @@ const Chart = memo(function Chart({
         [onBarClick],
     );
 
-    const TooltipContentMemoized = useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (props: any) => <TooltipContent {...props} chain={chain} />,
+    const tooltipElement = useMemo(
+        () => <MemoizedTooltipContent chain={chain} />,
         [chain],
+    );
+
+    const renderedBars = useMemo(
+        () =>
+            bars.map(({ dataKey, account, tokenAddress }) => (
+                <Bar
+                    key={`${tokenAddress}-${account}`}
+                    stackId={tokenAddress}
+                    isAnimationActive={false}
+                    dataKey={dataKey}
+                    fill={getColorFromAddress(
+                        account as Address,
+                        resolvedTheme as Theme,
+                    )}
+                    onClick={handleOnBarClick}
+                />
+            )),
+        [bars, resolvedTheme, handleOnBarClick],
     );
 
     return (
@@ -79,7 +102,7 @@ const Chart = memo(function Chart({
                     isAnimationActive={false}
                     cursor={false}
                     shared={false}
-                    content={TooltipContentMemoized}
+                    content={tooltipElement}
                 />
                 <YAxis hide domain={[0, "dataMax"]} />
                 <XAxis
@@ -91,23 +114,7 @@ const Chart = memo(function Chart({
                     interval="preserveStartEnd"
                     tick={<Tick />}
                 />
-                {bars.map(({ dataKey, account, tokenAddress }) => (
-                    <BarStack
-                        key={`${tokenAddress}-${account}`}
-                        stackId={tokenAddress}
-                        radius={BAR_RADIUS}
-                    >
-                        <Bar
-                            isAnimationActive={false}
-                            dataKey={dataKey}
-                            fill={getColorFromAddress(
-                                account as Address,
-                                resolvedTheme as Theme,
-                            )}
-                            onClick={handleOnBarClick}
-                        />
-                    </BarStack>
-                ))}
+                {renderedBars}
             </BarChart>
         </ResponsiveContainer>
     );
