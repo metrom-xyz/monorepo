@@ -35,13 +35,14 @@ import {
     type ChainType,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
-import { EmptyIcon } from "@/src/assets/empty-icon";
 import { formatDateTime } from "@/src/utils/format";
 import { BreakdownRow, BreakdownRowSkeleton } from "./breakdown-row";
 import { List } from "react-window";
 import { SearchIcon } from "@/src/assets/search-icon";
 import dayjs from "dayjs";
 import { BoldText } from "../bold-text";
+import { EmptyState } from "../empty-state";
+import { CalendarSearchIcon } from "@/src/assets/calendar-search-icon";
 
 import styles from "./styles.module.css";
 
@@ -147,7 +148,12 @@ export function Distributions({
     );
 
     const activeDistroWeights: ActiveDistributionWeights[] = useMemo(() => {
-        if (distros.length === 0 || activeIndex === undefined) return [];
+        if (
+            distros.length === 0 ||
+            activeIndex === undefined ||
+            !distros[activeIndex]
+        )
+            return [];
 
         return Object.entries(distros[activeIndex].weights)
             .map(([account, weights]) => {
@@ -227,6 +233,7 @@ export function Distributions({
                 chain={chain}
                 chainType={chainType}
                 campaignId={campaignId}
+                loading={loadingCampaign || !campaign}
                 onLoading={setLoading}
                 onFetched={setDistros}
             />
@@ -237,7 +244,7 @@ export function Distributions({
                             {t("distributionsOverview")}
                         </Typography>
                         <InfoTooltip>
-                            <Typography size="sm" weight="medium">
+                            <Typography size="sm">
                                 {t.rich("distributionsOverviewInfoText", {
                                     bold: (chunks) => (
                                         <BoldText>{chunks}</BoldText>
@@ -266,12 +273,11 @@ export function Distributions({
                                 onBarClick={handleBarOnClick}
                             />
                         ) : (
-                            <div className={styles.empty}>
-                                <EmptyIcon />
-                                <Typography uppercase weight="medium" size="sm">
-                                    {t("empty")}
-                                </Typography>
-                            </div>
+                            <EmptyState
+                                icon={CalendarSearchIcon}
+                                title={t("empty.title")}
+                                subtitle={t("empty.subtitle")}
+                            />
                         )}
                     </Card>
                 </div>
@@ -282,7 +288,7 @@ export function Distributions({
                                 {t("distributionsBreakdown")}
                             </Typography>
                             <InfoTooltip>
-                                <Typography size="sm" weight="medium">
+                                <Typography size="sm">
                                     {t.rich("distributionsBreakdownInfoText", {
                                         bold: (chunks) => (
                                             <BoldText>{chunks}</BoldText>
@@ -305,6 +311,9 @@ export function Distributions({
                             icon={SearchIcon}
                             placeholder={t("searchAddress")}
                             value={addressFilter}
+                            disabled={
+                                Object.keys(activeDistroWeights).length === 0
+                            }
                             onChange={handleAddressFilterOnChange}
                             className={styles.searchAddressInput}
                         />
@@ -400,7 +409,7 @@ export function Distributions({
                                 </Typography>
                             </div>
                             {loading ? (
-                                Array.from({ length: 8}).map((_, index) => (
+                                Array.from({ length: 8 }).map((_, index) => (
                                     <BreakdownRowSkeleton key={index} />
                                 ))
                             ) : Object.keys(activeDistroWeights).length > 0 ? (
@@ -417,14 +426,11 @@ export function Distributions({
                                 />
                             ) : (
                                 <div className={styles.empty}>
-                                    <EmptyIcon />
-                                    <Typography
-                                        uppercase
-                                        weight="medium"
-                                        size="sm"
-                                    >
-                                        {t("empty")}
-                                    </Typography>
+                                    <EmptyState
+                                        icon={CalendarSearchIcon}
+                                        title={t("empty.title")}
+                                        subtitle={t("empty.subtitle")}
+                                    />
                                 </div>
                             )}
                         </Card>

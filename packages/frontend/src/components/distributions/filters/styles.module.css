@@ -1,7 +1,11 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-6;
+    @apply w-full flex flex-col gap-3;
+}
+
+.inputsWrapper {
+    @apply flex flex-col gap-2;
 }
 
 .inputs {
@@ -17,9 +21,13 @@
 }
 
 .input :global(.input) {
-    @apply cursor-pointer;
+    @apply cursor-pointer sm:w-80;
 }
 
 .popover {
-    @apply border-2;
+    @apply border-2 p-3 pb-2;
+}
+
+.toPopoverContent {
+    @apply flex flex-col gap-2 items-center;
 }

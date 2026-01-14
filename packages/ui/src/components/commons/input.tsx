@@ -34,6 +34,7 @@ export type BaseInputProps<V> = PartialBaseInputProps<V> &
 
 export interface BaseInputWrapperProps<V> {
     id: string;
+    filled?: boolean;
     label?: string;
     size?: BaseInputSize;
     loading?: boolean;
@@ -49,6 +50,7 @@ export interface BaseInputWrapperProps<V> {
 
 export function BaseInputWrapper<V>({
     id,
+    filled,
     label,
     size = "base",
     loading,
@@ -73,6 +75,7 @@ export function BaseInputWrapper<V>({
         >
             <Icon
                 className={classNames("inputIcon", styles.inputIcon, {
+                    [styles.filled]: filled,
                     [styles[size]]: true,
                 })}
             />

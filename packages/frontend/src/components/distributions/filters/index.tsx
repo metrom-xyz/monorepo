@@ -5,6 +5,7 @@ import {
     ErrorText,
     Popover,
     TextInput,
+    Typography,
 } from "@metrom-xyz/ui";
 import { formatDateTime } from "@/src/utils/format";
 import { useTranslations } from "next-intl";
@@ -21,6 +22,8 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 import { getClosestAvailableTime } from "@/src/utils/date";
 import type { TranslationsKeys } from "@/src/types/utils";
+import { TrashIcon } from "@/src/assets/trash-icon";
+import { BoldText } from "../../bold-text";
 
 import styles from "./styles.module.css";
 
@@ -28,6 +31,7 @@ interface FiltersProps {
     chain: SupportedChain;
     chainType: ChainType;
     campaignId: Hex;
+    loading?: boolean;
     onFetched: (distributions: ProcessedDistribution[]) => void;
     onLoading: (loading: boolean) => void;
 }
@@ -60,6 +64,7 @@ export function Filters({
     campaignId,
     chain,
     chainType,
+    loading,
     onFetched,
     onLoading,
 }: FiltersProps) {
@@ -77,23 +82,27 @@ export function Filters({
     const fromRef = useRef<HTMLDivElement>(null);
     const toRef = useRef<HTMLDivElement>(null);
 
-    const { distributions, loading, progress, fetchDistributions } =
-        useDistributions({
-            chainId: chain,
-            chainType,
-            campaignId,
-            from: from?.unix(),
-            to: to?.unix(),
-        });
+    const {
+        distributions,
+        loading: loadingDistributions,
+        progress,
+        fetchDistributions,
+    } = useDistributions({
+        chainId: chain,
+        chainType,
+        campaignId,
+        from: from?.unix(),
+        to: to?.unix(),
+    });
 
     useClickAway(fromRef, getPopoverHandler("from", false));
     useClickAway(toRef, getPopoverHandler("to", false));
 
     useEffect(() => {
-        if (!loading) onFetched(distributions);
+        if (!loadingDistributions) onFetched(distributions);
 
-        onLoading(loading);
-    }, [loading, distributions, onLoading, onFetched]);
+        onLoading(loadingDistributions);
+    }, [loadingDistributions, distributions, onLoading, onFetched]);
 
     useEffect(() => {
         if (!from || !to) return;
@@ -123,6 +132,7 @@ export function Filters({
     }
 
     function clearDurationPreset() {
+        setError("");
         setActivePreset(undefined);
         setFrom(undefined);
         setTo(undefined);
@@ -130,91 +140,120 @@ export function Filters({
 
     return (
         <div className={styles.root}>
-            <div className={styles.inputs}>
-                <TextInput
-                    size="lg"
-                    label={t("from")}
-                    ref={setFromAnchor}
-                    value={formatDateTime(from)}
-                    onClick={getPopoverHandler("from", true)}
-                    error={!!error}
-                    readOnly
-                    icon={CalendarIcon}
-                    className={styles.input}
-                />
-                <TextInput
-                    size="lg"
-                    label={t("to")}
-                    disabled={!from}
-                    ref={setToAnchor}
-                    value={formatDateTime(to)}
-                    onClick={getPopoverHandler("to", true)}
-                    error={!!error}
-                    readOnly
-                    icon={CalendarIcon}
-                    className={styles.input}
-                />
-                <Popover
-                    ref={fromRef}
-                    anchor={fromAnchor}
-                    open={fromPopover}
-                    onOpenChange={setFromPopover}
-                    placement="bottom-start"
-                    variant="secondary"
-                    margin={4}
-                    className={styles.popover}
-                >
-                    <DateTimePicker
-                        value={from}
-                        range={{ from, to }}
-                        min={to && dayjs(to).subtract(7, "days")}
-                        onChange={setFrom}
+            <div className={styles.inputsWrapper}>
+                <div className={styles.inputs}>
+                    <TextInput
+                        size="lg"
+                        label={t("from")}
+                        placeholder={t("selectDateAndTime")}
+                        loading={loading}
+                        ref={setFromAnchor}
+                        value={from ? formatDateTime(from) : ""}
+                        onClick={getPopoverHandler("from", true)}
+                        error={!!error}
+                        readOnly
+                        icon={CalendarIcon}
+                        className={styles.input}
                     />
-                </Popover>
-                <Popover
-                    ref={toRef}
-                    anchor={toAnchor}
-                    open={toPopover}
-                    onOpenChange={setToPopover}
-                    placement="bottom-start"
-                    variant="secondary"
-                    margin={4}
-                    className={styles.popover}
-                >
-                    <DateTimePicker
-                        value={to}
-                        range={{ from, to }}
-                        max={from && dayjs(from).add(7, "days")}
-                        onChange={setTo}
+                    <TextInput
+                        size="lg"
+                        label={t("to")}
+                        placeholder={t("selectDateAndTime")}
+                        disabled={!from}
+                        loading={loading}
+                        ref={setToAnchor}
+                        value={to ? formatDateTime(to) : ""}
+                        onClick={getPopoverHandler("to", true)}
+                        error={!!error}
+                        readOnly
+                        icon={CalendarIcon}
+                        className={styles.input}
                     />
-                </Popover>
-                <Button
-                    size="sm"
-                    icon={ArrowRightIcon}
-                    iconPlacement="right"
-                    disabled={!from || !to || !!error}
-                    loading={loading}
-                    onClick={fetchDistributions}
-                    className={{ root: styles.button }}
-                >
-                    {loading
-                        ? t("loading", {
-                              completed: progress.completed,
-                              total: progress.total || "...",
-                          })
-                        : t("search")}
-                </Button>
-                {(from || to) && (
+                    <Popover
+                        ref={fromRef}
+                        anchor={fromAnchor}
+                        open={fromPopover}
+                        onOpenChange={setFromPopover}
+                        placement="bottom-start"
+                        variant="secondary"
+                        margin={4}
+                        className={styles.popover}
+                    >
+                        <DateTimePicker
+                            value={from}
+                            range={{ from, to }}
+                            min={to && dayjs(to).subtract(7, "days")}
+                            onChange={setFrom}
+                        />
+                    </Popover>
+                    <Popover
+                        ref={toRef}
+                        anchor={toAnchor}
+                        open={toPopover}
+                        onOpenChange={setToPopover}
+                        placement="bottom-start"
+                        variant="secondary"
+                        margin={4}
+                        className={styles.popover}
+                    >
+                        <div className={styles.toPopoverContent}>
+                            <DateTimePicker
+                                value={to}
+                                range={{ from, to }}
+                                max={from && dayjs(from).add(7, "days")}
+                                onChange={setTo}
+                            />
+                            <Typography
+                                size="xs"
+                                weight="medium"
+                                variant="tertiary"
+                                uppercase
+                            >
+                                {t.rich("rangeLimit", {
+                                    bold: (chunks) => (
+                                        <BoldText>{chunks}</BoldText>
+                                    ),
+                                })}
+                            </Typography>
+                        </div>
+                    </Popover>
                     <Button
                         size="sm"
-                        disabled={!from || !to || !!error || loading}
-                        onClick={clearDurationPreset}
+                        icon={ArrowRightIcon}
+                        iconPlacement="right"
+                        disabled={!from || !to || !!error}
+                        loading={loadingDistributions}
+                        onClick={fetchDistributions}
                         className={{ root: styles.button }}
                     >
-                        {t("clear")}
+                        {loadingDistributions
+                            ? t("loading", {
+                                  completed: progress.completed,
+                                  total: progress.total || "...",
+                              })
+                            : t("search")}
                     </Button>
-                )}
-                <ErrorText level="error" size="xs" weight="medium">
+                    {from && to && (
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            border={false}
+                            icon={TrashIcon}
+                            disabled={!from || !to || loadingDistributions}
+                            onClick={clearDurationPreset}
+                            className={{ root: styles.button }}
+                        >
+                            {t("clear")}
+                        </Button>
+                    )}
+                </div>
+                <ErrorText
+                    level="error"
+                    size="xs"
+                    weight="medium"
+                    uppercase={false}
+                    mountAnimation
+                >
                     {error}
                 </ErrorText>
             </div>

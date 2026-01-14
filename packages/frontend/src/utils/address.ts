@@ -26,7 +26,28 @@ export function getColorFromAddress(address: Address, theme: Theme) {
         hash = cleanAddress.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    return `#${(hash & 0x00ffffff).toString(16).padStart(6, "0")}`;
+    const hue = Math.abs(hash) % 360;
+    const saturation = 70 + (Math.abs(hash >> 8) % 25);
+    const lightness = 55 + (Math.abs(hash >> 16) % 15);
+
+    return hslToHex({ h: hue, s: saturation, l: lightness });
+}
+
+function hslToHex(hsl: { h: number; s: number; l: number }): string {
+    const { h, s, l } = hsl;
+
+    const hDecimal = l / 100;
+    const a = (s * Math.min(hDecimal, 1 - hDecimal)) / 100;
+    const f = (n: number) => {
+        const k = (n + h / 30) % 12;
+        const color = hDecimal - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+
+        return Math.round(255 * color)
+            .toString(16)
+            .padStart(2, "0");
+    };
+
+    return `#${f(0)}${f(8)}${f(4)}`;
 }
 
 export function isAddress(address: string): boolean {

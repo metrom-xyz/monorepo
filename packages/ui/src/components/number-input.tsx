@@ -49,6 +49,7 @@ export const NumberInput: React.ForwardRefExoticComponent<
     return (
         <BaseInputWrapper
             id={resolvedId}
+            filled={value === 0 || !!value}
             label={label}
             size={size}
             loading={loading}

@@ -662,16 +662,18 @@
         "filters": {
             "from": "From",
             "to": "To",
+            "selectDateAndTime": "Select date & time",
             "search": "Search",
+            "rangeLimit": "The date range is limited to <bold>7 days</bold>",
             "clear": "Clear",
             "loading": "Loading distributions ({completed}/{total})",
             "errors": {
-                "inconsistentRange": "Dates range not valid.",
-                "rangeTooWide": "Dates range wide; max supported range is 7 days."
+                "inconsistentRange": "Invalid date range. The 'To' date must be after the 'From' date",
+                "rangeTooWide": "Invalid date range. Max supported range is 7 days."
             },
             "past24h": "Past 24h",
             "past48h": "Past 48h",
-            "lastWeekDistributions": "Last week distributions"
+            "lastWeekDistributions": "Last week"
         },
         "distributionsOverview": "Distributions overview",
         "distributionsOverviewInfoText": "This chart shows accounts earning rewards in the campaign and their distribution amounts. The <bold>weight</bold> represents each account's share of rewards in a given distribution. Hover over the chart for details.",
@@ -695,7 +697,10 @@
         "totalEarned": "Total earned",
         "totalReimbursed": "Total reimbursed",
         "weight": "Weight",
-        "empty": "No data"
+        "empty": {
+            "title": "No range selected",
+            "subtitle": "Choose a start and end date to display distribution data and charts."
+        }
     },
     "rewards": {
         "claims": {
