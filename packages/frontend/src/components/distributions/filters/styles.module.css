@@ -9,15 +9,39 @@
 }
 
 .inputs {
-    @apply flex gap-4 items-end;
+    @apply flex flex-col sm:flex-row gap-4 items-end;
+}
+
+.textInputs {
+    @apply flex gap-4;
+}
+
+.buttons {
+    @apply w-full flex flex-col sm:flex-row gap-4;
 }
 
 .button {
-    @apply h-12;
+    @apply w-full sm:w-auto h-12;
+}
+
+.errorTextMobile {
+    @apply flex sm:hidden;
+}
+
+.errorTextDesktop {
+    @apply hidden sm:flex;
 }
 
 .chips {
     @apply flex gap-2 items-center;
+}
+
+.chips.mobile {
+    @apply w-full flex sm:hidden;
+}
+
+.chips.desktop {
+    @apply hidden sm:flex;
 }
 
 .input :global(.input) {
