@@ -73,6 +73,7 @@ export interface ActiveDistributionWeights {
 }
 
 const TAB_WIDTH = 172;
+const TOP_ACCOUNTS_COUNT = 10;
 
 export function Distributions({
     chain,
@@ -83,6 +84,7 @@ export function Distributions({
 
     const [loading, setLoading] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>();
+    const [activeAccount, setActiveAccount] = useState<string>();
     const [distros, setDistros] = useState<ProcessedDistribution[]>([]);
     const [addressFilter, setAddressFilter] = useState<string>("");
 
@@ -97,6 +99,7 @@ export function Distributions({
     useEffect(() => {
         if (distros.length === 0) return;
         setActiveIndex(0);
+        setActiveAccount(undefined);
     }, [distros]);
 
     useEffect(() => {
@@ -109,11 +112,38 @@ export function Distributions({
         });
     }, [activeIndex, timestampTabsRef]);
 
+    const topDistros = useMemo(() => {
+        const topDistros: ProcessedDistribution[] = [];
+
+        distros.forEach((distro) => {
+            const sortedFlatWeights = Object.entries(distro.weights)
+                .map(([account, weights]) => {
+                    // we use the weight of the first token, since the % it's same for each token rewarded
+                    const firstTokenAddress = Object.keys(weights)[0];
+                    return { account, ...weights[firstTokenAddress] };
+                })
+                .sort(
+                    (a, b) => b.percentage.formatted - a.percentage.formatted,
+                );
+
+            const relevantWeights: Record<string, Record<string, Weight>> = {};
+            sortedFlatWeights.map((flatWeight, index) => {
+                if (index < TOP_ACCOUNTS_COUNT)
+                    relevantWeights[flatWeight.account] =
+                        distro.weights[flatWeight.account];
+            });
+
+            topDistros.push({ ...distro, weights: relevantWeights });
+        });
+
+        return topDistros;
+    }, [distros]);
+
     const bars = useMemo(() => {
         const existing: Record<string, boolean> = {};
         const bars: StackedBar[] = [];
 
-        for (const distro of distros) {
+        for (const distro of topDistros) {
             for (const [account, weights] of Object.entries(distro.weights)) {
                 for (const [tokenAddress, weight] of Object.entries(weights)) {
                     const key = `${account}.${tokenAddress}`;
@@ -130,25 +160,8 @@ export function Distributions({
                 }
             }
         }
-        return bars.sort(
-            (a, b) =>
-                a.weight.percentage.formatted - b.weight.percentage.formatted,
-        );
-    }, [distros]);
-
-    const handleBarOnClick = useCallback(
-        (value: BarPayload) => {
-            if (!timestampTabsRef.current) return;
-
-            const index = distros.findIndex(
-                ({ timestamp }) => timestamp === value.timestamp,
-            );
-
-            if (index < 0) return;
-            setActiveIndex(index);
-        },
-        [distros],
-    );
+        return bars.sort((a, b) => a.account.localeCompare(b.account));
+    }, [topDistros]);
 
     const activeDistroWeights: ActiveDistributionWeights[] = useMemo(() => {
         if (
@@ -219,11 +232,28 @@ export function Distributions({
 
     const breakdownListRowProps = useMemo(
         () => ({
+            activeAccount,
             activeDistroWeights,
             chainId: chain,
             chainType,
         }),
-        [activeDistroWeights, chain, chainType],
+        [activeAccount, activeDistroWeights, chain, chainType],
+    );
+
+    const handleBarOnClick = useCallback(
+        (value: BarPayload) => {
+            if (!timestampTabsRef.current) return;
+
+            const index = distros.findIndex(
+                ({ timestamp }) => timestamp === value.timestamp,
+            );
+
+            if (index < 0) return;
+
+            setActiveIndex(index);
+            setActiveAccount(value.account);
+        },
+        [distros],
     );
 
     function handleAddressFilterOnChange(event: ChangeEvent<HTMLInputElement>) {
@@ -256,6 +286,7 @@ export function Distributions({
                         <InfoTooltip>
                             <Typography size="sm">
                                 {t.rich("distributionsOverviewInfoText", {
+                                    count: TOP_ACCOUNTS_COUNT,
                                     bold: (chunks) => (
                                         <BoldText>{chunks}</BoldText>
                                     ),
@@ -278,7 +309,7 @@ export function Distributions({
                         ) : distros.length > 0 ? (
                             <Chart
                                 chain={chain}
-                                distros={distros}
+                                distros={topDistros}
                                 bars={bars}
                                 onBarClick={handleBarOnClick}
                             />

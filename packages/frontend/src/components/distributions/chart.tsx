@@ -2,6 +2,7 @@ import type { ProcessedDistribution } from "@/src/types/distributions";
 import {
     Bar,
     BarChart,
+    BarStack,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -26,6 +27,7 @@ interface TickProps {
 
 export interface BarPayload {
     // add more props if needed
+    account: string;
     timestamp: number;
 }
 
@@ -38,8 +40,8 @@ interface ChartProps {
 
 const CHART_STYLES = { cursor: "pointer" };
 const X_AXIS_PADDINGS = { left: 0, right: 0 };
-const Y_AXIS_DOMAIN: AxisDomain = [0, "dataMax"];
-// const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
+const Y_AXIS_DOMAIN: AxisDomain = [0, 100];
+const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
 
 const MemoizedTooltipContent = memo(function MemoizedTooltipContent(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,12 +56,15 @@ const Chart = memo(function Chart({
     bars,
     onBarClick,
 }: ChartProps) {
-    const handleOnBarClick = useCallback(
-        (data: unknown) => {
-            const { timestamp } = data as BarPayload;
-            if (!timestamp) return;
+    const getOnBarClickHandler = useCallback(
+        (account: string) => {
+            return (data: unknown) => {
+                const { timestamp } = data as BarPayload;
+                if (!timestamp) return;
 
-            onBarClick(data as BarPayload);
+                console.log("account", account, timestamp);
+                onBarClick({ account, timestamp });
+            };
         },
         [onBarClick],
     );
@@ -78,10 +83,10 @@ const Chart = memo(function Chart({
                     isAnimationActive={false}
                     dataKey={dataKey}
                     fill={color}
-                    onClick={handleOnBarClick}
+                    onClick={getOnBarClickHandler(account)}
                 />
             )),
-        [bars, handleOnBarClick],
+        [bars, getOnBarClickHandler],
     );
 
     return (
@@ -89,6 +94,7 @@ const Chart = memo(function Chart({
             <BarChart
                 data={distros}
                 accessibilityLayer={false}
+                stackOffset="expand"
                 style={CHART_STYLES}
             >
                 <Tooltip
@@ -97,7 +103,7 @@ const Chart = memo(function Chart({
                     shared={false}
                     content={tooltipElement}
                 />
-                <YAxis hide domain={Y_AXIS_DOMAIN} />
+                <YAxis type="number" hide domain={Y_AXIS_DOMAIN} />
                 <XAxis
                     type="category"
                     dataKey="timestamp"
@@ -107,7 +113,7 @@ const Chart = memo(function Chart({
                     interval="preserveStartEnd"
                     tick={<Tick />}
                 />
-                {renderedBars}
+                <BarStack radius={BAR_RADIUS}>{renderedBars}</BarStack>
             </BarChart>
         </ResponsiveContainer>
     );
