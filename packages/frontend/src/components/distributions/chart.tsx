@@ -7,15 +7,12 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-import type { Address } from "viem";
 import { TooltipContent } from "./tooltip";
-import { getColorFromAddress } from "@/src/utils/address";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
 import { memo, useCallback, useMemo } from "react";
 import type { StackedBar } from ".";
-import { useTheme } from "next-themes";
-import type { Theme } from "@metrom-xyz/ui";
+import type { AxisDomain } from "recharts/types/util/types";
 
 import styles from "./styles.module.css";
 
@@ -41,6 +38,7 @@ interface ChartProps {
 
 const CHART_STYLES = { cursor: "pointer" };
 const X_AXIS_PADDINGS = { left: 0, right: 0 };
+const Y_AXIS_DOMAIN: AxisDomain = [0, "dataMax"];
 // const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
 
 const MemoizedTooltipContent = memo(function MemoizedTooltipContent(
@@ -56,8 +54,6 @@ const Chart = memo(function Chart({
     bars,
     onBarClick,
 }: ChartProps) {
-    const { resolvedTheme } = useTheme();
-
     const handleOnBarClick = useCallback(
         (data: unknown) => {
             const { timestamp } = data as BarPayload;
@@ -75,20 +71,17 @@ const Chart = memo(function Chart({
 
     const renderedBars = useMemo(
         () =>
-            bars.map(({ dataKey, account, tokenAddress }) => (
+            bars.map(({ dataKey, account, color, tokenAddress }) => (
                 <Bar
                     key={`${tokenAddress}-${account}`}
                     stackId={tokenAddress}
                     isAnimationActive={false}
                     dataKey={dataKey}
-                    fill={getColorFromAddress(
-                        account as Address,
-                        resolvedTheme as Theme,
-                    )}
+                    fill={color}
                     onClick={handleOnBarClick}
                 />
             )),
-        [bars, resolvedTheme, handleOnBarClick],
+        [bars, handleOnBarClick],
     );
 
     return (
@@ -104,7 +97,7 @@ const Chart = memo(function Chart({
                     shared={false}
                     content={tooltipElement}
                 />
-                <YAxis hide domain={[0, "dataMax"]} />
+                <YAxis hide domain={Y_AXIS_DOMAIN} />
                 <XAxis
                     type="category"
                     dataKey="timestamp"

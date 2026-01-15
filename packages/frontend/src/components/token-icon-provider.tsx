@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, type ReactNode } from "react";
+import { createContext, useMemo, type ReactNode } from "react";
 import { type Address } from "viem";
 import { useQuery } from "@tanstack/react-query";
 import { TOKEN_ICONS_URL } from "../commons";
@@ -37,8 +37,10 @@ export function TokenIconsProvider({ children }: TokenIconsProviderProps) {
         staleTime: 86400000, // 1 day
     });
 
+    const value = useMemo(() => ({ icons, loading }), [icons, loading]);
+
     return (
-        <TokenIconsContext.Provider value={{ icons, loading }}>
+        <TokenIconsContext.Provider value={value}>
             {children}
         </TokenIconsContext.Provider>
     );
