@@ -53,11 +53,11 @@
 }
 
 .warningMessage {
-    @apply px-4 py-2 bg-warning/[12%];
+    @apply min-w-[66rem] px-4 py-2 bg-warning/[12%];
 }
 
 .breakdownListheader {
-    @apply grid grid-cols-[0.15fr_0.2fr_1.5fr_0.5fr_0.3fr] p-4;
+    @apply min-w-[66rem] grid grid-cols-[0.15fr_0.2fr_1.5fr_0.5fr_0.3fr] p-4;
 }
 
 .breakdownListheader > :nth-child(4) {
@@ -69,7 +69,7 @@
 }
 
 .breakdownList {
-    @apply scroll-smooth;
+    @apply min-w-[66rem] scroll-smooth;
 }
 
 .dataWrapper {

@@ -22,6 +22,7 @@ import { getClosestAvailableTime } from "@/src/utils/date";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { BoldText } from "../../bold-text";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -151,33 +152,35 @@ export function Filters({
         <div className={styles.root}>
             <div className={styles.inputsWrapper}>
                 <div className={styles.inputs}>
-                    <TextInput
-                        size="lg"
-                        label={t("from")}
-                        placeholder={t("selectDateAndTime")}
-                        loading={loading}
-                        ref={setFromAnchor}
-                        value={from ? formatDateTime(from) : ""}
-                        onClick={getPopoverHandler("from", true)}
-                        error={!!error}
-                        readOnly
-                        icon={CalendarIcon}
-                        className={styles.input}
-                    />
-                    <TextInput
-                        size="lg"
-                        label={t("to")}
-                        placeholder={t("selectDateAndTime")}
-                        disabled={!from}
-                        loading={loading}
-                        ref={setToAnchor}
-                        value={to ? formatDateTime(to) : ""}
-                        onClick={getPopoverHandler("to", true)}
-                        error={!!error}
-                        readOnly
-                        icon={CalendarIcon}
-                        className={styles.input}
-                    />
+                    <div className={styles.textInputs}>
+                        <TextInput
+                            size="lg"
+                            label={t("from")}
+                            placeholder={t("selectDateAndTime")}
+                            loading={loading}
+                            ref={setFromAnchor}
+                            value={from ? formatDateTime(from) : ""}
+                            onClick={getPopoverHandler("from", true)}
+                            error={!!error}
+                            readOnly
+                            icon={CalendarIcon}
+                            className={styles.input}
+                        />
+                        <TextInput
+                            size="lg"
+                            label={t("to")}
+                            placeholder={t("selectDateAndTime")}
+                            disabled={!from}
+                            loading={loading}
+                            ref={setToAnchor}
+                            value={to ? formatDateTime(to) : ""}
+                            onClick={getPopoverHandler("to", true)}
+                            error={!!error}
+                            readOnly
+                            icon={CalendarIcon}
+                            className={styles.input}
+                        />
+                    </div>
                     <Popover
                         ref={fromRef}
                         anchor={fromAnchor}
@@ -226,35 +229,64 @@ export function Filters({
                             </Typography>
                         </div>
                     </Popover>
-                    <Button
-                        size="sm"
-                        icon={ArrowRightIcon}
-                        iconPlacement="right"
-                        disabled={!from || !to || !!error}
-                        loading={loadingDistributions}
-                        onClick={fetchDistributions}
-                        className={{ root: styles.button }}
+                    <ErrorText
+                        level="error"
+                        size="xs"
+                        weight="medium"
+                        uppercase={false}
+                        mountAnimation
+                        className={styles.errorTextMobile}
                     >
-                        {loadingDistributions
-                            ? t("loading", {
-                                  completed: progress.completed,
-                                  total: progress.total || "...",
-                              })
-                            : t("search")}
-                    </Button>
-                    {from && to && (
+                        {error}
+                    </ErrorText>
+                    <div className={classNames(styles.chips, styles.mobile)}>
+                        {DURATION_PRESETS.map((preset) => (
+                            <Chip
+                                key={preset.label}
+                                variant="secondary"
+                                onClick={getDurationPresetHandler(preset)}
+                                onClose={
+                                    preset.label === activePreset
+                                        ? clearDurationPreset
+                                        : undefined
+                                }
+                                active={preset.label === activePreset}
+                            >
+                                {t(preset.label)}
+                            </Chip>
+                        ))}
+                    </div>
+                    <div className={styles.buttons}>
                         <Button
                             size="sm"
-                            variant="secondary"
-                            border={false}
-                            icon={TrashIcon}
-                            disabled={!from || !to || loadingDistributions}
-                            onClick={clearDurationPreset}
+                            icon={ArrowRightIcon}
+                            iconPlacement="right"
+                            disabled={!from || !to || !!error}
+                            loading={loadingDistributions}
+                            onClick={fetchDistributions}
                             className={{ root: styles.button }}
                         >
-                            {t("clear")}
+                            {loadingDistributions
+                                ? t("loading", {
+                                      completed: progress.completed,
+                                      total: progress.total || "...",
+                                  })
+                                : t("search")}
                         </Button>
-                    )}
+                        {from && to && (
+                            <Button
+                                size="sm"
+                                variant="secondary"
+                                border={false}
+                                icon={TrashIcon}
+                                disabled={!from || !to || loadingDistributions}
+                                onClick={clearDurationPreset}
+                                className={{ root: styles.button }}
+                            >
+                                {t("clear")}
+                            </Button>
+                        )}
+                    </div>
                 </div>
                 <ErrorText
                     level="error"
@@ -262,11 +294,12 @@ export function Filters({
                     weight="medium"
                     uppercase={false}
                     mountAnimation
+                    className={styles.errorTextDesktop}
                 >
                     {error}
                 </ErrorText>
             </div>
-            <div className={styles.chips}>
+            <div className={classNames(styles.chips, styles.desktop)}>
                 {DURATION_PRESETS.map((preset) => (
                     <Chip
                         key={preset.label}
