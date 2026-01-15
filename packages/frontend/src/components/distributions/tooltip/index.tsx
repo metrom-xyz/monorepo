@@ -5,7 +5,7 @@ import {
     formatUsdAmount,
 } from "@/src/utils/format";
 import { useTranslations } from "next-intl";
-import { Theme, Typography } from "@metrom-xyz/ui";
+import { Typography } from "@metrom-xyz/ui";
 import type { DistributionChartData } from "..";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import dayjs from "dayjs";
@@ -16,7 +16,6 @@ import {
     isZeroAddress,
     shortenAddress,
 } from "@/src/utils/address";
-import { useTheme } from "next-themes";
 
 import styles from "./styles.module.css";
 
@@ -33,7 +32,6 @@ interface TooltipProps {
 
 export function TooltipContent({ chain, active, payload }: TooltipProps) {
     const t = useTranslations("campaignDistributions");
-    const { resolvedTheme } = useTheme();
 
     if (!active || !payload || !payload.length) return null;
 
@@ -73,7 +71,6 @@ export function TooltipContent({ chain, active, payload }: TooltipProps) {
                         style={{
                             backgroundColor: getColorFromAddress(
                                 account as Address,
-                                resolvedTheme as Theme,
                             ),
                         }}
                     ></div>
