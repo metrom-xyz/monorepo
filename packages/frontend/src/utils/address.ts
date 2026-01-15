@@ -2,7 +2,6 @@ import { type Address, zeroAddress, isAddress as isAddressViem } from "viem";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
 import { CHAIN_TYPE } from "../commons";
 import { ChainType } from "@metrom-xyz/sdk";
-import { Theme } from "@metrom-xyz/ui";
 
 export function shortenAddress(address?: Address, long?: boolean) {
     if (!address) return "";
