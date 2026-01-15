@@ -17,7 +17,7 @@ import {
     useState,
     type ChangeEvent,
 } from "react";
-import { type Hex } from "viem";
+import { type Address, type Hex } from "viem";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { useCampaign } from "@/src/hooks/useCampaign";
@@ -43,6 +43,7 @@ import dayjs from "dayjs";
 import { BoldText } from "../bold-text";
 import { EmptyState } from "../empty-state";
 import { CalendarSearchIcon } from "@/src/assets/calendar-search-icon";
+import { getColorFromAddress } from "@/src/utils/address";
 
 import styles from "./styles.module.css";
 
@@ -56,6 +57,7 @@ export type DistributionChartData = ProcessedDistribution;
 
 export interface StackedBar {
     dataKey: string;
+    color: string;
     account: string;
     tokenAddress: string;
     weight: Weight;
@@ -111,14 +113,15 @@ export function Distributions({
         const existing: Record<string, boolean> = {};
         const bars: StackedBar[] = [];
 
-        for (const dist of distros) {
-            for (const [account, weights] of Object.entries(dist.weights)) {
+        for (const distro of distros) {
+            for (const [account, weights] of Object.entries(distro.weights)) {
                 for (const [tokenAddress, weight] of Object.entries(weights)) {
                     const key = `${account}.${tokenAddress}`;
                     if (existing[key]) continue;
 
                     bars.push({
                         dataKey: `weights.${account}.${tokenAddress}.percentage.formatted`,
+                        color: getColorFromAddress(account as Address),
                         account,
                         tokenAddress,
                         weight,
@@ -214,6 +217,15 @@ export function Distributions({
         return Math.floor(aggregatedDistros);
     }, [activeIndex, distros]);
 
+    const breakdownListRowProps = useMemo(
+        () => ({
+            activeDistroWeights,
+            chainId: chain,
+            chainType,
+        }),
+        [activeDistroWeights, chain, chainType],
+    );
+
     function handleAddressFilterOnChange(event: ChangeEvent<HTMLInputElement>) {
         const address = event.target.value;
         setAddressFilter(address);
@@ -230,9 +242,7 @@ export function Distributions({
             </div>
             <div className={styles.divider}></div>
             <Filters
-                chain={chain}
-                chainType={chainType}
-                campaignId={campaignId}
+                campaign={campaign}
                 loading={loadingCampaign || !campaign}
                 onLoading={setLoading}
                 onFetched={setDistros}
@@ -416,11 +426,7 @@ export function Distributions({
                                 <List
                                     rowCount={activeDistroWeights.length}
                                     rowHeight={70}
-                                    rowProps={{
-                                        activeDistroWeights,
-                                        chainId: chain,
-                                        chainType,
-                                    }}
+                                    rowProps={breakdownListRowProps}
                                     rowComponent={BreakdownRow}
                                     className={styles.breakdownList}
                                 />

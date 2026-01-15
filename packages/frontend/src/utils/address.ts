@@ -15,9 +15,8 @@ export function shortenAddress(address?: Address, long?: boolean) {
     return `${address.slice(0, start)}...${address.slice(-end)}`;
 }
 
-export function getColorFromAddress(address: Address, theme: Theme) {
-    if (isZeroAddress(address))
-        return theme === Theme.Light ? "#d1d5dc" : "#404040";
+export function getColorFromAddress(address: Address) {
+    if (isZeroAddress(address)) return "#6b7280";
 
     let hash = 0;
     const cleanAddress = address.toLowerCase().replace(/^0x/, "");
