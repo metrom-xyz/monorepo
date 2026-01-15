@@ -1,6 +1,6 @@
 import { type Address } from "viem";
 import { getColorFromAddress, isZeroAddress } from "@/src/utils/address";
-import { Popover, Skeleton, Theme, Typography } from "@metrom-xyz/ui";
+import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import {
@@ -10,7 +10,6 @@ import {
     formatUsdAmount,
     formatUsdAmountChange,
 } from "@/src/utils/format";
-import { useTheme } from "next-themes";
 import { useRef, useState } from "react";
 import type { DistributedErc20Token, Weight } from "@/src/types/distributions";
 import { RemoteLogo } from "../../remote-logo";
@@ -27,7 +26,6 @@ interface AccountRowProps {
     chainId: number;
     chainType: ChainType;
     account: Address;
-    connected: boolean;
     totalUsdAmount: number;
     usdAmount: number;
     usdAmountChange: number;
@@ -42,7 +40,6 @@ export function AccountRow({
     chainId,
     chainType,
     account,
-    connected,
     totalUsdAmount,
     usdAmount,
     usdAmountChange,
@@ -52,7 +49,6 @@ export function AccountRow({
     percentage,
 }: AccountRowProps) {
     const t = useTranslations("campaignDistributions");
-    const { resolvedTheme } = useTheme();
 
     const [currentDistroPopover, setCurrentDistroPopover] = useState(false);
     const [currentDistroAnchor, setCurrentDistroAnchor] =
@@ -94,16 +90,10 @@ export function AccountRow({
                     style={{
                         backgroundColor: getColorFromAddress(
                             account as Address,
-                            resolvedTheme as Theme,
                         ),
                     }}
                 ></div>
-                <Typography
-                    weight="medium"
-                    className={classNames({
-                        [styles.connected]: connected,
-                    })}
-                >
+                <Typography weight="medium">
                     {isZeroAddress(account) ? t("reimbursed") : account}
                 </Typography>
                 <a

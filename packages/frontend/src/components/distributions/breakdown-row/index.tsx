@@ -1,15 +1,16 @@
 import { type Address } from "viem";
-import { useAccount } from "@/src/hooks/useAccount";
 import { AccountRow, AccountRowSkeleton } from "./account-row";
 import type { RowComponentProps } from "react-window";
 import type { ActiveDistributionWeights } from "..";
 import type { ChainType } from "@metrom-xyz/sdk";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
 interface BreakdownRowProps {
     chainId: number;
     chainType: ChainType;
+    activeAccount?: string;
     activeDistroWeights: ActiveDistributionWeights[];
 }
 
@@ -18,14 +19,20 @@ export function BreakdownRow({
     index,
     chainId,
     chainType,
+    activeAccount,
     activeDistroWeights,
 }: RowComponentProps<BreakdownRowProps>) {
-    const { address } = useAccount();
-
     const distro = activeDistroWeights[index];
+    const active =
+        activeAccount?.toLowerCase() === distro.account.toLowerCase();
 
     return (
-        <div style={style} className={styles.root}>
+        <div
+            style={style}
+            className={classNames(styles.root, {
+                [styles.active]: active,
+            })}
+        >
             <AccountRow
                 rank={distro.rank}
                 chainId={chainId}
@@ -38,9 +45,6 @@ export function BreakdownRow({
                 weights={distro.weights}
                 tokens={distro.tokens}
                 tokensSummary={distro.tokensSummary}
-                connected={
-                    address?.toLowerCase() === distro.account.toLowerCase()
-                }
             />
         </div>
     );
