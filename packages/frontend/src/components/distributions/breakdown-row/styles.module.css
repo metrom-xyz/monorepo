@@ -4,6 +4,10 @@
     @apply flex py-3 px-4 gap-4 border-t stroke-divider;
 }
 
+.root.active {
+    @apply bg-gray-200 dark:bg-neutral-700;
+}
+
 .title {
     @apply flex items-center p-2 gap-2 rounded-md surface-secondary;
 }

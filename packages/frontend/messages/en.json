@@ -676,7 +676,7 @@
             "lastWeekDistributions": "Last week"
         },
         "distributionsOverview": "Distributions overview",
-        "distributionsOverviewInfoText": "This chart shows accounts earning rewards in the campaign and their distribution amounts. The <bold>weight</bold> represents each account's share of rewards in a given distribution. Hover over the chart for details.",
+        "distributionsOverviewInfoText": "This chart shows the top {count} rewarded accounts in the campaign and their distribution amounts. The <bold>weight</bold> represents each account's share of rewards in a given distribution. Hover over the chart for details.",
         "distributionsBreakdownInfoText": "This list details earned rewards, showing amounts for the current distribution and cumulative totals through the selected distribution. Hover over USD amounts to see the token breakdown. Under <bold>in this distribution</bold>, hovering also reveals whether the account earned <green>more</green> or <red>less</red> compared to the previous distribution.",
         "distributionsBreakdown": "Distributions breakdown",
         "searchAddress": "Search address",
