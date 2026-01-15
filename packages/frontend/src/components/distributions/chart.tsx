@@ -62,7 +62,6 @@ const Chart = memo(function Chart({
                 const { timestamp } = data as BarPayload;
                 if (!timestamp) return;
 
-                console.log("account", account, timestamp);
                 onBarClick({ account, timestamp });
             };
         },
@@ -74,20 +73,35 @@ const Chart = memo(function Chart({
         [chain],
     );
 
-    const renderedBars = useMemo(
-        () =>
-            bars.map(({ dataKey, account, color, tokenAddress }) => (
-                <Bar
-                    key={`${tokenAddress}-${account}`}
-                    stackId={tokenAddress}
-                    isAnimationActive={false}
-                    dataKey={dataKey}
-                    fill={color}
-                    onClick={getOnBarClickHandler(account)}
-                />
-            )),
-        [bars, getOnBarClickHandler],
-    );
+    const renderedBarStacks = useMemo(() => {
+        const barsByToken = bars.reduce(
+            (acc, bar) => {
+                if (!acc[bar.tokenAddress]) acc[bar.tokenAddress] = [];
+                acc[bar.tokenAddress].push(bar);
+                return acc;
+            },
+            {} as Record<string, StackedBar[]>,
+        );
+
+        // have one bar stack per token address on a single distribution
+        return Object.entries(barsByToken).map(([tokenAddress, bars]) => (
+            <BarStack
+                key={tokenAddress}
+                stackId={tokenAddress}
+                radius={BAR_RADIUS}
+            >
+                {bars.map(({ dataKey, account, color }) => (
+                    <Bar
+                        key={`${tokenAddress}-${account}`}
+                        isAnimationActive={false}
+                        dataKey={dataKey}
+                        fill={color}
+                        onClick={getOnBarClickHandler(account)}
+                    />
+                ))}
+            </BarStack>
+        ));
+    }, [bars, getOnBarClickHandler]);
 
     return (
         <ResponsiveContainer width="100%">
@@ -113,7 +127,7 @@ const Chart = memo(function Chart({
                     interval="preserveStartEnd"
                     tick={<Tick />}
                 />
-                <BarStack radius={BAR_RADIUS}>{renderedBars}</BarStack>
+                {renderedBarStacks}
             </BarChart>
         </ResponsiveContainer>
     );
