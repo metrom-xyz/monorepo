@@ -335,7 +335,7 @@ export function Distributions({
                 <div className={styles.section}>
                     <div className={styles.distributionsBreakdownHeader}>
                         <div className={styles.sectionHeader}>
-                            <Typography size="lg" weight="medium" uppercase>
+                            <Typography weight="medium" uppercase>
                                 {t("distributionsBreakdown")}
                             </Typography>
                             <InfoTooltip>
@@ -344,23 +344,13 @@ export function Distributions({
                                         bold: (chunks) => (
                                             <BoldText>{chunks}</BoldText>
                                         ),
-                                        green: (chunks) => (
-                                            <span className={styles.greenText}>
-                                                {chunks}
-                                            </span>
-                                        ),
-                                        red: (chunks) => (
-                                            <span className={styles.redText}>
-                                                {chunks}
-                                            </span>
-                                        ),
                                     })}
                                 </Typography>
                             </InfoTooltip>
                         </div>
                         <TextInput
                             icon={SearchIcon}
-                            placeholder={t("searchAddress")}
+                            placeholder={t("filterAddress")}
                             value={addressFilter}
                             disabled={
                                 Object.keys(activeDistroWeights).length === 0
@@ -403,6 +393,11 @@ export function Distributions({
                                     <ErrorText size="xs" level="warning">
                                         {t(
                                             "warningMessages.notFirstDistribution",
+                                            {
+                                                from: formatDateTime(
+                                                    campaign?.from,
+                                                ),
+                                            },
                                         )}
                                     </ErrorText>
                                 </div>
@@ -411,7 +406,7 @@ export function Distributions({
                                 <div className={styles.warningMessage}>
                                     <ErrorText size="xs" level="warning">
                                         {t(
-                                            "warningMessages.notFirstDistribution",
+                                            "warningMessages.multiDistribution",
                                             { amount: aggregatedDistros },
                                         )}
                                     </ErrorText>
