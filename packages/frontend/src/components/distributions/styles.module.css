@@ -56,15 +56,15 @@
     @apply min-w-[66rem] px-4 py-2 bg-warning/[12%];
 }
 
-.breakdownListheader {
+.breakdownListHeader {
     @apply min-w-[66rem] grid grid-cols-[0.15fr_0.2fr_1.5fr_0.5fr_0.3fr] p-4;
 }
 
-.breakdownListheader > :nth-child(4) {
+.breakdownListHeader > :nth-child(4) {
     @apply justify-self-end;
 }
 
-.breakdownListheader > :last-child {
+.breakdownListHeader > :last-child {
     @apply justify-self-end;
 }
 

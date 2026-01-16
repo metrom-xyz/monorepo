@@ -411,7 +411,7 @@ export function Distributions({
                                     </ErrorText>
                                 </div>
                             )}
-                            <div className={styles.breakdownListheader}>
+                            <div className={styles.breakdownListHeader}>
                                 <Typography
                                     weight="medium"
                                     variant="tertiary"

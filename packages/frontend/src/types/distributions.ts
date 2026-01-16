@@ -17,11 +17,6 @@ export interface UsdAccountWeights {
     percentage: number;
 }
 
-export interface Weights {
-    usdWeights: UsdAccountWeights;
-    accounts: Record<string, Weight>;
-}
-
 export interface ProcessedDistribution {
     timestamp: number;
     tokens: Record<string, DistributedErc20Token>;
