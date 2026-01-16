@@ -197,7 +197,12 @@ export function Distributions({
     }, [activeIndex, distros, addressFilter]);
 
     const notFirstDistro = useMemo(() => {
-        if (!campaign?.from || activeIndex === undefined || distros.length < 2)
+        if (
+            !campaign?.from ||
+            activeIndex === undefined ||
+            distros.length < 2 ||
+            !distros[activeIndex]
+        )
             return false;
 
         const distroTimeHours = dayjs
@@ -214,7 +219,12 @@ export function Distributions({
 
     // there are cases where distributions are skipped
     const aggregatedDistros = useMemo(() => {
-        if (activeIndex === undefined || distros.length < 2) return 0;
+        if (
+            activeIndex === undefined ||
+            distros.length < 2 ||
+            !distros[activeIndex]
+        )
+            return 0;
         if (!distros[activeIndex - 1]) return 0;
 
         const distroTimeHours = dayjs
