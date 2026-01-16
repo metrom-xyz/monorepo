@@ -697,9 +697,13 @@
         "totalEarned": "Total earned",
         "totalReimbursed": "Total reimbursed",
         "weight": "Weight",
-        "empty": {
+        "emptyDefault": {
             "title": "No range selected",
             "subtitle": "Choose a start and end date to display distribution data and charts."
+        },
+        "emptyFilteredList": {
+            "title": "No address found",
+            "subtitle": "No results match your search. Check the address and try again."
         }
     },
     "rewards": {
