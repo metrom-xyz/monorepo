@@ -352,9 +352,7 @@ export function Distributions({
                             icon={SearchIcon}
                             placeholder={t("filterAddress")}
                             value={addressFilter}
-                            disabled={
-                                Object.keys(activeDistroWeights).length === 0
-                            }
+                            disabled={distros.length === 0}
                             onChange={handleAddressFilterOnChange}
                             className={styles.searchAddressInput}
                         />
