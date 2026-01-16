@@ -74,12 +74,14 @@ export function ListPoolPicker({
         )
             return;
 
+        if (!filteredPools[selectedIndex]) return;
+
         list.scrollToRow({
             index: selectedIndex,
             align: "start",
             behavior: "instant",
         });
-    }, [filteredPools.length, list, open, selectedIndex]);
+    }, [filteredPools, list, open, selectedIndex]);
 
     useDebounce(
         () => {
