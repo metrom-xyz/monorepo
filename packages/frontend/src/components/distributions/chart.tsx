@@ -73,7 +73,7 @@ const Chart = memo(function Chart({
         [chain],
     );
 
-    const renderedBarStacks = useMemo(() => {
+    const barStacks = useMemo(() => {
         const barsByToken = bars.reduce(
             (acc, bar) => {
                 if (!acc[bar.tokenAddress]) acc[bar.tokenAddress] = [];
@@ -127,7 +127,7 @@ const Chart = memo(function Chart({
                     interval="preserveStartEnd"
                     tick={<Tick />}
                 />
-                {renderedBarStacks}
+                {barStacks}
             </BarChart>
         </ResponsiveContainer>
     );

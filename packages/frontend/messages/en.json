@@ -676,12 +676,12 @@
             "lastWeekDistributions": "Last week"
         },
         "distributionsOverview": "Distributions overview",
-        "distributionsOverviewInfoText": "This chart shows the top {count} rewarded accounts in the campaign and their distribution amounts. The <bold>weight</bold> represents each account's share of rewards in a given distribution. Hover over the chart for details.",
-        "distributionsBreakdownInfoText": "This list details earned rewards, showing amounts for the current distribution and cumulative totals through the selected distribution. Hover over USD amounts to see the token breakdown. Under <bold>in this distribution</bold>, hovering also reveals whether the account earned <green>more</green> or <red>less</red> compared to the previous distribution.",
+        "distributionsOverviewInfoText": "This chart shows the top <bold>{count}</bold> rewarded accounts in the campaign and their distribution amounts. The <bold>weight</bold> represents each account's share of rewards in a given distribution. Hover over the chart for more details.",
+        "distributionsBreakdownInfoText": "This list details earned rewards per address per each distribution. Hover over USD amounts to see the token breakdown and if the account has received <bold>MORE</bold> or <bold>LESS</bold> than previous epoch.",
         "distributionsBreakdown": "Distributions breakdown",
-        "searchAddress": "Search address",
+        "filterAddress": "Filter address",
         "warningMessages": {
-            "notFirstDistribution": "This distribution includes all previous ones, as this is not the first one for the campaign.",
+            "notFirstDistribution": "This distribution includes all previous ones since campaign start time ({from}).",
             "multiDistribution": "This distribution includes data from multiple distributions (~{amount})."
         },
         "reimbursed": "Reimbursed",
