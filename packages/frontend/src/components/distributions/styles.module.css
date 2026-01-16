@@ -107,11 +107,3 @@
         duration-200
         ease-in-out;
 }
-
-.redText {
-    @apply text-error bg-error/[12%] rounded-md px-1 font-bold;
-}
-
-.greenText {
-    @apply text-brand-green-dark dark:text-brand-green bg-brand-green-dark/[12%] dark:bg-brand-green/[12%] rounded-md px-1 font-bold;
-}
