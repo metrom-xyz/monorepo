@@ -2,6 +2,7 @@ import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { CampaignStatusDot } from "../campaign-status-dot";
 import { Status } from "@metrom-xyz/sdk";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -31,11 +32,17 @@ export function ProjectCampaignsTotals({
                     ),
                 })}
             </Typography>
-            <div className={styles.activeChip}>
-                <CampaignStatusDot
-                    status={Status.Active}
-                    className={styles.statusDot}
-                />
+            <div
+                className={classNames(styles.activeChip, {
+                    [styles.active]: !!active,
+                })}
+            >
+                {!!active && (
+                    <CampaignStatusDot
+                        status={Status.Active}
+                        className={styles.statusDot}
+                    />
+                )}
                 <Typography
                     size="sm"
                     weight="medium"

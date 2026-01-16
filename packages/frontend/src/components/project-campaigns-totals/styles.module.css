@@ -13,7 +13,11 @@
 }
 
 .activeChip {
-    @apply flex items-center gap-1 bg-brand-green-dark rounded-sm px-1.5 py-0.5;
+    @apply flex items-center gap-1 bg-[#00000033] backdrop-blur-md rounded-sm px-1.5 py-0.5;
+}
+
+.activeChip.active {
+    @apply bg-brand-green-dark;
 }
 
 .statusDot {
