@@ -44,6 +44,7 @@ import { BoldText } from "../bold-text";
 import { EmptyState } from "../empty-state";
 import { CalendarSearchIcon } from "@/src/assets/calendar-search-icon";
 import { getColorFromAddress } from "@/src/utils/address";
+import { SearchOffIcon } from "@/src/assets/search-off-icon";
 
 import styles from "./styles.module.css";
 
@@ -326,8 +327,8 @@ export function Distributions({
                         ) : (
                             <EmptyState
                                 icon={CalendarSearchIcon}
-                                title={t("empty.title")}
-                                subtitle={t("empty.subtitle")}
+                                title={t("emptyDefault.title")}
+                                subtitle={t("emptyDefault.subtitle")}
                             />
                         )}
                     </Card>
@@ -466,11 +467,25 @@ export function Distributions({
                                 />
                             ) : (
                                 <div className={styles.empty}>
-                                    <EmptyState
-                                        icon={CalendarSearchIcon}
-                                        title={t("empty.title")}
-                                        subtitle={t("empty.subtitle")}
-                                    />
+                                    {distros.length > 0 &&
+                                    Object.keys(activeDistroWeights).length ===
+                                        0 ? (
+                                        <EmptyState
+                                            icon={SearchOffIcon}
+                                            title={t("emptyFilteredList.title")}
+                                            subtitle={t(
+                                                "emptyFilteredList.subtitle",
+                                            )}
+                                        />
+                                    ) : (
+                                        <EmptyState
+                                            icon={CalendarSearchIcon}
+                                            title={t("emptyDefault.title")}
+                                            subtitle={t(
+                                                "emptyDefault.subtitle",
+                                            )}
+                                        />
+                                    )}
                                 </div>
                             )}
                         </Card>
