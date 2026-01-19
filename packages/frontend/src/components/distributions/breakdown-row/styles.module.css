@@ -44,15 +44,11 @@
     @apply w-32;
 }
 
-.change {
-    @apply text-primary rounded-md font-bold;
-}
-
-.change.negative {
+.trendDown {
     @apply text-red-600;
 }
 
-.change.positive {
+.trendUp {
     @apply text-green-600;
 }
 

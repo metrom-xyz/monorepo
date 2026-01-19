@@ -201,15 +201,12 @@ export function AccountRow({
                                             <Typography
                                                 size="sm"
                                                 weight="medium"
-                                                className={classNames(
-                                                    styles.change,
-                                                    {
-                                                        [styles.positive]:
-                                                            positiveTrend,
-                                                        [styles.negative]:
-                                                            negativeTrend,
-                                                    },
-                                                )}
+                                                className={classNames({
+                                                    [styles.trendUp]:
+                                                        positiveTrend,
+                                                    [styles.trendDown]:
+                                                        negativeTrend,
+                                                })}
                                             >
                                                 {formatAmountChange({
                                                     amount: weight.amountChange
@@ -219,15 +216,12 @@ export function AccountRow({
                                             <Typography
                                                 size="sm"
                                                 weight="medium"
-                                                className={classNames(
-                                                    styles.change,
-                                                    {
-                                                        [styles.positive]:
-                                                            positiveTrend,
-                                                        [styles.negative]:
-                                                            negativeTrend,
-                                                    },
-                                                )}
+                                                className={classNames({
+                                                    [styles.trendUp]:
+                                                        positiveTrend,
+                                                    [styles.trendDown]:
+                                                        negativeTrend,
+                                                })}
                                             >
                                                 {formatUsdAmountChange({
                                                     amount: weight.usdAmountChange,
@@ -264,9 +258,9 @@ export function AccountRow({
                         ) : null}
                         <Typography
                             size="xs"
-                            className={classNames(styles.change, {
-                                [styles.positive]: usdAmountChange > 0,
-                                [styles.negative]: usdAmountChange < 0,
+                            className={classNames({
+                                [styles.trendUp]: usdAmountChange > 0,
+                                [styles.trendDown]: usdAmountChange < 0,
                             })}
                         >
                             {formatUsdAmountChange({ amount: usdAmountChange })}
