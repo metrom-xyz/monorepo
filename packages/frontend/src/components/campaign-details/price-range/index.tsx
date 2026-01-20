@@ -33,6 +33,7 @@ export function PriceRange({ campaign }: PriceRangeProps) {
         });
 
     if (
+        campaign?.status === Status.Expired ||
         !campaign?.isTargeting(TargetType.AmmPoolLiquidity) ||
         !campaign?.specification?.priceRange
     )
@@ -50,40 +51,38 @@ export function PriceRange({ campaign }: PriceRangeProps) {
                 {t("title")}
             </Typography>
             <div className={styles.wrapper}>
-                {campaign.status !== Status.Expired && (
-                    <Card className={styles.card}>
-                        <Typography
-                            size="sm"
-                            uppercase
-                            variant="tertiary"
-                            weight="medium"
-                        >
-                            {t.rich("chart", {
-                                token0: pool.tokens[0].symbol,
-                                token1: pool.tokens[1].symbol,
-                                bold: (chunks) => <BoldText>{chunks}</BoldText>,
-                            })}
-                        </Typography>
-                        <div className={classNames(styles.chartWrapper)}>
-                            <LiquidityDensityChart
-                                pool={pool}
-                                from={{
-                                    price: fromPrice,
-                                    tick: priceRange.from,
-                                }}
-                                to={{
-                                    price: toPrice,
-                                    tick: priceRange.to,
-                                }}
-                                density={liquidityDensity}
-                                loading={loadingLiquidityDensity}
-                                token0To1
-                                showPriceRange
-                                tooltipSize="sm"
-                            />
-                        </div>
-                    </Card>
-                )}
+                <Card className={styles.card}>
+                    <Typography
+                        size="sm"
+                        uppercase
+                        variant="tertiary"
+                        weight="medium"
+                    >
+                        {t.rich("chart", {
+                            token0: pool.tokens[0].symbol,
+                            token1: pool.tokens[1].symbol,
+                            bold: (chunks) => <BoldText>{chunks}</BoldText>,
+                        })}
+                    </Typography>
+                    <div className={classNames(styles.chartWrapper)}>
+                        <LiquidityDensityChart
+                            pool={pool}
+                            from={{
+                                price: fromPrice,
+                                tick: priceRange.from,
+                            }}
+                            to={{
+                                price: toPrice,
+                                tick: priceRange.to,
+                            }}
+                            density={liquidityDensity}
+                            loading={loadingLiquidityDensity}
+                            token0To1
+                            showPriceRange
+                            tooltipSize="sm"
+                        />
+                    </div>
+                </Card>
             </div>
         </div>
     );

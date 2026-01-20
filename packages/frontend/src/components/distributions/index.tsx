@@ -45,6 +45,8 @@ import { EmptyState } from "../empty-state";
 import { CalendarSearchIcon } from "@/src/assets/calendar-search-icon";
 import { getColorFromAddress } from "@/src/utils/address";
 import { SearchOffIcon } from "@/src/assets/search-off-icon";
+import { Insights, InsightsSkeleton } from "./insights";
+import { InfoMessage } from "../info-message";
 
 import styles from "./styles.module.css";
 
@@ -232,6 +234,8 @@ export function Distributions({
             .unix(distros[1].timestamp)
             .diff(dayjs.unix(distros[0].timestamp), "hours");
 
+        if (distroTimeHours === 0) return 0;
+
         const aggregatedDistros =
             dayjs
                 .unix(distros[activeIndex].timestamp)
@@ -281,7 +285,11 @@ export function Distributions({
                     <Header campaign={campaign} />
                 )}
             </div>
-            <div className={styles.divider}></div>
+            {loadingCampaign || !campaign ? (
+                <InsightsSkeleton />
+            ) : (
+                <Insights campaign={campaign} />
+            )}
             <Filters
                 campaign={campaign}
                 loading={loadingCampaign || !campaign}
@@ -295,14 +303,17 @@ export function Distributions({
                             {t("distributionsOverview")}
                         </Typography>
                         <InfoTooltip>
-                            <Typography size="sm">
-                                {t.rich("distributionsOverviewInfoText", {
+                            <InfoMessage
+                                size="sm"
+                                weight="regular"
+                                spaced
+                                text={t.rich("distributionsOverviewInfoText", {
                                     count: TOP_ACCOUNTS_COUNT,
                                     bold: (chunks) => (
                                         <BoldText>{chunks}</BoldText>
                                     ),
                                 })}
-                            </Typography>
+                            />
                         </InfoTooltip>
                     </div>
                     <Card
@@ -340,13 +351,19 @@ export function Distributions({
                                 {t("distributionsBreakdown")}
                             </Typography>
                             <InfoTooltip>
-                                <Typography size="sm">
-                                    {t.rich("distributionsBreakdownInfoText", {
-                                        bold: (chunks) => (
-                                            <BoldText>{chunks}</BoldText>
-                                        ),
-                                    })}
-                                </Typography>
+                                <InfoMessage
+                                    size="sm"
+                                    weight="regular"
+                                    spaced
+                                    text={t.rich(
+                                        "distributionsBreakdownInfoText",
+                                        {
+                                            bold: (chunks) => (
+                                                <BoldText>{chunks}</BoldText>
+                                            ),
+                                        },
+                                    )}
+                                />
                             </InfoTooltip>
                         </div>
                         <TextInput
@@ -408,6 +425,7 @@ export function Distributions({
                                             "warningMessages.multiDistribution",
                                             { amount: aggregatedDistros },
                                         )}
+                                        {aggregatedDistros}
                                     </ErrorText>
                                 </div>
                             )}

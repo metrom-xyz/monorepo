@@ -8,10 +8,6 @@
     @apply w-full flex flex-col sm:gap-3 gap-8;
 }
 
-.divider {
-    @apply h-[0.063rem] w-full bg-gray-300 dark:bg-neutral-800;
-}
-
 .campaignIdInput {
     @apply w-1/2;
 }

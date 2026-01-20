@@ -8,11 +8,12 @@ import {
     type TypographySize,
 } from "@metrom-xyz/ui";
 import { Status, type TokenDistributables } from "@metrom-xyz/sdk";
-import { formatAmount, formatUsdAmount } from "@/src/utils/format";
+import { formatUsdAmount } from "@/src/utils/format";
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import classNames from "classnames";
+import { CampaignTokensDistributablesList } from "../campaign-tokens-distributables-list";
 
 import styles from "./styles.module.css";
 
@@ -79,58 +80,10 @@ export function CampaignRewardsPopover({
                             })}
                         </Typography>
                     </div>
-                    <div className={styles.rows}>
-                        {distributables.list
-                            .sort(
-                                (a, b) => b.amount.usdValue - a.amount.usdValue,
-                            )
-                            .map((reward) => {
-                                return (
-                                    <div
-                                        key={reward.token.address}
-                                        className={styles.breakdownRow}
-                                    >
-                                        <div>
-                                            <RemoteLogo
-                                                chain={chainId}
-                                                size="xs"
-                                                address={reward.token.address}
-                                                defaultText={
-                                                    reward.token.symbol
-                                                }
-                                            />
-                                            <Typography
-                                                weight="medium"
-                                                size="sm"
-                                            >
-                                                {reward.token.symbol}
-                                            </Typography>
-                                        </div>
-                                        <div>
-                                            <Typography
-                                                weight="medium"
-                                                size="sm"
-                                            >
-                                                {formatAmount({
-                                                    amount: reward.amount
-                                                        .formatted,
-                                                })}
-                                            </Typography>
-                                            <Typography
-                                                variant="tertiary"
-                                                weight="medium"
-                                                size="sm"
-                                            >
-                                                {formatUsdAmount({
-                                                    amount: reward.amount
-                                                        .usdValue,
-                                                })}
-                                            </Typography>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                    </div>
+                    <CampaignTokensDistributablesList
+                        chain={chainId}
+                        distributables={distributables.list}
+                    />
                 </div>
             </Popover>
             <div
