@@ -4,14 +4,12 @@ import { Card, Popover, Typography } from "@metrom-xyz/ui";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
-import type {
-    TokenDistributables,
-    UsdPricedErc20TokenAmount,
-} from "@metrom-xyz/sdk";
+import type { TokenDistributables } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { RankTooltip } from "./tooltip";
 import { EmptyState } from "@/src/components/empty-state";
+import { useRewardsDistributionBreakdown } from "@/src/hooks/useRewardsDistributionBreakdown";
 
 import styles from "./styles.module.css";
 
@@ -45,7 +43,7 @@ export function AverageDistributionChart({
     );
     const popoverRef = useRef<HTMLDivElement>(null);
 
-    const assignedPercentages = useMemo(() => {
+    const rewardsPercentage = useMemo(() => {
         if (!kpiMeasurementPercentage || loading) return undefined;
 
         const normalizedKpiMeasurementPercentage = Math.max(
@@ -67,9 +65,9 @@ export function AverageDistributionChart({
     }, [kpiMeasurementPercentage, minimumPayoutPercentage, loading]);
 
     const chartData = useMemo(() => {
-        if (!assignedPercentages) return undefined;
+        if (!rewardsPercentage) return undefined;
 
-        const { distributed, reimbursed } = assignedPercentages;
+        const { distributed, reimbursed } = rewardsPercentage;
 
         const data: AverageDistributionChartData[] = [];
         if (distributed > 0) {
@@ -87,51 +85,13 @@ export function AverageDistributionChart({
         }
 
         return data;
-    }, [assignedPercentages]);
+    }, [rewardsPercentage]);
 
-    const distributionBreakdown = useMemo(() => {
-        if (!distributables || !assignedPercentages) return undefined;
-
-        const { amountUsdValue, remainingUsdValue } = distributables;
-        const { distributed, reimbursed } = assignedPercentages;
-
-        const assignedUsdValue = amountUsdValue - remainingUsdValue;
-        const distributedUsdValue = (assignedUsdValue * distributed) / 100;
-        const reimbursedUsdValue = (assignedUsdValue * reimbursed) / 100;
-
-        const distributedList: UsdPricedErc20TokenAmount[] = [];
-        const reimbursedList: UsdPricedErc20TokenAmount[] = [];
-
-        distributables.list.forEach(({ amount, remaining, token }) => {
-            const assignedAmount = amount.formatted - remaining.formatted;
-            const distributedAmount = (assignedAmount * distributed) / 100;
-            const reimbursedAmount = (assignedAmount * reimbursed) / 100;
-
-            distributedList.push({
-                token,
-                amount: {
-                    formatted: distributedAmount,
-                    raw: 0n,
-                    usdValue: distributedAmount * token.usdPrice,
-                },
-            });
-            reimbursedList.push({
-                token,
-                amount: {
-                    formatted: reimbursedAmount,
-                    raw: 0n,
-                    usdValue: reimbursedAmount * token.usdPrice,
-                },
-            });
-        });
-
-        return {
-            distributedUsdValue,
-            reimbursedUsdValue,
-            distributedList,
-            reimbursedList,
-        };
-    }, [distributables, assignedPercentages]);
+    const distributionBreakdown = useRewardsDistributionBreakdown({
+        distributables,
+        kpiMeasurementPercentage,
+        minimumPayoutPercentage,
+    });
 
     function handlePopoverOnChange() {
         setPopover(popover);
@@ -236,34 +196,41 @@ export function AverageDistributionChart({
                             })}
                         </Typography>
                     </div>
-                    {distributionBreakdownList?.map(({ amount, token }) => (
-                        <div key={token.address} className={styles.tokenRow}>
-                            <div className={styles.tokenWrapper}>
-                                <RemoteLogo
-                                    size="xs"
-                                    address={token.address}
-                                    chain={chain}
-                                />
-                                <Typography size="sm" weight="medium">
-                                    {token.symbol}
-                                </Typography>
+                    <div className={styles.rows}>
+                        {distributionBreakdownList?.map(({ amount, token }) => (
+                            <div
+                                key={token.address}
+                                className={styles.tokenRow}
+                            >
+                                <div className={styles.tokenWrapper}>
+                                    <RemoteLogo
+                                        size="xs"
+                                        address={token.address}
+                                        chain={chain}
+                                    />
+                                    <Typography size="sm" weight="medium">
+                                        {token.symbol}
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Typography size="sm" weight="medium">
+                                        {formatAmount({
+                                            amount: amount.formatted,
+                                        })}
+                                    </Typography>
+                                    <Typography
+                                        size="sm"
+                                        weight="medium"
+                                        variant="tertiary"
+                                    >
+                                        {formatUsdAmount({
+                                            amount: amount.usdValue,
+                                        })}
+                                    </Typography>
+                                </div>
                             </div>
-                            <div>
-                                <Typography size="sm" weight="medium">
-                                    {formatAmount({ amount: amount.formatted })}
-                                </Typography>
-                                <Typography
-                                    size="sm"
-                                    weight="medium"
-                                    variant="tertiary"
-                                >
-                                    {formatUsdAmount({
-                                        amount: amount.usdValue,
-                                    })}
-                                </Typography>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </Popover>
             <div className={styles.chartWrapper} ref={setAnchor}>

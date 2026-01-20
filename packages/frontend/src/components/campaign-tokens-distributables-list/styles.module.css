@@ -1,14 +1,6 @@
-@reference "../../../app.css";
+@reference "../../app.css";
 
-.popover {
-    @apply flex flex-col gap-3;
-}
-
-.header {
-    @apply flex items-center justify-between gap-3 px-2;
-}
-
-.rows {
+.root {
     @apply flex flex-col gap-2;
 }
 
@@ -20,6 +12,6 @@
     @apply flex items-center gap-2;
 }
 
-.rankWrapper {
-    @apply cursor-pointer;
+.tokenWrapper {
+    @apply flex items-center gap-2;
 }

@@ -61,48 +61,54 @@ export function RewardsBreakdown({
                             {totalDistributedUsd}
                         </Typography>
                     </div>
-                    {distributed
-                        .sort((a, b) => b.amount.usdValue - a.amount.usdValue)
-                        .map((distributed) => (
-                            <div
-                                key={distributed.token.address}
-                                className={styles.row}
-                            >
-                                <div>
-                                    <RemoteLogo
-                                        size="xs"
-                                        chain={chain}
-                                        address={distributed.token.address}
-                                        defaultText={distributed.token.symbol}
-                                    />
-                                    <Typography weight="medium" size="sm">
-                                        {distributed.token.symbol}
-                                    </Typography>
+                    <div className={styles.rows}>
+                        {distributed
+                            .sort(
+                                (a, b) => b.amount.usdValue - a.amount.usdValue,
+                            )
+                            .map((distributed) => (
+                                <div
+                                    key={distributed.token.address}
+                                    className={styles.row}
+                                >
+                                    <div>
+                                        <RemoteLogo
+                                            size="xs"
+                                            chain={chain}
+                                            address={distributed.token.address}
+                                            defaultText={
+                                                distributed.token.symbol
+                                            }
+                                        />
+                                        <Typography weight="medium" size="sm">
+                                            {distributed.token.symbol}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography weight="medium" size="sm">
+                                            {formatAmount({
+                                                amount: distributed.amount
+                                                    .formatted,
+                                                cutoff: false,
+                                            })}
+                                        </Typography>
+                                        <Typography
+                                            weight="medium"
+                                            variant="tertiary"
+                                            size="sm"
+                                        >
+                                            {distributed.amount.usdValue
+                                                ? formatUsdAmount({
+                                                      amount: distributed.amount
+                                                          .usdValue,
+                                                      cutoff: false,
+                                                  })
+                                                : "-"}
+                                        </Typography>
+                                    </div>
                                 </div>
-                                <div>
-                                    <Typography weight="medium" size="sm">
-                                        {formatAmount({
-                                            amount: distributed.amount
-                                                .formatted,
-                                            cutoff: false,
-                                        })}
-                                    </Typography>
-                                    <Typography
-                                        weight="medium"
-                                        variant="tertiary"
-                                        size="sm"
-                                    >
-                                        {distributed.amount.usdValue
-                                            ? formatUsdAmount({
-                                                  amount: distributed.amount
-                                                      .usdValue,
-                                                  cutoff: false,
-                                              })
-                                            : "-"}
-                                    </Typography>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                    </div>
                 </div>
             </Popover>
             <div
