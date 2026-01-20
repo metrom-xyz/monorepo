@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Skeleton } from "../components/skeleton/index";
+import { Card } from "../components/card";
 
 const meta: Meta = {
     title: "Feedback/Skeleton",
@@ -16,8 +17,11 @@ type Story = StoryObj<typeof Skeleton>;
 export const Base: Story = {
     render: (args) => {
         return (
-            <div className="w-96">
+            <div className="w-96 flex flex-col gap-4">
                 <Skeleton {...args} />
+                <Card>
+                    <Skeleton {...args} />
+                </Card>
             </div>
         );
     },
