@@ -659,9 +659,21 @@
         "notFound": "Campaign not found!"
     },
     "campaignDistributions": {
+        "insights": {
+            "title": "Insights",
+            "incetivizedAssets": "Incentivized assets",
+            "assets": "Assets",
+            "paid": "Paid",
+            "reimbursed": "Reimbursed",
+            "totalUsdValue": "Total USD value"
+        },
         "filters": {
             "from": "From",
             "to": "To",
+            "header": {
+                "title": "Detailed Distribution data",
+                "subtitle": "Select a date range to view detailed distribution metrics"
+            },
             "selectDateAndTime": "Select date & time",
             "search": "Search",
             "rangeLimit": "The date range is limited to <bold>7 days</bold>",

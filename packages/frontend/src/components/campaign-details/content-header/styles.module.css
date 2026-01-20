@@ -68,7 +68,7 @@
 }
 
 .tokenRewards {
-    @apply w-full flex flex-[2.3] flex-col sm:flex-row sm:gap-3 bg-gray-100 dark:bg-neutral-800;
+    @apply w-full flex flex-[2.6] flex-col sm:flex-row sm:gap-3 bg-gray-100 dark:bg-neutral-800;
 }
 
 .tokenRewards:last-child {

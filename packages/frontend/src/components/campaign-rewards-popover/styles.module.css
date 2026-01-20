@@ -32,18 +32,6 @@
     @apply flex justify-between gap-7 items-center px-2;
 }
 
-.rows {
-    @apply flex flex-col gap-1;
-}
-
-.breakdownRow {
-    @apply flex items-center gap-6 justify-between bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
-}
-
-.breakdownRow > div {
-    @apply flex items-center gap-2;
-}
-
 .xl2 {
     @apply text-[1.75rem];
 }

@@ -284,7 +284,6 @@ export function LiquidityDensityChart({
                             );
                         })}
                     </Bar>
-
                     <Tooltip
                         isAnimationActive={false}
                         cursor={false}

@@ -39,7 +39,7 @@
 }
 
 .loading {
-    @apply bg-gray-200 dark:bg-neutral-800 animate-pulse;
+    @apply bg-gray-150 dark:bg-neutral-700 animate-pulse;
 }
 
 .container {

@@ -4,6 +4,10 @@
     @apply w-full flex flex-col gap-3;
 }
 
+.header {
+    @apply flex flex-col gap-1 mb-4;
+}
+
 .inputsWrapper {
     @apply flex flex-col gap-2;
 }

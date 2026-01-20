@@ -150,6 +150,14 @@ export function Filters({
 
     return (
         <div className={styles.root}>
+            <div className={styles.header}>
+                <Typography weight="medium" uppercase>
+                    {t("header.title")}
+                </Typography>
+                <Typography variant="tertiary">
+                    {t("header.subtitle")}
+                </Typography>
+            </div>
             <div className={styles.inputsWrapper}>
                 <div className={styles.inputs}>
                     <div className={styles.textInputs}>

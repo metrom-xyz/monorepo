@@ -1,0 +1,93 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full
+        rounded-lg
+        p-[0.063rem]
+        bg-[linear-gradient(to_right,#0EA400,#2577FF)]
+        dark:bg-[linear-gradient(to_right,#6CFF95,#70A6FF)];
+}
+
+.container {
+    @apply rounded-[calc(0.5rem-0.063rem)];
+}
+
+.header {
+    @apply flex items-center gap-1 px-6 py-3 background-main rounded-t-[calc(0.5rem-0.063rem)];
+}
+
+.icon {
+    @apply text-brand-green-dark dark:text-[#6CFF95];
+}
+
+.title {
+    @apply bg-clip-text
+        text-transparent
+        bg-[linear-gradient(to_right,#0EA400,#2577FF)]
+        dark:bg-[linear-gradient(to_right,#6CFF95,#70A6FF)];
+}
+
+.content {
+    @apply flex
+        flex-col
+        sm:flex-row
+        bg-gray-100
+        dark:bg-neutral-800
+        rounded-b-[calc(0.5rem-0.063rem)];
+
+    --pulse-from: #f9fafb; /* gray-100 */
+    --pulse-to: #e5e7eb; /* gray-200 */
+}
+
+.content:where([data-theme="dark"], [data-theme="dark"] *) {
+    --pulse-from: #262626; /* neutral-800 */
+    --pulse-to: #404040; /* neutral-700 */
+}
+
+.content.loading {
+    animation: pulse-bg 2s ease-in-out infinite;
+}
+
+@keyframes pulse-bg {
+    0%,
+    100% {
+        background-color: var(--pulse-from);
+    }
+    50% {
+        background-color: var(--pulse-to);
+    }
+}
+
+.boxes {
+    @apply flex flex-col sm:flex-row sm:gap-4;
+}
+
+.box {
+    @apply flex
+        flex-row
+        sm:flex-col
+        justify-between
+        sm:justify-start
+        items-center
+        sm:items-start
+        gap-6
+        sm:min-h-[7rem]
+        p-3
+        sm:p-6;
+}
+
+.box:first-child:not(.loading) {
+    @apply sm:border-b-0 border-b-[0.125rem] border-gray-150 dark:border-neutral-900;
+}
+
+.box.loading {
+    @apply sm:border-b-0;
+}
+
+.boxValueText {
+    @apply text-[1.75rem];
+}
+
+.content > :not(:last-child) {
+    @apply border-r-[0.125rem] border-gray-150 dark:border-neutral-900;
+}
