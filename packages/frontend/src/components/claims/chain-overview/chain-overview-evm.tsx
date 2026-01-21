@@ -21,6 +21,7 @@ import { SAFE } from "@/src/commons/env";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { formatUsdAmount } from "@/src/utils/format";
 import type { ChainOverviewProps } from ".";
+import { retryContractSimulationEvm } from "@/src/utils/contracts";
 
 import styles from "./styles.module.css";
 
@@ -87,6 +88,8 @@ export function ChainOverviewEvm({
                 !SAFE &&
                 !!account &&
                 chainWithRewardsData.reimbursements.length > 0,
+            retry: retryContractSimulationEvm,
+            retryDelay: (attempt) => attempt * 1000,
         },
     });
 
@@ -102,6 +105,8 @@ export function ChainOverviewEvm({
         args: [claimRewardsArgs],
         query: {
             enabled: !SAFE && account && chainWithRewardsData.claims.length > 0,
+            retry: retryContractSimulationEvm,
+            retryDelay: (attempt) => attempt * 1000,
         },
     });
 
