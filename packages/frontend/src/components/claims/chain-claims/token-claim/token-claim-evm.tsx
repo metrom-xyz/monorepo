@@ -21,6 +21,7 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { useAccount } from "@/src/hooks/useAccount";
 import type { TokenClaimProps } from ".";
 import { ChainType } from "@metrom-xyz/sdk";
+import { retryContractSimulationEvm } from "@/src/utils/contracts";
 
 import styles from "./styles.module.css";
 
@@ -67,6 +68,8 @@ export function TokenClaimEvm({
         query: {
             refetchOnMount: false,
             enabled: !SAFE && !!account && tokenClaims.claims.length > 0,
+            retry: retryContractSimulationEvm,
+            retryDelay: (attempt) => attempt * 1000,
         },
     });
 

@@ -20,6 +20,7 @@ import { SAFE } from "@/src/commons/env";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
 import type { TokenReimbursementProps } from ".";
+import { retryContractSimulationEvm } from "@/src/utils/contracts";
 
 import styles from "./styles.module.css";
 
@@ -69,6 +70,8 @@ export function TokenReimbursementEvm({
                 !SAFE &&
                 !!account &&
                 tokenReimbursements.reimbursements.length > 0,
+            retry: retryContractSimulationEvm,
+            retryDelay: (attempt) => attempt * 1000,
         },
     });
 

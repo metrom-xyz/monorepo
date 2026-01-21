@@ -17,7 +17,10 @@ import { mainnet } from "viem/chains";
 
 const transports = SUPPORTED_CHAINS_EVM.reduce(
     (prev, chain) => {
-        prev[chain.id] = http(chain.rpcUrls.default.http[0]);
+        prev[chain.id] = http(chain.rpcUrls.default.http[0], {
+            batch: true,
+            retryDelay: 500,
+        });
         return prev;
     },
     {} as Record<
