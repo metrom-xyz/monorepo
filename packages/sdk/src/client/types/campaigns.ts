@@ -185,7 +185,7 @@ export interface BackendBaseCampaign {
         | BackendTurtleCampaignTarget
         | BackendAmmPoolNetSwapVolumeTarget;
     specification?: Specification;
-    accountsIcentivized?: number;
+    accountsIncentivized?: number;
     usdTvl?: number;
     apr?: number;
 }

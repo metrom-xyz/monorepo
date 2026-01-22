@@ -662,10 +662,11 @@
         "insights": {
             "title": "Insights",
             "incetivizedAssets": "Incentivized assets",
-            "assets": "Assets",
             "paid": "Paid",
             "reimbursed": "Reimbursed",
-            "totalUsdValue": "Total USD value"
+            "totalUsdValue": "Total USD value",
+            "addressesParticipated": "Addresses participated",
+            "averageIncentive": "Average incentive"
         },
         "filters": {
             "from": "From",

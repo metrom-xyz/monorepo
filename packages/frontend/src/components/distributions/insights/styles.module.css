@@ -76,6 +76,10 @@
         sm:p-6;
 }
 
+.borderBottom {
+    @apply sm:border-b-0 border-b-[0.125rem] border-gray-150 dark:border-neutral-900;
+}
+
 .box:first-child:not(.loading) {
     @apply sm:border-b-0 border-b-[0.125rem] border-gray-150 dark:border-neutral-900;
 }
@@ -90,4 +94,8 @@
 
 .content > :not(:last-child) {
     @apply border-r-[0.125rem] border-gray-150 dark:border-neutral-900;
+}
+
+.mainText {
+    @apply text-[1.75rem];
 }

@@ -301,7 +301,7 @@ export class Campaign {
         public readonly usdTvl?: number,
         public readonly apr?: number,
         public readonly restrictions?: Restrictions,
-        public readonly accountsIcentivized?: number,
+        public readonly accountsIncentivized?: number,
     ) {
         const now = Number(Math.floor(Date.now() / 1000));
         this.status =
