@@ -20,6 +20,7 @@ import {
     useSimulateTransaction,
 } from "@aptos-labs/react";
 import { buildRewardsFunctionArgs } from "@/src/utils/aptos";
+import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
 
@@ -60,6 +61,9 @@ export function TokenClaimMvm({
         isError: simulatedClaimErrored,
     } = useSimulateTransaction({
         data: claimRewardsTxPayload,
+        transactionOptions: {
+            expireTimestamp: dayjs().add(1, "minute").unix(),
+        },
         options: {
             estimateGasUnitPrice: true,
             estimateMaxGasAmount: true,
