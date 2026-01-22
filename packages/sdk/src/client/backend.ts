@@ -1331,7 +1331,7 @@ function processCampaignsResponse(
                 backendCampaign.usdTvl,
                 backendCampaign.apr,
                 restrictions,
-                backendCampaign.accountsIcentivized,
+                backendCampaign.accountsIncentivized,
             ),
         );
     }
