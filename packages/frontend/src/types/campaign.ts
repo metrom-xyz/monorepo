@@ -381,6 +381,7 @@ export class Campaign extends SdkCampaign {
             campaign.usdTvl,
             campaign.apr,
             campaign.restrictions,
+            campaign.accountsIncentivized,
         );
     }
 

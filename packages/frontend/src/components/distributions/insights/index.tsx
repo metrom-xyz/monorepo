@@ -12,6 +12,8 @@ import { useRewardsDistributionBreakdown } from "@/src/hooks/useRewardsDistribut
 import { DistributedRewardsBreakdown } from "./distributed-rewards-breakdown";
 import classNames from "classnames";
 import { Distributables } from "./distributables";
+import { AverageIncentive } from "./average-incentive";
+import { formatAmount } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -77,11 +79,15 @@ export function Insights({ campaign }: InsightsProps) {
                     >
                         {t("incetivizedAssets")}
                     </Typography>
-                    {distributingTokens && (
+                    {distributingTokens ? (
                         <Distributables
                             chain={campaign.chainId}
                             distributables={campaign.distributables}
                         />
+                    ) : (
+                        <Typography weight="medium" className={styles.mainText}>
+                            -
+                        </Typography>
                     )}
                 </div>
                 {withKpi && (
@@ -109,7 +115,12 @@ export function Insights({ campaign }: InsightsProps) {
                                 }
                             />
                         </div>
-                        <div className={styles.box}>
+                        <div
+                            className={classNames(
+                                styles.box,
+                                styles.borderBottom,
+                            )}
+                        >
                             <Typography
                                 size="sm"
                                 weight="medium"
@@ -134,6 +145,52 @@ export function Insights({ campaign }: InsightsProps) {
                         </div>
                     </div>
                 )}
+                <div className={styles.boxes}>
+                    <div className={styles.box}>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                            uppercase
+                        >
+                            {t("addressesParticipated")}
+                        </Typography>
+                        <Typography weight="medium" className={styles.mainText}>
+                            {formatAmount({
+                                amount: campaign.accountsIncentivized,
+                            })}
+                        </Typography>
+                    </div>
+                    <div className={styles.box}>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                            uppercase
+                        >
+                            {t("averageIncentive")}
+                        </Typography>
+                        {distributingTokens ? (
+                            <AverageIncentive
+                                chain={campaign.chainId}
+                                distributables={campaign.distributables}
+                                accountsIncentivized={
+                                    campaign.accountsIncentivized
+                                }
+                                distributedUsdValue={
+                                    rewardsDistributionBreakdown?.distributedUsdValue
+                                }
+                            />
+                        ) : (
+                            <Typography
+                                weight="medium"
+                                className={styles.mainText}
+                            >
+                                -
+                            </Typography>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

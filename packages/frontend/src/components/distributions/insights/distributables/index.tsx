@@ -45,7 +45,7 @@ export function Distributables({ chain, distributables }: DistributablesProps) {
                         uppercase
                         className={styles.header}
                     >
-                        {t("assets")}
+                        {t("incetivizedAssets")}
                     </Typography>
                     <CampaignTokensDistributablesList
                         chain={chain}
