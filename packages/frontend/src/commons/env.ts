@@ -1,6 +1,8 @@
 import { Environment } from "@metrom-xyz/sdk";
 
-export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
+// export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
+// FIXME: remove this once the tests for Thala are done
+export const ENVIRONMENT = Environment.Production;
 if (
     !ENVIRONMENT ||
     !(Object.values(Environment) as string[]).includes(ENVIRONMENT)
