@@ -15,6 +15,7 @@ import {
 import { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/aptos-contracts";
+import { ThalaLogo } from "../assets/logos/dexes/thala";
 
 export const aptosDevelopmentData: ChainData = {
     active: true,
@@ -226,6 +227,18 @@ export const aptosProductionData: ChainData = {
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
                 template: "https://hyperion.xyz/pool/{pool}",
+            },
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Thala,
+            logo: ThalaLogo,
+            name: "Thala",
+            supportsFetchAllPools: true,
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template: "https://app.thala.fi/pools/{pool}",
             },
         },
     ],

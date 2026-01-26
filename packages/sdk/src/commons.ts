@@ -25,6 +25,7 @@ export enum SupportedDex {
     Lithos = "lithos",
     Quickswap = "quickswap",
     Hyperion = "hyperion",
+    Thala = "thala",
 }
 
 export enum SupportedLiquityV2 {
@@ -75,6 +76,7 @@ export enum SupportedAmm {
     Curve = "curve",
     Lithos = "lithos",
     Hyperion = "hyperion",
+    Thala = "thala",
 }
 
 export enum SupportedPointsBooster {
