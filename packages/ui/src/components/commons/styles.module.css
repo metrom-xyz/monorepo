@@ -1,11 +1,19 @@
 @reference "../../theme.css";
 
 .inputWrapper {
-    @apply w-full relative;
+    @apply w-full flex items-center relative rounded;
 }
 
-.inputWrapper:focus-within > .inputIconWrapper > svg {
+.inputWrapper:not(.error):focus-within .inputIcon {
     @apply text-primary;
+}
+
+.inputWrapper:not(.error):focus-within .label {
+    @apply text-primary;
+}
+
+.inputWrapper:not(.error):focus-within .fieldset {
+    @apply border-gray-500 dark:border-neutral-400;
 }
 
 .inputIconWrapper {
@@ -51,25 +59,104 @@
     @apply pr-9!;
 }
 
+.xs {
+    @apply text-xs;
+    --notch-size: var(--text-xs);
+    --label-translate: -90%;
+}
+
+.sm {
+    @apply text-sm;
+    --notch-size: calc(var(--text-sm) * 0.8);
+    --label-translate: -100%;
+}
+
+.base {
+    @apply text-base;
+    --notch-size: calc(var(--text-base) * 0.75);
+    --label-translate: -100%;
+}
+
+.lg {
+    @apply text-lg;
+    --notch-size: calc(var(--text-lg) * 0.75);
+    --label-translate: -105%;
+}
+
+.label {
+    @apply absolute
+        cursor-text
+        flex
+        origin-top-left
+        text-tertiary
+        font-sans
+        items-center
+        gap-1.5
+        w-fit
+        pointer-events-none
+        px-1
+        -ml-1;
+
+    transition:
+        transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        padding 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        font-size 150ms cubic-bezier(0.4, 0, 0.2, 1),
+        margin 100ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.label.xs {
+    @apply left-2;
+}
+
+.label.sm,
+.label.base,
+.label.lg {
+    @apply left-3;
+}
+
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label {
+    font-size: var(--notch-size);
+    transform: translateY(var(--label-translate));
+}
+
+.input:focus + .label.xs,
+.input:not(:placeholder-shown) + .label.xs {
+    @apply ml-0;
+    font-size: var(--notch-size);
+    transform: translateY(var(--label-translate));
+}
+
+.label.hasLeftIcon {
+    @apply pl-6;
+}
+
+.label.hasPrefixElement.xs {
+    @apply pl-[calc(var(--label-prefix-pl)-0.25rem)];
+}
+
+.label.hasPrefixElement {
+    @apply pl-[calc(var(--label-prefix-pl)-0.625rem)];
+}
+
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label {
+    @apply pl-1;
+}
+
 .input {
     @apply w-full
         rounded-lg
         font-sans
         font-normal
         outline-none
-        border-2
-        border-transparent
-        focus:border-gray-300
-        dark:focus:border-neutral-600
-        /* FIXME: this doesn't work on Firefox, find a way to fix this and enable it back */
-        focus:placeholder:text-light-text-primary
-        dark:focus:placeholder:text-dark-text-primary
-        placeholder:select-none
-        surface-secondary
         text-primary
         transition-colors
         duration-200
-        ease-in-out;
+        ease-in-out
+        bg-transparent
+        relative;
 }
 
 .input:read-only {
@@ -89,24 +176,8 @@
     @apply px-3 py-2;
 }
 
-.xs {
-    @apply text-xs;
-}
-
-.sm {
-    @apply text-sm;
-}
-
-.base {
-    @apply text-base;
-}
-
-.lg {
-    @apply text-lg;
-}
-
 .inputIcon {
-    @apply text-tertiary stroke-2;
+    @apply text-tertiary stroke-2 transition-colors duration-200 ease-in-out;
 }
 
 .inputIcon.filled {
@@ -129,9 +200,13 @@
     @apply size-5;
 }
 
-.inputError,
-.inputError > input {
+.error .fieldset {
     @apply border-error;
+}
+
+.error .label,
+.error .inputIcon {
+    @apply text-error;
 }
 
 .errorText {
@@ -142,14 +217,44 @@
     @apply animate-pulse;
 }
 
-.label {
-    @apply flex
-        items-center
-        gap-1.5
-        w-fit
-        mb-1.5;
+.fieldset {
+    @apply absolute
+        top-0
+        left-0
+        right-0
+        bottom-0
+        m-0
+        px-2
+        py-0
+        overflow-hidden
+        pointer-events-none
+        border
+        border-gray-300
+        dark:border-neutral-700
+        rounded-lg
+        transition-colors
+        duration-200;
 }
 
-.label.hide {
-    @apply hidden;
+.fieldset legend {
+    @apply float-none
+        w-fit
+        overflow-hidden
+        block
+        h-0
+        text-xs
+        invisible
+        max-w-[0.01px];
+
+    transition: max-width 10ms cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+}
+
+.fieldset legend span {
+    @apply inline-block px-1;
+    font-size: var(--notch-size);
+}
+
+.input:not(:placeholder-shown) ~ .fieldset legend,
+.input:focus ~ .fieldset legend {
+    @apply whitespace-nowrap max-w-full;
 }
