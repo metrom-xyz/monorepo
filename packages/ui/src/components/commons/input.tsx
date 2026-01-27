@@ -17,7 +17,6 @@ export interface PartialBaseInputProps<V> {
     error?: boolean;
     errorText?: string;
     size?: BaseInputSize;
-    placeholder?: string;
     loading?: boolean;
     onChange?: ChangeEventHandler<HTMLInputElement>;
     value?: V;
