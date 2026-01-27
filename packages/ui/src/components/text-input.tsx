@@ -56,6 +56,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                     value={value}
                     disabled={loading || disabled}
                     {...rest}
+                    autoComplete="off"
+                    placeholder=" "
                     className={classNames("input", styles.input)}
                 />
             </BaseInputWrapper>
