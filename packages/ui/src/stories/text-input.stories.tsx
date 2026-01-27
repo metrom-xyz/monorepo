@@ -16,7 +16,13 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof TextInput>;
 
-export const Base: Story = {};
+export const Base: Story = {
+    render: (args) => (
+        <div className="flex flex-col gap-4">
+            <TextInput {...args} />
+        </div>
+    ),
+};
 
 export const WithIcon: Story = {
     args: {

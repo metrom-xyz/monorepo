@@ -15,7 +15,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         {
             id,
             label,
-            hideLabel,
             size = "base",
             errorText,
             prefixElement,
@@ -39,7 +38,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 id={resolvedId}
                 filled={!!value}
                 label={label}
-                hideLabel={hideLabel}
                 size={size}
                 loading={loading}
                 error={error}
@@ -56,6 +54,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                     value={value}
                     disabled={loading || disabled}
                     {...rest}
+                    autoComplete="off"
+                    placeholder=" "
                     className={classNames("input", styles.input)}
                 />
             </BaseInputWrapper>
