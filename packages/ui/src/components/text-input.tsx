@@ -15,7 +15,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         {
             id,
             label,
-            hideLabel,
             size = "base",
             errorText,
             prefixElement,
@@ -39,7 +38,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 id={resolvedId}
                 filled={!!value}
                 label={label}
-                hideLabel={hideLabel}
                 size={size}
                 loading={loading}
                 error={error}
