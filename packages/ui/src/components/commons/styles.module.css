@@ -16,6 +16,10 @@
     @apply border-gray-500 dark:border-neutral-400;
 }
 
+.inputWrapper:not(.mounted) .label {
+    @apply transition-none;
+}
+
 .inputIconWrapper {
     @apply absolute
         top-0
@@ -88,6 +92,7 @@
         cursor-text
         flex
         origin-top-left
+        will-change-transform
         text-tertiary
         font-sans
         items-center
