@@ -13,7 +13,7 @@ import React, {
 import type { BaseInputProps, BaseInputSize } from "../commons/input";
 import { Popover } from "../popover";
 import { TextInput } from "../text-input";
-import { useClickAway, useDebounce } from "react-use";
+import { useDebounce } from "react-use";
 import { List, type RowComponentProps } from "react-window";
 import { Typography } from "../typography";
 import classNames from "classnames";
@@ -98,11 +98,6 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 
     const resolvedId = id || generatedId;
 
-    useClickAway(dropdownRef, () => {
-        setOpen(false);
-        setQuery("");
-    });
-
     useEffect(() => {
         setSelectedOption(options.find((option) => option.value === value));
     }, [debouncedQuery, options, value]);
@@ -136,8 +131,11 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 
     const handleInnerChange = useCallback(
         (item: O) => {
-            setOpen(false);
             onChange(item);
+            // Add small timeout before closing the popover to avoid floating label issue
+            setTimeout(() => {
+                setOpen(false);
+            }, 10);
         },
         [onChange],
     );
@@ -181,6 +179,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                     setAnchorEl(element);
                 }}
                 id={resolvedId}
+                focused={open}
                 readOnly={!search}
                 icon={open ? ChevronUp : ChevronDown}
                 value={

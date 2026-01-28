@@ -8,12 +8,14 @@ import styles from "./commons/styles.module.css";
 
 export type TextInputProps = Omit<BaseInputProps<string>, "id" | "filled"> & {
     id?: string;
+    focused?: boolean;
 };
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     function TextInput(
         {
             id,
+            focused,
             label,
             size = "base",
             errorText,
@@ -36,6 +38,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         return (
             <BaseInputWrapper
                 id={resolvedId}
+                focused={focused}
                 filled={!!value}
                 label={label}
                 size={size}
