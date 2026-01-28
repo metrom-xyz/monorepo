@@ -4,14 +4,17 @@
     @apply w-full flex items-center relative rounded;
 }
 
+.inputWrapper:not(.error).focused .inputIcon,
 .inputWrapper:not(.error):focus-within .inputIcon {
     @apply text-primary;
 }
 
+.inputWrapper:not(.error).focused .label,
 .inputWrapper:not(.error):focus-within .label {
     @apply text-primary;
 }
 
+.inputWrapper:not(.error).focused .fieldset,
 .inputWrapper:not(.error):focus-within .fieldset {
     @apply border-gray-500 dark:border-neutral-400;
 }
@@ -121,13 +124,15 @@
 }
 
 .input:focus + .label,
+.input.focused + .label,
 .input:not(:placeholder-shown) + .label {
     font-size: var(--notch-size);
     transform: translateY(var(--label-translate));
 }
 
 .input:focus + .label.xs,
-.input:not(:placeholder-shown) + .label.xs {
+.input.focused + .label.xs,
+.input:not(:placeholder-shown):not(.focused) + .label.xs {
     @apply ml-0;
     font-size: var(--notch-size);
     transform: translateY(var(--label-translate));
@@ -146,6 +151,7 @@
 }
 
 .input:focus + .label,
+.input.focused + .label,
 .input:not(:placeholder-shown) + .label {
     @apply pl-1;
 }
@@ -259,7 +265,8 @@
     font-size: var(--notch-size);
 }
 
-.input:not(:placeholder-shown) ~ .fieldset legend,
-.input:focus ~ .fieldset legend {
+.input:focus ~ .fieldset legend,
+.input.focused ~ .fieldset legend,
+.input:not(:placeholder-shown) ~ .fieldset legend {
     @apply whitespace-nowrap max-w-full;
 }
