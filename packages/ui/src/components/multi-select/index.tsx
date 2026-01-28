@@ -10,13 +10,9 @@ import React, {
     useEffect,
     useMemo,
 } from "react";
-import {
-    BaseInputWrapper,
-    type BaseInputProps,
-    type BaseInputSize,
-} from "../commons/input";
+import { type BaseInputProps, type BaseInputSize } from "../commons/input";
 import { Popover } from "../popover";
-import { useDebounce } from "react-use";
+import { useClickAway, useDebounce } from "react-use";
 import { List, type RowComponentProps } from "react-window";
 import { Typography } from "../typography";
 import classNames from "classnames";
@@ -29,9 +25,9 @@ import {
     type SelectOption,
     type ValueType,
 } from "../select";
+import { TextInput } from "../text-input";
 
 import styles from "./styles.module.css";
-import commonStyles from "../commons/styles.module.css";
 
 export type MultiSelectProps<V extends ValueType, O extends SelectOption<V>> = {
     id?: string;
@@ -69,8 +65,6 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     {
         id,
         label,
-        hideLabel,
-        placeholder,
         error,
         size = "base",
         options,
@@ -126,6 +120,10 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
             ),
         );
     }, [debouncedQuery, options]);
+
+    useClickAway(dropdownRef, () => {
+        setQuery("");
+    });
 
     useDebounce(
         () => {
@@ -198,42 +196,25 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     }, [filteredOptions.length, size]);
 
     return (
-        <div ref={dropdownRef} className={className}>
-            <BaseInputWrapper
-                data-testid={dataTestIds?.textInput}
+        <div ref={dropdownRef} className={classNames(className, styles.root)}>
+            <TextInput
+                ref={(element) => {
+                    if (ref) {
+                        if (typeof ref === "function") ref(element);
+                        else ref.current = element;
+                    }
+                    setAnchorEl(element);
+                }}
                 id={resolvedId}
+                focused={open || selectedOptions.length > 0}
                 size={size}
                 label={label}
-                hideLabel={hideLabel}
                 readOnly={!search}
                 icon={open ? ChevronUp : ChevronDown}
                 loading={loading}
-                error={error}
-                {...rest}
-                className={styles.baseInputWrapper}
-            >
-                <div
-                    ref={(element) => {
-                        if (ref) {
-                            if (typeof ref === "function") ref(element);
-                            else ref.current = element;
-                        }
-                        setAnchorEl(element);
-                    }}
-                    onClick={handleClick}
-                    className={classNames(
-                        "inputWrapper",
-                        commonStyles.input,
-                        styles.inputWrapper,
-                        {
-                            [styles[size]]: true,
-                            [styles.active]: open,
-                            [styles.error]: error,
-                        },
-                    )}
-                >
-                    {selectedOptions.length > 0 && (
-                        <>
+                prefixElement={
+                    selectedOptions.length > 0 && (
+                        <div className={styles.prefix}>
                             <Typography size={size} weight="medium">
                                 {label}
                             </Typography>
@@ -251,26 +232,17 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                                     {selectedOptions.length}
                                 </Typography>
                             </div>
-                        </>
-                    )}
-                    <input
-                        id={resolvedId}
-                        ref={inputRef}
-                        type="text"
-                        tabIndex={!search ? -1 : 0}
-                        readOnly={!search}
-                        autoFocus={open && search}
-                        placeholder={values.length === 0 ? placeholder : ""}
-                        value={open && search ? query : ""}
-                        disabled={loading || disabled}
-                        {...rest}
-                        onChange={handleChange}
-                        className={classNames("input", styles.input, {
-                            [styles.visible]: search,
-                        })}
-                    />
-                </div>
-            </BaseInputWrapper>
+                        </div>
+                    )
+                }
+                value={open && search ? query : ""}
+                disabled={loading || disabled}
+                error={error}
+                {...rest}
+                onChange={handleChange}
+                onClick={handleClick}
+                className={styles.readOnlyInput}
+            />
             <Popover
                 root={portalContainer}
                 anchor={anchorEl}
