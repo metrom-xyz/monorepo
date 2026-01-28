@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import type {
     ChangeEventHandler,
     FunctionComponent,
@@ -60,6 +60,8 @@ export function BaseInputWrapper<V>({
     children,
 }: BaseInputWrapperProps<V>): ReactElement {
     const [prefixRef, setPrefixRef] = useState<HTMLDivElement | null>(null);
+    const [inputLeftPadding, setInputLeftPadding] = useState(0);
+    const [mounted, setMounted] = useState(false);
 
     const icon = Icon && (
         <div
@@ -78,13 +80,21 @@ export function BaseInputWrapper<V>({
         </div>
     );
 
-    const inputLeftPadding = useMemo(() => {
+    useLayoutEffect(() => {
+        if (!prefixRef && !icon) return;
+
         let padding = 0;
         if (prefixRef) padding += prefixRef.offsetWidth + 12;
         if (!!icon && iconPlacement === "left") padding += 36;
 
-        return padding;
+        setInputLeftPadding(padding);
     }, [prefixRef, icon, iconPlacement]);
+
+    useLayoutEffect(() => {
+        requestAnimationFrame(() => {
+            setMounted(true);
+        });
+    }, []);
 
     const hasLeftIcon = !!icon && iconPlacement === "left";
     const hasRightIcon = !!icon && iconPlacement === "right";
@@ -101,6 +111,7 @@ export function BaseInputWrapper<V>({
             <div
                 className={classNames("inputWrapper", styles.inputWrapper, {
                     [styles.error]: !!error,
+                    [styles.mounted]: mounted,
                 })}
             >
                 {prefixElement && (
