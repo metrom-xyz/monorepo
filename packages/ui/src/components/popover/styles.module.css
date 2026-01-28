@@ -4,14 +4,14 @@
     @apply w-fit
         rounded-lg
         border-1
-        border-gray-300
-        dark:border-neutral-600
+        border-gray-500
+        dark:border-neutral-400
         p-3
         z-50;
 }
 
 .root.primary {
-    @apply bg-gray-100 dark:bg-neutral-950;
+    @apply bg-gray-150 dark:bg-neutral-900;
 }
 
 .root.secondary {

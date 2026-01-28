@@ -1,36 +1,11 @@
 @reference "../../theme.css";
 
-.baseInputWrapper :global(.inputIcon) {
-    @apply w-4;
+.readOnlyInput :global(.input) {
+    @apply cursor-pointer;
 }
 
-.inputWrapper {
-    @apply flex
-        items-center
-        cursor-pointer
-        border-2
-        border-transparent
-        transform-border
-        duration-200
-        ease-in-out;
-}
-
-.inputWrapper.error {
-    @apply border-error;
-}
-
-.inputWrapper.active {
-    @apply border-gray-300 dark:border-neutral-600;
-}
-
-.inputWrapper.xs,
-.inputWrapper.sm,
-.inputWrapper.base {
-    @apply gap-1;
-}
-
-.inputWrapper.lg {
-    @apply gap-2;
+.prefix {
+    @apply flex items-center gap-1;
 }
 
 .counter {
@@ -91,10 +66,7 @@
 }
 
 .dropdownRoot {
-    @apply z-30
-        p-0
-        border-2
-        overflow-hidden;
+    @apply p-0 overflow-hidden;
 }
 
 .emptyOptionList {
@@ -114,8 +86,10 @@
         outline-none
         box-border
         text-primary
-        surface-secondary
-        surface-secondary-hover
+        bg-gray-150
+        dark:bg-neutral-900
+        /* FIXME: on light theme the bg and hover bg are the same */
+        surface-primary-hover
         not-last:border-b
         not-last:border-b-gray-300
         not-last:dark:border-b-neutral-700
