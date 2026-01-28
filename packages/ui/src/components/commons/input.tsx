@@ -32,6 +32,7 @@ export type BaseInputProps<V> = PartialBaseInputProps<V> &
 
 export interface BaseInputWrapperProps<V> {
     id: string;
+    focused?: boolean;
     filled?: boolean;
     label?: string;
     size?: BaseInputSize;
@@ -47,6 +48,7 @@ export interface BaseInputWrapperProps<V> {
 
 export function BaseInputWrapper<V>({
     id,
+    focused,
     filled,
     label,
     size = "base",
@@ -111,6 +113,7 @@ export function BaseInputWrapper<V>({
             <div
                 className={classNames("inputWrapper", styles.inputWrapper, {
                     [styles.error]: !!error,
+                    [styles.focused]: !!focused,
                     [styles.mounted]: mounted,
                 })}
             >
@@ -128,6 +131,7 @@ export function BaseInputWrapper<V>({
                 {iconPlacement === "left" && icon}
                 {React.cloneElement(children, {
                     className: classNames(children.props.className, {
+                        [styles.focused]: !!focused,
                         [styles.inputLoading]: !!loading,
                         [styles[size]]: true,
                     }),
