@@ -80,8 +80,8 @@
 
 .base {
     @apply text-base;
-    --notch-size: calc(var(--text-base) * 0.75);
-    --label-translate: -100%;
+    --notch-size: calc(var(--text-base) * 0.8);
+    --label-translate: -90%;
 }
 
 .lg {
