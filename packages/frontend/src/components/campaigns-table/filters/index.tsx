@@ -205,12 +205,10 @@ export function Filters({
             <div className={styles.inputs}>
                 {statusOptions && (
                     <MultiSelect
-                        hideLabel
                         options={statusOptions}
                         values={filters.statuses}
                         onChange={handleStatusesChange}
                         label={t("filters.status.label")}
-                        placeholder={t("filters.status.label")}
                         renderOption={statusSelectRenderOption}
                         messages={{
                             noResults: "",
@@ -224,12 +222,10 @@ export function Filters({
                 {protocolOptions && (
                     <MultiSelect
                         search
-                        hideLabel
                         options={protocolOptions}
                         values={filters.protocols}
                         onChange={handleProtocolsChange}
                         label={t("filters.protocol.label")}
-                        placeholder={t("filters.protocol.label")}
                         renderOption={protocolSelectRenderOption}
                         messages={{
                             noResults: t("filters.noResults"),
@@ -244,12 +240,10 @@ export function Filters({
                     {chainOptions && (
                         <MultiSelect
                             search
-                            hideLabel
                             options={chainOptions}
                             values={filters.chains}
                             onChange={handleChainsChange}
                             label={t("filters.chain.label")}
-                            placeholder={t("filters.chain.label")}
                             renderOption={chainSelectRenderOption}
                             messages={{
                                 noResults: t("filters.noResults"),
