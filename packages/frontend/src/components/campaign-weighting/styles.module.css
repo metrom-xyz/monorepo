@@ -1,15 +1,19 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex gap-3 items-center;
+    @apply flex flex-col items-start gap-3;
 }
 
-.section {
-    @apply flex flex-col gap-2;
+.barWrapper {
+    @apply w-full sm:min-w-48 flex h-3 overflow-hidden rounded-full;
+}
+
+.labelsWrapper {
+    @apply flex items-center gap-2 overflow-ellipsis;
 }
 
 .bar {
-    @apply h-3 rounded-full;
+    @apply h-3;
 }
 
 .bar:first-child {

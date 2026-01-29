@@ -425,7 +425,6 @@ export function Distributions({
                                             "warningMessages.multiDistribution",
                                             { amount: aggregatedDistros },
                                         )}
-                                        {aggregatedDistros}
                                     </ErrorText>
                                 </div>
                             )}

@@ -26,11 +26,21 @@ export function CampaignWeighting({
 
     return (
         <div className={styles.root}>
-            <div className={styles.section}>
+            <div className={styles.barWrapper}>
                 <div
                     className={styles.bar}
                     style={{ width: `${token0Weight}%` }}
                 ></div>
+                <div
+                    className={styles.bar}
+                    style={{ width: `${token1Weight}%` }}
+                ></div>
+                <div
+                    className={styles.bar}
+                    style={{ width: `${liquidityWeight}%` }}
+                ></div>
+            </div>
+            <div className={styles.labelsWrapper}>
                 <div className={styles.labels}>
                     <Typography size="sm" weight="medium">
                         {formatPercentage({ percentage: token0Weight })}
@@ -39,12 +49,6 @@ export function CampaignWeighting({
                         {pool.tokens[0].symbol}
                     </Typography>
                 </div>
-            </div>
-            <div className={styles.section}>
-                <div
-                    className={styles.bar}
-                    style={{ width: `${token1Weight}%` }}
-                ></div>
                 <div className={styles.labels}>
                     <Typography size="sm" weight="medium">
                         {formatPercentage({ percentage: token1Weight })}
@@ -53,12 +57,6 @@ export function CampaignWeighting({
                         {pool.tokens[1].symbol}
                     </Typography>
                 </div>
-            </div>
-            <div className={styles.section}>
-                <div
-                    className={styles.bar}
-                    style={{ width: `${liquidityWeight}%` }}
-                ></div>
                 <div className={styles.labels}>
                     <Typography size="sm" weight="medium">
                         {formatPercentage({ percentage: liquidityWeight })}
