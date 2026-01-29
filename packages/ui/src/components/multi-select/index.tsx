@@ -51,9 +51,10 @@ export type MultiSelectProps<V extends ValueType, O extends SelectOption<V>> = {
 
 type ItemData<V extends ValueType, O extends SelectOption<V>> = Pick<
     MultiSelectProps<V, O>,
-    "options" | "values" | "renderOption"
+    "options" | "renderOption"
 > & {
     onSelect: (option: O) => void;
+    selectedValues: Set<V>;
     size?: BaseInputSize;
     className?: string;
     dataTestIds?: {
@@ -165,14 +166,19 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
             setQuery("");
             onChange(newValues);
         },
-        [values, search, onChange],
+        [values, search, options, onChange],
+    );
+
+    const selectedValues = useMemo(
+        () => new Set(values.map((v) => v.value)),
+        [values],
     );
 
     const rowProps = useMemo(() => {
         const data: ItemData<V, O> = {
             options: filteredOptions,
-            values,
             size,
+            selectedValues,
             onSelect: handleSelect,
             renderOption,
             className,
@@ -183,10 +189,10 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         return data;
     }, [
         className,
-        handleSelect,
         filteredOptions,
+        selectedValues,
+        handleSelect,
         renderOption,
-        values,
         dataTestIds,
     ]);
 
@@ -300,7 +306,7 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
     index,
     style,
     options,
-    values,
+    selectedValues,
     size = "base",
     onSelect,
     renderOption,
@@ -310,9 +316,9 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
 
     const handleClick = useCallback(() => {
         onSelect(item);
-    }, [item, onSelect]);
+    }, [item.value, onSelect]);
 
-    const selected = !!values.find(({ value }) => value === item.value);
+    const selected = selectedValues.has(item.value);
 
     return (
         <div
