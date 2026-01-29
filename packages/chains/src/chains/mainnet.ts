@@ -10,12 +10,8 @@ import {
     SupportedTurtleDeal,
     TargetType,
 } from "@metrom-xyz/sdk";
-import {
-    CurveLogo,
-    EbisuLogo,
-    TurtleDarkLogo,
-    TurtleLightLogo,
-} from "../assets";
+import { EbisuLogo, TurtleDarkLogo, TurtleLightLogo } from "../assets";
+import { CurveLogo } from "../assets/logos/dexes/curve";
 
 // This is required for the Turtle integration and for dynamic points campaigns
 export const mainnetData: ChainData = {
