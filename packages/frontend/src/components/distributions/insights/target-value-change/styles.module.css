@@ -31,3 +31,7 @@
 .negative {
     @apply text-error;
 }
+
+.loading :global(.skeleton) {
+    @apply bg-gray-200 dark:bg-neutral-700;
+}

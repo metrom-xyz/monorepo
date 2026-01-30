@@ -35,6 +35,9 @@ export function formatPercentageChange({
     percentage?: number | null;
     keepDust?: boolean;
 }): string {
+    if (percentage && percentage < 0.01 && percentage > -0.01) {
+        return percentage > 0 ? "+<0.01%" : "-<0.01%";
+    }
     if (percentage && percentage > HUMANIZE_PERCENTAGE_CUTOFF) return ">100k%";
 
     const formatted = `${numeral(percentage).format(`0,0.[${keepDust ? "000" : "00"}]`)}%`;

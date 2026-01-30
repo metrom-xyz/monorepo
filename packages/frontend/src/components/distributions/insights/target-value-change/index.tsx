@@ -1,5 +1,9 @@
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
-import { CAMPAIGN_TARGET_TO_KIND, type Campaign } from "@metrom-xyz/sdk";
+import {
+    CAMPAIGN_TARGET_TO_KIND,
+    Status,
+    type Campaign,
+} from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
@@ -77,14 +81,19 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
                 targetValuePercentageChange: 0,
             };
 
+        const initialSnapshotTimestamp = initialKpiMeasurements[0].from;
+        const latestSnapshotTimestamp =
+            campaign.status === Status.Expired
+                ? lastKpiMeasurements[lastKpiMeasurements.length - 1].to
+                : lastKpiMeasurements[lastKpiMeasurements.length - 1].from;
+
         const initialTargetUsdValue = initialKpiMeasurements[0].value;
         const latestTargetUsdValue =
             lastKpiMeasurements[lastKpiMeasurements.length - 1].value;
 
         return {
-            initialSnapshotTimestamp: initialKpiMeasurements[0].from,
-            latestSnapshotTimestamp:
-                lastKpiMeasurements[lastKpiMeasurements.length - 1].to,
+            initialSnapshotTimestamp,
+            latestSnapshotTimestamp,
             initialTargetUsdValue,
             latestTargetUsdValue,
             targetValuePercentageChange:
@@ -93,6 +102,7 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
                 100,
         };
     }, [
+        campaign.status,
         initialKpiMeasurements,
         lastKpiMeasurements,
         loadingFirstKpiMeasurements,
@@ -162,7 +172,7 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
                 </div>
             </Popover>
             {loadingFirstKpiMeasurements || loadingLastKpiMeasurements ? (
-                <Skeleton width={100} />
+                <Skeleton size="lg" width={100} className={styles.loading} />
             ) : (
                 <Typography
                     ref={setPopoverAnchor}
