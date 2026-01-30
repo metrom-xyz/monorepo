@@ -39,6 +39,7 @@ interface ChartProps {
 }
 
 const CHART_STYLES = { cursor: "pointer" };
+const CHART_MAX_BAR_SIZE = 200;
 const X_AXIS_PADDINGS = { left: 0, right: 0 };
 const Y_AXIS_DOMAIN: AxisDomain = [0, 100];
 const BAR_RADIUS: [number, number, number, number] = [6, 6, 0, 0];
@@ -110,6 +111,7 @@ const Chart = memo(function Chart({
                 accessibilityLayer={false}
                 stackOffset="expand"
                 style={CHART_STYLES}
+                maxBarSize={CHART_MAX_BAR_SIZE}
             >
                 <Tooltip
                     isAnimationActive={false}

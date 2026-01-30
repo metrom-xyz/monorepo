@@ -13,17 +13,21 @@
 }
 
 .row {
-    @apply flex items-center gap-6 justify-between bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+    @apply flex items-center gap-6 justify-between;
 }
 
 .row > div {
     @apply flex items-center gap-2;
 }
 
-.tokenWrapper {
-    @apply flex items-center gap-2;
-}
-
 .mainText {
     @apply text-[1.75rem] cursor-pointer;
+}
+
+.positive {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.negative {
+    @apply text-error;
 }

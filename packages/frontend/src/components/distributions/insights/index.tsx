@@ -1,4 +1,5 @@
 import {
+    CAMPAIGN_TARGET_TO_KIND,
     DistributablesType,
     KpiMetric,
     type Campaign,
@@ -14,6 +15,8 @@ import classNames from "classnames";
 import { Distributables } from "./distributables";
 import { AverageIncentive } from "./average-incentive";
 import { formatAmount } from "@/src/utils/format";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
+import { TargetValueChange } from "./target-value-change";
 
 import styles from "./styles.module.css";
 
@@ -24,6 +27,9 @@ interface InsightsProps {
 
 export function Insights({ campaign }: InsightsProps) {
     const t = useTranslations("campaignDistributions.insights");
+    const targetValueName = useCampaignTargetValueName({
+        kind: CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+    });
 
     const distributingTokens = campaign.isDistributing(
         DistributablesType.Tokens,
@@ -191,6 +197,19 @@ export function Insights({ campaign }: InsightsProps) {
                         )}
                     </div>
                 </div>
+                {withKpi && (
+                    <div className={styles.box}>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                            uppercase
+                        >
+                            {t("targetValueChange", { targetValueName })}
+                        </Typography>
+                        <TargetValueChange campaign={campaign} />
+                    </div>
+                )}
             </div>
         </div>
     );
