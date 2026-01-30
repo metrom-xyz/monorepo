@@ -200,7 +200,6 @@ export function AccountRow({
                                             ) : null}
                                             <Typography
                                                 size="sm"
-                                                weight="medium"
                                                 className={classNames({
                                                     [styles.trendUp]:
                                                         positiveTrend,
@@ -215,7 +214,6 @@ export function AccountRow({
                                             </Typography>
                                             <Typography
                                                 size="sm"
-                                                weight="medium"
                                                 className={classNames({
                                                     [styles.trendUp]:
                                                         positiveTrend,
