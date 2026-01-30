@@ -596,7 +596,8 @@
             "totalValue": "Total value",
             "rewardRatio": "Reward ratio",
             "dailyPer1k": "Points/$1k/day",
-            "totalPoints": "Total points"
+            "totalPoints": "Total points",
+            "tvlChange": "TVL change"
         },
         "points": {
             "title": "Points",
@@ -666,7 +667,10 @@
             "reimbursed": "Reimbursed",
             "totalUsdValue": "Total USD value",
             "addressesParticipated": "Addresses participated",
-            "averageIncentive": "Average incentive"
+            "averageIncentive": "Average incentive",
+            "targetValueChange": "{targetValueName} change",
+            "atFirstSnapshot": "First snapshot",
+            "atLatestSnapshot": "Latest snapshot"
         },
         "filters": {
             "from": "From",

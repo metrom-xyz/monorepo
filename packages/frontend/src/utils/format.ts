@@ -28,6 +28,20 @@ export function formatUsdAmount({
     );
 }
 
+export function formatPercentageChange({
+    percentage,
+    keepDust,
+}: {
+    percentage?: number | null;
+    keepDust?: boolean;
+}): string {
+    if (percentage && percentage > HUMANIZE_PERCENTAGE_CUTOFF) return ">100k%";
+
+    const formatted = `${numeral(percentage).format(`0,0.[${keepDust ? "000" : "00"}]`)}%`;
+    if (percentage && percentage > 0) return `+${formatted}`;
+    return formatted;
+}
+
 export function formatPercentage({
     percentage,
     keepDust,

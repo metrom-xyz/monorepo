@@ -8,9 +8,15 @@ import {
     formatPercentage,
     formatUsdAmount,
 } from "@/src/utils/format";
-import { DistributablesType, Status, TargetType } from "@metrom-xyz/sdk";
+import {
+    CAMPAIGN_TARGET_TO_KIND,
+    DistributablesType,
+    Status,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { CampaignRewardsPopover } from "../../campaign-rewards-popover";
 import { CampaignWeighting } from "../../campaign-weighting";
+import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +26,9 @@ interface ContentHeaderProps {
 
 export function ContentHeader({ campaign }: ContentHeaderProps) {
     const t = useTranslations("campaignDetails.content");
+    const targetValueName = useCampaignTargetValueName({
+        kind: CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+    });
 
     const { status, apr, usdTvl, specification } = campaign;
 
@@ -134,7 +143,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                     weight="medium"
                     uppercase
                 >
-                    {t("tvl")}
+                    {targetValueName}
                 </Typography>
                 <Typography
                     size="xl2"
