@@ -145,7 +145,6 @@ export function RewardPoints({
             <div className={styles.wrapper}>
                 <NumberInput
                     label={t("amount")}
-                    placeholder="0"
                     error={!!amountError}
                     value={amount?.formatted}
                     allowNegative={false}

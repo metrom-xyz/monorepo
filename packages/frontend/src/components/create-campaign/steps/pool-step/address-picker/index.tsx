@@ -93,10 +93,10 @@ export function AddressPoolPicker({
         <div className={styles.root}>
             <div className={styles.header}>
                 <TextInput
+                    label={t("label")}
                     error={!!search && !addressOrId}
                     value={search}
                     onChange={handleSearchOnChange}
-                    placeholder={t("label")}
                     icon={SearchIcon}
                     className={styles.searchInput}
                 />

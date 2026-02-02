@@ -62,7 +62,6 @@ export function WeightingInputs({
                     size="sm"
                     suffix="%"
                     allowNegative={false}
-                    placeholder="0%"
                     value={token0}
                     onValueChange={handleToken0OnChange}
                     onBlur={handleToken0OnBlur}
@@ -77,7 +76,6 @@ export function WeightingInputs({
                     size="sm"
                     suffix="%"
                     allowNegative={false}
-                    placeholder="0%"
                     value={token1}
                     onValueChange={handleToken1OnChange}
                     onBlur={handleToken1OnBlur}

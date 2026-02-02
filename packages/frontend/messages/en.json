@@ -285,8 +285,7 @@
                     "whitelist": "Allowlist",
                     "blacklist": "Blocklist",
                     "input": {
-                        "label": "Address",
-                        "placeholder": "Enter wallet address"
+                        "label": "Address"
                     },
                     "import": {
                         "label": "Import CSV",
@@ -441,12 +440,10 @@
                     "title": "Token",
                     "infoMessage": "Pick a specific fungible token to reward users who hold it. Optionally pick one or multiple staking token addresses (tokens that track a staking position for the original asset).",
                     "tokenAddressInput": {
-                        "label": "Token address",
-                        "placeholder": "Enter token address"
+                        "label": "Token address"
                     },
                     "stakingTokenAddressInput": {
-                        "label": "Staking token address",
-                        "placeholder": "Enter staking token address"
+                        "label": "Staking token address"
                     },
                     "errors": {
                         "notAnAddress": "Not a valid address",
@@ -699,7 +696,6 @@
                 "title": "Detailed Distribution data",
                 "subtitle": "Select a date range to view detailed distribution metrics"
             },
-            "selectDateAndTime": "Select date & time",
             "search": "Search",
             "rangeLimit": "The date range is limited to <bold>7 days</bold>",
             "clear": "Clear",

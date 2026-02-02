@@ -117,7 +117,6 @@ const Slippage = ({
                             value={customValue}
                             suffix="%"
                             onChange={(e) => handleCustomInput(e.target.value)}
-                            placeholder="Custom"
                         />
                         {numericCustomValue && numericCustomValue > 1 && (
                             <Typography

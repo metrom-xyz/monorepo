@@ -257,7 +257,6 @@ export function RestrictionsStep({
                             />
                             <TextInput
                                 label={t("input.label")}
-                                placeholder={t("input.placeholder")}
                                 value={address}
                                 onChange={handleAddressOnChange}
                                 className={styles.textInput}

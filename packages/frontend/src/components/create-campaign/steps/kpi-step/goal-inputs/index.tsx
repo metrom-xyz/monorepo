@@ -121,7 +121,6 @@ export function GoalInputs({
             <div className={styles.boundInputs}>
                 <NumberInput
                     label={t("rangedTarget.lowerBound", { targetValueName })}
-                    placeholder="$0"
                     prefix="$"
                     error={!!error}
                     allowNegative={false}
@@ -130,7 +129,6 @@ export function GoalInputs({
                 />
                 <NumberInput
                     label={t("rangedTarget.upperBound", { targetValueName })}
-                    placeholder="$0"
                     prefix="$"
                     error={!!error}
                     allowNegative={false}
