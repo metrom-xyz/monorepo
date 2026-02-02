@@ -10,7 +10,7 @@ const meta: Meta = {
         layout: "centered",
     },
     tags: ["autodocs"],
-    args: { label: "Number input", placeholder: "Placeholder" },
+    args: { label: "Number input" },
 } satisfies Meta<typeof NumberInput>;
 
 export default meta;

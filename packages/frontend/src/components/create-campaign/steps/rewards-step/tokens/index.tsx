@@ -238,7 +238,6 @@ export function RewardTokens({
                 <div className={styles.horizontalDivider} />
                 <div className={styles.rewardPickerWrapper}>
                     <NumberInput
-                        placeholder="0"
                         label={t("enterReward")}
                         value={amount?.formattedValue}
                         allowNegative={false}

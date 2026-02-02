@@ -367,8 +367,8 @@ export function Distributions({
                             </InfoTooltip>
                         </div>
                         <TextInput
+                            label={t("filterAddress")}
                             icon={SearchIcon}
-                            placeholder={t("filterAddress")}
                             value={addressFilter}
                             disabled={distros.length === 0}
                             onChange={handleAddressFilterOnChange}

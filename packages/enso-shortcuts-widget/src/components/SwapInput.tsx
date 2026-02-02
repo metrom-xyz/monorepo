@@ -107,7 +107,6 @@ const SwapInput = ({
                             type="number"
                             size="lg"
                             disabled={disabled}
-                            placeholder="0.0"
                             value={tempInputValue}
                             onChange={handleInputOnChange}
                             className="w-full max-w-44 [&>div>input]:h-16 [&>div>input]:text-right [&>div>input]:text-[1.75rem] [&>div]:bg-transparent! [&>div>input]:bg-transparent!"

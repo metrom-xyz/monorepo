@@ -14,7 +14,7 @@ export { type NumberFormatValues } from "react-number-format";
 
 export type NumberInputProps = Omit<
     NumericFormatProps<InputAttributes> & Omit<BaseInputProps<string>, "value">,
-    "size" | "id" | "className"
+    "size" | "id" | "placeholder" | "className"
 > & {
     id?: string;
     size?: BaseInputProps<string>["size"];

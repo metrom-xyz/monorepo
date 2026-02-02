@@ -164,7 +164,6 @@ export function Filters({
                         <TextInput
                             size="lg"
                             label={t("from")}
-                            placeholder={t("selectDateAndTime")}
                             loading={loading}
                             ref={setFromAnchor}
                             value={from ? formatDateTime(from) : ""}
@@ -177,7 +176,6 @@ export function Filters({
                         <TextInput
                             size="lg"
                             label={t("to")}
-                            placeholder={t("selectDateAndTime")}
                             disabled={!from}
                             loading={loading}
                             ref={setToAnchor}
