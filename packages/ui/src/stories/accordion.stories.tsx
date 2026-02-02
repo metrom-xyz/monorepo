@@ -27,7 +27,7 @@ export const Base: Story = {
                     <Typography uppercase>
                         My custom accordion content
                     </Typography>
-                    <TextInput label="Text input" placeholder="Placeholder" />
+                    <TextInput label="Text input" />
                 </div>
             </Accordion>
         );

@@ -376,7 +376,6 @@ const TokenSelector = ({
                 <TextInput
                     autoFocus
                     size="sm"
-                    placeholder="Search by name or paste address"
                     value={searchText}
                     onChange={(e) =>
                         obligatedToken || setSearchText(e.target.value)

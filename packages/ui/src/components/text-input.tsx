@@ -6,7 +6,10 @@ import classNames from "classnames";
 
 import styles from "./commons/styles.module.css";
 
-export type TextInputProps = Omit<BaseInputProps<string>, "id" | "filled"> & {
+export type TextInputProps = Omit<
+    BaseInputProps<string>,
+    "id" | "filled" | "placeholder"
+> & {
     id?: string;
     focused?: boolean;
 };

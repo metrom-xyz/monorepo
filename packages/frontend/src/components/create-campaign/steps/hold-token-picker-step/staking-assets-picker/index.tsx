@@ -125,7 +125,12 @@ export function StakingAssetsPicker({
                     className={styles.root}
                 >
                     <div className={styles.inputWrapper}>
-                        <Typography weight="medium" size="xs" uppercase variant="tertiary">
+                        <Typography
+                            weight="medium"
+                            size="xs"
+                            uppercase
+                            variant="tertiary"
+                        >
                             {t("stakingTokenAddressInput.label")}
                         </Typography>
                         {!assetInfo && loadingAssetInfo ? (
@@ -140,9 +145,6 @@ export function StakingAssetsPicker({
                         ) : (
                             <TextInput
                                 autoFocus
-                                placeholder={t(
-                                    "stakingTokenAddressInput.placeholder",
-                                )}
                                 value={assetAddress}
                                 disabled={disabled}
                                 error={!!error}

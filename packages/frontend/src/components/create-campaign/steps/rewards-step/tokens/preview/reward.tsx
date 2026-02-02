@@ -118,7 +118,6 @@ export function Reward({
             <div className={styles.rewardPreviewWrapper}>
                 <div>
                     <NumberInput
-                        placeholder="0"
                         value={rewardRawValue?.formattedValue}
                         allowNegative={false}
                         onValueChange={setRewardRawValue}
