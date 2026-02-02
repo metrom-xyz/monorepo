@@ -46,7 +46,7 @@ export const Base: Story = {
                     anchor={wrapper}
                     open={args.open || open}
                 >
-                    <div className="flex flex-col gap-4 p-4">
+                    <div className="flex flex-col gap-4">
                         <Typography uppercase>
                             My custom popover content
                         </Typography>
