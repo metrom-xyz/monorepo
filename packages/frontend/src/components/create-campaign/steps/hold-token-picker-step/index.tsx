@@ -157,7 +157,6 @@ export function HoldFungibleAssetPickerStep({
                         ) : (
                             <TextInput
                                 autoFocus
-                                placeholder={t("tokenAddressInput.placeholder")}
                                 value={assetAddress}
                                 error={!!assetError}
                                 onChange={handleAssetOnChange}

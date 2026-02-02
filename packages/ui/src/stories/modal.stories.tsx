@@ -43,10 +43,7 @@ export const Base: Story = {
                             <Typography uppercase>
                                 My custom modal content
                             </Typography>
-                            <TextInput
-                                label="Text input"
-                                placeholder="Placeholder"
-                            />
+                            <TextInput label="Text input" />
                         </div>
                     </Card>
                 </Modal>
