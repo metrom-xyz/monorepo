@@ -14,7 +14,7 @@ export { type NumberFormatValues } from "react-number-format";
 
 export type NumberInputProps = Omit<
     NumericFormatProps<InputAttributes> & Omit<BaseInputProps<string>, "value">,
-    "size" | "id" | "className"
+    "size" | "id" | "placeholder" | "className"
 > & {
     id?: string;
     size?: BaseInputProps<string>["size"];
@@ -29,7 +29,6 @@ export const NumberInput: React.ForwardRefExoticComponent<
         size = "base",
         value,
         label,
-        placeholder,
         errorText,
         prefixElement,
         icon,
@@ -68,9 +67,10 @@ export const NumberInput: React.ForwardRefExoticComponent<
                 decimalSeparator="."
                 value={value}
                 disabled={disabled || loading}
-                placeholder={placeholder}
                 getInputRef={ref}
                 {...rest}
+                autoComplete="off"
+                placeholder=" "
                 className={classNames("input", styles.input)}
             />
         </BaseInputWrapper>

@@ -99,7 +99,6 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     const resolvedId = id || generatedId;
 
     useClickAway(dropdownRef, () => {
-        setOpen(false);
         setQuery("");
     });
 
@@ -136,8 +135,12 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 
     const handleInnerChange = useCallback(
         (item: O) => {
-            setOpen(false);
             onChange(item);
+            // Add small timeout before closing the popover to avoid floating label issue
+            setTimeout(() => {
+                setQuery("");
+                setOpen(false);
+            }, 10);
         },
         [onChange],
     );
@@ -181,6 +184,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                     setAnchorEl(element);
                 }}
                 id={resolvedId}
+                focused={open}
                 readOnly={!search}
                 icon={open ? ChevronUp : ChevronDown}
                 value={
@@ -194,9 +198,9 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 loading={loading}
                 size={size}
                 {...rest}
-                className={styles.input}
                 onChange={handleChange}
                 onClick={handleClick}
+                className={styles.input}
             />
             <Popover
                 anchor={anchorEl}
