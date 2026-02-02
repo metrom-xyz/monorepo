@@ -11,7 +11,6 @@ const meta: Meta = {
     tags: ["autodocs"],
     args: {
         label: "Step number input",
-        placeholder: "Placeholder",
         onChange: () => {},
     },
     argTypes: {
@@ -33,20 +32,19 @@ export const Base: Story = {
         }
 
         function handleOnIncrement() {
-            if (!value) return;
-            setValue(value + 3);
+            if (!value) setValue(3);
+            else setValue(value + 3);
         }
 
         function handleOnDecrement() {
-            if (!value) return;
-            setValue(value - 3);
+            if (!value) setValue(-3);
+            else setValue(value - 3);
         }
 
         return (
             <StepNumberInput
                 {...args}
                 prefix="$"
-                placeholder="$0"
                 value={value}
                 onChange={handleOnChange}
                 onIncrement={handleOnIncrement}
