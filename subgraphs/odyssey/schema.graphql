@@ -1,0 +1,19 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: Int!
+}
+
+type Position @entity(immutable: false) {
+    id: Bytes!
+    owner: Bytes!
+    strategyId: BigInt!
+    asset: Token
+    depositToken: Bytes!
+    totalDeposited: BigInt!
+    borrowToken: Bytes!
+    totalBorrowed: BigInt!
+
+    _updatedAtBlock: BigInt!
+}
