@@ -6,7 +6,7 @@ import { SagaLogo, UniswapLogo } from "../assets";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const sagaData: ChainData = {
-    active: true,
+    active: false,
     id: saga.id,
     type: ChainType.Evm,
     name: "Saga EVM",
