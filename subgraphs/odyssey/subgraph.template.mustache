@@ -1,0 +1,49 @@
+specVersion: 1.3.0
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PositionRegistry
+    network: {{network}}
+    source:
+      abi: PositionRegistry
+      address: "{{positionRegistryAddress}}"
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/position-registry.ts
+      entities:
+        - PositionRegistry
+        - Position
+        - SmartAccount
+      abis:
+        - name: PositionRegistry
+          file: ./abis/PositionRegistry.json
+      eventHandlers:
+        - event: PositionDeployed(indexed address,indexed uint256,indexed address)
+          handler: handlePositionDeployed
+templates:
+  - kind: ethereum/contract
+    name: Position
+    network: {{network}}
+    source:
+      abi: Position
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/position.ts
+      entities:
+        - Position
+      abis:
+        - name: Position
+          file: ./abis/Position.json
+      eventHandlers:
+        - event: PositionOpened(indexed address,uint256)
+          handler: handlePositionOpened
+        - event: FeatureCalled(uint256,uint256)
+          handler: handleFeatureCalled
+        - event: PositionClosed(indexed address,uint256)
+          handler: handlePositionClosed
