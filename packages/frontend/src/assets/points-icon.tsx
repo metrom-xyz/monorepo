@@ -3,38 +3,38 @@ import type { SVGIcon } from "../types/common";
 export function PointsIcon(props: SVGIcon) {
     return (
         <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            width="49"
+            height="49"
+            viewBox="0 0 49 49"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
             <path
-                d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                d="M17.5375 47.4375H31.3375C42.8375 47.4375 47.4375 42.8375 47.4375 31.3375V17.5375C47.4375 6.0375 42.8375 1.4375 31.3375 1.4375H17.5375C6.0375 1.4375 1.4375 6.0375 1.4375 17.5375V31.3375C1.4375 42.8375 6.0375 47.4375 17.5375 47.4375Z"
                 stroke="currentColor"
-                strokeWidth="1.25"
+                strokeWidth="2.875"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
-                d="M6.70001 9.26001L12 12.33L17.26 9.28001"
+                d="M12.25 18.1355L24.44 25.1965L36.538 18.1815"
                 stroke="currentColor"
-                strokeWidth="1.25"
+                strokeWidth="2.875"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
-                d="M12 17.77V12.32"
+                d="M24.4414 37.7085V25.1735"
                 stroke="currentColor"
-                strokeWidth="1.25"
+                strokeWidth="2.875"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
-                d="M10.76 6.28998L7.56 8.06998C6.84 8.46998 6.23999 9.47998 6.23999 10.31V13.7C6.23999 14.53 6.83 15.54 7.56 15.94L10.76 17.72C11.44 18.1 12.56 18.1 13.25 17.72L16.45 15.94C17.17 15.54 17.77 14.53 17.77 13.7V10.3C17.77 9.46998 17.18 8.45998 16.45 8.05998L13.25 6.27998C12.56 5.89998 11.44 5.89998 10.76 6.28998Z"
+                d="M21.5835 11.3045L14.2235 15.3985C12.5675 16.3185 11.1875 18.6415 11.1875 20.5505V28.3475C11.1875 30.2565 12.5445 32.5795 14.2235 33.4995L21.5835 37.5935C23.1475 38.4675 25.7235 38.4675 27.3105 37.5935L34.6706 33.4995C36.3266 32.5795 37.7065 30.2565 37.7065 28.3475V20.5275C37.7065 18.6185 36.3496 16.2955 34.6706 15.3755L27.3105 11.2815C25.7235 10.4075 23.1475 10.4075 21.5835 11.3045Z"
                 stroke="currentColor"
-                strokeWidth="1.25"
+                strokeWidth="2.875"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
