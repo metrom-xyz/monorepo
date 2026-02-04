@@ -1,4 +1,4 @@
-import { CreateCampaignForm } from "@/src/components/create-campaign/form";
+import { PickDistributablesType } from "@/src/components/create-campaign/pick-distributables-type";
 import { routing, type Locale } from "@/src/i18n/routing";
 import {
     BaseCampaignType,
@@ -8,29 +8,29 @@ import {
 import { setRequestLocale } from "next-intl/server";
 
 interface Params {
-    type: CampaignType;
+    campaignType: CampaignType;
     locale: Locale;
 }
 
-interface CampaignFormPageProps {
+interface PickCampaignDistributablesTypePageProps {
     params: Promise<Params>;
 }
 
 export const metadata = {
-    title: "Create new campaign",
+    title: "Pick campaign distributables type",
     openGraph: {
         images: ["/images/opengraph-image.png"],
     },
 };
 
-export default async function CampaignFormPage({
+export default async function PickCampaignDistributablesTypePagee({
     params,
-}: CampaignFormPageProps) {
-    const { type, locale } = await params;
+}: PickCampaignDistributablesTypePageProps) {
+    const { campaignType, locale } = await params;
 
     setRequestLocale(locale);
 
-    return <CreateCampaignForm type={type} />;
+    return <PickDistributablesType campaignType={campaignType} />;
 }
 
 export async function generateStaticParams() {
@@ -40,9 +40,9 @@ export async function generateStaticParams() {
     ];
 
     return routing.locales.flatMap((locale) =>
-        types.map((type) => ({
+        types.map((campaignType) => ({
             locale,
-            type,
+            campaignType,
         })),
     );
 }
