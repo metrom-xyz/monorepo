@@ -164,6 +164,11 @@ export const aptosProductionData: ChainData = {
         {
             active: true,
             partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: false,
             type: BaseCampaignType.AaveV3,
         },
         {

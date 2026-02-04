@@ -1,0 +1,33 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex flex-col gap-7 px-4 sm:px-0 w-full max-w-screen-xl;
+}
+
+.navigation {
+    @apply h-9 flex gap-5 items-center;
+}
+
+.button {
+    @apply h-9;
+}
+
+.campaignTypeChip {
+    @apply w-fit flex items-center rounded-lg border border-gray-300 dark:border-neutral-700;
+}
+
+.campaignTypeChip > p:first-child {
+    @apply border-r border-gray-300 dark:border-neutral-700;
+}
+
+.campaignTypeChip > div {
+    @apply flex items-center gap-1;
+}
+
+.campaignTypeIcon > svg {
+    @apply size-3.5;
+}
+
+.padded {
+    @apply p-2;
+}
