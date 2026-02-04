@@ -4,6 +4,7 @@ import { type CampaignPreviewPayload } from "@/src/types/campaign";
 import {
     BaseCampaignType,
     CampaignKind,
+    DistributablesType,
     PartnerCampaignType,
     type CampaignType,
 } from "@metrom-xyz/sdk";
@@ -32,11 +33,13 @@ enum View {
 }
 
 export interface CreateCampaignFormProps<T> {
-    type: T;
+    campaignType: T;
+    distributablesType: DistributablesType;
 }
 
 export function CreateCampaignForm<T extends CampaignType>({
-    type,
+    campaignType,
+    distributablesType,
 }: CreateCampaignFormProps<T>) {
     const { chainId: connectedChainId, connected } = useAccount();
     const { id: selectedChain } = useChainWithType();
@@ -47,7 +50,7 @@ export function CreateCampaignForm<T extends CampaignType>({
     });
     const formsForType = useForms({
         chainId: selectedChain,
-        type,
+        type: campaignType,
     });
 
     const [view, setView] = useState(View.Form);
@@ -76,43 +79,44 @@ export function CreateCampaignForm<T extends CampaignType>({
     }, [activeChains, connectedChainId, connected, selectedChain]);
 
     if (formsForType.length === 0)
-        return <FormNotSupported type={type} chainId={selectedChain} />;
+        return <FormNotSupported type={campaignType} chainId={selectedChain} />;
 
     return (
         <div className={styles.root}>
-            {forms.length > 1 && <FormHeader type={type} />}
-            {type === BaseCampaignType.AmmPoolLiquidity && (
+            {forms.length > 1 && <FormHeader type={campaignType} />}
+            {campaignType === BaseCampaignType.AmmPoolLiquidity && (
                 <AmmPoolLiquidityForm
                     kind={CampaignKind.AmmPoolLiquidity}
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
             )}
-            {type === BaseCampaignType.LiquityV2 && (
+            {campaignType === BaseCampaignType.LiquityV2 && (
                 <LiquityV2ForksForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
             )}
-            {type === BaseCampaignType.AaveV3 && (
+            {campaignType === BaseCampaignType.AaveV3 && (
                 <AaveV3Form
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
             )}
-            {type === BaseCampaignType.HoldFungibleAsset && (
+            {campaignType === BaseCampaignType.HoldFungibleAsset && (
                 <HoldFungibleAssetForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
             )}
-            {type === PartnerCampaignType.AaveV3BridgeAndSupply && (
+            {campaignType === PartnerCampaignType.AaveV3BridgeAndSupply && (
                 <AaveV3BridgeAndSupplyForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
             )}
-            {type === PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity && (
+            {campaignType ===
+                PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity && (
                 <AmmPoolLiquidityForm
                     kind={CampaignKind.JumperWhitelistedAmmPoolLiquidity}
                     unsupportedChain={unsupportedChain}
