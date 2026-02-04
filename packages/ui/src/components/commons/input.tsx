@@ -40,6 +40,7 @@ export interface BaseInputWrapperProps<V> {
     error?: boolean;
     errorText?: string;
     prefixElement?: ReactNode;
+    endAdornment?: ReactNode;
     icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>;
     iconPlacement?: "left" | "right";
     className?: string;
@@ -56,6 +57,7 @@ export function BaseInputWrapper<V>({
     error,
     errorText,
     prefixElement,
+    endAdornment,
     icon: Icon,
     iconPlacement = "right",
     className,
@@ -169,7 +171,15 @@ export function BaseInputWrapper<V>({
                     </label>
                 )}
                 {iconPlacement === "right" && icon}
-
+                {endAdornment && (
+                    <div
+                        className={classNames(styles.adornment, {
+                            [styles[size]]: true,
+                        })}
+                    >
+                        {endAdornment}
+                    </div>
+                )}
                 <fieldset aria-hidden="true" className={styles.fieldset}>
                     <legend>
                         <span className={classNames({ [styles[size]]: true })}>
