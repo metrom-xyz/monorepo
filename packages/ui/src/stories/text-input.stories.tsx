@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TextInput } from "../components/text-input";
 import { SettingsIcon } from "../assets/settings";
 import { Typography } from "../components/typography";
+import { Chip } from "../components/chip";
 
 const meta: Meta = {
     title: "Input/Text",
@@ -34,6 +35,16 @@ export const WithIcon: Story = {
 export const WithPrefixElement: Story = {
     args: {
         prefixElement: <Typography>Prefix</Typography>,
+    },
+};
+
+export const WithEndAdornment: Story = {
+    args: {
+        endAdornment: (
+            <Chip onClick={() => {}} size="xs">
+                Chip
+            </Chip>
+        ),
     },
 };
 
