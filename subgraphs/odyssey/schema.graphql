@@ -5,14 +5,20 @@ type Token @entity(immutable: true) {
     decimals: Int!
 }
 
+type Strategy @entity(immutable: false) {
+    id: Bytes!
+    implementation: Bytes!
+    active: Boolean!
+}
+
 type Position @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     strategyId: BigInt!
     asset: Token
-    depositToken: Bytes!
+    totalAllocated: BigInt!
     totalDeposited: BigInt!
-    borrowToken: Bytes!
+    borrowToken: Token
     totalBorrowed: BigInt!
 
     _updatedAtBlock: BigInt!

@@ -8,22 +8,27 @@ dataSources:
     source:
       abi: PositionRegistry
       address: "{{positionRegistryAddress}}"
-      startBlock: {{startBlock}}
+      startBlock: {{positionRegistryStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       file: ./src/mappings/position-registry.ts
       entities:
-        - PositionRegistry
         - Position
-        - SmartAccount
+        - Strategy
       abis:
         - name: PositionRegistry
           file: ./abis/PositionRegistry.json
       eventHandlers:
+        - event: StrategyAdded(indexed uint256,indexed address,indexed address)
+          handler: handleStrategyAdded
         - event: PositionDeployed(indexed address,indexed uint256,indexed address)
           handler: handlePositionDeployed
+        - event: IsActiveUpdated(indexed uint256,bool)
+          handler: handleIsActiveUpdated
+        - event: ImplementationUpdated(indexed uint256,address)
+          handler: handleImplementationUpdated
 templates:
   - kind: ethereum/contract
     name: Position
@@ -40,6 +45,12 @@ templates:
       abis:
         - name: Position
           file: ./abis/Position.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
       eventHandlers:
         - event: PositionOpened(indexed address,uint256)
           handler: handlePositionOpened
