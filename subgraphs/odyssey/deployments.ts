@@ -16,4 +16,10 @@ export const DEPLOYMENTS: {
             startBlock: 25696510,
         },
     },
+    mainnet: {
+        PositionRegistry: {
+            address: "0xeE156D8ea7b96a5524CcC3CF9283ab85E80E9534",
+            startBlock: 21732500,
+        },
+    },
 };

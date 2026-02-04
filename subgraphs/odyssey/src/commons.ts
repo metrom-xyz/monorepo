@@ -1,5 +1,5 @@
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { Position, Token } from "../generated/schema";
+import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { Position, Strategy, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
@@ -82,11 +82,28 @@ export function updatePositionDataAndSave(
     if (position._updatedAtBlock === block.number) return;
 
     const contract = PositionContract.bind(changetype<Address>(position.id));
-    position.asset = contract.asset();
-    position.depositToken = contract.depositToken();
+
+    const borrowTokenAddress = contract.borrowToken();
+    if (borrowTokenAddress !== ADDRESS_ZERO)
+        if (getOrCreateToken(borrowTokenAddress) === null)
+            throw new Error(
+                `Could not resolve ERC20 token at address ${borrowTokenAddress.toHex()}`,
+            );
+
     position.totalDeposited = contract.depositedAmount();
-    position.borrowToken = contract.borrowToken();
+    position.borrowToken = borrowTokenAddress;
     position.totalBorrowed = contract.borrowedAmount();
     position._updatedAtBlock = block.number;
     position.save();
+}
+
+export function getStrategyId(id: BigInt): Bytes {
+    return Bytes.fromI32(id.toI32());
+}
+
+export function getStrategyOrThrow(id: BigInt): Strategy {
+    const strategy = Strategy.load(getStrategyId(id));
+    if (strategy === null)
+        throw new Error(`Could not find strategy with id ${id.toString()}`);
+    return strategy;
 }
