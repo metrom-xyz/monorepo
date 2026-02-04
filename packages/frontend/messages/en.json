@@ -137,11 +137,14 @@
     },
     "newCampaign": {
         "pickType": {
-            "title": "Pick a campaign type",
-            "description": "Run efficient incentive strategies for your liquidity providers. Reduce leakage and maximize returns by using Metrom.",
+            "title": "Choose the campaign type you want to use",
+            "description": "Select the activity to incentivize, or use a saved preset.",
+            "tags": {
+                "popular": "Popular"
+            },
             "amm": {
                 "title": "AMM",
-                "description": "Incentivize users that provide liquidity to various types of AMMs (both full range and concentrated liquidity)."
+                "description": "Incentivize users for providing liquidity on AMMs, including full-range and concentrated pools."
             },
             "liquityV2": {
                 "title": "LIQUITY V2",
@@ -166,6 +169,7 @@
         },
         "partnerAction": {
             "pickAction": {
+                "back": "Back",
                 "title": "Pick an action type",
                 "description": "Pick an incentivization strategy from a set of custom built actions.",
                 "list": {
@@ -189,6 +193,22 @@
             "partnerActions": "Partner action",
             "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
             "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
+        },
+        "pickDistributablesType": {
+            "navigation": {
+                "back": "Back",
+                "campaignType": "Campaign type"
+            },
+            "title": "Choose how to reward users",
+            "description": "Choose between distributing tokens directly or using a points system.",
+            "rewards": {
+                "title": "Token rewards",
+                "description": "Reward participation with tokens."
+            },
+            "points": {
+                "title": "Points system",
+                "description": "Reward participation with points."
+            }
         },
         "form": {
             "base": {

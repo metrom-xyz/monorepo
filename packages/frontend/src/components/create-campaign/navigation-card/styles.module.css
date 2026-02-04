@@ -1,0 +1,52 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full sm:w-fit;
+}
+
+.card {
+    @apply relative
+        overflow-hidden
+        h-full
+        max-w-[26rem]
+        cursor-pointer
+        rounded-xl
+        p-5
+        border
+        bg-transparent
+        border-gray-300
+        dark:border-neutral-700
+        hover:bg-gray-150
+        dark:hover:bg-neutral-800
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.body {
+    @apply h-full flex flex-col sm:flex-row gap-2 sm:gap-4 items-center;
+}
+
+.iconWrapper {
+    @apply flex items-center justify-center w-10 h-10;
+}
+
+.rightContent {
+    @apply flex flex-col gap-1 items-center sm:items-start;
+}
+
+.tags {
+    @apply absolute top-0 right-0 w-fit flex;
+}
+
+.tag {
+    @apply py-1 px-3 backdrop-blur-sm bg-gray-300 dark:bg-neutral-700;
+}
+
+.tag:first-child {
+    @apply rounded-bl-xl;
+}
+
+.loading {
+    @apply w-full h-[5.375rem] surface-primary animate-pulse;
+}

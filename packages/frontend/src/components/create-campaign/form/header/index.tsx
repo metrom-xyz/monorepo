@@ -11,7 +11,7 @@ interface FormHeaderProps {
     type: CampaignType;
 }
 
-const CAMPAIGN_TYPE_TITLE: Record<
+export const CAMPAIGN_TYPE_TITLE: Record<
     CampaignType,
     TranslationsKeys<"newCampaign.type">
 > = {
@@ -29,13 +29,9 @@ export function FormHeader({ type }: FormHeaderProps) {
     const t = useTranslations("newCampaign.type");
     const router = useRouter();
 
-    function handleBackOnClick() {
-        router.push("/campaigns/create");
-    }
-
     return (
         <div className={styles.root}>
-            <div onClick={handleBackOnClick} className={styles.back}>
+            <div onClick={router.back} className={styles.back}>
                 <ChevronLeftIcon />
             </div>
             <Typography
