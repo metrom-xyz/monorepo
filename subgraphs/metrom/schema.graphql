@@ -338,6 +338,9 @@ type RewardsCampaign @entity(immutable: false) {
     root: Bytes!
 
     rewards: [Reward!]! @derivedFrom(field: "campaign")
+    snapshots: [CampaignSnapshot!]! @derivedFrom(field: "campaign")
+    participants: [CampaignParticipant!]! @derivedFrom(field: "campaign")
+    dailyMetrics: [CampaignDailyMetrics!]! @derivedFrom(field: "campaign")
 
     createEvent: CreateRewardsCampaignEvent! @derivedFrom(field: "campaign")
     transferOwnershipEvents: [TransferRewardsCampaignOwnershipEvent!]!
@@ -397,4 +400,40 @@ type PointsCampaign @entity(immutable: false) {
         @derivedFrom(field: "campaign")
     acceptOwnershipEvents: [AcceptPointsCampaignOwnershipEvent!]!
         @derivedFrom(field: "campaign")
+}
+
+type CampaignSnapshot @entity(immutable: true) {
+    id: Bytes!
+    campaign: RewardsCampaign!
+    timestamp: BigInt!
+    blockNumber: BigInt!
+    totalRewardsDistributed: BigInt!
+    totalClaimed: BigInt!
+    totalRecovered: BigInt!
+    uniqueClaimers: BigInt!
+    claimCount: BigInt!
+    activeParticipants: BigInt!
+}
+
+type CampaignParticipant @entity(immutable: false) {
+    id: Bytes!
+    campaign: RewardsCampaign!
+    participant: Bytes!
+    firstClaimTimestamp: BigInt!
+    lastClaimTimestamp: BigInt!
+    totalClaimed: BigInt!
+    claimCount: BigInt!
+}
+
+type CampaignDailyMetrics @entity(immutable: false) {
+    id: Bytes!
+    campaign: RewardsCampaign!
+    day: BigInt!
+    claimsToday: BigInt!
+    claimedToday: BigInt!
+    uniqueClaimersToday: BigInt!
+    newParticipants: BigInt!
+    totalClaimsToDate: BigInt!
+    totalClaimedToDate: BigInt!
+    totalParticipantsToDate: BigInt!
 }
