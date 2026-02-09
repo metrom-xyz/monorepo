@@ -1,13 +1,14 @@
 @reference "../../theme.css";
 
 .root {
-    @apply relative w-auto flex gap-[1px];
+    @apply relative w-auto flex gap-px;
 }
 
 .root > * {
     @apply absolute;
 }
 
+.root.xxs > :not(:first-child),
 .root.xs > :not(:first-child) {
     @apply -ml-2;
 }
