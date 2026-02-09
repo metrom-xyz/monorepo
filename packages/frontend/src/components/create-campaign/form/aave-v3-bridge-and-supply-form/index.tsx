@@ -1,13 +1,9 @@
 import {
-    type AaveV3CampaignPayload,
-    type AaveV3CampaignPayloadPart,
-    AaveV3CampaignPreviewPayload,
     type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
     type CampaignPreviewFixedDistribution,
     type CampaignPreviewKpiDistribution,
-    EmptyTargetCampaignPreviewPayload,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -28,6 +24,12 @@ import {
     validateDistributables,
     validateDistributions,
 } from "@/src/utils/creation-form";
+import {
+    AaveV3CampaignPreviewPayload,
+    type AaveV3CampaignPayload,
+    type AaveV3CampaignPayloadPart,
+} from "@/src/types/campaign/aave-v3-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 
 import styles from "./styles.module.css";
 
@@ -68,6 +70,7 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
@@ -85,6 +88,7 @@ function validatePayload(
         undefined,
         boostingFactor,
         undefined,
+        chainId,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,

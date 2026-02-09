@@ -1,7 +1,7 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { type EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign";
 import { getCampaignPreviewName } from "@/src/utils/campaign";
+import type { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 
 interface EmptyProps {
     payload: EmptyTargetCampaignPreviewPayload;

@@ -19,7 +19,7 @@ import { StepContent } from "@/src/components/step/content";
 import {
     type AaveV3CampaignPayloadPart,
     type CampaignPayloadErrors,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { usePrevious } from "react-use";

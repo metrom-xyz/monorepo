@@ -1,0 +1,17 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full sm:w-2/4;
+}
+
+.option {
+    @apply w-full flex justify-between gap-1.5 items-center;
+}
+
+.pool {
+    @apply w-full flex items-center gap-3;
+}
+
+.icon {
+    @apply size-5 rounded-full;
+}

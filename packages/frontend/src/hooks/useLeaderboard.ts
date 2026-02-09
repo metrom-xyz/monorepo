@@ -3,7 +3,7 @@ import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import type { Leaderboard, Rank } from "../types/campaign";
+import type { Leaderboard, Rank } from "../types/campaign/common";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useAccount } from "./useAccount";
 

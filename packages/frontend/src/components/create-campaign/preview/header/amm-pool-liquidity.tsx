@@ -1,10 +1,10 @@
 import { formatPercentage } from "@/src/utils/format";
 import { Typography } from "@metrom-xyz/ui";
-import { type AmmPoolLiquidityCampaignPreviewPayload } from "@/src/types/campaign";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { getCampaignPreviewName } from "@/src/utils/campaign";
 import { useTranslations } from "next-intl";
+import type { AmmPoolLiquidityCampaignPreviewPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 
 interface AmmPoolLiquidityProps {
     payload: AmmPoolLiquidityCampaignPreviewPayload;

@@ -3,7 +3,7 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import {
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useChainData } from "@/src/hooks/useChainData";
 import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
 

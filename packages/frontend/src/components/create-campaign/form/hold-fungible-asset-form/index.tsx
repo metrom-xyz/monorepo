@@ -1,13 +1,9 @@
 import {
     type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-    type HoldFungibleAssetCampaignPayload,
-    HoldFungibleAssetCampaignPreviewPayload,
-    type HoldFungibleAssetCampaignPayloadPart,
-    type CampaignPreviewKpiDistribution,
     type CampaignPreviewFixedDistribution,
-} from "@/src/types/campaign";
+    type CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -24,6 +20,12 @@ import {
     validateDistributions,
 } from "@/src/utils/creation-form";
 import { HoldFungibleAssetPickerStep } from "../../steps/hold-token-picker-step";
+import {
+    HoldFungibleAssetCampaignPreviewPayload,
+    type HoldFungibleAssetCampaignPayload,
+    type HoldFungibleAssetCampaignPayloadPart,
+} from "@/src/types/campaign/hold-fungible-asset-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 
 import styles from "./styles.module.css";
 
@@ -55,6 +57,7 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
@@ -67,6 +70,7 @@ function validatePayload(
     return new HoldFungibleAssetCampaignPreviewPayload(
         asset,
         stakingAssets,
+        chainId,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,

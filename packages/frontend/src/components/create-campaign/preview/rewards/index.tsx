@@ -1,4 +1,4 @@
-import type { CampaignPreviewTokenDistributables } from "@/src/types/campaign";
+import type { CampaignPreviewTokenDistributables } from "@/src/types/campaign/common";
 import { Card, TextField, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useChainWithType } from "@/src/hooks/useChainWithType";

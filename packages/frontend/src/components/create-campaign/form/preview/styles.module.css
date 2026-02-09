@@ -1,0 +1,17 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply hidden sm:flex flex-col gap-8 flex-[28%];
+}
+
+.header {
+    @apply flex items-start justify-between;
+}
+
+.title {
+    @apply leading-7 sm:leading-8;
+}
+
+.buttons {
+    @apply flex items-center gap-2;
+}

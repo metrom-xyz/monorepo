@@ -8,7 +8,7 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 import { LiquityV2 } from "./liquity-v2";
 import { AaveV3 } from "./aave-v3";
 import { Empty } from "./empty";

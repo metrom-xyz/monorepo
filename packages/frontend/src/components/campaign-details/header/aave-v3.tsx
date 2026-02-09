@@ -1,15 +1,15 @@
 import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { TargetType, type AaveV3TargetType } from "@metrom-xyz/sdk";
+import type {
+    TargetedNamedCampaign,
+    CampaignDetails,
+} from "@/src/types/campaign/common";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { RemoteLogo } from "../../remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Tags } from "./tags";
-import type {
-    CampaignDetails,
-    TargetedNamedCampaign,
-} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 

@@ -8,7 +8,7 @@ import {
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
     type CampaignPayloadErrors,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { InfoMessage } from "@/src/components/info-message";
