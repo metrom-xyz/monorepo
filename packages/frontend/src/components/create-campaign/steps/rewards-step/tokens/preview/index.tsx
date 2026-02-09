@@ -1,6 +1,6 @@
 import { type Erc20Token } from "@metrom-xyz/sdk";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
-import type { CampaignPayloadTokenDistributables } from "@/src/types/campaign";
+import type { CampaignPayloadTokenDistributables } from "@/src/types/campaign/common";
 import { Reward } from "./reward";
 import type { Address } from "viem";
 import { Typography } from "@metrom-xyz/ui";

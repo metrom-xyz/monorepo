@@ -1,8 +1,8 @@
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { TextField, Typography } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
 import type { AmmPool } from "@metrom-xyz/sdk";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 
 import styles from "./styles.module.css";
 

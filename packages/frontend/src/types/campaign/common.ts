@@ -3,36 +3,41 @@ import {
     Campaign as SdkCampaign,
     TargetType,
     type Claim,
-    type AaveV3Collateral,
-    type AaveV3Market,
     type OnChainAmount,
     type Reimbursement,
     type Restrictions,
     type UsdPricedErc20TokenAmount,
     type UsdPricedOnChainAmount,
-    type Weighting,
     type DistributablesType,
     type KpiSpecification,
     type TokenDistributables,
-    type LiquityV2Collateral,
     type BaseTargetedCampaign,
-    type FungibleAssetInfo,
     type FixedPointDistributables,
     type DynamicPointDistributables,
-    type AmmPool,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
-import { type WhitelistedErc20TokenAmount } from "./common";
+import { type WhitelistedErc20TokenAmount } from "../common";
 import {
     DepositUrlType,
     ProtocolType,
-    type AaveV3Protocol,
     type ChainData,
     type DexProtocol,
-    type LiquityV2Protocol,
 } from "@metrom-xyz/chains";
-import type { PropertyUnion } from "./utils";
+import type { PropertyUnion } from "../utils";
+import type {
+    AmmPoolLiquidityCampaignPayload,
+    AmmPoolLiquidityCampaignPreviewPayload,
+} from "./amm-pool-liquidity-campaign";
+import type {
+    LiquityV2CampaignPayload,
+    LiquityV2CampaignPreviewPayload,
+} from "./liquity-v2-campaign";
+import type {
+    AaveV3CampaignPayload,
+    AaveV3CampaignPreviewPayload,
+} from "./aave-v3-campaign";
+import type { EmptyTargetCampaignPreviewPayload } from "./empty-target-campaign";
 
 export interface ClaimWithRemaining extends Claim {
     remaining: UsdPricedOnChainAmount;
@@ -68,37 +73,13 @@ export interface AugmentedPriceRangeSpecification {
 }
 
 export interface BaseCampaignPayload {
-    kind?: CampaignKind;
+    chainId?: number;
     startDate?: Dayjs;
     endDate?: Dayjs;
+    kind?: CampaignKind;
     distributables?: CampaignPayloadDistributables;
     kpiSpecification?: KpiSpecification;
     restrictions?: Restrictions;
-}
-
-export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
-    dex?: DexProtocol;
-    pool?: AmmPool;
-    weighting?: Weighting;
-    priceRangeSpecification?: AugmentedPriceRangeSpecification;
-}
-
-export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
-    brand?: LiquityV2Protocol;
-    collateral?: LiquityV2Collateral;
-}
-
-export interface AaveV3CampaignPayload extends BaseCampaignPayload {
-    brand?: AaveV3Protocol;
-    market?: AaveV3Market;
-    collateral?: AaveV3Collateral;
-    boostingFactor?: number;
-    blacklistedCollaterals?: AaveV3Collateral[];
-}
-
-export interface HoldFungibleAssetCampaignPayload extends BaseCampaignPayload {
-    asset?: FungibleAssetInfo;
-    stakingAssets: FungibleAssetInfo[];
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -162,6 +143,7 @@ export interface TargetValue {
 
 export abstract class BaseCampaignPreviewPayload {
     constructor(
+        public readonly chainId: number,
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
         public readonly distributables: CampaignPreviewDistributables,
@@ -176,134 +158,6 @@ export abstract class BaseCampaignPreviewPayload {
     }
 
     abstract getTargetValue(): TargetValue | undefined;
-}
-
-export class AmmPoolLiquidityCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    constructor(
-        public readonly kind: CampaignKind,
-        public readonly dex: DexProtocol,
-        public readonly pool: AmmPool,
-        public readonly weighting?: Weighting,
-        public readonly priceRangeSpecification?: AugmentedPriceRangeSpecification,
-        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
-    ) {
-        super(...baseArgs);
-
-        if (
-            kind !== CampaignKind.AmmPoolLiquidity &&
-            kind !== CampaignKind.JumperWhitelistedAmmPoolLiquidity
-        )
-            throw new Error(
-                `Unsupported kind ${kind} for amm pool liquidity campaign payload`,
-            );
-    }
-
-    getTargetValue(): TargetValue | undefined {
-        return { usd: this.pool.usdTvl, raw: this.pool.liquidity };
-    }
-}
-
-export class LiquityV2CampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    constructor(
-        public readonly kind: CampaignKind,
-        public readonly brand: LiquityV2Protocol,
-        public readonly collateral: LiquityV2Collateral,
-        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
-    ) {
-        super(...baseArgs);
-
-        if (
-            kind !== CampaignKind.LiquityV2Debt &&
-            kind !== CampaignKind.LiquityV2StabilityPool
-        )
-            throw new Error(
-                `Unsupported kind ${kind} for liquity-v2 campaign payload`,
-            );
-    }
-
-    getTargetValue(): TargetValue | undefined {
-        if (this.kind === CampaignKind.LiquityV2Debt)
-            return {
-                usd: this.collateral.usdMintedDebt,
-                raw: this.collateral.liquidity,
-            };
-        if (this.kind === CampaignKind.LiquityV2StabilityPool)
-            return {
-                usd: this.collateral.usdStabilityPoolDebt,
-                raw: this.collateral.liquidity,
-            };
-
-        return undefined;
-    }
-}
-
-export class AaveV3CampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    constructor(
-        public readonly kind: CampaignKind,
-        public readonly brand: AaveV3Protocol,
-        public readonly market: AaveV3Market,
-        public readonly collateral: AaveV3Collateral,
-        public readonly usdNetSupply?: number,
-        public readonly boostingFactor?: number,
-        public readonly blacklistedCollaterals?: AaveV3Collateral[],
-        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
-    ) {
-        super(...baseArgs);
-
-        if (
-            kind !== CampaignKind.AaveV3Borrow &&
-            kind !== CampaignKind.AaveV3Supply &&
-            kind !== CampaignKind.AaveV3NetSupply &&
-            kind !== CampaignKind.AaveV3BridgeAndSupply
-        )
-            throw new Error(
-                `Unsupported kind ${kind} for aave-v3 campaign payload`,
-            );
-    }
-
-    getTargetValue(): TargetValue | undefined {
-        if (this.kind === CampaignKind.AaveV3Borrow)
-            return { usd: this.collateral.usdDebt, raw: this.collateral.debt };
-
-        if (
-            this.kind === CampaignKind.AaveV3NetSupply &&
-            this.usdNetSupply !== undefined
-        )
-            return { usd: this.usdNetSupply };
-
-        return {
-            usd: this.collateral.usdSupply,
-            raw: this.collateral.supply,
-        };
-    }
-}
-
-export class HoldFungibleAssetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind = CampaignKind.HoldFungibleAsset;
-    constructor(
-        public readonly asset: FungibleAssetInfo,
-        public readonly stakingAssets: FungibleAssetInfo[],
-        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
-    ) {
-        super(...baseArgs);
-    }
-
-    getTargetValue(): TargetValue | undefined {
-        return { usd: this.asset.usdTotalSupply, raw: this.asset.totalSupply };
-    }
-}
-
-export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
-    public readonly kind: CampaignKind = CampaignKind.EmptyTarget;
-    constructor(
-        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
-    ) {
-        super(...baseArgs);
-    }
-
-    getTargetValue(): TargetValue | undefined {
-        return undefined;
-    }
 }
 
 export type CampaignPreviewPayload =
@@ -348,17 +202,6 @@ export type CampaignPayloadPart<T extends ProtocolType | undefined> =
           : T extends ProtocolType.AaveV3
             ? Partial<AaveV3CampaignPayload>
             : never;
-
-export type AmmPoolLiquidityCampaignPayloadPart =
-    PropertyUnion<AmmPoolLiquidityCampaignPayload>;
-
-export type LiquityV2CampaignPayloadPart =
-    PropertyUnion<LiquityV2CampaignPayload>;
-
-export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
-
-export type HoldFungibleAssetCampaignPayloadPart =
-    PropertyUnion<HoldFungibleAssetCampaignPayload>;
 
 export class Campaign extends SdkCampaign {
     constructor(
@@ -447,8 +290,9 @@ export class Campaign extends SdkCampaign {
     }
 }
 
-export interface DistributablesNamedCampaign<T extends DistributablesType>
-    extends Campaign {
+export interface DistributablesNamedCampaign<
+    T extends DistributablesType,
+> extends Campaign {
     distributables: T extends DistributablesType.Tokens
         ? TokenDistributables
         : T extends DistributablesType.FixedPoints

@@ -2,7 +2,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 import { useMemo } from "react";
 import { getCampaignApr } from "@/src/utils/campaign";
 import { getCampaignAprTargetText } from "@/src/utils/kpi";

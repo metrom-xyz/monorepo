@@ -8,7 +8,7 @@ import { usePool } from "@/src/hooks/usePool";
 import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { KpiAprSummary } from "@/src/components/kpi-apr-summary";
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";

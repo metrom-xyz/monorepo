@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
-import { Campaign } from "../types/campaign";
+import { Campaign } from "../types/campaign/common";
 import { getCrossVmChainData } from "../utils/chain";
 import { CAMPAIGN_TARGET_TO_KIND, ChainType } from "@metrom-xyz/sdk";
 

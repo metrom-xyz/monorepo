@@ -3,7 +3,7 @@ import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import { AprInfoTooltip } from "../apr-info-tooltip";
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

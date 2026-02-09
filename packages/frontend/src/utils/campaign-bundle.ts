@@ -7,19 +7,17 @@ import {
     U32,
     MoveVector,
 } from "@aptos-labs/ts-sdk";
-import {
-    AaveV3CampaignPreviewPayload,
-    AmmPoolLiquidityCampaignPreviewPayload,
-    EmptyTargetCampaignPreviewPayload,
-    HoldFungibleAssetCampaignPreviewPayload,
-    LiquityV2CampaignPreviewPayload,
-    type CampaignPreviewPayload,
-} from "../types/campaign";
+import { type CampaignPreviewPayload } from "../types/campaign/common";
 import {
     CampaignKind,
     SupportedBridge,
     type Specification,
 } from "@metrom-xyz/sdk";
+import { AmmPoolLiquidityCampaignPreviewPayload } from "../types/campaign/amm-pool-liquidity-campaign";
+import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-target-campaign";
+import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
+import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)

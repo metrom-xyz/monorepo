@@ -1,6 +1,6 @@
 import { Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import { type TargetedNamedCampaign } from "@/src/types/campaign/common";
 import type { ActionSizes } from ".";
 
 interface EmptyProps<T extends TargetType.Empty> extends ActionSizes {

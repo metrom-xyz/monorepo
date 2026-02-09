@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useCallback } from "react";
 import { formatPercentage } from "@/src/utils/format";
 import { WEIGHT_UNIT } from "@/src/commons";
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 import { TargetType } from "@metrom-xyz/sdk";
 import classNames from "classnames";
 

@@ -13,7 +13,7 @@ import { useSwitchChain } from "wagmi";
 import type {
     ClaimWithRemaining,
     ReimbursementsWithRemaining,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { type ChainData } from "@metrom-xyz/chains";
 import { getChainData } from "@/src/utils/chain";
 import { useAccount } from "@/src/hooks/useAccount";

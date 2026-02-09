@@ -1,4 +1,4 @@
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 import { CampaignTag } from "@/src/components/campaign-tag";
 import { useTranslations } from "next-intl";
 import { CalendarIcon } from "@/src/assets/calendar-icon";

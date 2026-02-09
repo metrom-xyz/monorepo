@@ -1,0 +1,17 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full sm:w-1/4;
+}
+
+.option {
+    @apply flex gap-1.5 items-center;
+}
+
+.icon {
+    @apply size-5 rounded-full;
+}
+
+.prefixIcon {
+    @apply size-4 rounded-full;
+}
