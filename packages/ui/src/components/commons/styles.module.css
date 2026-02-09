@@ -1,7 +1,11 @@
 @reference "../../theme.css";
 
+.inputRoot {
+    @apply flex flex-col;
+}
+
 .inputWrapper {
-    @apply w-full flex items-center relative rounded;
+    @apply w-full flex items-center relative rounded transition-opacity duration-200 ease-in-out;
 }
 
 .inputWrapper:not(.error).focused .inputIcon,
@@ -17,6 +21,14 @@
 .inputWrapper:not(.error).focused .fieldset,
 .inputWrapper:not(.error):focus-within .fieldset {
     @apply border-gray-500 dark:border-neutral-400;
+}
+
+.inputWrapper.disabled {
+    @apply opacity-65;
+}
+
+.inputWrapper.loading {
+    @apply animate-pulse;
 }
 
 .inputWrapper:not(.mounted) .label {
@@ -92,7 +104,6 @@
 
 .label {
     @apply absolute
-        cursor-text
         flex
         origin-top-left
         text-tertiary
@@ -162,6 +173,10 @@
     @apply pl-1;
 }
 
+.input:disabled {
+    @apply cursor-not-allowed;
+}
+
 .input {
     @apply w-full
         rounded-lg
@@ -228,10 +243,6 @@
 
 .errorText {
     @apply mt-1;
-}
-
-.inputLoading {
-    @apply animate-pulse;
 }
 
 .adornment.xs {

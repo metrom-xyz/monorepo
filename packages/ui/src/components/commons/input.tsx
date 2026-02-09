@@ -37,6 +37,7 @@ export interface BaseInputWrapperProps<V> {
     label?: string;
     size?: BaseInputSize;
     loading?: boolean;
+    disabled?: boolean;
     error?: boolean;
     errorText?: string;
     prefixElement?: ReactNode;
@@ -54,6 +55,7 @@ export function BaseInputWrapper<V>({
     label,
     size = "base",
     loading,
+    disabled,
     error,
     errorText,
     prefixElement,
@@ -104,18 +106,13 @@ export function BaseInputWrapper<V>({
     const hasRightIcon = !!icon && iconPlacement === "right";
 
     return (
-        <div
-            className={classNames("root", className, {
-                [styles[size]]: true,
-                [styles.hasPrefixElement]: !!prefixElement,
-                [styles.hasLeftIcon]: hasLeftIcon,
-                [styles.hasRightIcon]: hasRightIcon,
-            })}
-        >
+        <div className={classNames("root", styles.inputRoot, className)}>
             <div
                 className={classNames("inputWrapper", styles.inputWrapper, {
                     [styles.error]: !!error,
                     [styles.focused]: !!focused,
+                    [styles.disabled]: !!disabled,
+                    [styles.loading]: !!loading,
                     [styles.mounted]: mounted,
                 })}
             >
@@ -134,7 +131,6 @@ export function BaseInputWrapper<V>({
                 {React.cloneElement(children, {
                     className: classNames(children.props.className, {
                         [styles.focused]: !!focused,
-                        [styles.inputLoading]: !!loading,
                         [styles[size]]: true,
                     }),
                     style: {
