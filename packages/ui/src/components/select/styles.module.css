@@ -1,6 +1,6 @@
 @reference "../../theme.css";
 
-.input :global(.input) {
+.input :global(.input:not(:disabled)) {
     @apply cursor-pointer;
 }
 
@@ -30,8 +30,8 @@
         text-primary
         bg-gray-150
         dark:bg-neutral-900
-        /* FIXME: on light theme the bg and hover bg are the same */
-        surface-primary-hover
+        hover:bg-gray-100
+        dark:hover:bg-neutral-700
         not-last:border-b
         not-last:border-b-gray-300
         not-last:dark:border-b-neutral-700
@@ -51,5 +51,5 @@
 }
 
 .pickedOption {
-    @apply bg-gray-50 dark:bg-neutral-700 surface-secondary-hover;
+    @apply bg-gray-100 dark:bg-neutral-700;
 }

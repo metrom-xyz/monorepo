@@ -1,5 +1,5 @@
 import { motion, easeInOut, AnimatePresence } from "motion/react";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useCallback, useState } from "react";
 import { ChevronDown } from "../../assets/chevron-down";
 import classNames from "classnames";
 import { Typography } from "../typography";
@@ -11,6 +11,8 @@ export interface AccordionProps {
     children: ReactNode;
     iconPlacement?: "left" | "right";
     noUnmount?: boolean;
+    open?: boolean;
+    onToggle?: (open: boolean) => void;
     className?: string;
 }
 
@@ -19,13 +21,21 @@ export function Accordion({
     children,
     iconPlacement = "left",
     noUnmount,
+    open: controlledOpen,
+    onToggle,
     className,
 }: AccordionProps) {
-    const [open, setOpen] = useState(false);
+    const [internalOpen, setInternalOpen] = useState(false);
 
-    function handleOnToggleOpen() {
-        setOpen((prevState) => !prevState);
-    }
+    const controlled = controlledOpen !== undefined;
+    const open = controlled ? controlledOpen : internalOpen;
+
+    const handleOnToggleOpen = useCallback(() => {
+        if (onToggle) onToggle(!open);
+        if (!controlled) {
+            setInternalOpen(!open);
+        }
+    }, [open, controlled, onToggle]);
 
     return (
         <div className={classNames("root", styles.root, className)}>
