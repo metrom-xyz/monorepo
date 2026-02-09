@@ -5,7 +5,7 @@ import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
 import { Card, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import type { ClaimWithRemaining } from "@/src/types/campaign";
+import type { ClaimWithRemaining } from "@/src/types/campaign/common";
 import type { ChainWithRewardsData } from "..";
 
 import styles from "./token-claim/styles.module.css";

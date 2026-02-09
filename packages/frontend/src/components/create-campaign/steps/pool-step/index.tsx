@@ -11,7 +11,7 @@ import type {
     AmmPoolLiquidityCampaignPayload,
     AmmPoolLiquidityCampaignPayloadPart,
     CampaignPayloadErrors,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { ListPoolPicker } from "./list";
 import { AddressPoolPicker } from "./address-picker";
 

@@ -1,4 +1,4 @@
-import type { BaseCampaignPayload } from "@/src/types/campaign";
+import type { BaseCampaignPayload } from "@/src/types/campaign/common";
 import { Accordion, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";

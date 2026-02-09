@@ -1,11 +1,7 @@
 import {
     type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-    type AaveV3CampaignPayload,
-    AaveV3CampaignPreviewPayload,
-    type AaveV3CampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -34,6 +30,12 @@ import { validateDistributables } from "@/src/utils/creation-form";
 import { AaveV3BlacklistedCrossBorrowCollateralsStep } from "../../steps/aave-v3-blacklisted-cross-borrow-collaterals";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
+import {
+    AaveV3CampaignPreviewPayload,
+    type AaveV3CampaignPayload,
+    type AaveV3CampaignPayloadPart,
+} from "@/src/types/campaign/aave-v3-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 
 import styles from "./styles.module.css";
 
@@ -78,6 +80,7 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
@@ -94,6 +97,7 @@ function validatePayload(
         usdNetSupply,
         undefined,
         blacklistedCollaterals,
+        chainId,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,

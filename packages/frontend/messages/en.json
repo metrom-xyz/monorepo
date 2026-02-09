@@ -184,15 +184,23 @@
                 }
             }
         },
-        "type": {
-            "amm": "AMM liquidity pool",
-            "liquityV2": "Liquity v2 and forks",
-            "aaveV3": "Aave v3 and forks",
-            "holdFungibleAsset": "Hold token",
-            "odyssey": "Odyssey",
-            "partnerActions": "Partner action",
-            "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
-            "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
+        "formHeader": {
+            "createYourCampaign": "Create your {campaignType} incentive campaign",
+            "type": {
+                "amm": "AMM",
+                "liquityV2": "Liquity v2",
+                "aaveV3": "Aave v3",
+                "holdFungibleAsset": "Hold token",
+                "odyssey": "Odyssey",
+                "partnerActions": "Partner action",
+                "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
+                "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
+            }
+        },
+        "formPreview": {
+            "preview": "Preview",
+            "share": "Share",
+            "saveAsPreset": "Save as preset"
         },
         "pickDistributablesType": {
             "navigation": {
@@ -211,6 +219,16 @@
             }
         },
         "form": {
+            "basics": {
+                "title": "Set your campaign basics",
+                "defineTarget": "Define the target",
+                "defineDuration": "Define the duration",
+                "chain": "Chain",
+                "protocol": "Protocol",
+                "pool": "Pool",
+                "startDate": "Start date",
+                "endDate": "End date"
+            },
             "base": {
                 "kind": {
                     "title": "Action"
@@ -496,6 +514,17 @@
             "message2": "{campaignType} campaign creation isn't supported on {chain} chain.",
             "message3": "Please choose a different chain.",
             "backToCreate": "Back to create"
+        },
+        "back": "Back",
+        "defineTarget": "Define the target",
+        "inputs": {
+            "chain": "Chain",
+            "noChains": "No chains found",
+            "dex": "Dex",
+            "noDexes": "No dexes found",
+            "pool": "Pool",
+            "tvl": "TVL",
+            "noPools": "No pools found"
         }
     },
     "campaignPreview": {

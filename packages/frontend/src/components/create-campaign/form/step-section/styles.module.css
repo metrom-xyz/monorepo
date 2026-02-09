@@ -1,0 +1,9 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full flex flex-col gap-4 rounded-lg p-4 bg-gray-150 dark:bg-neutral-900;
+}
+
+.header {
+    @apply flex gap-1.5;
+}

@@ -1,0 +1,23 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-4 px-3 pt-3;
+}
+
+.header {
+    @apply flex justify-between items-center;
+}
+
+.chips {
+    @apply flex flex-wrap gap-2;
+}
+
+.baseTokenChip {
+    @apply flex gap-1 items-center select-none;
+}
+
+.logo,
+.logo > svg,
+.logo > img {
+    @apply w-3 h-3;
+}

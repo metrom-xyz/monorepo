@@ -5,7 +5,7 @@ import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import type {
     BaseCampaignPayload,
     CampaignPayloadTokenDistributables,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useMemo } from "react";
 import type { CampaignKind } from "@metrom-xyz/sdk";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";

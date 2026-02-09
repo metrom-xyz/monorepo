@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import {
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { CollateralsList } from "./list";
 import { Typography } from "@metrom-xyz/ui";
 import type { AaveV3Collateral, CampaignKind } from "@metrom-xyz/sdk";

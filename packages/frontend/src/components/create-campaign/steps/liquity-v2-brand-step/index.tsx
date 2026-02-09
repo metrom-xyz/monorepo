@@ -8,7 +8,7 @@ import { Typography } from "@metrom-xyz/ui";
 import {
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";

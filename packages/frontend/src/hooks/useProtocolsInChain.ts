@@ -13,7 +13,7 @@ import { useChainData } from "./useChainData";
 import type { HookBaseParams, HookCrossVmParams } from "../types/hooks";
 import type { ChainType } from "@metrom-xyz/sdk";
 
-interface ProtocolByType {
+export interface ProtocolByType {
     [ProtocolType.Dex]: DexProtocol;
     [ProtocolType.GmxV1Liquidity]: GmxV1LiquidityProtocol;
     [ProtocolType.LiquityV2]: LiquityV2Protocol;
@@ -29,7 +29,7 @@ export type ProtocolsInChain<T extends ProtocolType | undefined> =
 interface UseProtocolsInChainParams<T extends ProtocolType | undefined>
     extends HookBaseParams,
         HookCrossVmParams {
-    chainId: number;
+    chainId?: number;
     chainType?: ChainType;
     active?: boolean;
     type?: T;

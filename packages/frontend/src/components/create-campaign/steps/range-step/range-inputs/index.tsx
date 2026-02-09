@@ -6,7 +6,7 @@ import {
     tickToScaledPrice,
 } from "@metrom-xyz/sdk";
 import { useCallback } from "react";
-import type { AugmentedPriceRangeBound } from "@/src/types/campaign";
+import type { AugmentedPriceRangeBound } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

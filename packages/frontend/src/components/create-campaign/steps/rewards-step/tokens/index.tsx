@@ -22,7 +22,7 @@ import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
     CampaignPayloadTokenDistributables,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { trackFathomEvent } from "@/src/utils/fathom";

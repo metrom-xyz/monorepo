@@ -28,7 +28,7 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getExplorerLink } from "@/src/utils/explorer";
 import { PointsBreakdown } from "./points-breakdown";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import type { Leaderboard } from "@/src/types/campaign";
+import type { Leaderboard } from "@/src/types/campaign/common";
 import { useWindowSize } from "react-use";
 import { useAccount } from "@/src/hooks/useAccount";
 import classNames from "classnames";

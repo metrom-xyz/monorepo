@@ -1,10 +1,10 @@
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import type { HoldFungibleAssetCampaignPreviewPayload } from "@/src/types/campaign";
 import { getCampaignPreviewName } from "@/src/utils/campaign";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
+import type { HoldFungibleAssetCampaignPreviewPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
 
 import styles from "./styles.module.css";
 
