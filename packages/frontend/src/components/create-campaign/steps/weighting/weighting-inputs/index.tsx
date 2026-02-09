@@ -5,7 +5,7 @@ import {
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback } from "react";
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

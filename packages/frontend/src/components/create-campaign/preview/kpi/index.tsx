@@ -6,7 +6,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadTokenDistributables,
     CampaignPreviewKpiDistribution,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useMemo } from "react";
 import type { CampaignKind } from "@metrom-xyz/sdk";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";

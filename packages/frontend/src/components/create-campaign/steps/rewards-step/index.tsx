@@ -10,7 +10,7 @@ import {
     type CampaignPayloadErrors,
     type CampaignPayloadFixedDistribution,
     type CampaignPayloadKpiDistribution,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";

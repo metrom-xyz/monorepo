@@ -1,21 +1,9 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-full flex items-center;
+    @apply flex flex-col gap-7 px-4 sm:px-0 w-full max-w-screen-xl;
 }
 
-.back {
-    @apply p-1.5
-        mr-auto
-        rounded-lg
-        hover:cursor-pointer
-        surface-primary
-        surface-primary-hover
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.title {
-    @apply mr-auto -translate-x-3;
+.button {
+    @apply h-9;
 }

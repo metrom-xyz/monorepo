@@ -8,7 +8,7 @@ import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPayloadErrors,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { WeightingInputs } from "./weighting-inputs";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useChainWithType } from "@/src/hooks/useChainWithType";

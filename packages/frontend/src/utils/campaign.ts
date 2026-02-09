@@ -12,15 +12,10 @@ import {
     CampaignItem as SdkCampaignItem,
 } from "@metrom-xyz/sdk";
 import {
-    AmmPoolLiquidityCampaignPreviewPayload,
-    LiquityV2CampaignPreviewPayload,
-    EmptyTargetCampaignPreviewPayload,
-    type BaseCampaignPreviewPayload,
-    AaveV3CampaignPreviewPayload,
-    HoldFungibleAssetCampaignPreviewPayload,
     CampaignDetails,
+    type BaseCampaignPreviewPayload,
     type CampaignPreviewKpiDistribution,
-} from "../types/campaign";
+} from "../types/campaign/common";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { SECONDS_IN_YEAR } from "../commons";
@@ -28,6 +23,11 @@ import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData, getCrossVmChainData } from "./chain";
 import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
+import { AmmPoolLiquidityCampaignPreviewPayload } from "../types/campaign/amm-pool-liquidity-campaign";
+import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-campaign";
+import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
+import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-target-campaign";
 
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(

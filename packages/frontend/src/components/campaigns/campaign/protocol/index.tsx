@@ -1,6 +1,6 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { SupportedLiquidityProviderDeal, TargetType } from "@metrom-xyz/sdk";
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 import { useRef, useState } from "react";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";

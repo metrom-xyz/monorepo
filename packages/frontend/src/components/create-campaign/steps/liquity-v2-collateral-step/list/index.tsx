@@ -2,7 +2,7 @@ import { CampaignKind, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Row, RowSkeleton } from "./row";
-import { type LiquityV2CampaignPayload } from "@/src/types/campaign";
+import { type LiquityV2CampaignPayload } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

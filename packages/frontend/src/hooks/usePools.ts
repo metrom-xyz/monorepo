@@ -7,12 +7,17 @@ import { useProtocolsInChain } from "./useProtocolsInChain";
 import { ProtocolType } from "@metrom-xyz/chains";
 
 interface UsePoolsParams extends HookBaseParams {
-    chainId: SupportedChain;
+    chainId?: SupportedChain;
     chainType: ChainType;
     dex?: SupportedDex;
 }
 
-type QueryKey = [string, SupportedDex | undefined, SupportedChain, ChainType];
+type QueryKey = [
+    string,
+    SupportedDex | undefined,
+    SupportedChain | undefined,
+    ChainType,
+];
 
 export function usePools({
     chainId,
@@ -33,7 +38,7 @@ export function usePools({
         queryKey: ["pools", dex, chainId, chainType],
         queryFn: async ({ queryKey }) => {
             const [, dex, chainId, chainType] = queryKey as QueryKey;
-            if (!dex) return null;
+            if (!dex || !chainId) return null;
 
             try {
                 const pools = await METROM_API_CLIENT.fetchAmmPools({

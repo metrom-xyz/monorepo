@@ -5,7 +5,7 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { HookBaseParams } from "../../types/hooks";
-import type { ReimbursementsWithRemaining } from "../../types/campaign";
+import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
 import { getChainData } from "../../utils/chain";
 import { readContracts } from "@wagmi/core";
 

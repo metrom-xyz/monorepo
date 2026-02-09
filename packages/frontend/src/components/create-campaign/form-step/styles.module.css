@@ -1,0 +1,21 @@
+@reference "../../../app.css";
+
+.root {
+    @apply bg-gray-100 dark:bg-neutral-800;
+}
+
+.root :global(.preview):hover {
+    @apply dark:bg-neutral-700;
+}
+
+.header {
+    @apply flex items-center gap-2.5;
+}
+
+.greenDot {
+    @apply size-1.5 rounded-full bg-brand-green-dark dark:bg-brand-green;
+}
+
+.content {
+    @apply p-3;
+}

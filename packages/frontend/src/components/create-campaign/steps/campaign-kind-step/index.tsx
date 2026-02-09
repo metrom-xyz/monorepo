@@ -12,7 +12,7 @@ import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
 import {
     type BaseCampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { CampaignKind } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";

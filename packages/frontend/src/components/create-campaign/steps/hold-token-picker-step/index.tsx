@@ -4,7 +4,7 @@ import { StepPreview } from "@/src/components/step/preview";
 import type {
     CampaignPayloadErrors,
     HoldFungibleAssetCampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { Address } from "viem";
 import classNames from "classnames";
 import { ErrorText, TextInput, Typography } from "@metrom-xyz/ui";

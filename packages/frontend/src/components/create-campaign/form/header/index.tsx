@@ -1,7 +1,5 @@
 import { Typography } from "@metrom-xyz/ui";
-import { ChevronLeftIcon } from "@/src/assets/chevron-left-icon";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/src/i18n/routing";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { CampaignType } from "@metrom-xyz/sdk";
 
@@ -13,7 +11,7 @@ interface FormHeaderProps {
 
 export const CAMPAIGN_TYPE_TITLE: Record<
     CampaignType,
-    TranslationsKeys<"newCampaign.type">
+    TranslationsKeys<"newCampaign.formHeader.type">
 > = {
     "amm-pool-liquidity": "amm",
     "liquity-v2": "liquityV2",
@@ -26,21 +24,14 @@ export const CAMPAIGN_TYPE_TITLE: Record<
 };
 
 export function FormHeader({ type }: FormHeaderProps) {
-    const t = useTranslations("newCampaign.type");
-    const router = useRouter();
+    const t = useTranslations("newCampaign.formHeader");
 
     return (
         <div className={styles.root}>
-            <div onClick={router.back} className={styles.back}>
-                <ChevronLeftIcon />
-            </div>
-            <Typography
-                weight="medium"
-                size="lg"
-                uppercase
-                className={styles.title}
-            >
-                {t(CAMPAIGN_TYPE_TITLE[type])}
+            <Typography weight="semibold" size="xl2">
+                {t("createYourCampaign", {
+                    campaignType: t(`type.${CAMPAIGN_TYPE_TITLE[type]}`),
+                })}
             </Typography>
         </div>
     );

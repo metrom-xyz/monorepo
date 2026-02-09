@@ -2,7 +2,7 @@ import { APTOS } from "@/src/commons/env";
 import { useClaimsEvm } from "./useClaimsEvm";
 import { useClaimsMvm } from "./useClaimsMvm";
 import type { HookBaseParams } from "@/src/types/hooks";
-import type { ClaimWithRemaining } from "@/src/types/campaign";
+import type { ClaimWithRemaining } from "@/src/types/campaign/common";
 
 export type UseClaimsParams = HookBaseParams;
 

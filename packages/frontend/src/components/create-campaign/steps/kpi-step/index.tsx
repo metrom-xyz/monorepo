@@ -7,7 +7,7 @@ import {
     type CampaignPayloadTokenDistributables,
     type CampaignPayloadKpiDistribution,
     type CampaignPayloadFixedDistribution,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import {
     Button,
