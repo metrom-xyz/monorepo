@@ -29,6 +29,7 @@ export const Sizes: Story = {
         return (
             <div className="flex gap-8">
                 <div className="flex flex-col gap-4">
+                    <RemoteLogo {...args} size="xxs" />
                     <RemoteLogo {...args} size="xs" />
                     <RemoteLogo {...args} size="sm" />
                     <RemoteLogo {...args} size="base" />
@@ -36,6 +37,7 @@ export const Sizes: Story = {
                     <RemoteLogo {...args} size="xl" />
                 </div>
                 <div className="flex flex-col gap-4">
+                    <RemoteLogo {...args} src="" size="xxs" />
                     <RemoteLogo {...args} src="" size="xs" />
                     <RemoteLogo {...args} src="" size="sm" />
                     <RemoteLogo {...args} src="" size="base" />

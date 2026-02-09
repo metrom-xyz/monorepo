@@ -26,6 +26,14 @@
     @apply select-none text-white dark:text-zinc-100;
 }
 
+.xxs {
+    @apply w-4 h-4;
+}
+
+.xxs > p {
+    @apply text-[0.2rem];
+}
+
 .xs {
     @apply w-3.5 h-3.5 sm:w-5 sm:h-5;
 }
