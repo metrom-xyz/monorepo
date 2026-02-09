@@ -2,7 +2,7 @@ import { APTOS } from "@/src/commons/env";
 import { useReimbursementsEvm } from "./useReimbursementsEvm";
 import { useReimbursementsMvm } from "./useReimbursementsMvm";
 import type { HookBaseParams } from "@/src/types/hooks";
-import type { ReimbursementsWithRemaining } from "@/src/types/campaign";
+import type { ReimbursementsWithRemaining } from "@/src/types/campaign/common";
 
 export type UseReimbursementsParams = HookBaseParams;
 

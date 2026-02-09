@@ -6,7 +6,7 @@ import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { getCrossVmChainData } from "../utils/chain";
 import { CAMPAIGN_TARGET_TO_KIND, ChainType } from "@metrom-xyz/sdk";
-import { CampaignDetails } from "../types/campaign";
+import { CampaignDetails } from "../types/campaign/common";
 
 interface UseCampaignDetailsParams extends HookBaseParams {
     chainId?: number;

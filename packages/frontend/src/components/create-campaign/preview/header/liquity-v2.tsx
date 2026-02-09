@@ -1,9 +1,9 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { LiquityV2CampaignPreviewPayload } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { getCampaignPreviewName } from "@/src/utils/campaign";
+import type { LiquityV2CampaignPreviewPayload } from "@/src/types/campaign/liquity-v2-campaign";
 
 interface LiquityV2Props {
     payload: LiquityV2CampaignPreviewPayload;

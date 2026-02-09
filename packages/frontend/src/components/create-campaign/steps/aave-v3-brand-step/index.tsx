@@ -8,7 +8,7 @@ import { Typography } from "@metrom-xyz/ui";
 import {
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";

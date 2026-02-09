@@ -7,9 +7,9 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { type AmmPoolLiquidityTargetType } from "@metrom-xyz/sdk";
 import type {
-    CampaignDetails,
     TargetedNamedCampaign,
-} from "@/src/types/campaign";
+    CampaignDetails,
+} from "@/src/types/campaign/common";
 import { useVelodromePoolTickSpacing } from "@/src/hooks/useVelodromePoolTickSpacing";
 import { Tags } from "./tags";
 import classNames from "classnames";

@@ -49,7 +49,7 @@ const DISTRIBUTABLE_TYPES: DistributableTypeConfig[] = [
 
 const CAMPAIGN_TYPE_TITLE: Record<
     CampaignType,
-    TranslationsKeys<"newCampaign.type">
+    TranslationsKeys<"newCampaign.formHeader.type">
 > = {
     "amm-pool-liquidity": "amm",
     "liquity-v2": "liquityV2",
@@ -68,7 +68,7 @@ export function PickDistributablesType({
     campaignType,
 }: PickDistributablesTypeProps) {
     const t = useTranslations("newCampaign.pickDistributablesType");
-    const campaignTypeT = useTranslations("newCampaign.type");
+    const campaignTypeT = useTranslations("newCampaign.formHeader.type");
 
     const router = useRouter();
     const { id: chainId } = useChainWithType();

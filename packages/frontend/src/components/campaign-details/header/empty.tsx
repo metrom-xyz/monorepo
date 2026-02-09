@@ -1,9 +1,9 @@
 import { Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import {
+import type {
+    TargetedNamedCampaign,
     CampaignDetails,
-    type TargetedNamedCampaign,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

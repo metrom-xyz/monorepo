@@ -2,7 +2,7 @@ import { formatUnits, type Address } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { ReimbursementsWithRemaining } from "../../types/campaign";
+import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
 import { getChainData } from "../../utils/chain";
 import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";

@@ -1,4 +1,4 @@
-import type { CampaignDetails } from "@/src/types/campaign";
+import type { CampaignDetails } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";

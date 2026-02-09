@@ -3,7 +3,7 @@ import type {
     CampaignPayloadDistributables,
     CampaignPayloadFixedDistribution,
     CampaignPayloadKpiDistribution,
-} from "../types/campaign";
+} from "../types/campaign/common";
 
 export function validateDistributables(
     distributables: CampaignPayloadDistributables,

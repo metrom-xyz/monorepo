@@ -5,7 +5,7 @@ import { TokenReimbursement } from "./token-reimbursement";
 import type { ChainWithRewardsData } from "..";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { ReimbursementsWithRemaining } from "@/src/types/campaign";
+import type { ReimbursementsWithRemaining } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

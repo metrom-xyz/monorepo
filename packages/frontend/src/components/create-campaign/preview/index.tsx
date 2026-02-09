@@ -1,10 +1,5 @@
 import { Button, Typography, TextField, ErrorText } from "@metrom-xyz/ui";
-import {
-    AaveV3CampaignPreviewPayload,
-    AmmPoolLiquidityCampaignPreviewPayload,
-    EmptyTargetCampaignPreviewPayload,
-    type CampaignPreviewPayload,
-} from "@/src/types/campaign";
+import { type CampaignPreviewPayload } from "@/src/types/campaign/common";
 import { buildSpecificationBundle } from "@/src/utils/campaign-bundle";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -36,6 +31,9 @@ import {
 } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
+import { AmmPoolLiquidityCampaignPreviewPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import { AaveV3CampaignPreviewPayload } from "@/src/types/campaign/aave-v3-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 
 import styles from "./styles.module.css";
 
