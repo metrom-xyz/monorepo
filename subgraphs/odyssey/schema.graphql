@@ -6,15 +6,25 @@ type Token @entity(immutable: true) {
 }
 
 type Strategy @entity(immutable: false) {
-    id: Bytes!
+    id: Int8!
     implementation: Bytes!
     active: Boolean!
+    assets: [StrategyAsset!]! @derivedFrom(field: "strategy")
+    positions: [Position!]! @derivedFrom(field: "strategy")
+}
+
+type StrategyAsset @entity(immutable: false) {
+    id: Bytes!
+    strategy: Strategy!
+    asset: Token!
+    totalAllocated: BigInt!
+    totalDeposited: BigInt!
 }
 
 type Position @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
-    strategyId: BigInt!
+    strategy: Strategy!
     asset: Token
     totalAllocated: BigInt!
     totalDeposited: BigInt!

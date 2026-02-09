@@ -8,7 +8,7 @@ import {
     BI_0,
     getOrCreateToken,
     getPositionOrThrow,
-    updatePositionDataAndSave,
+    updatePositionAndStrategyAssetDataAndSave,
 } from "../commons";
 
 export function handlePositionOpened(event: PositionOpened): void {
@@ -17,8 +17,7 @@ export function handlePositionOpened(event: PositionOpened): void {
     if (asset === null)
         throw new Error(`Invalid asset ${event.params.asset.toHex()}`);
     position.asset = asset.id;
-    position.totalAllocated = event.params.pushed;
-    updatePositionDataAndSave(position, event.block);
+    updatePositionAndStrategyAssetDataAndSave(position, event.block);
 }
 
 export function handlePositionClosed(event: PositionClosed): void {
@@ -30,7 +29,8 @@ export function handlePositionClosed(event: PositionClosed): void {
 }
 
 export function handleFeatureCalled(event: FeatureCalled): void {
-    const position = getPositionOrThrow(event.address);
-    position.totalAllocated = event.params.allocatedAfter;
-    updatePositionDataAndSave(position, event.block);
+    updatePositionAndStrategyAssetDataAndSave(
+        getPositionOrThrow(event.address),
+        event.block,
+    );
 }
