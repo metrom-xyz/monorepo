@@ -1,9 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full
-        rounded-lg
-        surface-primary;
+    @apply w-full rounded-lg surface-primary;
 }
 
 .preview {
@@ -14,6 +12,7 @@
         p-4
         select-none
         cursor-pointer
+        justify-between
         rounded-lg
         surface-primary-hover
         transition-all

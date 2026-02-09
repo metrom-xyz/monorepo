@@ -89,7 +89,7 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
         const resolvedId = id || generatedId;
 
         return (
-            <div className={classNames("root", className)}>
+            <div className={classNames("root", styles.root, className)}>
                 <div
                     className={classNames(styles.wrapper, {
                         [styles[size]]: true,

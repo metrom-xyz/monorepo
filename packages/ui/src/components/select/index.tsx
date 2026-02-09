@@ -9,6 +9,7 @@ import React, {
     type ChangeEvent,
     useEffect,
     useMemo,
+    type ReactNode,
 } from "react";
 import type { BaseInputProps, BaseInputSize } from "../commons/input";
 import { Popover } from "../popover";
@@ -19,15 +20,17 @@ import { Typography } from "../typography";
 import classNames from "classnames";
 import { ChevronUp } from "../../assets/chevron-up";
 import { ChevronDown } from "../../assets/chevron-down";
+import { matchesSearch } from "../../utils/search";
 
 import styles from "./styles.module.css";
 
-export type ValueType = string | number | null;
+export type ValueType = string | number | null | undefined;
 
-export interface SelectOption<V extends ValueType> {
+export interface SelectOption<V extends ValueType, D = unknown> {
     label: string;
     color?: string;
     value: V;
+    data?: D;
     disabled?: boolean;
 }
 
@@ -36,9 +39,8 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
     options: O[];
     value: V;
     search?: boolean;
-    onChange: (option: O) => void;
-    renderOption?: (option: O) => ReactElement;
     loading?: boolean;
+    listHeader?: ReactNode;
     messages: {
         noResults: string;
     };
@@ -47,12 +49,20 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
         option?: string;
     };
     className?: string;
+    onChange: (option: O) => void;
+    renderOption?: (option: O) => ReactElement;
+    renderSelectedPrefix?: (selected: O | null | undefined) => ReactElement;
 } & Omit<BaseInputProps<unknown>, "onChange" | "value" | "id">;
 
-type ItemData<V extends ValueType, O extends SelectOption<V>> = Pick<
+type ItemData<
+    V extends ValueType,
+    O extends SelectOption<V, D>,
+    D = unknown,
+> = Pick<
     SelectProps<V, O>,
     "options" | "value" | "onChange" | "renderOption"
 > & {
+    data?: D;
     size?: BaseInputSize;
     dataTestIds?: {
         option?: string;
@@ -69,20 +79,26 @@ export const LIST_ITEM_HEIGHT: Record<BaseInputSize, number> = {
 
 export const MAX_VISIBLE_ITEMS = 6;
 
-function Component<V extends ValueType, O extends SelectOption<V>>(
+function Component<
+    V extends ValueType,
+    O extends SelectOption<V, D>,
+    D = unknown,
+>(
     {
         id,
         options,
         value,
         size = "base",
         search,
-        onChange,
         className,
-        renderOption,
         disabled,
         loading,
+        listHeader,
         messages,
         dataTestIds,
+        onChange,
+        renderOption,
+        renderSelectedPrefix,
         ...rest
     }: SelectProps<V, O>,
     ref: ForwardedRef<HTMLInputElement>,
@@ -107,11 +123,13 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     }, [debouncedQuery, options, value]);
 
     useEffect(() => {
+        const searchParts = debouncedQuery.toLowerCase().split(" ");
+
         setFilteredOptions(
-            options.filter((option) =>
-                option.label
-                    .toLowerCase()
-                    .includes(debouncedQuery.toLowerCase()),
+            options.filter(
+                (option) =>
+                    matchesSearch(option.label, searchParts) ||
+                    matchesSearch(option.value?.toString() || "", searchParts),
             ),
         );
     }, [debouncedQuery, options]);
@@ -125,8 +143,8 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     );
 
     const handleClick = useCallback(() => {
-        if (!open && (disabled || loading)) return;
-        setOpen(!open);
+        if (disabled || loading) return;
+        if (!open) setOpen(true);
     }, [disabled, loading, open]);
 
     const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -146,7 +164,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     );
 
     const rowProps = useMemo(() => {
-        const data: ItemData<V, O> = {
+        const data: ItemData<V, O, D> = {
             options: filteredOptions,
             value,
             size,
@@ -187,6 +205,13 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 focused={open}
                 readOnly={!search}
                 icon={open ? ChevronUp : ChevronDown}
+                prefixElement={
+                    open && search
+                        ? null
+                        : renderSelectedPrefix
+                          ? renderSelectedPrefix(selectedOption)
+                          : null
+                }
                 value={
                     open && search
                         ? query
@@ -211,6 +236,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 placement="bottom-start"
                 className={styles.dropdownRoot}
             >
+                {listHeader}
                 {filteredOptions.length === 0 ? (
                     <div
                         style={{
@@ -277,7 +303,7 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
             {...ariaAttributes}
         >
             {renderOption ? (
-                <div>{renderOption(item)}</div>
+                renderOption(item)
             ) : (
                 <Typography size={size}>{item.label}</Typography>
             )}
