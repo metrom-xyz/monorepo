@@ -6,12 +6,12 @@ import {
 } from "../../generated/PositionRegistry/PositionRegistry";
 import { Position, Strategy } from "../../generated/schema";
 import { Position as PositionTemplate } from "../../generated/templates";
-import { BI_0, getStrategyId, getStrategyOrThrow } from "../commons";
+import { BI_0, getStrategyOrThrow } from "../commons";
 
 export function handlePositionDeployed(event: PositionDeployedEvent): void {
     const position = new Position(event.params.position);
     position.owner = event.params.owner;
-    position.strategyId = event.params.strategyId;
+    position.strategy = event.params.strategyId.toI64();
     position.totalAllocated = BI_0;
     position.totalDeposited = BI_0;
     position.totalBorrowed = BI_0;
@@ -22,14 +22,14 @@ export function handlePositionDeployed(event: PositionDeployedEvent): void {
 }
 
 export function handleStrategyAdded(event: StrategyAddedEvent): void {
-    const strategy = new Strategy(getStrategyId(event.params.strategyId));
+    const strategy = new Strategy(event.params.strategyId.toI64());
     strategy.implementation = event.params.implementation;
     strategy.active = true;
     strategy.save();
 }
 
 export function handleIsActiveUpdated(event: IsActiveUpdatedEvent): void {
-    const strategy = getStrategyOrThrow(event.params.strategyId);
+    const strategy = getStrategyOrThrow(event.params.strategyId.toI64());
     strategy.active = event.params.isActive;
     strategy.save();
 }
@@ -37,7 +37,7 @@ export function handleIsActiveUpdated(event: IsActiveUpdatedEvent): void {
 export function handleImplementationUpdated(
     event: ImplementationUpdatedEvent,
 ): void {
-    const strategy = getStrategyOrThrow(event.params.strategyId);
+    const strategy = getStrategyOrThrow(event.params.strategyId.toI64());
     strategy.implementation = event.params.newImplementation;
     strategy.save();
 }

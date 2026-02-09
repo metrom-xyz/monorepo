@@ -1,5 +1,5 @@
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { Position, Strategy, Token } from "../generated/schema";
+import { Position, Strategy, StrategyAsset, Token } from "../generated/schema";
 import { Erc20 } from "../generated/Factory/Erc20";
 import { Erc20BytesSymbol } from "../generated/Factory/Erc20BytesSymbol";
 import { Erc20BytesName } from "../generated/Factory/Erc20BytesName";
@@ -75,7 +75,7 @@ export function getPositionOrThrow(id: Address): Position {
     return position;
 }
 
-export function updatePositionDataAndSave(
+export function updatePositionAndStrategyAssetDataAndSave(
     position: Position,
     block: ethereum.Block,
 ): void {
@@ -90,20 +90,72 @@ export function updatePositionDataAndSave(
                 `Could not resolve ERC20 token at address ${borrowTokenAddress.toHex()}`,
             );
 
+    const previouslyAllocated = position.totalAllocated;
+    const previouslyDeposited = position.totalDeposited;
+
+    position.totalAllocated = contract.totalAllocated();
     position.totalDeposited = contract.depositedAmount();
     position.borrowToken = borrowTokenAddress;
     position.totalBorrowed = contract.borrowedAmount();
     position._updatedAtBlock = block.number;
     position.save();
+
+    const allocatedDelta = position.totalAllocated.minus(previouslyAllocated);
+    const depositedDelta = position.totalDeposited.minus(previouslyDeposited);
+
+    const strategyAsset = getOrCreateStrategyAsset(
+        position.strategy,
+        changetype<Address>(position.asset),
+    );
+    strategyAsset.totalAllocated =
+        strategyAsset.totalAllocated.plus(allocatedDelta);
+    strategyAsset.totalDeposited =
+        strategyAsset.totalDeposited.plus(depositedDelta);
+    strategyAsset.save();
 }
 
-export function getStrategyId(id: BigInt): Bytes {
-    return Bytes.fromI32(id.toI32());
-}
-
-export function getStrategyOrThrow(id: BigInt): Strategy {
-    const strategy = Strategy.load(getStrategyId(id));
+export function getStrategyOrThrow(id: i64): Strategy {
+    const strategy = Strategy.load(id);
     if (strategy === null)
         throw new Error(`Could not find strategy with id ${id.toString()}`);
     return strategy;
+}
+
+export function getStrategyAssetId(rawStrategyId: i64, asset: Bytes): Bytes {
+    return asset.concat(Bytes.fromByteArray(Bytes.fromI64(rawStrategyId)));
+}
+
+export function getOrCreateStrategyAsset(
+    rawStrategyId: i64,
+    asset: Bytes,
+): StrategyAsset {
+    let id = getStrategyAssetId(rawStrategyId, asset);
+    let strategyAsset = StrategyAsset.load(id);
+    if (strategyAsset === null) {
+        strategyAsset = new StrategyAsset(id);
+
+        if (getOrCreateToken(changetype<Address>(asset)) === null)
+            throw new Error(`Could not create asset ${asset}`);
+
+        strategyAsset.asset = asset;
+        strategyAsset.strategy = rawStrategyId;
+        strategyAsset.totalAllocated = BI_0;
+        strategyAsset.totalDeposited = BI_0;
+        strategyAsset.save();
+    }
+    return strategyAsset;
+}
+
+export function getStrategyAssetOrThrow(
+    rawStrategyId: i64,
+    asset: Bytes,
+): StrategyAsset {
+    const strategyAsset = StrategyAsset.load(
+        getStrategyAssetId(rawStrategyId, asset),
+    );
+    if (strategyAsset === null)
+        throw new Error(
+            `Could not find asset ${asset.toHex()} for strategy with id ${rawStrategyId.toString()}`,
+        );
+    return strategyAsset;
 }
