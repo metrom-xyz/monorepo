@@ -1,0 +1,59 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: {{pruningBlocks}}
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CurveFactoryV2
+    network: {{network}}
+    source:
+      abi: CurveFactoryV2
+      address: "{{curveFactoryV2Address}}"
+      startBlock: {{curveFactoryV2StartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/curve-factory-v2.ts
+      entities: []
+      abis:
+        - name: CurveFactoryV2
+          file: ./abis/CurveFactoryV2.json
+        - name: Curve
+          file: ./abis/Curve.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: NewCurve(indexed address,indexed bytes32,indexed address)
+          handler: handleNewCurve
+templates:
+  - kind: ethereum/contract
+    name: Curve
+    network: {{network}}
+    source:
+      abi: Curve
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/curve.ts
+      entities: []
+      abis:
+        - name: Curve
+          file: ./abis/Curve.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+      eventHandlers:
+        - event: Trade(indexed address,indexed address,indexed address,uint256,uint256,int128)
+          handler: handleTrade
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
