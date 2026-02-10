@@ -9,6 +9,7 @@ import {
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
     SupportedTurtleDeal,
+    SupportedYieldSeeker,
     TargetType,
 } from "@metrom-xyz/sdk";
 
@@ -18,6 +19,7 @@ export enum ProtocolType {
     LiquityV2 = "liquity-v2",
     AaveV3 = "aave-v3",
     LiquidityProviderDeal = "liquidity-provider-deal",
+    YieldSeeker = "yield-seeker",
 }
 
 export interface ProtocolBase<S = string, T = ProtocolType> {
@@ -80,9 +82,15 @@ export interface LiquidityProviderDeal
     actionUrl: string;
 }
 
+export type YieldSeekerProtocol = ProtocolBase<
+    SupportedYieldSeeker,
+    ProtocolType.YieldSeeker
+>;
+
 export type Protocol =
     | DexProtocol
     | GmxV1LiquidityProtocol
     | LiquityV2Protocol
     | AaveV3Protocol
-    | LiquidityProviderDeal;
+    | LiquidityProviderDeal
+    | YieldSeekerProtocol;

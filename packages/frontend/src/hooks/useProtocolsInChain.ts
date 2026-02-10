@@ -6,6 +6,7 @@ import type {
     LiquityV2Protocol,
     Protocol,
     ProtocolType,
+    YieldSeekerProtocol,
 } from "@metrom-xyz/chains";
 import { useChainData } from "./useChainData";
 import type { HookBaseParams, HookCrossVmParams } from "../types/hooks";
@@ -17,6 +18,7 @@ interface ProtocolByType {
     [ProtocolType.LiquityV2]: LiquityV2Protocol;
     [ProtocolType.AaveV3]: AaveV3Protocol;
     [ProtocolType.LiquidityProviderDeal]: LiquidityProviderDeal;
+    [ProtocolType.YieldSeeker]: YieldSeekerProtocol;
 }
 
 export type ProtocolsInChain<T extends ProtocolType | undefined> =
