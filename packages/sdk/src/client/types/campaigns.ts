@@ -104,6 +104,10 @@ export type BackendAmmPoolNetSwapVolumeTarget = BaseTarget & {
     targetToken: Erc20Token;
 };
 
+export type BackendYieldSeekerTarget = BaseTarget & {
+    type: "yield-seeker";
+};
+
 export interface BackendTokenDistributable {
     token: Address;
     amount: string;
@@ -183,7 +187,8 @@ export interface BackendBaseCampaign {
         | BackendAaveV3BridgeAndSupplyTarget
         | BackendJumperWhitelistedAmmPoolLiquidityTarget
         | BackendTurtleCampaignTarget
-        | BackendAmmPoolNetSwapVolumeTarget;
+        | BackendAmmPoolNetSwapVolumeTarget
+        | BackendYieldSeekerTarget;
     specification?: Specification;
     accountsIncentivized?: number;
     usdTvl?: number;

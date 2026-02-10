@@ -58,6 +58,7 @@ export enum TargetType {
     HoldFungibleAsset = "hold-fungible-asset",
     Turtle = "turtle",
     AmmPoolNetSwapVolume = "amm-pool-net-swap-volume",
+    Yieldseeker = "yield-seeker",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -168,6 +169,10 @@ export type AmmPoolNetSwapVolumeTarget = BaseTarget & {
     targetToken: Erc20Token;
 };
 
+export type YieldSeekerTarget = BaseTarget & {
+    type: "yield-seeker";
+};
+
 export type CampaignTarget =
     | EmptyTarget
     | AmmPoolLiquidityTarget
@@ -181,7 +186,8 @@ export type CampaignTarget =
     | JumperWhitelistedAmmPoolLiquidityTarget
     | HoldFungibleAssetTarget
     | TurtleTarget
-    | AmmPoolNetSwapVolumeTarget;
+    | AmmPoolNetSwapVolumeTarget
+    | YieldSeekerTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -357,9 +363,11 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                           ? TurtleTarget
                           : T extends TargetType.AmmPoolNetSwapVolume
                             ? AmmPoolNetSwapVolumeTarget
-                            : T extends TargetType.Empty
-                              ? EmptyTarget
-                              : never;
+                            : T extends TargetType.Yieldseeker
+                              ? YieldSeekerTarget
+                              : T extends TargetType.Empty
+                                ? EmptyTarget
+                                : never;
 }
 
 export type TargetedCampaign<T extends TargetType> = BaseTargetedCampaign<T> &

@@ -45,6 +45,7 @@ import {
     type TurtleTarget,
     type AmmPoolNetSwapVolumeTarget,
     type NoDistributables,
+    type YieldSeekerTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -1229,6 +1230,14 @@ function processCampaignsResponse(
                     chainId,
                     ammPool: {},
                     targetToken: backendCampaign.target.targetToken,
+                };
+                break;
+            }
+            case "yield-seeker": {
+                target = <YieldSeekerTarget>{
+                    type: TargetType.Yieldseeker,
+                    chainType,
+                    chainId,
                 };
                 break;
             }

@@ -3,6 +3,7 @@ import {
     ChainType,
     PartnerCampaignType,
     SupportedDex,
+    SupportedYieldSeeker,
 } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { BaseLogo } from "../assets/logos/chains/base";
@@ -13,6 +14,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { HydrexLogo } from "../assets/logos/dexes/hydrex";
 import { BalancerLogo } from "../assets/logos/dexes/balancer";
 import { QuickswapLogo } from "../assets/logos/dexes/quickswap";
+import { YieldSeekerLogo } from "../assets/logos/yield-seeker";
 
 export const baseData: ChainData = {
     active: true,
@@ -84,6 +86,13 @@ export const baseData: ChainData = {
                     "https://dapp.quickswap.exchange/pool/v4/{pool}?chainId=8453",
             },
             supportsFetchAllPools: true,
+        },
+        {
+            active: false,
+            type: ProtocolType.YieldSeeker,
+            slug: SupportedYieldSeeker.YieldSeeker,
+            logo: YieldSeekerLogo,
+            name: "Yield Seeker",
         },
     ],
     baseTokens: [

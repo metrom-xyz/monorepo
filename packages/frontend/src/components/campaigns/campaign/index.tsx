@@ -37,6 +37,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
         DistributablesType.NoDistributables,
     );
     const turtleCampaign = campaign.isTargeting(TargetType.Turtle);
+    const yieldseekerCampaign = campaign.isTargeting(TargetType.Yieldseeker);
 
     const linkProps = campaign.isTargeting(TargetType.Turtle)
         ? {
@@ -47,6 +48,8 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
         : {
               href: `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`,
           };
+
+    if (yieldseekerCampaign) return null;
 
     return (
         <Link {...linkProps} className={styles.root}>
