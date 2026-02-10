@@ -105,6 +105,10 @@ export function getCampaignName(
         case TargetType.Turtle: {
             return campaign.target.name;
         }
+        case TargetType.YieldSeeker: {
+            // TODO: have the collateral returned by the API
+            return "Yieldseeker USDC";
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }

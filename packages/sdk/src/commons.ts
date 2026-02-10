@@ -96,7 +96,7 @@ export interface ServiceUrls {
 export const CAMPAIGN_TARGET_TO_KIND: Record<TargetType, CampaignKind> = {
     // These campaigns are not metrom native, so there's not campaign kind; we use the empty kind to avoid type issues.
     [TargetType.Turtle]: CampaignKind.EmptyTarget,
-    [TargetType.Yieldseeker]: CampaignKind.EmptyTarget,
+    [TargetType.YieldSeeker]: CampaignKind.EmptyTarget,
     // Amm pool net swap volume is not currently supported, so it doesn't have a campaign kind;
     // we use the empty kind to avoid type issues.
     [TargetType.AmmPoolNetSwapVolume]: CampaignKind.EmptyTarget,

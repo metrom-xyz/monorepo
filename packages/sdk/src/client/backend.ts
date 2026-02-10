@@ -1235,7 +1235,7 @@ function processCampaignsResponse(
             }
             case "yield-seeker": {
                 target = <YieldSeekerTarget>{
-                    type: TargetType.Yieldseeker,
+                    type: TargetType.YieldSeeker,
                     chainType,
                     chainId,
                 };
