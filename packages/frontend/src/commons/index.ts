@@ -27,7 +27,9 @@ export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 export const TURTLE_APP_EARN_URL = "https://app.turtle.xyz/earn/opportunities";
 export const TURTLE_REFERRAL_CODE = "METROM";
 
+export const YIELDSEEKER_APP_BASE_URL = "https://beta.yieldseeker.xyz";
 export const YIELDSEEKER_REFERRAL_CODE = "TRENCHES";
+export const YIELDSEEKER_BONUS_PERCENTAGE = 12;
 
 export const POINTS_BOOSTER_REFERRAL_URLS: Record<
     SupportedPointsBooster,

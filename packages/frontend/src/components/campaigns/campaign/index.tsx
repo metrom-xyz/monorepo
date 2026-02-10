@@ -19,6 +19,7 @@ import { type Campaign } from "@/src/types/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
 import { Points } from "./points";
 import { TURTLE_APP_EARN_URL, TURTLE_REFERRAL_CODE } from "@/src/commons";
+import { YieldSeeker } from "./yield-seeker";
 
 import styles from "./styles.module.css";
 
@@ -37,7 +38,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
         DistributablesType.NoDistributables,
     );
     const turtleCampaign = campaign.isTargeting(TargetType.Turtle);
-    const yieldseekerCampaign = campaign.isTargeting(TargetType.Yieldseeker);
+    const yieldseekerCampaign = campaign.isTargeting(TargetType.YieldSeeker);
 
     const linkProps = campaign.isTargeting(TargetType.Turtle)
         ? {
@@ -49,14 +50,15 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
               href: `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`,
           };
 
-    if (yieldseekerCampaign) return null;
+    if (yieldseekerCampaign)
+        return <YieldSeeker type={type} campaign={campaign} />;
 
     return (
         <Link {...linkProps} className={styles.root}>
             <Card className={styles.card}>
                 <Chain id={campaign.chainId} type={campaign.chainType} />
                 <Protocol campaign={campaign} />
-                <div className={styles.pool}>
+                <div className={styles.action}>
                     <Action campaign={campaign} />
                 </div>
                 <Status

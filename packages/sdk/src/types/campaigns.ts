@@ -58,7 +58,7 @@ export enum TargetType {
     HoldFungibleAsset = "hold-fungible-asset",
     Turtle = "turtle",
     AmmPoolNetSwapVolume = "amm-pool-net-swap-volume",
-    Yieldseeker = "yield-seeker",
+    YieldSeeker = "yield-seeker",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -363,7 +363,7 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                           ? TurtleTarget
                           : T extends TargetType.AmmPoolNetSwapVolume
                             ? AmmPoolNetSwapVolumeTarget
-                            : T extends TargetType.Yieldseeker
+                            : T extends TargetType.YieldSeeker
                               ? YieldSeekerTarget
                               : T extends TargetType.Empty
                                 ? EmptyTarget

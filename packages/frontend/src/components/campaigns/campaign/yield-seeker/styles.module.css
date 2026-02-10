@@ -1,0 +1,80 @@
+@reference "../../../../app.css";
+
+.modal {
+    @apply h-auto
+        w-full
+        max-w-[28.125rem]
+        p-10
+        flex
+        flex-col
+        items-center
+        gap-6
+        rounded-3xl
+        border
+        surface-primary
+        border-gray-300
+        dark:border-neutral-800
+        overflow-hidden;
+}
+
+.header {
+    @apply flex flex-col items-end;
+}
+
+.bonusBox {
+    @apply w-full
+        rounded-lg
+        border-dashed
+        flex
+        flex-col
+        items-center
+        gap-2
+        p-4
+        border-2
+        bg-[#88FC8E14]
+        border-[#88FC8E5C];
+}
+
+.bonusCodeWrapper {
+    @apply flex items-center gap-1;
+}
+
+.bonusCode {
+    @apply cursor-pointer;
+}
+
+.greenText {
+    @apply text-[#88FC8E];
+}
+
+.howToContainer {
+    @apply w-full flex flex-col gap-3;
+}
+
+.list {
+    @apply w-full flex flex-col gap-2;
+}
+
+.link {
+    @apply flex text-xs font-medium;
+}
+
+.step {
+    @apply flex gap-2 items-center;
+}
+
+.stepLinkWrapper {
+    @apply flex items-center gap-1;
+}
+
+.brandGreenText {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.button {
+    @apply w-full;
+}
+
+.externalLinkIcon {
+    @apply size-4 transform -rotate-45;
+}

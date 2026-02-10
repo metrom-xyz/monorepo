@@ -114,6 +114,21 @@
         "turtleDeal": {
             "action": "Deposit {tokens} to {owner} turtle vault"
         },
+        "yieldSeeker": {
+            "boost": "{percentage} boost",
+            "partnership": "Partnership",
+            "bonusApr": "{percentage} bonus APR",
+            "bonusCode": "Bonus code:",
+            "tooltip": "Click to copy",
+            "copied": "Copied",
+            "howTo": "How to partecipate:",
+            "step1": "Connect wallet at",
+            "step2": "Create account",
+            "step3": "Deposit USDC",
+            "step4": "Earn rewards weekly",
+            "goTo": "Go to Yieldseeker",
+            "description": "Applying code 'TRENCHES' automatically activates a 12% fixed USDC bonus, streamed weekly (Sun/Mon UTC) for 3 months. Min. deposit: $10,000 USDC."
+        },
         "empty": {
             "title": "No campaigns found",
             "description": "Update your filters to explore more options",

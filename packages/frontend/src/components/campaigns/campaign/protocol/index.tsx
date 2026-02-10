@@ -46,7 +46,7 @@ export function Protocol({ campaign }: ProtocolProps) {
                         .type as unknown as SupportedLiquidityProviderDeal)
                 );
             }
-            case TargetType.Yieldseeker: {
+            case TargetType.YieldSeeker: {
                 return protocol.slug === campaign.target.type;
             }
         }
