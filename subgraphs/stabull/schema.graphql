@@ -1,0 +1,26 @@
+type Token @entity(immutable: true) {
+    id: Bytes!
+    name: String!
+    symbol: String!
+    decimals: Int!
+}
+
+type Pool @entity(immutable: false) {
+    id: Bytes!
+    token0: Token!
+    token1: Token!
+    token0Tvl: BigInt!
+    token1Tvl: BigInt!
+    price: BigDecimal!
+    liquidity: BigInt!
+    positions: [Position!]! @derivedFrom(field: "pool")
+
+    _tvlsUpdatedAtBlock: BigInt!
+}
+
+type Position @entity(immutable: false) {
+    id: Bytes!
+    owner: Bytes!
+    liquidity: BigInt!
+    pool: Pool!
+}
