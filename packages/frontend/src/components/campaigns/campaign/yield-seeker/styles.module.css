@@ -4,7 +4,6 @@
     @apply h-auto
         w-full
         max-w-[28.125rem]
-        p-10
         flex
         flex-col
         items-center
@@ -13,11 +12,23 @@
         border
         surface-primary
         border-gray-300
-        dark:border-neutral-800
+        dark:border-neutral-700
         overflow-hidden;
 }
 
+.xIcon {
+    @apply cursor-pointer size-4 place-self-end;
+}
+
 .header {
+    @apply w-full flex flex-col px-5 pt-5 items-center;
+}
+
+.content {
+    @apply w-full flex flex-col gap-6 px-10 pb-10;
+}
+
+.title {
     @apply flex flex-col items-end;
 }
 
@@ -31,8 +42,10 @@
         gap-2
         p-4
         border-2
-        bg-[#88FC8E14]
-        border-[#88FC8E5C];
+        bg-[#0EA40014]
+        dark:bg-[#88FC8E14]
+        border-[#0EA40047]
+        dark:border-[#88FC8E5C];
 }
 
 .bonusCodeWrapper {
@@ -44,7 +57,7 @@
 }
 
 .greenText {
-    @apply text-[#88FC8E];
+    @apply text-brand-green-dark dark:text-[#88FC8E];
 }
 
 .howToContainer {
@@ -56,7 +69,7 @@
 }
 
 .link {
-    @apply flex text-xs font-medium;
+    @apply flex text-sm font-medium;
 }
 
 .step {
@@ -68,11 +81,15 @@
 }
 
 .brandGreenText {
-    @apply text-brand-green-dark dark:text-brand-green;
+    @apply text-brand-green-dark dark:text-brand-green font-semibold;
 }
 
 .button {
     @apply w-full;
+}
+
+.description {
+    @apply text-center;
 }
 
 .externalLinkIcon {
