@@ -22,6 +22,7 @@ import { useTranslations } from "next-intl";
 import { DynamicPointsBoostChip } from "@/src/components/dynamic-points-boost-chip";
 import { CampaignTag } from "@/src/components/campaign-tag";
 import { YieldSeeker } from "./yield-seeker";
+import { Odyssey } from "./odyssey";
 
 import styles from "./styles.module.css";
 
@@ -68,6 +69,8 @@ export function Action({
     const turtleVault = campaign.isTargeting(TargetType.Turtle);
 
     const yieldSeeker = campaign.isTargeting(TargetType.YieldSeeker);
+    
+    const odyssey = campaign.isTargeting(TargetType.Odyssey);
 
     const empty = campaign.isTargeting(TargetType.Empty);
 
@@ -91,6 +94,7 @@ export function Action({
             )}
             {turtleVault && <TurtleVault campaign={campaign} {...sizes} />}
             {yieldSeeker && <YieldSeeker campaign={campaign} {...sizes} />}
+            {odyssey && <Odyssey campaign={campaign} {...sizes} />}
             {dynamicPoints && liquityV2 && (
                 <DynamicPointsBoostChip
                     protocol={campaign.target.brand.slug}

@@ -7,6 +7,7 @@ import {
     SupportedDex,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
+    SupportedOdyssey,
     SupportedTurtleDeal,
     TargetType,
 } from "@metrom-xyz/sdk";
@@ -16,6 +17,7 @@ import {
     TurtleDarkLogo,
     TurtleLightLogo,
 } from "../assets";
+import { OdysseyLogo } from "../assets/logos/odyssey";
 
 // This is required for the Turtle integration and for dynamic points campaigns
 export const mainnetData: ChainData = {
@@ -68,6 +70,14 @@ export const mainnetData: ChainData = {
             deal: SupportedTurtleDeal.TurtleKatana,
             actionUrl:
                 "https://app.turtle.xyz/earn/partners/e791ff11-980c-4d1c-9da4-43474ce69b9a",
+        },
+        {
+            type: ProtocolType.Odyssey,
+            active: false,
+            logo: OdysseyLogo,
+            name: "Odyssey",
+            slug: SupportedOdyssey.Odyssey,
+            strategies: [],
         },
     ],
     baseTokens: [],

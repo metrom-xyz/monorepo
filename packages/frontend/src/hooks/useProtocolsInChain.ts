@@ -4,6 +4,7 @@ import type {
     GmxV1LiquidityProtocol,
     LiquidityProviderDeal,
     LiquityV2Protocol,
+    OdysseyProtocol,
     Protocol,
     ProtocolType,
     YieldSeekerProtocol,
@@ -19,6 +20,7 @@ interface ProtocolByType {
     [ProtocolType.AaveV3]: AaveV3Protocol;
     [ProtocolType.LiquidityProviderDeal]: LiquidityProviderDeal;
     [ProtocolType.YieldSeeker]: YieldSeekerProtocol;
+    [ProtocolType.Odyssey]: OdysseyProtocol;
 }
 
 export type ProtocolsInChain<T extends ProtocolType | undefined> =

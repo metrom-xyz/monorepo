@@ -46,6 +46,11 @@ const FORM_INFO: Record<BaseCampaignType, CampaignTypeConfig> = {
         description: "holdFungibleAsset.description",
         icon: <AaveThemeLogo className={styles.aaveIcon} />,
     },
+    [BaseCampaignType.Odyssey]: {
+        title: "odyssey.title",
+        description: "odyssey.description",
+        icon: <AaveThemeLogo className={styles.aaveIcon} />,
+    },
 };
 
 export function CreateCampaign() {
