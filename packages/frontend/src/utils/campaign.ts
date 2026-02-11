@@ -8,6 +8,7 @@ import {
     type LiquidityByAddresses,
     RestrictionType,
     CampaignKind,
+    SupportedOdysseyStrategy,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -23,6 +24,7 @@ import { SECONDS_IN_YEAR } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData, getCrossVmChainData } from "./chain";
+import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
 
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
@@ -109,6 +111,15 @@ export function getCampaignName(
             // TODO: have the collateral returned by the API
             return "Yieldseeker USDC";
         }
+        case TargetType.Odyssey: {
+            return t("campaignActions.odysseyStrategy", {
+                strategy:
+                    ODYSSEY_STRATEGIES_NAME[
+                        campaign.target.strategyId as SupportedOdysseyStrategy
+                    ],
+                asset: campaign.target.asset.symbol,
+            });
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }
@@ -125,7 +136,8 @@ export function getCampaignTargetValueName(
     switch (kind) {
         case CampaignKind.AmmPoolLiquidity:
         case CampaignKind.JumperWhitelistedAmmPoolLiquidity:
-        case CampaignKind.HoldFungibleAsset: {
+        case CampaignKind.HoldFungibleAsset:
+        case CampaignKind.OdysseyStrategy: {
             return t("campaignTargetValueName.tvl");
         }
         case CampaignKind.LiquityV2Debt:

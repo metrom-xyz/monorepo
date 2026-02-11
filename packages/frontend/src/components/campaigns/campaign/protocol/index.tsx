@@ -30,9 +30,7 @@ export function Protocol({ campaign }: ProtocolProps) {
             }
             case TargetType.GmxV1Liquidity:
             case TargetType.LiquityV2Debt:
-            case TargetType.LiquityV2StabilityPool: {
-                return protocol.slug === campaign.target.brand.slug;
-            }
+            case TargetType.LiquityV2StabilityPool:
             case TargetType.AaveV3Borrow:
             case TargetType.AaveV3Supply:
             case TargetType.AaveV3NetSupply:
@@ -48,6 +46,9 @@ export function Protocol({ campaign }: ProtocolProps) {
             }
             case TargetType.YieldSeeker: {
                 return protocol.slug === campaign.target.type;
+            }
+            case TargetType.Odyssey: {
+                return protocol.slug === campaign.target.brand;
             }
         }
     });

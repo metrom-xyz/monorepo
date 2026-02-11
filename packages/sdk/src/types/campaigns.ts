@@ -12,6 +12,8 @@ import type {
     SupportedBridge,
     SupportedGmxV1,
     SupportedLiquityV2,
+    SupportedOdyssey,
+    SupportedOdysseyStrategy,
     SupportedPointsBooster,
 } from "src/commons";
 import type { AmmPool, CampaignAmmPool } from "./pools";
@@ -28,6 +30,7 @@ export enum CampaignKind {
     AaveV3BridgeAndSupply = 9,
     JumperWhitelistedAmmPoolLiquidity = 10,
     HoldFungibleAsset = 11,
+    OdysseyStrategy = 12,
 }
 
 export enum BaseCampaignType {
@@ -35,6 +38,7 @@ export enum BaseCampaignType {
     AmmPoolLiquidity = "amm-pool-liquidity",
     AaveV3 = "aave-v3",
     HoldFungibleAsset = "hold-fungible-asset",
+    Odyssey = "odyssey",
 }
 
 export enum PartnerCampaignType {
@@ -59,6 +63,7 @@ export enum TargetType {
     Turtle = "turtle",
     AmmPoolNetSwapVolume = "amm-pool-net-swap-volume",
     YieldSeeker = "yield-seeker",
+    Odyssey = "odyssey",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -163,11 +168,18 @@ export interface TurtleTarget extends BaseTarget {
     withdrawalFee: number | null;
 }
 
-export type AmmPoolNetSwapVolumeTarget = BaseTarget & {
+export interface AmmPoolNetSwapVolumeTarget extends BaseTarget {
     type: "amm-pool-net-swap-volume";
     ammPool: AmmPool;
     targetToken: Erc20Token;
-};
+}
+
+export interface OdysseyTarget extends BaseTarget {
+    type: TargetType.Odyssey;
+    brand: SupportedOdyssey;
+    strategyId: SupportedOdysseyStrategy;
+    asset: Erc20Token;
+}
 
 export type YieldSeekerTarget = BaseTarget & {
     type: "yield-seeker";
@@ -187,7 +199,8 @@ export type CampaignTarget =
     | HoldFungibleAssetTarget
     | TurtleTarget
     | AmmPoolNetSwapVolumeTarget
-    | YieldSeekerTarget;
+    | YieldSeekerTarget
+    | OdysseyTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -365,9 +378,11 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                             ? AmmPoolNetSwapVolumeTarget
                             : T extends TargetType.YieldSeeker
                               ? YieldSeekerTarget
-                              : T extends TargetType.Empty
-                                ? EmptyTarget
-                                : never;
+                              : T extends TargetType.Odyssey
+                                ? OdysseyTarget
+                                : T extends TargetType.Empty
+                                  ? EmptyTarget
+                                  : never;
 }
 
 export type TargetedCampaign<T extends TargetType> = BaseTargetedCampaign<T> &

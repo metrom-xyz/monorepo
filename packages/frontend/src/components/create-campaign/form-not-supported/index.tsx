@@ -25,6 +25,7 @@ const CAMPAIGN_TYPE_TRANSLATION: Record<
     [BaseCampaignType.LiquityV2]: "type.liquityV2",
     [BaseCampaignType.AaveV3]: "type.aaveV3",
     [BaseCampaignType.HoldFungibleAsset]: "type.holdFungibleAsset",
+    [BaseCampaignType.Odyssey]: "type.odyssey",
     [PartnerCampaignType.AaveV3BridgeAndSupply]: "type.aaveV3BridgeAndSupply",
     [PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity]:
         "type.jumperWhitelistedAmmPoolLiquidity",

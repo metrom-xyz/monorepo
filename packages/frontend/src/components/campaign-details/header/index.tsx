@@ -8,6 +8,7 @@ import { AaveV3Header } from "./aave-v3";
 import { EmptyHeader } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
 import { SkeletonTags } from "./tags";
+import { OdysseyHeader } from "./odyssey";
 
 import styles from "./styles.module.css";
 
@@ -34,6 +35,8 @@ export function Header({ campaign }: HeaderProps) {
         TargetType.HoldFungibleAsset,
     );
 
+    const odyssey = campaign.isTargeting(TargetType.Odyssey);
+
     const empty = campaign.isTargeting(TargetType.Empty);
 
     return (
@@ -43,6 +46,7 @@ export function Header({ campaign }: HeaderProps) {
             {liquityV2 && <LiquityV2Header campaign={campaign} />}
             {aaveV3 && <AaveV3Header campaign={campaign} />}
             {holdFungibleAsset && <HoldFungibleAsset campaign={campaign} />}
+            {odyssey && <OdysseyHeader campaign={campaign} />}
         </div>
     );
 }
