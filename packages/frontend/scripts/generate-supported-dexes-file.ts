@@ -25,6 +25,7 @@ const HOMEPAGES: Record<SupportedDex, string> = {
     [SupportedDex.Quickswap]: "https://dapp.quickswap.exchange/",
     [SupportedDex.Hyperion]: "https://hyperion.xyz/",
     [SupportedDex.Thala]: "https://www.thala.fi/",
+    [SupportedDex.Stabull]: "https://app.stabull.finance/",
 };
 
 // TODO: add support for MVM_CHAIN_DATA generation
