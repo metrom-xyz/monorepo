@@ -1,5 +1,5 @@
 import type { Campaign } from "@/src/types/campaign";
-import { Button, Card, Modal, Popover, Typography } from "@metrom-xyz/ui";
+import { Button, Card, Modal, Popover, Typography, X } from "@metrom-xyz/ui";
 import { Chain } from "../chain";
 import { Protocol } from "../protocol";
 import { Action } from "../action";
@@ -16,6 +16,7 @@ import {
     YIELDSEEKER_REFERRAL_CODE,
 } from "@/src/commons";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { BoldText } from "@/src/components/bold-text";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -95,132 +96,160 @@ export function YieldSeeker({ type, campaign }: YieldSeekerProps) {
             <Modal onDismiss={handleModalOnClose} open={modal}>
                 <div className={styles.modal}>
                     <div className={styles.header}>
-                        <YieldSeekerLogo />
-                        <Typography
-                            size="xs"
-                            weight="medium"
-                            variant="tertiary"
-                            uppercase
-                        >
-                            {t("partnership")}
-                        </Typography>
-                    </div>
-                    <div className={styles.bonusBox}>
-                        <Typography
-                            size="xl2"
-                            weight="semibold"
-                            uppercase
-                            className={styles.greenText}
-                        >
-                            {t("bonusApr", {
-                                percentage: formatPercentage({
-                                    percentage: YIELDSEEKER_BONUS_PERCENTAGE,
-                                }),
-                            })}
-                        </Typography>
-                        <Popover
-                            ref={popoverRef}
-                            open={popover}
-                            anchor={anchor}
-                            onOpenChange={setPopover}
-                            placement="top"
-                        >
-                            <Typography weight="medium" size="xs">
-                                {copied ? t("copied") : t("tooltip")}
-                            </Typography>
-                        </Popover>
-                        <div className={styles.bonusCodeWrapper}>
-                            <Typography size="sm" uppercase>
-                                {t("bonusCode")}
-                            </Typography>
+                        <X
+                            onClick={handleModalOnClose}
+                            className={styles.xIcon}
+                        />
+                        <div className={styles.title}>
+                            <YieldSeekerLogo />
                             <Typography
-                                ref={setAnchor}
-                                onMouseEnter={handleInfoPopoverOpen}
-                                onMouseLeave={handleInfoPopoverClose}
-                                onClick={handleCopyOnClick}
-                                size="sm"
-                                weight="semibold"
-                                className={styles.bonusCode}
+                                size="xs"
+                                weight="medium"
+                                variant="tertiary"
+                                uppercase
                             >
-                                {YIELDSEEKER_REFERRAL_CODE}
+                                {t("partnership")}
                             </Typography>
                         </div>
                     </div>
-                    <div className={styles.howToContainer}>
-                        <Typography size="xs" weight="medium" uppercase>
-                            {t("howTo")}
-                        </Typography>
-                        <div className={styles.list}>
-                            <div className={styles.step}>
-                                <Typography
-                                    size="xs"
-                                    className={styles.brandGreenText}
-                                >
-                                    1
+                    <div className={styles.content}>
+                        <div className={styles.bonusBox}>
+                            <Typography
+                                size="xl2"
+                                weight="semibold"
+                                uppercase
+                                className={styles.greenText}
+                            >
+                                {t("bonusApr", {
+                                    percentage: formatPercentage({
+                                        percentage:
+                                            YIELDSEEKER_BONUS_PERCENTAGE,
+                                    }),
+                                })}
+                            </Typography>
+                            <Popover
+                                ref={popoverRef}
+                                open={popover}
+                                anchor={anchor}
+                                onOpenChange={setPopover}
+                                placement="top"
+                            >
+                                <Typography weight="medium" size="xs">
+                                    {copied ? t("copied") : t("tooltip")}
                                 </Typography>
-                                <div className={styles.stepLinkWrapper}>
-                                    <Typography size="xs">
-                                        {t("step1")}
-                                    </Typography>
-                                    <a
-                                        href={YIELDSEEKER_APP_BASE_URL}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.link}
+                            </Popover>
+                            <div className={styles.bonusCodeWrapper}>
+                                <Typography size="sm" uppercase>
+                                    {t("bonusCode")}
+                                </Typography>
+                                <Typography
+                                    ref={setAnchor}
+                                    onMouseEnter={handleInfoPopoverOpen}
+                                    onMouseLeave={handleInfoPopoverClose}
+                                    onClick={handleCopyOnClick}
+                                    size="sm"
+                                    weight="semibold"
+                                    className={styles.bonusCode}
+                                >
+                                    {YIELDSEEKER_REFERRAL_CODE}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className={styles.howToContainer}>
+                            <Typography size="sm" weight="medium" uppercase>
+                                {t("howTo")}
+                            </Typography>
+                            <div className={styles.list}>
+                                <div className={styles.step}>
+                                    <Typography
+                                        size="xs"
+                                        className={styles.brandGreenText}
                                     >
-                                        {YIELDSEEKER_APP_BASE_URL}
-                                        <ArrowRightIcon
-                                            className={styles.externalLinkIcon}
-                                        />
-                                    </a>
+                                        1
+                                    </Typography>
+                                    <div className={styles.stepLinkWrapper}>
+                                        <Typography size="sm">
+                                            {t("step1")}
+                                        </Typography>
+                                        <a
+                                            href={YIELDSEEKER_APP_BASE_URL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.link}
+                                        >
+                                            {YIELDSEEKER_APP_BASE_URL}
+                                            <ArrowRightIcon
+                                                className={
+                                                    styles.externalLinkIcon
+                                                }
+                                            />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className={styles.step}>
+                                    <Typography
+                                        size="xs"
+                                        className={styles.brandGreenText}
+                                    >
+                                        2
+                                    </Typography>
+                                    <Typography size="sm">
+                                        {t.rich("step2", {
+                                            code: YIELDSEEKER_REFERRAL_CODE,
+                                            bold: (chunks) => (
+                                                <BoldText>{chunks}</BoldText>
+                                            ),
+                                        })}
+                                    </Typography>
+                                </div>
+                                <div className={styles.step}>
+                                    <Typography
+                                        size="xs"
+                                        className={styles.brandGreenText}
+                                    >
+                                        3
+                                    </Typography>
+                                    <Typography size="sm">
+                                        {t("step3")}
+                                    </Typography>
+                                </div>
+                                <div className={styles.step}>
+                                    <Typography
+                                        size="xs"
+                                        className={styles.brandGreenText}
+                                    >
+                                        4
+                                    </Typography>
+                                    <Typography size="sm">
+                                        {t("step4")}
+                                    </Typography>
                                 </div>
                             </div>
-                            <div className={styles.step}>
-                                <Typography
-                                    size="xs"
-                                    className={styles.brandGreenText}
-                                >
-                                    2
-                                </Typography>
-                                <Typography size="xs">{t("step2")}</Typography>
-                            </div>
-                            <div className={styles.step}>
-                                <Typography
-                                    size="xs"
-                                    className={styles.brandGreenText}
-                                >
-                                    3
-                                </Typography>
-                                <Typography size="xs">{t("step3")}</Typography>
-                            </div>
-                            <div className={styles.step}>
-                                <Typography
-                                    size="xs"
-                                    className={styles.brandGreenText}
-                                >
-                                    4
-                                </Typography>
-                                <Typography size="xs">{t("step4")}</Typography>
-                            </div>
                         </div>
+                        <Button
+                            href={YIELDSEEKER_APP_BASE_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            size="sm"
+                            icon={ArrowRightIcon}
+                            iconPlacement="right"
+                            className={{
+                                root: styles.button,
+                                icon: styles.externalLinkIcon,
+                            }}
+                        >
+                            {t("goTo")}
+                        </Button>
+                        <Typography
+                            size="xs"
+                            variant="tertiary"
+                            className={styles.description}
+                        >
+                            {t.rich("description", {
+                                code: YIELDSEEKER_REFERRAL_CODE,
+                            })}
+                        </Typography>
                     </div>
-                    <Button
-                        href={YIELDSEEKER_APP_BASE_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        size="sm"
-                        icon={ArrowRightIcon}
-                        iconPlacement="right"
-                        className={{
-                            root: styles.button,
-                            icon: styles.externalLinkIcon,
-                        }}
-                    >
-                        {t("goTo")}
-                    </Button>
-                    <Typography size="xs" variant="tertiary">
-                        {t("description")}
-                    </Typography>
                 </div>
             </Modal>
         </>

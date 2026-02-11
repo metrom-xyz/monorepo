@@ -121,13 +121,13 @@
             "bonusCode": "Bonus code:",
             "tooltip": "Click to copy",
             "copied": "Copied",
-            "howTo": "How to partecipate:",
+            "howTo": "How to participate:",
             "step1": "Connect wallet at",
-            "step2": "Create account",
+            "step2": "Create your account using <bold>{code}</bold> referral code",
             "step3": "Deposit USDC",
             "step4": "Earn rewards weekly",
             "goTo": "Go to Yieldseeker",
-            "description": "Applying code 'TRENCHES' automatically activates a 12% fixed USDC bonus, streamed weekly (Sun/Mon UTC) for 3 months. Min. deposit: $10,000 USDC."
+            "description": "Applying code \"{code}\" automatically activates a 12% fixed USDC bonus, streamed weekly (Sun/Mon UTC) for 3 months. Min. deposit: $10,000 USDC."
         },
         "empty": {
             "title": "No campaigns found",
