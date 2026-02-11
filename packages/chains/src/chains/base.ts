@@ -15,6 +15,7 @@ import { HydrexLogo } from "../assets/logos/dexes/hydrex";
 import { BalancerLogo } from "../assets/logos/dexes/balancer";
 import { QuickswapLogo } from "../assets/logos/dexes/quickswap";
 import { YieldSeekerLogo } from "../assets/logos/yield-seeker";
+import { StabullLogo } from "../assets";
 
 export const baseData: ChainData = {
     active: true,
@@ -84,6 +85,19 @@ export const baseData: ChainData = {
                 type: DepositUrlType.PathTokenAddresses,
                 template:
                     "https://dapp.quickswap.exchange/pool/v4/{pool}?chainId=8453",
+            },
+            supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Stabull,
+            logo: StabullLogo,
+            name: "Stabull",
+            depositUrl: {
+                type: DepositUrlType.PathPoolAddress,
+                template:
+                    "https://app.stabull.finance/add-liquidity/{pool}?chain=8453",
             },
             supportsFetchAllPools: true,
         },
