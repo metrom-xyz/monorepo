@@ -7,8 +7,8 @@
         "codegen": "graph codegen",
         "create:local": "graph create metrom-curve-local --node http://localhost:8020",
         "deploy:local": "npm run prepare:deploy mainnet && npm run codegen && graph deploy metrom-curve-local --node http://localhost:8020 --ipfs http://localhost:5001 -l 0.0.1",
-        "deploy:bold-usdc:mainnet": "npm run prepare:deploy mainnet bold-usdc && npm run codegen && graph deploy --studio metrom-curve-bold-usdc-mainnet -l 0.0.17",
-        "deploy:ebusd-usdc:mainnet": "npm run prepare:deploy mainnet ebusd-usdc && npm run codegen && graph deploy --studio metrom-curve-ebusd-usdc-mainnet -l 0.0.64",
+        "deploy:bold-usdc:mainnet": "npm run prepare:deploy mainnet bold-usdc && npm run codegen && graph deploy metrom-curve-bold-usdc-mainnet -l 0.0.17",
+        "deploy:ebusd-usdc:mainnet": "npm run prepare:deploy mainnet ebusd-usdc && npm run codegen && graph deploy metrom-curve-ebusd-usdc-mainnet -l 0.0.65",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
