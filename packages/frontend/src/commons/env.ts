@@ -1,6 +1,7 @@
 import { Environment } from "@metrom-xyz/sdk";
 
-export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
+// export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
+export const ENVIRONMENT = "production" as Environment;
 if (
     !ENVIRONMENT ||
     !(Object.values(Environment) as string[]).includes(ENVIRONMENT)
