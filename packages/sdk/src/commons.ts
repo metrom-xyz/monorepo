@@ -26,6 +26,7 @@ export enum SupportedDex {
     Quickswap = "quickswap",
     Hyperion = "hyperion",
     Thala = "thala",
+    Stabull = "stabull",
 }
 
 export enum SupportedLiquityV2 {
@@ -82,6 +83,7 @@ export enum SupportedAmm {
     Lithos = "lithos",
     Hyperion = "hyperion",
     Thala = "thala",
+    Stabull = "stabull",
 }
 
 export enum SupportedPointsBooster {
