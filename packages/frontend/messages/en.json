@@ -155,6 +155,10 @@
                 "title": "HOLD TOKEN",
                 "description": "Incentivize users holding any ERC20 token."
             },
+            "odyssey": {
+                "title": "Odyssey strategy",
+                "description": "Incentivize users opting for a particular strategy on Odyssey."
+            },
             "partnerAction": {
                 "title": "PARTNER ACTION",
                 "description": "Pick an incentivization strategy from a set of custom built actions."
@@ -181,6 +185,7 @@
             "liquityV2": "Liquity v2",
             "aaveV3": "Aave v3",
             "holdFungibleAsset": "Hold token",
+            "odyssey": "Odyssey",
             "partnerActions": "Partner action",
             "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
             "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
@@ -869,6 +874,7 @@
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
         "holdFungibleAsset": "Hold {name} ({symbol})",
+        "odysseyStrategy": "Odyssey {strategy} strategy on {asset}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {

@@ -46,6 +46,7 @@ import {
     type AmmPoolNetSwapVolumeTarget,
     type NoDistributables,
     type YieldSeekerTarget,
+    type OdysseyTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -1238,6 +1239,17 @@ function processCampaignsResponse(
                     type: TargetType.YieldSeeker,
                     chainType,
                     chainId,
+                };
+                break;
+            }
+            case "odyssey": {
+                target = <OdysseyTarget>{
+                    type: TargetType.Odyssey,
+                    chainType,
+                    chainId,
+                    brand: backendCampaign.target.brand,
+                    strategyId: backendCampaign.target.strategyId,
+                    asset: backendCampaign.target.asset,
                 };
                 break;
             }

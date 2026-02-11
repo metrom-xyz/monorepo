@@ -7,6 +7,8 @@ import type {
     SupportedAaveV3,
     SupportedGmxV1,
     SupportedLiquityV2,
+    SupportedOdyssey,
+    SupportedOdysseyStrategy,
     SupportedPointsBooster,
 } from "src/commons";
 
@@ -68,14 +70,22 @@ export interface BackendAaveV3NetSupplyTarget
     extends BackendAaveV3Target<"aave-v3-net-supply"> {
     blacklistedCrossBorrowCollaterals: Erc20Token[];
 }
-export type BackendAaveV3BridgeAndSupplyTarget = BaseTarget & {
+
+export interface BackendAaveV3BridgeAndSupplyTarget extends BaseTarget {
     type: "aave-v3-bridge-and-supply";
     bridgeBrand: string;
     aaveV3Brand: string;
     aaveV3Market: string;
     aaveV3Collateral: BackendErc20Token;
     boostingFactor: string;
-};
+}
+
+export interface BackendOdysseyTarget extends BaseTarget {
+    type: "odyssey";
+    brand: SupportedOdyssey;
+    strategyId: SupportedOdysseyStrategy;
+    asset: Erc20Token;
+}
 
 export interface BackendTurtleIncentive {
     id: string;
@@ -188,7 +198,8 @@ export interface BackendBaseCampaign {
         | BackendJumperWhitelistedAmmPoolLiquidityTarget
         | BackendTurtleCampaignTarget
         | BackendAmmPoolNetSwapVolumeTarget
-        | BackendYieldSeekerTarget;
+        | BackendYieldSeekerTarget
+        | BackendOdysseyTarget;
     specification?: Specification;
     accountsIncentivized?: number;
     usdTvl?: number;

@@ -8,6 +8,8 @@ import {
     SupportedGmxV1,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
+    SupportedOdyssey,
+    SupportedOdysseyStrategy,
     SupportedTurtleDeal,
     SupportedYieldSeeker,
     TargetType,
@@ -20,6 +22,7 @@ export enum ProtocolType {
     AaveV3 = "aave-v3",
     LiquidityProviderDeal = "liquidity-provider-deal",
     YieldSeeker = "yield-seeker",
+    Odyssey = "odyssey",
 }
 
 export interface ProtocolBase<S = string, T = ProtocolType> {
@@ -87,10 +90,16 @@ export type YieldSeekerProtocol = ProtocolBase<
     ProtocolType.YieldSeeker
 >;
 
+export interface OdysseyProtocol
+    extends ProtocolBase<SupportedOdyssey, ProtocolType.Odyssey> {
+    strategies: SupportedOdysseyStrategy[];
+}
+
 export type Protocol =
     | DexProtocol
     | GmxV1LiquidityProtocol
     | LiquityV2Protocol
     | AaveV3Protocol
     | LiquidityProviderDeal
-    | YieldSeekerProtocol;
+    | YieldSeekerProtocol
+    | OdysseyProtocol;
