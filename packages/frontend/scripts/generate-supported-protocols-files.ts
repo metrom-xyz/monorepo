@@ -34,6 +34,7 @@ const DEX_HOMEPAGE: Record<SupportedDex, string> = {
     [SupportedDex.Quickswap]: "https://dapp.quickswap.exchange/",
     [SupportedDex.Hyperion]: "https://hyperion.xyz/",
     [SupportedDex.Thala]: "https://www.thala.fi/",
+    [SupportedDex.Stabull]: "https://app.stabull.finance/",
 };
 
 const LIQUITY_V2_HOMEPAGES: Record<SupportedLiquityV2, string> = {
