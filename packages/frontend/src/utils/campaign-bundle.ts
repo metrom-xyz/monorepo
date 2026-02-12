@@ -43,6 +43,27 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
                 payload.collateral.address,
             ],
         );
+    } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+        const blacklistedCollaterals =
+            payload.kind === CampaignKind.AaveV3NetSupply &&
+            payload.blacklistedCollaterals
+                ? payload.blacklistedCollaterals.map(({ address }) => address)
+                : [];
+
+        return encodeAbiParameters(
+            [
+                { name: "brand", type: "bytes32" },
+                { name: "market", type: "address" },
+                { name: "collateral", type: "address" },
+                { name: "blacklistedCollaterals", type: "address[]" },
+            ],
+            [
+                stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
+                payload.market.address,
+                payload.collateral.address,
+                blacklistedCollaterals,
+            ],
+        );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return "0x";
     } else return null;

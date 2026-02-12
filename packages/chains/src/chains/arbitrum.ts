@@ -1,8 +1,14 @@
 import { arbitrum } from "viem/chains";
 import { ChainData } from "../types/chains";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
-import { ArbitrumLogo, UniswapLogo } from "../assets";
-import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import { ArbitrumLogo, PloutosLogo, UniswapLogo } from "../assets";
+import {
+    BaseCampaignType,
+    ChainType,
+    SupportedAaveV3,
+    SupportedDex,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 
 export const arbitrumData: ChainData = {
@@ -20,6 +26,11 @@ export const arbitrumData: ChainData = {
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.AaveV3,
+        },
     ],
     protocols: [
         {
@@ -34,6 +45,27 @@ export const arbitrumData: ChainData = {
                     "https://app.uniswap.org/explore/pools/arbitrum/{pool}",
             },
             supportsFetchAllPools: false,
+        },
+        {
+            active: true,
+            type: ProtocolType.AaveV3,
+            slug: SupportedAaveV3.Ploutos,
+            logo: PloutosLogo,
+            name: "Ploutos",
+            markets: [
+                {
+                    address: "0xa4753a119b2272047bef65850898eb603283aae9",
+                    name: "Ploutos Arbitrum market",
+                    slug: "ploutos",
+                },
+            ],
+            actionUrls: {
+                [TargetType.AaveV3Borrow]: "",
+                [TargetType.AaveV3Supply]: "",
+                [TargetType.AaveV3NetSupply]: "",
+                // FIXME: this action is specific to aave-aptos
+                [TargetType.AaveV3BridgeAndSupply]: "",
+            },
         },
     ],
     baseTokens: [
