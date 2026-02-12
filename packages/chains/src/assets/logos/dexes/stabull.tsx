@@ -7,7 +7,7 @@ export function StabullLogo(props: SVGIcon) {
             height="400"
             version="1.1"
             viewBox="0 0 400 400"
-            className="rounded-full"
+            style={{ borderRadius: "100% " }}
             {...props}
         >
             <rect width="400" height="400" fill="#0058b0" strokeWidth="0" />
