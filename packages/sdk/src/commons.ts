@@ -56,6 +56,7 @@ export enum SupportedLiquityV2 {
 
 export enum SupportedAaveV3 {
     Aave = "aave",
+    Ploutos = "ploutos",
 }
 
 export enum SupportedBridge {
