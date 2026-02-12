@@ -19,12 +19,3 @@
 .tags {
     @apply flex gap-1.5;
 }
-
-.yieldSeekerBoostTag {
-    @apply w-fit rounded-sm p-[1px];
-    background: linear-gradient(90deg, #53fdac, #4ffc82, #49fb43);
-}
-
-.yieldSeekerBoostTag > div {
-    @apply surface-primary;
-}
