@@ -12,6 +12,7 @@ export default defineConfig({
         },
         outDir: "./dist",
         rollupOptions: {
+            external: [/^viem($|\/)/],
             output: {
                 preserveModules: true,
                 preserveModulesRoot: "src",
