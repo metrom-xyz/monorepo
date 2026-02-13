@@ -1,0 +1,133 @@
+specVersion: 1.2.0
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PoolAddressesProviderRegistry
+    network: {{network}}
+    source:
+      abi: PoolAddressesProviderRegistry
+      address: "{{poolAddressesProviderRegistryAddress}}"
+      startBlock: {{poolAddressesProviderRegistryStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mappings/pool-addresses-provider-registry.ts
+      entities: []
+      abis:
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+        - name: PoolAddressesProviderRegistry
+          file: ./abis/PoolAddressesProviderRegistry.json
+      eventHandlers:
+        - event: AddressesProviderRegistered(indexed address,indexed uint256)
+          handler: handleAddressesProviderRegistered
+        - event: AddressesProviderUnregistered(indexed address,indexed uint256)
+          handler: handleAddressesProviderUnregistered
+templates:
+  - kind: ethereum/contract
+    name: PoolAddressesProvider
+    network: {{network}}
+    source:
+      abi: PoolAddressesProvider
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: src/mappings/pool-addresses-provider.ts
+      entities: []
+      abis:
+        - name: PoolAddressesProvider
+          file: ./abis/PoolAddressesProvider.json
+      eventHandlers:
+        - event: ProxyCreated(indexed bytes32,indexed address,indexed address)
+          handler: handleProxyCreated
+  - kind: ethereum/contract
+    name: PoolConfigurator
+    network: {{network}}
+    source:
+      abi: PoolConfigurator
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: src/mappings/pool-configurator.ts
+      entities: []
+      abis:
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20BytesName
+          file: ./abis/Erc20BytesName.json
+        - name: Erc20BytesSymbol
+          file: ./abis/Erc20BytesSymbol.json
+        - name: PoolConfigurator
+          file: ./abis/PoolConfigurator.json
+      eventHandlers:
+        - event: ReserveInitialized(indexed address,indexed address,address,address,address)
+          handler: handleReserveInitialized
+        - event: ReserveActive(indexed address,bool)
+          handler: handleReserveActive
+  - kind: ethereum/contract
+    name: LendingPool
+    network: {{network}}
+    source:
+      abi: LendingPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: src/mappings/lending-pool.ts
+      entities: []
+      abis:
+        - name: LendingPool
+          file: ./abis/LendingPool.json
+      eventHandlers:
+        - event: ReserveDataUpdated(indexed address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleReserveDataUpdated
+  - kind: ethereum/contract
+    name: AToken
+    network: {{network}}
+    source:
+      abi: AToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: src/mappings/a-token.ts
+      entities: []
+      abis:
+        - name: AToken
+          file: ./abis/AToken.json
+        - name: Pool
+          file: ./abis/LendingPool.json
+      eventHandlers:
+        - event: Mint(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleBurn
+        - event: BalanceTransfer(indexed address,indexed address,uint256,uint256)
+          handler: handleBalanceTransfer
+  - kind: ethereum/contract
+    name: SToken
+    network: {{network}}
+    source:
+      abi: SToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: src/mappings/s-token.ts
+      entities: []
+      abis:
+        - name: SToken
+          file: ./abis/SToken.json
+      eventHandlers:
+        - event: Mint(indexed address,indexed address,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleBurn

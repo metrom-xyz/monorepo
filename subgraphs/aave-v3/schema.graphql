@@ -1,0 +1,32 @@
+type Pool @entity(immutable: false) {
+    id: Bytes!
+    active: Boolean!
+}
+
+type Reserve @entity(immutable: false) {
+    id: Bytes!
+    address: Bytes!
+    symbol: String!
+    name: String!
+    decimals: Int!
+    pool: Pool!
+    active: Boolean!
+    aToken: Bytes!
+    vToken: Bytes!
+    sToken: Bytes
+    scaledSupply: BigInt!
+    scaledVariableDebt: BigInt!
+    stableDebt: BigInt!
+    liquidityIndex: BigInt!
+    variableBorrowIndex: BigInt!
+}
+
+type Position @entity(immutable: false) {
+    id: Bytes!
+    pool: Pool!
+    reserve: Reserve!
+    owner: Bytes!
+    scaledSupply: BigInt!
+    scaledVariableDebt: BigInt!
+    stableDebt: BigInt!
+}
