@@ -35,6 +35,9 @@
         "viem": "^2.37.3",
         "vite": "^7.1.4"
     },
+    "peerDependencies": {
+        "viem": "^2.37.3"
+    },
     "files": [
         "dist"
     ]
