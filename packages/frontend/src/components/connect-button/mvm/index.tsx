@@ -36,7 +36,7 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
     } = useWallet();
 
     const { data: aptBalance } = useAptBalance({
-        address: account?.address,
+        address: account?.address.toString(),
     });
 
     const balance: Balance | undefined = useMemo(() => {
