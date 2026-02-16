@@ -135,6 +135,11 @@ export function Filters({
         return () => {
             const now = dayjs();
 
+            if (label === activePreset) {
+                clearDurationPreset();
+                return;
+            }
+
             setFrom(getClosestAvailableTime(now.subtract(value, unit)));
             setTo(getClosestAvailableTime(now));
             setActivePreset(label);
@@ -253,11 +258,6 @@ export function Filters({
                                 key={preset.label}
                                 variant="secondary"
                                 onClick={getDurationPresetHandler(preset)}
-                                onClose={
-                                    preset.label === activePreset
-                                        ? clearDurationPreset
-                                        : undefined
-                                }
                                 active={preset.label === activePreset}
                             >
                                 {t(preset.label)}
@@ -313,11 +313,6 @@ export function Filters({
                         key={preset.label}
                         variant="secondary"
                         onClick={getDurationPresetHandler(preset)}
-                        onClose={
-                            preset.label === activePreset
-                                ? clearDurationPreset
-                                : undefined
-                        }
                         active={preset.label === activePreset}
                     >
                         {t(preset.label)}
