@@ -115,6 +115,7 @@
             "action": "Deposit {tokens} to {owner} turtle vault"
         },
         "yieldSeeker": {
+            "boost": "Includes partner bonus {percentage}",
             "partnership": "Partnership",
             "bonusApr": "{percentage} bonus APR",
             "bonusCode": "Bonus code:",
