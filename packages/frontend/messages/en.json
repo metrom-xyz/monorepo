@@ -900,6 +900,10 @@
         "safe": {
             "title": "Safe connected",
             "content": "Please notify the wallet participants to sign transactions."
+        },
+        "chainSwitchError": {
+            "title": "Failed to switch network",
+            "description": "Switch networks manually in your wallet."
         }
     },
     "campaignTargetValueName": {

@@ -11,7 +11,9 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Network } from "@aptos-labs/ts-sdk";
 import { chainIdToAptosNetwork } from "@/src/utils/chain";
-import { Typography } from "@metrom-xyz/ui";
+import { ToastNotification, Typography } from "@metrom-xyz/ui";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +23,7 @@ export function NetworkSelectMvm() {
 
     const rootRef = useRef<HTMLDivElement>(null);
 
+    const t = useTranslations("notifications");
     const activeChains = useActiveChains();
     const { id: selectedChainId } = useChainWithType();
     const { changeNetwork, connected } = useWallet();
@@ -42,12 +45,29 @@ export function NetworkSelectMvm() {
     const handleNetworkOnChange = useCallback(
         async (chainId: number) => {
             const network = chainIdToAptosNetwork(chainId);
-            if (!network) return;
+            if (!network || !connected || selectedChainId === chainId) return;
 
-            if (connected) await changeNetwork(network as string as Network);
+            try {
+                await changeNetwork(network as string as Network);
+            } catch (error) {
+                console.error("Error switching network", error);
+                toast.custom((toastId) => (
+                    <ToastNotification
+                        toastId={toastId}
+                        icon={ErrorIcon}
+                        variant="fail"
+                        title={t("chainSwitchError.title")}
+                    >
+                        <Typography weight="medium">
+                            {t("chainSwitchError.description")}
+                        </Typography>
+                    </ToastNotification>
+                ));
+            }
+
             setPickerOpen(false);
         },
-        [connected, changeNetwork],
+        [connected, changeNetwork, t],
     );
 
     return (
