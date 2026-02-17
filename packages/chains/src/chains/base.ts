@@ -3,6 +3,8 @@ import {
     ChainType,
     PartnerCampaignType,
     SupportedDex,
+    SupportedOdyssey,
+    SupportedOdysseyStrategy,
     SupportedYieldSeeker,
 } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
@@ -15,6 +17,7 @@ import { HydrexLogo } from "../assets/logos/dexes/hydrex";
 import { BalancerLogo } from "../assets/logos/dexes/balancer";
 import { QuickswapLogo } from "../assets/logos/dexes/quickswap";
 import { YieldSeekerLogo } from "../assets/logos/yield-seeker";
+import { OdysseyLogo } from "../assets/logos/odyssey";
 
 export const baseData: ChainData = {
     active: true,
@@ -30,6 +33,11 @@ export const baseData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.Odyssey,
         },
         {
             active: false,
@@ -86,6 +94,18 @@ export const baseData: ChainData = {
                     "https://dapp.quickswap.exchange/pool/v4/{pool}?chainId=8453",
             },
             supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Odyssey,
+            slug: SupportedOdyssey.Odyssey,
+            logo: OdysseyLogo,
+            name: "Odyssey",
+            strategies: [
+                SupportedOdysseyStrategy.SynthStrategy,
+                SupportedOdysseyStrategy.CompoundV3BorrowStrategy,
+                SupportedOdysseyStrategy.CompoundV3VesperStrategy,
+            ],
         },
         {
             active: false,

@@ -20,6 +20,7 @@ import {
     type FixedPointDistributables,
     type DynamicPointDistributables,
     type AmmPool,
+    type OdysseyAsset,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
@@ -31,8 +32,13 @@ import {
     type ChainData,
     type DexProtocol,
     type LiquityV2Protocol,
+    type OdysseyProtocol,
 } from "@metrom-xyz/chains";
 import type { PropertyUnion } from "./utils";
+import {
+    ODYSSEY_BORROW_STRATEGIES,
+    type OdysseyStrategyData,
+} from "../commons/odyssey";
 
 export interface ClaimWithRemaining extends Claim {
     remaining: UsdPricedOnChainAmount;
@@ -99,6 +105,12 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
 export interface HoldFungibleAssetCampaignPayload extends BaseCampaignPayload {
     asset?: FungibleAssetInfo;
     stakingAssets: FungibleAssetInfo[];
+}
+
+export interface OdysseyCampaignPayload extends BaseCampaignPayload {
+    brand?: OdysseyProtocol;
+    strategy?: OdysseyStrategyData;
+    asset?: OdysseyAsset;
 }
 
 export interface CampaignPayloadTokenDistributables {
@@ -293,6 +305,32 @@ export class HoldFungibleAssetCampaignPreviewPayload extends BaseCampaignPreview
     }
 }
 
+export class OdysseyCampaignPreviewPayload extends BaseCampaignPreviewPayload {
+    public readonly kind: CampaignKind = CampaignKind.OdysseyStrategy;
+    constructor(
+        public readonly brand: OdysseyProtocol,
+        public readonly strategy: OdysseyStrategyData,
+        public readonly asset: OdysseyAsset,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaignPreviewPayload>
+    ) {
+        super(...baseArgs);
+    }
+
+    getTargetValue(): TargetValue | undefined {
+        // TODO: if it's a borrow strategy the deposited? Otherwise the allocated?
+        if (ODYSSEY_BORROW_STRATEGIES.includes(this.strategy.id))
+            return {
+                usd: this.asset.usdTotalDeposited,
+                raw: this.asset.totalDeposited,
+            };
+
+        return {
+            usd: this.asset.usdTotalAllocated,
+            raw: this.asset.totalAllocated,
+        };
+    }
+}
+
 export class EmptyTargetCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     public readonly kind: CampaignKind = CampaignKind.EmptyTarget;
     constructor(
@@ -310,6 +348,7 @@ export type CampaignPreviewPayload =
     | AmmPoolLiquidityCampaignPreviewPayload
     | LiquityV2CampaignPreviewPayload
     | AaveV3CampaignPreviewPayload
+    | OdysseyCampaignPreviewPayload
     | EmptyTargetCampaignPreviewPayload;
 
 export interface DistributablesCampaignPreviewPayload<
@@ -347,7 +386,9 @@ export type CampaignPayloadPart<T extends ProtocolType | undefined> =
           ? Partial<LiquityV2CampaignPayload>
           : T extends ProtocolType.AaveV3
             ? Partial<AaveV3CampaignPayload>
-            : never;
+            : T extends ProtocolType.Odyssey
+              ? Partial<OdysseyCampaignPayload>
+              : never;
 
 export type AmmPoolLiquidityCampaignPayloadPart =
     PropertyUnion<AmmPoolLiquidityCampaignPayload>;
@@ -359,6 +400,8 @@ export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
 
 export type HoldFungibleAssetCampaignPayloadPart =
     PropertyUnion<HoldFungibleAssetCampaignPayload>;
+
+export type OdysseyCampaignPayloadPart = PropertyUnion<OdysseyCampaignPayload>;
 
 export class Campaign extends SdkCampaign {
     constructor(
