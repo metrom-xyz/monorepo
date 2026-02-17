@@ -23,6 +23,7 @@ import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 import { useForms } from "@/src/hooks/useForms";
 import { FormNotSupported } from "../form-not-supported";
 import { HoldFungibleAssetForm } from "./hold-fungible-asset-form";
+import { OdysseyForm } from "./odyssey-form";
 
 import styles from "./styles.module.css";
 
@@ -102,6 +103,12 @@ export function CreateCampaignForm<T extends CampaignType>({
             )}
             {type === BaseCampaignType.HoldFungibleAsset && (
                 <HoldFungibleAssetForm
+                    unsupportedChain={unsupportedChain}
+                    onPreviewClick={handlePreviewOnClick}
+                />
+            )}
+            {type === BaseCampaignType.Odyssey && (
+                <OdysseyForm
                     unsupportedChain={unsupportedChain}
                     onPreviewClick={handlePreviewOnClick}
                 />
