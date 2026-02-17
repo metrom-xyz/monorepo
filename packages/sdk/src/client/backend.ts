@@ -8,6 +8,8 @@ import {
     SupportedBridge,
     type SupportedProtocol,
     SupportedGmxV1,
+    SupportedOdyssey,
+    SupportedOdysseyStrategy,
 } from "../commons";
 import type {
     BackendCampaignOrderBy,
@@ -101,6 +103,8 @@ import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
 import type { AmmPool, CampaignAmmPool } from "src/types/pools";
 import type { BackendProjectsResponse } from "./types/projects";
 import type { Project } from "src/types/projects";
+import type { OdysseyAsset } from "src/types/odyssey";
+import type { BackendOdysseyAssetsResponse } from "./types/odyssey";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -255,6 +259,11 @@ export interface FetchAaveV3CollateralUsdNetSupplyParams extends ChainParams {
     market: string;
     collateral: Address;
     blacklistedCrossBorrowCollaterals?: Address[];
+}
+
+export interface FetchOdysseyAssetsParams extends ChainParams {
+    brand: SupportedOdyssey;
+    strategy: SupportedOdysseyStrategy;
 }
 
 interface InitializedTick {
@@ -1069,6 +1078,35 @@ export class MetromApiClient {
                     return b.campaigns.active - a.campaigns.active;
                 return b.campaigns.total - a.campaigns.total;
             });
+    }
+
+    async fetchOdysseyAssets(
+        params: FetchOdysseyAssetsParams,
+    ): Promise<OdysseyAsset[]> {
+        const url = new URL(
+            `v2/odyssey/${params.chainType}/${params.chainId}/${params.brand}/${params.strategy}/assets`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `Response not ok while fetching odyssey assets: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendOdysseyAssetsResponse;
+
+        return parsedResponse.assets.map((asset) => {
+            return {
+                ...asset,
+                // FIXME: it's probably better to have chain id and chainType in the response
+                chainId: params.chainId,
+                chainType: params.chainType,
+                totalAllocated: BigInt(asset.totalAllocated),
+                totalDeposited: BigInt(asset.totalDeposited),
+            };
+        });
     }
 }
 

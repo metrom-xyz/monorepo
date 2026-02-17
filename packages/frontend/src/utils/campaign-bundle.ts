@@ -13,6 +13,7 @@ import {
     EmptyTargetCampaignPreviewPayload,
     HoldFungibleAssetCampaignPreviewPayload,
     LiquityV2CampaignPreviewPayload,
+    OdysseyCampaignPreviewPayload,
     type CampaignPreviewPayload,
 } from "../types/campaign";
 import {
@@ -41,6 +42,19 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
             [
                 stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
                 payload.collateral.address,
+            ],
+        );
+    } else if (payload instanceof OdysseyCampaignPreviewPayload) {
+        return encodeAbiParameters(
+            [
+                { name: "brand", type: "bytes32" },
+                { name: "strategy", type: "uint32" },
+                { name: "collateral", type: "address" },
+            ],
+            [
+                stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
+                payload.strategy.id,
+                payload.asset.address,
             ],
         );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
