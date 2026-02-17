@@ -1,3 +1,4 @@
-||Aptos|
-|---|---|
-|[Aave](https://aave.com/)|●|
+||Arbitrum One|Aptos|
+|---|---|---|
+|[Ploutos](https://app.ploutos.money/)|●|○|
+|[Aave](https://aave.com/)|○|●|

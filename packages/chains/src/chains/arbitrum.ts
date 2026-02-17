@@ -60,9 +60,12 @@ export const arbitrumData: ChainData = {
                 },
             ],
             actionUrls: {
-                [TargetType.AaveV3Borrow]: "",
-                [TargetType.AaveV3Supply]: "",
-                [TargetType.AaveV3NetSupply]: "",
+                [TargetType.AaveV3Borrow]:
+                    "https://app.ploutos.money/?marketName=proto_arbitrum_v3",
+                [TargetType.AaveV3Supply]:
+                    "https://app.ploutos.money/?marketName=proto_arbitrum_v3",
+                [TargetType.AaveV3NetSupply]:
+                    "https://app.ploutos.money/?marketName=proto_arbitrum_v3",
                 // FIXME: this action is specific to aave-aptos
                 [TargetType.AaveV3BridgeAndSupply]: "",
             },

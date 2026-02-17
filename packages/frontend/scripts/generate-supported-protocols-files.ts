@@ -45,6 +45,7 @@ const LIQUITY_V2_HOMEPAGES: Record<SupportedLiquityV2, string> = {
 
 const AAVE_V3_HOMEPAGES: Record<SupportedAaveV3, string> = {
     [SupportedAaveV3.Aave]: "https://aave.com/",
+    [SupportedAaveV3.Ploutos]: "https://app.ploutos.money/",
 };
 
 const PROTOCOL_CONFIGS = [
