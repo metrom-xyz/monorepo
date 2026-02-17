@@ -182,8 +182,8 @@
         },
         "type": {
             "amm": "AMM liquidity pool",
-            "liquityV2": "Liquity v2",
-            "aaveV3": "Aave v3",
+            "liquityV2": "Liquity v2 and forks",
+            "aaveV3": "Aave v3 and forks",
             "holdFungibleAsset": "Hold token",
             "odyssey": "Odyssey",
             "partnerActions": "Partner action",
