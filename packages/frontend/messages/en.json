@@ -148,8 +148,8 @@
                 "description": "Incentivize users borrowing and other actions on Liquity V2 and its forks."
             },
             "aaveV3": {
-                "title": "AAVE V3",
-                "description": "Incentivize users borrowing and supplying on Aave V3."
+                "title": "AAVE V3 AND FORKS",
+                "description": "Incentivize users borrowing and supplying on Aave V3 and its forks."
             },
             "holdFungibleAsset": {
                 "title": "HOLD TOKEN",
