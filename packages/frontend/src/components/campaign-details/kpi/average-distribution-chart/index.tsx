@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Card, Popover, Typography } from "@metrom-xyz/ui";
-import { Cell, Pie, PieChart, Tooltip } from "recharts";
+import { Pie, PieChart, Tooltip } from "recharts";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import classNames from "classnames";
 import type { TokenDistributables } from "@metrom-xyz/sdk";
@@ -10,6 +10,7 @@ import type { SupportedChain } from "@metrom-xyz/contracts";
 import { RankTooltip } from "./tooltip";
 import { EmptyState } from "@/src/components/empty-state";
 import { useRewardsDistributionBreakdown } from "@/src/hooks/useRewardsDistributionBreakdown";
+import { PieCell } from "./pie-cell";
 
 import styles from "./styles.module.css";
 
@@ -95,16 +96,6 @@ export function AverageDistributionChart({
 
     function handlePopoverOnChange() {
         setPopover(popover);
-    }
-
-    function getPopoverOpenHandler(type: AverageDistributionChartData["type"]) {
-        return () => {
-            setPopover(type);
-        };
-    }
-
-    function handlePopoverClose() {
-        setPopover(undefined);
     }
 
     if (loading)
@@ -240,26 +231,16 @@ export function AverageDistributionChart({
                         animationEasing="ease-in-out"
                         animationDuration={400}
                         cornerRadius={6}
-                        // FIXME: the type: "reimbursed" | "distributed" is causing issues with the chart type, fix this
-                        data={chartData as unknown as Record<string, unknown>[]}
+                        data={chartData}
                         innerRadius={70}
                         outerRadius={113}
                         startAngle={90}
                         endAngle={450}
                         minAngle={5}
-                    >
-                        {chartData.map((entry, index) => (
-                            <Cell
-                                key={`cell-${index}`}
-                                onMouseEnter={getPopoverOpenHandler(entry.type)}
-                                onMouseLeave={handlePopoverClose}
-                                strokeWidth={5}
-                                className={classNames(styles.cell, {
-                                    [styles[entry.type]]: true,
-                                })}
-                            />
-                        ))}
-                    </Pie>
+                        shape={(props) => (
+                            <PieCell {...props} onPopoverChange={setPopover} />
+                        )}
+                    />
                     <Tooltip
                         active
                         defaultIndex={0}

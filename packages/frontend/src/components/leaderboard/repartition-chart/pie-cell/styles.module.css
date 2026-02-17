@@ -1,0 +1,12 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply cursor-pointer
+        outline-none
+        hover:opacity-85
+        stroke-gray-200
+        dark:stroke-neutral-900
+        transition-all
+        duration-200
+        ease-in-out;
+}

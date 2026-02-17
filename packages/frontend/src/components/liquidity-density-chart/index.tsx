@@ -8,7 +8,6 @@ import { useTranslations } from "next-intl";
 import {
     Bar,
     BarChart,
-    Cell,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -277,13 +276,7 @@ export function LiquidityDensityChart({
                                 showPriceRange={showPriceRange}
                             />
                         }
-                    >
-                        {ticks?.map((_, index) => {
-                            return (
-                                <Cell key={`cell-${index}`} cursor="pointer" />
-                            );
-                        })}
-                    </Bar>
+                    />
                     <Tooltip
                         isAnimationActive={false}
                         cursor={false}
