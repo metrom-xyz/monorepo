@@ -11,6 +11,7 @@ export * from "./izumi";
 export * from "./lithos";
 export * from "./morphex";
 export * from "./quickswap";
+export * from "./stabull";
 export * from "./swapsicle";
 export * from "./thirdtrade";
 export * from "./unagi";
