@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
-import { Cell, Pie, PieChart, Tooltip } from "recharts";
+import { Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { shuffle } from "@/src/utils/common";
 import type { Leaderboard, Rank } from "@/src/types/campaign";
 import classNames from "classnames";
 import { RankTooltip } from "./tooltip";
 import { EmptyState } from "../../empty-state";
+import { PieCell } from "./pie-cell";
 
 import styles from "./styles.module.css";
 
@@ -134,16 +135,8 @@ export function RepartitionChart({
                                 startAngle={90}
                                 endAngle={450}
                                 minAngle={5}
-                            >
-                                {chartData.map((entry, index) => (
-                                    <Cell
-                                        key={`cell-${index}`}
-                                        fill={entry.color}
-                                        strokeWidth={5}
-                                        className={styles.cell}
-                                    />
-                                ))}
-                            </Pie>
+                                shape={PieCell}
+                            />
                             <Tooltip
                                 active
                                 defaultIndex={activeIndex}

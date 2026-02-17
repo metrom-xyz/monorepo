@@ -75,25 +75,6 @@
     @apply animate-pulse bg-gray-200 dark:bg-neutral-900;
 }
 
-.cell {
-    @apply rounded-3xl cursor-pointer
-        outline-none
-        hover:opacity-85
-        stroke-gray-200
-        dark:stroke-neutral-900
-        transition-all
-        duration-200
-        ease-in-out;
-}
-
-.cell.distributed {
-    @apply fill-brand-green-dark dark:fill-brand-green;
-}
-
-.cell.reimbursed {
-    @apply fill-gray-300 dark:fill-neutral-700;
-}
-
 .chartWrapperLoading {
     @apply animate-pulse background-main;
 }
