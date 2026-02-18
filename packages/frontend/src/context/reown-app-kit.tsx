@@ -82,6 +82,9 @@ createAppKit({
         analytics: false,
     },
     allowUnsupportedChain: true,
+    themeVariables: {
+        "--w3m-font-family": "IBM Plex Sans, ui-sans-serif, sans-serif",
+    },
 });
 
 export function ReownAppKitContextProvider({

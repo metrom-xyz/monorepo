@@ -28,6 +28,6 @@
         "tsx": "^4.20.5",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.42.0",
-        "viem": "^2.37.3"
+        "viem": "^2.46.2"
     }
 }

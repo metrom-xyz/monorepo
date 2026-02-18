@@ -67,7 +67,7 @@ export function NetworkSelectMvm() {
 
             setPickerOpen(false);
         },
-        [connected, changeNetwork, t],
+        [connected, selectedChainId, changeNetwork, t],
     );
 
     return (
