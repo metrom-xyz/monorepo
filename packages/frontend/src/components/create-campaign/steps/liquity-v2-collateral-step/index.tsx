@@ -4,10 +4,10 @@ import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { useTranslations } from "next-intl";
-import {
-    type LiquityV2CampaignPayload,
-    type LiquityV2CampaignPayloadPart,
-} from "@/src/types/campaign/common";
+import type {
+    LiquityV2CampaignPayload,
+    LiquityV2CampaignPayloadPart,
+} from "@/src/types/campaign/liquity-v2-campaign";
 import { CollateralsList } from "./list";
 import { Typography } from "@metrom-xyz/ui";
 import type { CampaignKind, LiquityV2Collateral } from "@metrom-xyz/sdk";

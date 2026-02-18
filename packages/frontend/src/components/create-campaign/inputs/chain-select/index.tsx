@@ -80,6 +80,7 @@ export function ChainSelect({
 
     return (
         <Select
+            size="lg"
             label={t("chain")}
             search
             options={options}

@@ -84,6 +84,7 @@ export function DexSelect({
 
     return (
         <Select
+            size="lg"
             label={t("dex")}
             search
             disabled={!chainId}

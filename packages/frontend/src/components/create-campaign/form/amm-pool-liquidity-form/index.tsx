@@ -6,18 +6,12 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import {
-    AmmPoolLiquidityType,
     BaseCampaignType,
     CampaignKind,
     DistributablesType,
-    SupportedAmm,
 } from "@metrom-xyz/sdk";
 import { Button, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import {
-    AMM_SUPPORTS_RANGE_INCENTIVES,
-    AMM_SUPPORTS_TOKENS_RATIO,
-} from "@/src/commons";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import { validateDistributables } from "@/src/utils/creation-form";
 import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
@@ -102,7 +96,7 @@ const initialPayload: AmmPoolLiquidityCampaignPayload = {
 
 export function AmmPoolLiquidityForm({
     kind,
-    unsupportedChain,
+    // unsupportedChain,
     onPreviewClick,
 }: AmmPoolLiquidityFormProps) {
     const t = useTranslations("newCampaign");
@@ -116,51 +110,51 @@ export function AmmPoolLiquidityForm({
         return validatePayload(chainId, payload);
     }, [chainId, payload, errors]);
 
-    const noDistributables = useMemo(() => {
-        return (
-            !payload.distributables ||
-            payload.distributables.type === DistributablesType.FixedPoints ||
-            payload.distributables.type === DistributablesType.DynamicPoints ||
-            payload.distributables.type ===
-                DistributablesType.NoDistributables ||
-            !payload.distributables.tokens ||
-            payload.distributables.tokens.length === 0
-        );
-    }, [payload.distributables]);
+    // const noDistributables = useMemo(() => {
+    //     return (
+    //         !payload.distributables ||
+    //         payload.distributables.type === DistributablesType.FixedPoints ||
+    //         payload.distributables.type === DistributablesType.DynamicPoints ||
+    //         payload.distributables.type ===
+    //             DistributablesType.NoDistributables ||
+    //         !payload.distributables.tokens ||
+    //         payload.distributables.tokens.length === 0
+    //     );
+    // }, [payload.distributables]);
 
-    const missingDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
+    // const missingDistributables = useMemo(() => {
+    //     if (!payload.distributables) return true;
 
-        const { type } = payload.distributables;
+    //     const { type } = payload.distributables;
 
-        if (type === DistributablesType.FixedPoints)
-            return (
-                !payload.distributables.fee || !payload.distributables.points
-            );
-        if (type === DistributablesType.Tokens)
-            return (
-                !payload.distributables.tokens ||
-                payload.distributables.tokens.length === 0
-            );
+    //     if (type === DistributablesType.FixedPoints)
+    //         return (
+    //             !payload.distributables.fee || !payload.distributables.points
+    //         );
+    //     if (type === DistributablesType.Tokens)
+    //         return (
+    //             !payload.distributables.tokens ||
+    //             payload.distributables.tokens.length === 0
+    //         );
 
-        return true;
-    }, [payload.distributables]);
+    //     return true;
+    // }, [payload.distributables]);
 
-    const tokensRatioSupported = useMemo(() => {
-        return (
-            !!payload.pool &&
-            AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
-            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
-        );
-    }, [payload.pool]);
+    // const tokensRatioSupported = useMemo(() => {
+    //     return (
+    //         !!payload.pool &&
+    //         AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
+    //         payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+    //     );
+    // }, [payload.pool]);
 
-    const rangeSupported = useMemo(() => {
-        return (
-            !!payload.pool &&
-            AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm as SupportedAmm] &&
-            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
-        );
-    }, [payload.pool]);
+    // const rangeSupported = useMemo(() => {
+    //     return (
+    //         !!payload.pool &&
+    //         AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm as SupportedAmm] &&
+    //         payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+    //     );
+    // }, [payload.pool]);
 
     useEffect(() => {
         setPayload({ ...initialPayload, kind });
@@ -188,10 +182,15 @@ export function AmmPoolLiquidityForm({
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
                 <CampaignBasicsStep
+                    startDatePickerDisabled={!payload.pool}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                    onError={handlePayloadOnError}
+                    onChange={handlePayloadOnChange}
                     targetSection={
                         <StepSection
                             title={
-                                <Typography weight="medium">
+                                <Typography weight="semibold">
                                     {t("defineTarget")}
                                 </Typography>
                             }
@@ -217,48 +216,10 @@ export function AmmPoolLiquidityForm({
                                     resetTrigger={payload.dex}
                                     onChange={handlePayloadOnChange}
                                 />
-                                {/* <DexStep
-                                disabled={unsupportedChain}
-                                dex={payload.dex}
-                                onDexChange={handlePayloadOnChange}
-                            />
-                            <PoolStep
-                                disabled={!payload.dex || unsupportedChain}
-                                dex={payload.dex}
-                                pool={payload.pool}
-                                onPoolChange={handlePayloadOnChange}
-                                onError={handlePayloadOnError}
-                            /> */}
                             </div>
                         </StepSection>
                     }
                 />
-                {/* <DexStep
-                    disabled={unsupportedChain}
-                    dex={payload.dex}
-                    onDexChange={handlePayloadOnChange}
-                />
-                <PoolStep
-                    disabled={!payload.dex || unsupportedChain}
-                    dex={payload.dex}
-                    pool={payload.pool}
-                    onPoolChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                /> */}
-                {/* <StartDateStep
-                    disabled={!payload.pool || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                /> */}
                 {/* <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}

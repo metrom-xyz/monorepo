@@ -2,7 +2,7 @@ import { CampaignKind, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Row, RowSkeleton } from "./row";
-import { type LiquityV2CampaignPayload } from "@/src/types/campaign/common";
+import type { LiquityV2CampaignPayload } from "@/src/types/campaign/liquity-v2-campaign";
 
 import styles from "./styles.module.css";
 
@@ -26,10 +26,20 @@ export function CollateralsList({
     return (
         <div className={styles.root}>
             <div className={styles.listHeader}>
-                <Typography uppercase size="sm" weight="medium" variant="tertiary">
+                <Typography
+                    uppercase
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                >
                     {t("list.token")}
                 </Typography>
-                <Typography uppercase size="sm" weight="medium" variant="tertiary">
+                <Typography
+                    uppercase
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                >
                     {t(
                         kind === CampaignKind.LiquityV2Debt
                             ? "list.debt"

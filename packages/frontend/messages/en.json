@@ -524,7 +524,27 @@
             "noDexes": "No dexes found",
             "pool": "Pool",
             "tvl": "TVL",
-            "noPools": "No pools found"
+            "noPools": "No pools found",
+            "listPool": "If your pool isn't listed, it may not meet the minimum TVL requirement.",
+            "startDatePicker": {
+                "label": "Start date",
+                "now": "Now",
+                "dateInThePast": "Date can't be in the past"
+            },
+            "endDatePicker": {
+                "label": "End date",
+                "durations": {
+                    "1w": "1w",
+                    "2w": "2w",
+                    "1m": "1m"
+                },
+                "campaignDuration": "Campaign duration",
+                "days": "{count} days",
+                "endBeforeStart": "End date can't be before start date",
+                "dateInThePast": "Date can't be in the past",
+                "minimumDate": "Campaign must exceed {duration}",
+                "maximumDate": "Campaign must be under {duration}"
+            }
         }
     },
     "campaignPreview": {

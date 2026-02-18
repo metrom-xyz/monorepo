@@ -13,6 +13,8 @@ interface FormPreviewProps {
 export function FormPreview({ payload }: FormPreviewProps) {
     const t = useTranslations("newCampaign.formPreview");
 
+    console.log("preview", payload);
+
     return (
         <div className={styles.root}>
             <div className={styles.header}>
