@@ -1,6 +1,9 @@
 import type { TargetType } from "@metrom-xyz/sdk";
 import type { ActionSizes } from ".";
-import type { Campaign, TargetedNamedCampaign } from "@/src/types/campaign";
+import type {
+    TargetedNamedCampaign,
+    Campaign,
+} from "@/src/types/campaign/common";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { YIELDSEEKER_BONUS_PERCENTAGE } from "@/src/commons";

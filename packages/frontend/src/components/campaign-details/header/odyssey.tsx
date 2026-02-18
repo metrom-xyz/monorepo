@@ -1,11 +1,11 @@
 import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
+import type {
+    TargetedNamedCampaign,
+    CampaignDetails,
+} from "@/src/types/campaign/common";
 import { Tags } from "./tags";
 import { RemoteLogo } from "../../remote-logo";
-import type {
-    CampaignDetails,
-    TargetedNamedCampaign,
-} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 

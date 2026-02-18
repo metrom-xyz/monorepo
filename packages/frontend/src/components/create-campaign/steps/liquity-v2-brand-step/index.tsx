@@ -5,10 +5,10 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
-import {
-    type LiquityV2CampaignPayload,
-    type LiquityV2CampaignPayloadPart,
-} from "@/src/types/campaign/common";
+import type {
+    LiquityV2CampaignPayload,
+    LiquityV2CampaignPayloadPart,
+} from "@/src/types/campaign/liquity-v2-campaign";
 import { ProtocolType, type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";

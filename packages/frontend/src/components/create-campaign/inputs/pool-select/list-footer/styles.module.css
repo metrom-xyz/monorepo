@@ -1,0 +1,13 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex items-center gap-1 px-3 py-2 bg-warning/12;
+}
+
+.text {
+    @apply text-warning;
+}
+
+.icon {
+    @apply size-4 text-warning;
+}

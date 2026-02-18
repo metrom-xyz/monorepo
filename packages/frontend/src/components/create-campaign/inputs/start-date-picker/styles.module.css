@@ -1,0 +1,13 @@
+@reference "../../../../app.css";
+
+.inputWrapper {
+    @apply w-full sm:w-1/2;
+}
+
+.input {
+    @apply w-full;
+}
+
+.input :global(.input:not(:disabled)) {
+    @apply cursor-pointer;
+}

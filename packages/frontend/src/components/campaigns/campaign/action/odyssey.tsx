@@ -1,4 +1,7 @@
-import type { Campaign, TargetedNamedCampaign } from "@/src/types/campaign";
+import type {
+    TargetedNamedCampaign,
+    Campaign,
+} from "@/src/types/campaign/common";
 import type { TargetType } from "@metrom-xyz/sdk";
 import type { ActionSizes } from ".";
 import { RemoteLogo } from "@/src/components/remote-logo";

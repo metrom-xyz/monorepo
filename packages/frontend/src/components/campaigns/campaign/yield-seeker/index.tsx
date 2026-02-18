@@ -1,4 +1,4 @@
-import type { Campaign } from "@/src/types/campaign";
+import type { Campaign } from "@/src/types/campaign/common";
 import { Button, Card, Modal, Popover, Typography, X } from "@metrom-xyz/ui";
 import { Chain } from "../chain";
 import { Protocol } from "../protocol";
