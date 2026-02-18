@@ -10,6 +10,7 @@ import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { usePrevious } from "react-use";
 import { ListHeader } from "./list-header";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
+import { ListFooter } from "./list-footer";
 
 import styles from "./styles.module.css";
 
@@ -138,6 +139,7 @@ export function PoolSelect({
 
     return (
         <Select
+            size="lg"
             label={t("pool")}
             search
             loading={loading}
@@ -155,6 +157,7 @@ export function PoolSelect({
                     onBaseTokenChange={setBaseTokenFilter}
                 />
             }
+            listFooter={<ListFooter />}
             className={styles.root}
         />
     );

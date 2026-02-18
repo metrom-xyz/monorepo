@@ -22,6 +22,8 @@ import { formatAmount } from "@/src/utils/format";
 import type {
     AmmPoolLiquidityCampaignPayload,
     AmmPoolLiquidityCampaignPayloadPart,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import type {
     AugmentedPriceRangeBound,
     AugmentedPriceRangeSpecification,
     CampaignPayloadErrors,
