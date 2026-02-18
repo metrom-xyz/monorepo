@@ -42,7 +42,7 @@ export interface CreateCampaignFormProps<T> {
 
 export function CreateCampaignForm<T extends CampaignType>({
     campaignType,
-    distributablesType,
+    // distributablesType,
 }: CreateCampaignFormProps<T>) {
     const t = useTranslations("newCampaign");
 

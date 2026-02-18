@@ -55,6 +55,7 @@ const CAMPAIGN_TYPE_TITLE: Record<
     "liquity-v2": "liquityV2",
     "aave-v3": "aaveV3",
     "hold-fungible-asset": "holdFungibleAsset",
+    odyssey: "odyssey",
     "aave-v3-bridge-and-supply": "aaveV3BridgeAndSupply",
     "jumper-whitelisted-amm-pool-liquidity":
         "jumperWhitelistedAmmPoolLiquidity",
@@ -72,7 +73,10 @@ export function PickDistributablesType({
 
     const router = useRouter();
     const { id: chainId } = useChainWithType();
-    const { tokens: feeTokens, loading: loadingFeeTokens } = useFeeTokens();
+    const { tokens: feeTokens, loading: loadingFeeTokens } = useFeeTokens({
+        // FIXME: enable this once the API works
+        enabled: false,
+    });
 
     const formsByType = useForms({
         chainId,

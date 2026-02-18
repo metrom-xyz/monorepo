@@ -2,6 +2,7 @@ import { Accordion, Typography } from "@metrom-xyz/ui";
 import { GreenCheckIcon } from "@/src/assets/green-check-icon";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { type ReactNode } from "react";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -12,6 +13,7 @@ interface FormStepProps {
     error?: string;
     onToggle: (open: boolean) => void;
     children: ReactNode;
+    className?: string;
 }
 
 export function FormStep({
@@ -21,6 +23,7 @@ export function FormStep({
     error,
     onToggle,
     children,
+    className,
 }: FormStepProps) {
     return (
         <Accordion
@@ -40,9 +43,11 @@ export function FormStep({
             }
             open={open}
             onToggle={onToggle}
-            className={styles.root}
+            className={classNames("root", styles.root, className)}
         >
-            <div className={styles.content}>{children}</div>
+            <div className={classNames("content", styles.content)}>
+                {children}
+            </div>
         </Accordion>
     );
 }

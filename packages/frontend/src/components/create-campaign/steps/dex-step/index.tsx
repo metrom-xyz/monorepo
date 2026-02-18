@@ -7,10 +7,10 @@ import { StepContent } from "@/src/components/step/content";
 import { ProtocolType, type DexProtocol } from "@metrom-xyz/chains";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
-import {
-    type AmmPoolLiquidityCampaignPayload,
-    type AmmPoolLiquidityCampaignPayloadPart,
-} from "@/src/types/campaign/common";
+import type {
+    AmmPoolLiquidityCampaignPayload,
+    AmmPoolLiquidityCampaignPayloadPart,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 
 import styles from "./styles.module.css";

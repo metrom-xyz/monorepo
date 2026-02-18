@@ -2,7 +2,7 @@ import { type AaveV3Collateral, CampaignKind } from "@metrom-xyz/sdk";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { Row, RowSkeleton } from "./row";
-import { type AaveV3CampaignPayload } from "@/src/types/campaign/common";
+import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
 
 import styles from "./styles.module.css";
 
@@ -26,10 +26,20 @@ export function CollateralsList({
     return (
         <div className={styles.root}>
             <div className={styles.listHeader}>
-                <Typography uppercase size="sm" weight="medium" variant="tertiary">
+                <Typography
+                    uppercase
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                >
                     {t("list.token")}
                 </Typography>
-                <Typography uppercase size="sm" weight="medium" variant="tertiary">
+                <Typography
+                    uppercase
+                    size="sm"
+                    weight="medium"
+                    variant="tertiary"
+                >
                     {t(
                         kind === CampaignKind.AaveV3Borrow
                             ? "list.debt"
