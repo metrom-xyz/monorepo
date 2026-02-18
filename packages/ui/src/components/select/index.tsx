@@ -41,6 +41,7 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
     search?: boolean;
     loading?: boolean;
     listHeader?: ReactNode;
+    listFooter?: ReactNode;
     messages: {
         noResults: string;
     };
@@ -94,6 +95,7 @@ function Component<
         disabled,
         loading,
         listHeader,
+        listFooter,
         messages,
         dataTestIds,
         onChange,
@@ -267,6 +269,7 @@ function Component<
                         />
                     </div>
                 )}
+                {listFooter}
             </Popover>
         </div>
     );
