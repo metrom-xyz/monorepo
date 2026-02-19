@@ -31,6 +31,7 @@ export const NumberInput: React.ForwardRefExoticComponent<
         label,
         errorText,
         prefixElement,
+        noPrefixPadding,
         icon,
         iconPlacement,
         error = false,
@@ -56,6 +57,7 @@ export const NumberInput: React.ForwardRefExoticComponent<
             error={error}
             errorText={errorText}
             prefixElement={prefixElement}
+            noPrefixPadding={noPrefixPadding}
             icon={icon}
             iconPlacement={iconPlacement}
             className={className}
