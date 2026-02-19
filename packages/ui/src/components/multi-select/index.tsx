@@ -34,19 +34,19 @@ export type MultiSelectProps<V extends ValueType, O extends SelectOption<V>> = {
     options: O[];
     values: O[];
     search?: boolean;
-    onOpenChange?: (open: boolean) => void;
-    onChange: (option: O[]) => void;
-    renderOption?: (option: O) => ReactElement;
     loading?: boolean;
     portalContainer?: HTMLElement | null;
     messages: {
         noResults: string;
     };
-    className?: string;
     dataTestIds?: {
         textInput?: string;
         option?: string;
     };
+    className?: string;
+    onOpenChange?: (open: boolean) => void;
+    onChange: (option: O[]) => void;
+    renderOption?: (option: O) => ReactElement;
 } & Omit<BaseInputProps<unknown>, "onChange" | "values" | "value" | "id">;
 
 type ItemData<V extends ValueType, O extends SelectOption<V>> = Pick<
@@ -71,15 +71,16 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         options,
         values,
         search,
-        onOpenChange,
-        onChange,
-        renderOption,
         disabled,
         loading,
         messages,
         portalContainer,
         className,
         dataTestIds,
+        noPrefixPadding,
+        onOpenChange,
+        onChange,
+        renderOption,
         ...rest
     }: MultiSelectProps<V, O>,
     ref: ForwardedRef<HTMLDivElement>,
@@ -241,6 +242,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                         </div>
                     )
                 }
+                noPrefixPadding={noPrefixPadding}
                 value={open && search ? query : ""}
                 disabled={loading || disabled}
                 error={error}

@@ -23,6 +23,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             size = "base",
             errorText,
             prefixElement,
+            noPrefixPadding,
             endAdornment,
             icon,
             iconPlacement,
@@ -51,6 +52,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 error={error}
                 errorText={errorText}
                 prefixElement={prefixElement}
+                noPrefixPadding={noPrefixPadding}
                 endAdornment={endAdornment}
                 icon={icon}
                 iconPlacement={iconPlacement}

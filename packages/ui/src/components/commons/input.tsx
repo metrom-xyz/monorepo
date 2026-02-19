@@ -41,6 +41,7 @@ export interface BaseInputWrapperProps<V> {
     error?: boolean;
     errorText?: string;
     prefixElement?: ReactNode;
+    noPrefixPadding?: boolean;
     endAdornment?: ReactNode;
     icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>;
     iconPlacement?: "left" | "right";
@@ -59,6 +60,7 @@ export function BaseInputWrapper<V>({
     error,
     errorText,
     prefixElement,
+    noPrefixPadding,
     endAdornment,
     icon: Icon,
     iconPlacement = "right",
@@ -72,7 +74,6 @@ export function BaseInputWrapper<V>({
     const icon = Icon && (
         <div
             className={classNames("inputIconWrapper", styles.inputIconWrapper, {
-                [styles.hasPrefixElement]: !!prefixElement,
                 [styles.placeLeft]: iconPlacement === "left",
                 [styles.placeRight]: iconPlacement === "right",
             })}
@@ -114,6 +115,7 @@ export function BaseInputWrapper<V>({
                     [styles.disabled]: !!disabled,
                     [styles.loading]: !!loading,
                     [styles.mounted]: mounted,
+                    [styles.hasRightIcon]: hasRightIcon,
                 })}
             >
                 {prefixElement && (
@@ -149,8 +151,8 @@ export function BaseInputWrapper<V>({
                             {
                                 [styles[size]]: true,
                                 [styles.hasLeftIcon]: hasLeftIcon,
-                                [styles.hasRightIcon]: hasRightIcon,
                                 [styles.hasPrefixElement]: !!prefixElement,
+                                [styles.noPrefixPadding]: noPrefixPadding,
                             },
                         )}
                         style={
