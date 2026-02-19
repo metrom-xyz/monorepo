@@ -1,5 +1,11 @@
 # @metrom-xyz/sdk
 
+## 0.8.0
+
+### Minor Changes
+
+- Add support for more protocols and campaign targets
+
 ## 0.7.0
 
 ### Minor Changes
