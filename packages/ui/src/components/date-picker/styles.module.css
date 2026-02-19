@@ -36,7 +36,7 @@
 }
 
 .weekDay {
-    @apply size-8
+    @apply size-9
         select-none
         flex
         justify-center
@@ -48,7 +48,7 @@
 }
 
 .cellWrapperRangeBound {
-    @apply bg-brand-green-dark/[8%] dark:bg-brand-green/[10%];
+    @apply bg-brand-green-dark/8 dark:bg-brand-green/10;
 }
 
 .cellWrapperRangeBoundStart {
@@ -60,7 +60,7 @@
 }
 
 .cell {
-    @apply size-8
+    @apply size-9
         select-none
         cursor-pointer
         flex
@@ -91,7 +91,7 @@
 }
 
 .cellInRange {
-    @apply bg-brand-green-dark/[8%] dark:bg-brand-green/[10%] rounded-none transition-none;
+    @apply bg-brand-green-dark/8 dark:bg-brand-green/10 rounded-none transition-none;
 }
 
 .cellRangeBound {

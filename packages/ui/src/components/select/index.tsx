@@ -98,6 +98,7 @@ function Component<
         listFooter,
         messages,
         dataTestIds,
+        noPrefixPadding,
         onChange,
         renderOption,
         renderSelectedPrefix,
@@ -214,6 +215,7 @@ function Component<
                           ? renderSelectedPrefix(selectedOption)
                           : null
                 }
+                noPrefixPadding={noPrefixPadding}
                 value={
                     open && search
                         ? query

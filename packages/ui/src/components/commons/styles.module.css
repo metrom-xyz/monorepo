@@ -159,11 +159,11 @@
     @apply pl-6;
 }
 
-.label.hasPrefixElement.xs {
+.label:not(.noPrefixPadding).hasPrefixElement.xs {
     @apply pl-[calc(var(--label-prefix-pl)-0.25rem)];
 }
 
-.label.hasPrefixElement {
+.label:not(.noPrefixPadding).hasPrefixElement {
     @apply pl-[calc(var(--label-prefix-pl)-0.625rem)];
 }
 
