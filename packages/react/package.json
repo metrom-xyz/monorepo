@@ -1,6 +1,6 @@
 {
     "name": "@metrom-xyz/react",
-    "version": "0.5.1",
+    "version": "0.6.0",
     "publishConfig": {
         "access": "public"
     },
@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@metrom-xyz/contracts": "^0.54.0",
-        "@metrom-xyz/sdk": "^0.7.0"
+        "@metrom-xyz/sdk": "^0.8.0"
     },
     "peerDependencies": {
         "@tanstack/react-query": "^5.89.0",
