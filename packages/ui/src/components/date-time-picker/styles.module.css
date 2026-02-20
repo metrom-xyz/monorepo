@@ -22,7 +22,7 @@
 
 .cellList {
     @apply relative
-        h-[14rem]
+        h-[15.2rem]
         overflow-y-auto
         overflow-x-hidden
         scroll-pt-0.5
