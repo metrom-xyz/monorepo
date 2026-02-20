@@ -6,7 +6,7 @@ import {
     tickToScaledPrice,
 } from "@metrom-xyz/sdk";
 import { useCallback } from "react";
-import type { AugmentedPriceRangeBound } from "@/src/types/campaign";
+import type { AugmentedPriceRangeBound } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 
@@ -104,7 +104,6 @@ export function RangeInputs({
                     token0: pool.tokens[token0To1 ? 0 : 1].symbol,
                     token1: pool.tokens[token0To1 ? 1 : 0].symbol,
                 })}
-                placeholder="0.0"
                 step={1}
                 error={!!error}
                 allowNegative={false}
@@ -119,7 +118,6 @@ export function RangeInputs({
                     token0: pool.tokens[token0To1 ? 0 : 1].symbol,
                     token1: pool.tokens[token0To1 ? 1 : 0].symbol,
                 })}
-                placeholder="0.0"
                 error={!!error}
                 allowNegative={false}
                 value={to?.price}

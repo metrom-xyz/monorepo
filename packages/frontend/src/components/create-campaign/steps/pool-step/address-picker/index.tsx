@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { usePool } from "@/src/hooks/usePool";
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { type Address, type Hex, isHash } from "viem";
 import { useDebounce } from "react-use";
 import { TextInput, Typography } from "@metrom-xyz/ui";
@@ -93,10 +93,10 @@ export function AddressPoolPicker({
         <div className={styles.root}>
             <div className={styles.header}>
                 <TextInput
+                    label={t("label")}
                     error={!!search && !addressOrId}
                     value={search}
                     onChange={handleSearchOnChange}
-                    placeholder={t("label")}
                     icon={SearchIcon}
                     className={styles.searchInput}
                 />

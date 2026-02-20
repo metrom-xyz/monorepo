@@ -5,7 +5,7 @@ import {
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback } from "react";
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 
 import styles from "./styles.module.css";
 
@@ -55,14 +55,18 @@ export function WeightingInputs({
             <div className={styles.inputsWrapper}>
                 <NumberInput
                     prefixElement={
-                        <Typography uppercase variant="tertiary"weight="medium" size="xs">
+                        <Typography
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                            size="xs"
+                        >
                             {pool?.tokens[0].symbol}
                         </Typography>
                     }
                     size="sm"
                     suffix="%"
                     allowNegative={false}
-                    placeholder="0%"
                     value={token0}
                     onValueChange={handleToken0OnChange}
                     onBlur={handleToken0OnBlur}
@@ -70,14 +74,18 @@ export function WeightingInputs({
                 />
                 <NumberInput
                     prefixElement={
-                        <Typography uppercase variant="tertiary"weight="medium" size="xs">
+                        <Typography
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                            size="xs"
+                        >
                             {pool?.tokens[1].symbol}
                         </Typography>
                     }
                     size="sm"
                     suffix="%"
                     allowNegative={false}
-                    placeholder="0%"
                     value={token1}
                     onValueChange={handleToken1OnChange}
                     onBlur={handleToken1OnBlur}
@@ -85,7 +93,12 @@ export function WeightingInputs({
                 />
                 <NumberInput
                     prefixElement={
-                        <Typography uppercase variant="tertiary"weight="medium" size="xs">
+                        <Typography
+                            uppercase
+                            variant="tertiary"
+                            weight="medium"
+                            size="xs"
+                        >
                             {t("fees")}
                         </Typography>
                     }

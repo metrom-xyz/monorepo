@@ -19,7 +19,7 @@ interface FormNotSupportedProps {
 
 const CAMPAIGN_TYPE_TRANSLATION: Record<
     CampaignType,
-    TranslationsKeys<"newCampaign">
+    TranslationsKeys<"newCampaign.formHeader">
 > = {
     [BaseCampaignType.AmmPoolLiquidity]: "type.amm",
     [BaseCampaignType.LiquityV2]: "type.liquityV2",
@@ -42,7 +42,9 @@ export function FormNotSupported({ type, chainId }: FormNotSupportedProps) {
             <Typography weight="medium" size="lg">
                 {type
                     ? t("empty.message2", {
-                          campaignType: t(CAMPAIGN_TYPE_TRANSLATION[type]),
+                          campaignType: t(
+                              `formHeader.${CAMPAIGN_TYPE_TRANSLATION[type]}`,
+                          ),
                           chain: chainData?.name || "",
                       })
                     : t("empty.message1", { chain: chainData?.name || "" })}

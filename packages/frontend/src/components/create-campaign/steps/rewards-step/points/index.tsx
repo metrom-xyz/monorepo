@@ -15,7 +15,7 @@ import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
     CampaignPayloadFixedPointDistributables,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { formatUsdAmount } from "@/src/utils/format";
 import { usePrevious } from "react-use";
@@ -145,7 +145,6 @@ export function RewardPoints({
             <div className={styles.wrapper}>
                 <NumberInput
                     label={t("amount")}
-                    placeholder="0"
                     error={!!amountError}
                     value={amount?.formatted}
                     allowNegative={false}

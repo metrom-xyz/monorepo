@@ -1,0 +1,9 @@
+@reference "../../../../app.css";
+
+.root :global(.content) {
+    @apply flex flex-col gap-3;
+}
+
+.datePickers {
+    @apply flex flex-col sm:flex-row gap-4;
+}

@@ -7,7 +7,7 @@ import { type PersonalRank } from "..";
 import { RewardsBreakdown } from "../rewards-breakdown";
 import { formatPercentage } from "@/src/utils/format";
 import { PointsBreakdown } from "../points-breakdown";
-import type { Rank } from "@/src/types/campaign";
+import type { Rank } from "@/src/types/campaign/common";
 import { useWindowSize } from "react-use";
 import { useAppKit } from "@reown/appkit/react";
 import { type Restrictions, RestrictionType } from "@metrom-xyz/sdk";

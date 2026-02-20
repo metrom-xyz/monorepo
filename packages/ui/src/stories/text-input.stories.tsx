@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TextInput } from "../components/text-input";
 import { SettingsIcon } from "../assets/settings";
 import { Typography } from "../components/typography";
+import { Chip } from "../components/chip";
 
 const meta: Meta = {
     title: "Input/Text",
@@ -10,13 +11,19 @@ const meta: Meta = {
         layout: "centered",
     },
     tags: ["autodocs"],
-    args: { label: "Text input", placeholder: "Placeholder" },
+    args: { label: "Text input" },
 } satisfies Meta<typeof TextInput>;
 
 export default meta;
 type Story = StoryObj<typeof TextInput>;
 
-export const Base: Story = {};
+export const Base: Story = {
+    render: (args) => (
+        <div className="flex flex-col gap-4">
+            <TextInput {...args} />
+        </div>
+    ),
+};
 
 export const WithIcon: Story = {
     args: {
@@ -28,6 +35,16 @@ export const WithIcon: Story = {
 export const WithPrefixElement: Story = {
     args: {
         prefixElement: <Typography>Prefix</Typography>,
+    },
+};
+
+export const WithEndAdornment: Story = {
+    args: {
+        endAdornment: (
+            <Chip onClick={() => {}} size="xs">
+                Chip
+            </Chip>
+        ),
     },
 };
 

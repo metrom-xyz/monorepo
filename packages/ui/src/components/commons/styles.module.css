@@ -1,11 +1,38 @@
 @reference "../../theme.css";
 
-.inputWrapper {
-    @apply w-full relative;
+.inputRoot {
+    @apply flex flex-col;
 }
 
-.inputWrapper:focus-within > .inputIconWrapper > svg {
+.inputWrapper {
+    @apply w-full flex items-center relative rounded transition-opacity duration-200 ease-in-out;
+}
+
+.inputWrapper:not(.error).focused .inputIcon,
+.inputWrapper:not(.error):focus-within .inputIcon {
     @apply text-primary;
+}
+
+.inputWrapper:not(.error).focused .label,
+.inputWrapper:not(.error):focus-within .label {
+    @apply text-primary;
+}
+
+.inputWrapper:not(.error).focused .fieldset,
+.inputWrapper:not(.error):focus-within .fieldset {
+    @apply border-gray-500 dark:border-neutral-400;
+}
+
+.inputWrapper.disabled {
+    @apply opacity-65;
+}
+
+.inputWrapper.loading {
+    @apply animate-pulse;
+}
+
+.inputWrapper:not(.mounted) .label {
+    @apply transition-none;
 }
 
 .inputIconWrapper {
@@ -51,25 +78,117 @@
     @apply pr-9!;
 }
 
+.xs {
+    @apply text-xs;
+    --notch-size: 0.625rem;
+    --label-translate: calc(-90% + -2px);
+}
+
+.sm {
+    @apply text-sm;
+    --notch-size: var(--text-xs);
+    --label-translate: -90%;
+}
+
+.base {
+    @apply text-base;
+    --notch-size: var(--text-xs);
+    --label-translate: calc(-90% + -1px);
+}
+
+.lg {
+    @apply text-lg;
+    --notch-size: var(--text-xs);
+    --label-translate: calc(-100% + -2px);
+}
+
+.label {
+    @apply absolute
+        flex
+        origin-top-left
+        text-tertiary
+        font-sans
+        items-center
+        gap-1.5
+        w-fit
+        pointer-events-none
+        px-1
+        -ml-1;
+
+    transition:
+        transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        padding 200ms cubic-bezier(0.4, 0, 0.2, 1),
+        font-size 150ms cubic-bezier(0.4, 0, 0.2, 1),
+        margin 100ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@-moz-document url-prefix() {
+    .label {
+        will-change: transform;
+    }
+}
+
+.label.xs {
+    @apply left-2;
+}
+
+.label.sm,
+.label.base,
+.label.lg {
+    @apply left-3;
+}
+
+.input:focus + .label,
+.input.focused + .label,
+.input:not(:placeholder-shown) + .label {
+    @apply px-1;
+    font-size: var(--notch-size);
+    transform: translateY(var(--label-translate));
+}
+
+.input:focus + .label.xs,
+.input.focused + .label.xs,
+.input:not(:placeholder-shown):not(.focused) + .label.xs {
+    @apply ml-0;
+    font-size: var(--notch-size);
+    transform: translateY(var(--label-translate));
+}
+
+.label.hasLeftIcon {
+    @apply pl-6;
+}
+
+.label:not(.noPrefixPadding).hasPrefixElement.xs {
+    @apply pl-[calc(var(--label-prefix-pl)-0.25rem)];
+}
+
+.label:not(.noPrefixPadding).hasPrefixElement {
+    @apply pl-[calc(var(--label-prefix-pl)-0.625rem)];
+}
+
+.input:focus + .label,
+.input.focused + .label,
+.input:not(:placeholder-shown) + .label {
+    @apply pl-1;
+}
+
+.input:disabled {
+    @apply cursor-not-allowed;
+}
+
 .input {
     @apply w-full
         rounded-lg
         font-sans
         font-normal
         outline-none
-        border-2
-        border-transparent
-        focus:border-gray-300
-        dark:focus:border-neutral-600
-        /* FIXME: this doesn't work on Firefox, find a way to fix this and enable it back */
-        focus:placeholder:text-light-text-primary
-        dark:focus:placeholder:text-dark-text-primary
-        placeholder:select-none
-        surface-secondary
         text-primary
         transition-colors
         duration-200
-        ease-in-out;
+        ease-in-out
+        bg-transparent
+        relative;
 }
 
 .input:read-only {
@@ -89,24 +208,8 @@
     @apply px-3 py-2;
 }
 
-.xs {
-    @apply text-xs;
-}
-
-.sm {
-    @apply text-sm;
-}
-
-.base {
-    @apply text-base;
-}
-
-.lg {
-    @apply text-lg;
-}
-
 .inputIcon {
-    @apply text-tertiary stroke-2;
+    @apply text-tertiary stroke-2 transition-colors duration-200 ease-in-out;
 }
 
 .inputIcon.filled {
@@ -129,27 +232,71 @@
     @apply size-5;
 }
 
-.inputError,
-.inputError > input {
+.error .fieldset {
     @apply border-error;
+}
+
+.error .label,
+.error .inputIcon {
+    @apply text-error;
 }
 
 .errorText {
     @apply mt-1;
 }
 
-.inputLoading {
-    @apply animate-pulse;
+.adornment.xs {
+    @apply px-2 py-1.5;
 }
 
-.label {
-    @apply flex
-        items-center
-        gap-1.5
+.adornment.sm,
+.adornment.base {
+    @apply px-3 py-1.5;
+}
+
+.adornment.lg {
+    @apply px-3 py-2;
+}
+
+.fieldset {
+    @apply absolute
+        top-0
+        left-0
+        right-0
+        bottom-0
+        m-0
+        px-2
+        py-0
+        overflow-hidden
+        pointer-events-none
+        border
+        border-gray-300
+        dark:border-neutral-700
+        rounded-lg
+        transition-colors
+        duration-200;
+}
+
+.fieldset legend {
+    @apply float-none
         w-fit
-        mb-1.5;
+        overflow-hidden
+        block
+        h-0
+        text-xs
+        invisible
+        max-w-[0.01px];
+
+    transition: max-width 10ms cubic-bezier(0.4, 0, 0.2, 1) 50ms;
 }
 
-.label.hide {
-    @apply hidden;
+.fieldset legend span {
+    @apply inline-block px-1 -ml-0.5;
+    font-size: var(--notch-size);
+}
+
+.input:focus ~ .fieldset legend,
+.input.focused ~ .fieldset legend,
+.input:not(:placeholder-shown) ~ .fieldset legend {
+    @apply whitespace-nowrap max-w-full;
 }

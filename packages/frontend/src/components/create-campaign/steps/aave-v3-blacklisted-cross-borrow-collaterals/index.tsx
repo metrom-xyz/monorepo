@@ -4,11 +4,11 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import {
-    type AaveV3CampaignPayload,
-    type AaveV3CampaignPayloadPart,
-    type CampaignPayloadErrors,
-} from "@/src/types/campaign";
+import type {
+    AaveV3CampaignPayload,
+    AaveV3CampaignPayloadPart,
+} from "@/src/types/campaign/aave-v3-campaign";
+import { type CampaignPayloadErrors } from "@/src/types/campaign/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { InfoMessage } from "@/src/components/info-message";

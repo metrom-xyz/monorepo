@@ -45,6 +45,7 @@ export const Sizes: Story = {
         return (
             <div className="flex gap-12">
                 <div className="flex flex-col gap-4">
+                    <PoolRemoteLogo {...args} size="xxs" />
                     <PoolRemoteLogo {...args} size="xs" />
                     <PoolRemoteLogo {...args} size="sm" />
                     <PoolRemoteLogo {...args} size="base" />
@@ -52,6 +53,11 @@ export const Sizes: Story = {
                     <PoolRemoteLogo {...args} size="xl" />
                 </div>
                 <div className="flex flex-col gap-4">
+                    <PoolRemoteLogo
+                        {...args}
+                        tokens={fallbackTokens}
+                        size="xxs"
+                    />
                     <PoolRemoteLogo
                         {...args}
                         tokens={fallbackTokens}

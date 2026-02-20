@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import type {
     ChangeEventHandler,
     FunctionComponent,
@@ -7,7 +7,6 @@ import type {
     ReactNode,
 } from "react";
 import classNames from "classnames";
-import { Typography } from "../typography";
 import { ErrorText } from "../error-text";
 
 import styles from "./styles.module.css";
@@ -18,7 +17,6 @@ export interface PartialBaseInputProps<V> {
     error?: boolean;
     errorText?: string;
     size?: BaseInputSize;
-    placeholder?: string;
     loading?: boolean;
     onChange?: ChangeEventHandler<HTMLInputElement>;
     value?: V;
@@ -34,14 +32,17 @@ export type BaseInputProps<V> = PartialBaseInputProps<V> &
 
 export interface BaseInputWrapperProps<V> {
     id: string;
+    focused?: boolean;
     filled?: boolean;
     label?: string;
     size?: BaseInputSize;
     loading?: boolean;
+    disabled?: boolean;
     error?: boolean;
-    hideLabel?: boolean;
     errorText?: string;
     prefixElement?: ReactNode;
+    noPrefixPadding?: boolean;
+    endAdornment?: ReactNode;
     icon?: FunctionComponent<React.SVGProps<SVGSVGElement>>;
     iconPlacement?: "left" | "right";
     className?: string;
@@ -50,25 +51,29 @@ export interface BaseInputWrapperProps<V> {
 
 export function BaseInputWrapper<V>({
     id,
+    focused,
     filled,
     label,
     size = "base",
     loading,
+    disabled,
     error,
-    hideLabel = false,
     errorText,
     prefixElement,
+    noPrefixPadding,
+    endAdornment,
     icon: Icon,
     iconPlacement = "right",
     className,
     children,
 }: BaseInputWrapperProps<V>): ReactElement {
     const [prefixRef, setPrefixRef] = useState<HTMLDivElement | null>(null);
+    const [inputLeftPadding, setInputLeftPadding] = useState(0);
+    const [mounted, setMounted] = useState(false);
 
     const icon = Icon && (
         <div
             className={classNames("inputIconWrapper", styles.inputIconWrapper, {
-                [styles.hasPrefixElement]: !!prefixElement,
                 [styles.placeLeft]: iconPlacement === "left",
                 [styles.placeRight]: iconPlacement === "right",
             })}
@@ -82,42 +87,37 @@ export function BaseInputWrapper<V>({
         </div>
     );
 
-    const inputLeftPadding = useMemo(() => {
+    useLayoutEffect(() => {
+        if (!prefixRef && !icon) return;
+
         let padding = 0;
         if (prefixRef) padding += prefixRef.offsetWidth + 12;
         if (!!icon && iconPlacement === "left") padding += 36;
 
-        return padding;
+        setInputLeftPadding(padding);
     }, [prefixRef, icon, iconPlacement]);
 
+    useLayoutEffect(() => {
+        requestAnimationFrame(() => {
+            setMounted(true);
+        });
+    }, []);
+
+    const hasLeftIcon = !!icon && iconPlacement === "left";
+    const hasRightIcon = !!icon && iconPlacement === "right";
+
     return (
-        <div
-            className={classNames("root", className, {
-                [styles[size]]: true,
-                [styles.hasPrefixElement]: !!prefixElement,
-                [styles.hasLeftIcon]: !!icon && iconPlacement === "left",
-                [styles.hasRightIcon]: !!icon && iconPlacement === "right",
-            })}
-        >
-            {!!label && (
-                <label
-                    className={classNames("label", styles.label, {
-                        [styles.hide]: hideLabel,
-                    })}
-                    htmlFor={id}
-                >
-                    <Typography
-                        uppercase
-                        size="xs"
-                        weight="medium"
-                        variant="tertiary"
-                        className="labelText"
-                    >
-                        {label}
-                    </Typography>
-                </label>
-            )}
-            <div className={classNames("inputWrapper", styles.inputWrapper)}>
+        <div className={classNames("root", styles.inputRoot, className)}>
+            <div
+                className={classNames("inputWrapper", styles.inputWrapper, {
+                    [styles.error]: !!error,
+                    [styles.focused]: !!focused,
+                    [styles.disabled]: !!disabled,
+                    [styles.loading]: !!loading,
+                    [styles.mounted]: mounted,
+                    [styles.hasRightIcon]: hasRightIcon,
+                })}
+            >
                 {prefixElement && (
                     <div
                         ref={setPrefixRef}
@@ -132,8 +132,7 @@ export function BaseInputWrapper<V>({
                 {iconPlacement === "left" && icon}
                 {React.cloneElement(children, {
                     className: classNames(children.props.className, {
-                        [styles.inputError]: !!error,
-                        [styles.inputLoading]: !!loading,
+                        [styles.focused]: !!focused,
                         [styles[size]]: true,
                     }),
                     style: {
@@ -142,12 +141,55 @@ export function BaseInputWrapper<V>({
                             : {}),
                     },
                 })}
+                {!!label && (
+                    <label
+                        htmlFor={id}
+                        className={classNames(
+                            "label",
+                            styles.label,
+                            styles.floating,
+                            {
+                                [styles[size]]: true,
+                                [styles.hasLeftIcon]: hasLeftIcon,
+                                [styles.hasPrefixElement]: !!prefixElement,
+                                [styles.noPrefixPadding]: noPrefixPadding,
+                            },
+                        )}
+                        style={
+                            {
+                                ...(!!prefixElement && inputLeftPadding
+                                    ? {
+                                          "--label-prefix-pl": `${inputLeftPadding}px`,
+                                      }
+                                    : {}),
+                            } as React.CSSProperties
+                        }
+                    >
+                        {label}
+                    </label>
+                )}
                 {iconPlacement === "right" && icon}
+                {endAdornment && (
+                    <div
+                        className={classNames(styles.adornment, {
+                            [styles[size]]: true,
+                        })}
+                    >
+                        {endAdornment}
+                    </div>
+                )}
+                <fieldset aria-hidden="true" className={styles.fieldset}>
+                    <legend>
+                        <span className={classNames({ [styles[size]]: true })}>
+                            {label}
+                        </span>
+                    </legend>
+                </fieldset>
             </div>
             {error && errorText && (
                 <ErrorText
                     size="xs"
-                    weight="medium"
+                    uppercase={false}
                     className={styles.errorText}
                 >
                     {errorText}

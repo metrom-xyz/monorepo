@@ -15,7 +15,7 @@ import {
     DistributablesType,
     TargetType,
 } from "@metrom-xyz/sdk";
-import { type Campaign } from "@/src/types/campaign";
+import { type Campaign } from "@/src/types/campaign/common";
 import { formatUsdAmount } from "@/src/utils/format";
 import { Points } from "./points";
 import { TURTLE_APP_EARN_URL, TURTLE_REFERRAL_CODE } from "@/src/commons";

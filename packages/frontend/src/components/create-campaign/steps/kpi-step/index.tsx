@@ -5,7 +5,7 @@ import {
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
     type CampaignPayloadTokenDistributables,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 import {
     Button,

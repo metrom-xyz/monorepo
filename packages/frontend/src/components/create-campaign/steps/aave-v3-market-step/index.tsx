@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import {
-    type AaveV3CampaignPayload,
-    type AaveV3CampaignPayloadPart,
-} from "@/src/types/campaign";
+import type {
+    AaveV3CampaignPayload,
+    AaveV3CampaignPayloadPart,
+} from "@/src/types/campaign/aave-v3-campaign";
 import { useChainData } from "@/src/hooks/useChainData";
 import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
 

@@ -8,6 +8,7 @@ import styles from "./styles.module.css";
 export interface BaseChipsProps {
     size?: "xs" | "sm";
     active?: boolean;
+    disabled?: boolean;
     variant?: "primary" | "secondary";
     children: string | ReactNode;
     className?: string;
@@ -20,6 +21,7 @@ export type ChipProps = BaseChipsProps &
 export const Chip = ({
     size = "sm",
     active,
+    disabled,
     variant = "primary",
     children,
     onClick,
@@ -46,6 +48,7 @@ export const Chip = ({
                 [styles[size]]: true,
                 [styles.clickable]: !!onClick,
                 [styles.active]: active,
+                [styles.disabled]: disabled,
                 [styles[variant]]: true,
             })}
         >

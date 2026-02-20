@@ -1,37 +1,30 @@
 import {
-    type AmmPoolLiquidityCampaignPayload,
     type CampaignPayloadErrors,
-    AmmPoolLiquidityCampaignPreviewPayload,
-    type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import {
-    AmmPoolLiquidityType,
+    BaseCampaignType,
     CampaignKind,
     DistributablesType,
-    SupportedAmm,
 } from "@metrom-xyz/sdk";
-import { PoolStep } from "../../steps/pool-step";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
-import { RewardsStep } from "../../steps/rewards-step";
-import { KpiStep } from "../../steps/kpi-step";
-import { RangeStep } from "../../steps/range-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
-import { DexStep } from "../../steps/dex-step";
-import { Button } from "@metrom-xyz/ui";
+import { Button, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import {
-    AMM_SUPPORTS_RANGE_INCENTIVES,
-    AMM_SUPPORTS_TOKENS_RATIO,
-} from "@/src/commons";
-import { WeightingStep } from "../../steps/weighting";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import { validateDistributables } from "@/src/utils/creation-form";
+import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
+import { StepSection } from "../step-section";
+import { ChainSelect } from "../../inputs/chain-select";
+import { DexSelect } from "../../inputs/dex-select";
+import {
+    AmmPoolLiquidityCampaignPreviewPayload,
+    type AmmPoolLiquidityCampaignPayload,
+    type AmmPoolLiquidityCampaignPayloadPart,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import { PoolSelect } from "../../inputs/pool-select";
 
 import styles from "./styles.module.css";
 
@@ -62,6 +55,7 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
@@ -76,6 +70,7 @@ function validatePayload(
         pool,
         weighting,
         priceRangeSpecification,
+        chainId,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
@@ -101,7 +96,7 @@ const initialPayload: AmmPoolLiquidityCampaignPayload = {
 
 export function AmmPoolLiquidityForm({
     kind,
-    unsupportedChain,
+    // unsupportedChain,
     onPreviewClick,
 }: AmmPoolLiquidityFormProps) {
     const t = useTranslations("newCampaign");
@@ -115,51 +110,51 @@ export function AmmPoolLiquidityForm({
         return validatePayload(chainId, payload);
     }, [chainId, payload, errors]);
 
-    const noDistributables = useMemo(() => {
-        return (
-            !payload.distributables ||
-            payload.distributables.type === DistributablesType.FixedPoints ||
-            payload.distributables.type === DistributablesType.DynamicPoints ||
-            payload.distributables.type ===
-                DistributablesType.NoDistributables ||
-            !payload.distributables.tokens ||
-            payload.distributables.tokens.length === 0
-        );
-    }, [payload.distributables]);
+    // const noDistributables = useMemo(() => {
+    //     return (
+    //         !payload.distributables ||
+    //         payload.distributables.type === DistributablesType.FixedPoints ||
+    //         payload.distributables.type === DistributablesType.DynamicPoints ||
+    //         payload.distributables.type ===
+    //             DistributablesType.NoDistributables ||
+    //         !payload.distributables.tokens ||
+    //         payload.distributables.tokens.length === 0
+    //     );
+    // }, [payload.distributables]);
 
-    const missingDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
+    // const missingDistributables = useMemo(() => {
+    //     if (!payload.distributables) return true;
 
-        const { type } = payload.distributables;
+    //     const { type } = payload.distributables;
 
-        if (type === DistributablesType.FixedPoints)
-            return (
-                !payload.distributables.fee || !payload.distributables.points
-            );
-        if (type === DistributablesType.Tokens)
-            return (
-                !payload.distributables.tokens ||
-                payload.distributables.tokens.length === 0
-            );
+    //     if (type === DistributablesType.FixedPoints)
+    //         return (
+    //             !payload.distributables.fee || !payload.distributables.points
+    //         );
+    //     if (type === DistributablesType.Tokens)
+    //         return (
+    //             !payload.distributables.tokens ||
+    //             payload.distributables.tokens.length === 0
+    //         );
 
-        return true;
-    }, [payload.distributables]);
+    //     return true;
+    // }, [payload.distributables]);
 
-    const tokensRatioSupported = useMemo(() => {
-        return (
-            !!payload.pool &&
-            AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
-            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
-        );
-    }, [payload.pool]);
+    // const tokensRatioSupported = useMemo(() => {
+    //     return (
+    //         !!payload.pool &&
+    //         AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
+    //         payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+    //     );
+    // }, [payload.pool]);
 
-    const rangeSupported = useMemo(() => {
-        return (
-            !!payload.pool &&
-            AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm as SupportedAmm] &&
-            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
-        );
-    }, [payload.pool]);
+    // const rangeSupported = useMemo(() => {
+    //     return (
+    //         !!payload.pool &&
+    //         AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm as SupportedAmm] &&
+    //         payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+    //     );
+    // }, [payload.pool]);
 
     useEffect(() => {
         setPayload({ ...initialPayload, kind });
@@ -186,33 +181,46 @@ export function AmmPoolLiquidityForm({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <DexStep
-                    disabled={unsupportedChain}
-                    dex={payload.dex}
-                    onDexChange={handlePayloadOnChange}
-                />
-                <PoolStep
-                    disabled={!payload.dex || unsupportedChain}
-                    dex={payload.dex}
-                    pool={payload.pool}
-                    onPoolChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <StartDateStep
-                    disabled={!payload.pool || unsupportedChain}
+                <CampaignBasicsStep
+                    startDatePickerDisabled={!payload.pool}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
+                    onChange={handlePayloadOnChange}
+                    targetSection={
+                        <StepSection
+                            title={
+                                <Typography weight="semibold">
+                                    {t("defineTarget")}
+                                </Typography>
+                            }
+                        >
+                            <div className={styles.target}>
+                                <ChainSelect
+                                    campaignType={
+                                        BaseCampaignType.AmmPoolLiquidity
+                                    }
+                                    value={payload.chainId}
+                                    onChange={handlePayloadOnChange}
+                                />
+                                <DexSelect
+                                    chainId={payload.chainId}
+                                    value={payload.dex}
+                                    resetTrigger={payload.chainId}
+                                    onChange={handlePayloadOnChange}
+                                />
+                                <PoolSelect
+                                    chainId={payload.chainId}
+                                    dex={payload.dex?.slug}
+                                    value={payload.pool}
+                                    resetTrigger={payload.dex}
+                                    onChange={handlePayloadOnChange}
+                                />
+                            </div>
+                        </StepSection>
+                    }
                 />
-                <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <RewardsStep
+                {/* <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}
                     startDate={payload.startDate}
@@ -262,7 +270,7 @@ export function AmmPoolLiquidityForm({
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
             </div>
             <Button
                 icon={ArrowRightIcon}

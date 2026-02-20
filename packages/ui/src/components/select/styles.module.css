@@ -1,6 +1,6 @@
 @reference "../../theme.css";
 
-.input :global(.input) {
+.input :global(.input:not(:disabled)) {
     @apply cursor-pointer;
 }
 
@@ -9,11 +9,7 @@
 }
 
 .dropdownRoot {
-    @apply z-30
-        p-0
-        border-2
-        overflow-hidden
-        h-fit;
+    @apply p-0 overflow-hidden h-fit;
 }
 
 .emptyOptionList {
@@ -32,8 +28,10 @@
         outline-none
         box-border
         text-primary
-        surface-secondary
-        surface-secondary-hover
+        bg-gray-150
+        dark:bg-neutral-900
+        hover:bg-gray-100
+        dark:hover:bg-neutral-700
         not-last:border-b
         not-last:border-b-gray-300
         not-last:dark:border-b-neutral-700
@@ -53,5 +51,5 @@
 }
 
 .pickedOption {
-    @apply bg-gray-50 dark:bg-neutral-700 surface-secondary-hover;
+    @apply bg-gray-100 dark:bg-neutral-700;
 }

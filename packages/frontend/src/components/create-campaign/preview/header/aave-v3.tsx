@@ -1,9 +1,9 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { type AaveV3CampaignPreviewPayload } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { getCampaignPreviewName } from "@/src/utils/campaign";
+import type { AaveV3CampaignPreviewPayload } from "@/src/types/campaign/aave-v3-campaign";
 
 import styles from "./styles.module.css";
 

@@ -7,7 +7,7 @@ import type { SVGIcon } from "../../assets/types";
 
 import styles from "./styles.module.css";
 
-export type RemoteLogoSize = "xs" | "sm" | "base" | "lg" | "xl";
+export type RemoteLogoSize = "xxs" | "xs" | "sm" | "base" | "lg" | "xl";
 
 export interface RemoteLogoProps {
     loading?: boolean;
