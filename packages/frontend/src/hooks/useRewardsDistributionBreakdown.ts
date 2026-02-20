@@ -31,7 +31,11 @@ export function useRewardsDistributionBreakdown({
     | RewardsDistributionBreakdown
     | undefined {
     const percentages: RewardsPercentage | undefined = useMemo(() => {
-        if (!kpiMeasurementPercentage) return undefined;
+        if (!kpiMeasurementPercentage)
+            return {
+                distributed: 100,
+                reimbursed: 0,
+            };
 
         const normalizedKpiMeasurementPercentage = Math.max(
             Math.min(kpiMeasurementPercentage, 1),
