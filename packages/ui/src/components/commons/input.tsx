@@ -189,7 +189,7 @@ export function BaseInputWrapper<V>({
             {error && errorText && (
                 <ErrorText
                     size="xs"
-                    weight="medium"
+                    uppercase={false}
                     className={styles.errorText}
                 >
                     {errorText}
