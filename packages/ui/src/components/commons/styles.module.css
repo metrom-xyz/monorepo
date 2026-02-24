@@ -217,19 +217,19 @@
 }
 
 .inputIcon.xs {
-    @apply size-3;
+    @apply size-2;
 }
 
 .inputIcon.sm {
-    @apply size-4;
+    @apply size-2;
 }
 
 .inputIcon.base {
-    @apply size-[1.125rem];
+    @apply size-3;
 }
 
 .inputIcon.lg {
-    @apply size-5;
+    @apply size-4;
 }
 
 .error .fieldset {

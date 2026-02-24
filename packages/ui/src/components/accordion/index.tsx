@@ -12,6 +12,7 @@ export interface AccordionProps {
     iconPlacement?: "left" | "right";
     noUnmount?: boolean;
     open?: boolean;
+    noUnmount?: boolean;
     onToggle?: (open: boolean) => void;
     className?: string;
 }
@@ -22,6 +23,7 @@ export function Accordion({
     iconPlacement = "left",
     noUnmount,
     open: controlledOpen,
+    noUnmount,
     onToggle,
     className,
 }: AccordionProps) {
