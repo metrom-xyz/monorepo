@@ -10,6 +10,7 @@ export interface AccordionProps {
     title: ReactNode;
     children: ReactNode;
     open?: boolean;
+    noUnmount?: boolean;
     onToggle?: (open: boolean) => void;
     className?: string;
 }
@@ -18,6 +19,7 @@ export function Accordion({
     title,
     children,
     open: controlledOpen,
+    noUnmount,
     onToggle,
     className,
 }: AccordionProps) {
@@ -55,11 +57,13 @@ export function Accordion({
                 />
             </div>
             <AnimatePresence>
-                {open && (
+                {(noUnmount || open) && (
                     <motion.div
                         initial={{ height: 0 }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: 0 }}
+                        animate={{
+                            height: noUnmount ? (open ? "auto" : 0) : "auto",
+                        }}
+                        exit={noUnmount ? undefined : { height: 0 }}
                         transition={{ ease: easeInOut, duration: 0.2 }}
                         className={classNames("content", styles.content)}
                     >
