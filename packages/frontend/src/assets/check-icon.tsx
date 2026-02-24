@@ -1,6 +1,6 @@
 import type { SVGIcon } from "../types/common";
 
-export function GreenCheckIcon(props: SVGIcon) {
+export function CheckIcon(props: SVGIcon) {
     return (
         <svg
             width="10"
@@ -12,7 +12,7 @@ export function GreenCheckIcon(props: SVGIcon) {
         >
             <path
                 d="M9 1L3.5 6.5L1 4"
-                stroke="#6CFF95"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"

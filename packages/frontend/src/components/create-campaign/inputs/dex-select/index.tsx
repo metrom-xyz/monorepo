@@ -2,7 +2,7 @@ import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { type DexProtocol, ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { useCallback, useEffect, type FunctionComponent } from "react";
+import { useCallback, useEffect, useMemo, type FunctionComponent } from "react";
 import type { AmmPoolLiquidityCampaignPayloadPart } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { useChainType } from "@/src/hooks/useChainType";
 import type { SVGIcon } from "@/src/types/common";
@@ -63,14 +63,16 @@ export function DexSelect({
         onChange({ dex: undefined });
     }, [resetTrigger, prevResetTrigger, onChange]);
 
-    const options: SelectOption<string, OptionData>[] = dexes.map(
-        (protocol) => ({
-            label: protocol.name,
-            value: protocol.slug,
-            data: {
-                logo: protocol.logo,
-            },
-        }),
+    const options = useMemo<SelectOption<string, OptionData>[]>(
+        () =>
+            dexes.map((protocol) => ({
+                label: protocol.name,
+                value: protocol.slug,
+                data: {
+                    logo: protocol.logo,
+                },
+            })),
+        [dexes],
     );
 
     const handleOnChange = useCallback(
@@ -94,6 +96,7 @@ export function DexSelect({
             messages={{ noResults: t("noDexes") }}
             renderOption={option}
             renderSelectedPrefix={selectedPrefix}
+            noPrefixPadding
             className={styles.root}
         />
     );

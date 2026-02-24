@@ -198,7 +198,11 @@
         "formPreview": {
             "preview": "Preview",
             "share": "Share",
-            "saveAsPreset": "Save as preset"
+            "saveAsPreset": "Save as preset",
+            "campaignBasics": "Campaign basics",
+            "rewards": "Rewards",
+            "target": "Target",
+            "duration": "Duration"
         },
         "pickDistributablesType": {
             "navigation": {
@@ -219,13 +223,15 @@
         "form": {
             "basics": {
                 "title": "Set your campaign basics",
+                "notSaved": "Not saved",
                 "defineTarget": "Define the target",
                 "defineDuration": "Define the duration",
                 "chain": "Chain",
                 "protocol": "Protocol",
                 "pool": "Pool",
                 "startDate": "Start date",
-                "endDate": "End date"
+                "endDate": "End date",
+                "saveBasics": "Save basics"
             },
             "base": {
                 "kind": {
@@ -398,6 +404,8 @@
                 }
             },
             "aaveV3": {
+                "action": "Action",
+                "noActions": "No actions found",
                 "brand": { "title": "Platform" },
                 "actions": {
                     "borrow": "Borrow",
@@ -534,10 +542,27 @@
             "noChains": "No chains found",
             "dex": "Dex",
             "noDexes": "No dexes found",
-            "pool": "Pool",
-            "tvl": "TVL",
-            "noPools": "No pools found",
-            "listPool": "If your pool isn't listed, it may not meet the minimum TVL requirement.",
+            "poolSelect": {
+                "label": "Pool",
+                "tvl": "TVL",
+                "noPools": "No pools found",
+                "listPool": "If your pool isn't listed, it may not meet the minimum TVL requirement.",
+                "empty": "Type or paste a pool address",
+                "errors": {
+                    "invalidAddress": "Invalid address",
+                    "enterValidAddress": "Enter a valid pool address",
+                    "invalidPool": "Invalid pool",
+                    "poolNotSupported": "Pool not supported",
+                    "inconsistentDex": "The pool doesn't belong to {dex}"
+                }
+            },
+            "platform": "Platform",
+            "noPlatforms": "No platforms found",
+            "collateral": "Collateral",
+            "noCollaterals": "No collaterals",
+            "token": "Token",
+            "debt": "Debt",
+            "deposits": "Deposits",
             "startDatePicker": {
                 "label": "Start date",
                 "now": "Now",
@@ -557,7 +582,8 @@
                 "minimumDate": "Campaign must exceed {duration}",
                 "maximumDate": "Campaign must be under {duration}"
             }
-        }
+        },
+        "previews": {}
     },
     "campaignPreview": {
         "header": {
@@ -961,7 +987,7 @@
         "priceRange": "Displayed APR assumes your liquidity is fully within the incentivized range. If only part of your position is in range, rewards scale down. Positions completely out of range do not earn rewards.",
         "weighting": "Rewards are distributed based on each position's composition (<bold>{token0Weight}</bold> on <bold>{token0Symbol}</bold> balance, <bold>{token1Weight}</bold> on <bold>{token1Symbol}</bold> balance, and <bold>{feeWeight}</bold> based on concentration), and displayed APR assumed optimal composition.",
         "priceRangeAndWeighting": "Displayed APR assumes your liquidity is fully within the incentivized range and matches the optimal composition. Rewards are distributed based on your position's composition (<bold>{token0Weight}</bold> on <bold>{token0Symbol}</bold> balance, <bold>{token1Weight}</bold> on <bold>{token1Symbol}</bold> balance, <bold>{feeWeight}</bold> on concentration).",
-        "aaveV3NetSupply": "As a net supply <bold>{collateral}</bold> campaign, you will earn rewards on this campaign based on the difference between total supplied <bold>{collateral}</bold> and the combined total borrowed of: <bold>{collateral}{blacklisted}</bold>.",
+        "aaveV3NetSupply": "As a net supply <bold>{collateral}</bold> campaign, you will earn rewards on this campaign based on the difference between total supplied <bold>{collateral}</bold> and the combined total borrowed of: <bold>{blacklisted}</bold>.",
         "learnMore": "Learn more"
     },
     "campaignActions": {

@@ -89,6 +89,7 @@ export function ChainSelect({
             messages={{ noResults: t("noChains") }}
             renderOption={option}
             renderSelectedPrefix={selectedPrefix}
+            noPrefixPadding
             className={styles.root}
         />
     );

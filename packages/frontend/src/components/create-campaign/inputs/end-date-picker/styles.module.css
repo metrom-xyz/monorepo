@@ -15,3 +15,7 @@
 .presets {
     @apply flex gap-1;
 }
+
+.popover {
+    @apply flex justify-center;
+}
