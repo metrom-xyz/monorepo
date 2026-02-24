@@ -1,25 +1,28 @@
 import { useChainType } from "@/src/hooks/useChainType";
 import { usePools } from "@/src/hooks/usePools";
 import type { AmmPoolLiquidityCampaignPayloadPart } from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import type { SupportedDex } from "@metrom-xyz/chains";
+import type { DexProtocol } from "@metrom-xyz/chains";
 import type { AmmPool, Erc20Token } from "@metrom-xyz/sdk";
-import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
+import { Select, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { usePrevious } from "react-use";
 import { ListHeader } from "./list-header";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import { ListFooter } from "./list-footer";
+import { Pool } from "./pool";
+import { Picker } from "./picker";
+import type { CampaignPayloadErrors } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 
 interface PoolSelectProps {
     chainId?: number;
-    dex?: SupportedDex;
-    value?: AmmPool;
+    dex?: DexProtocol;
+    pool?: AmmPool;
     resetTrigger?: unknown;
     onChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
+    onError: (errors: CampaignPayloadErrors) => void;
 }
 
 interface OptionData {
@@ -33,30 +36,7 @@ const option = (option: SelectOption<string, OptionData>) => {
     const { label, data } = option;
     if (!data) return <></>;
 
-    return (
-        <div className={styles.option}>
-            <div className={styles.pool}>
-                <PoolRemoteLogo
-                    size="xs"
-                    chain={data.chainId}
-                    tokens={data.tokens.map((token) => ({
-                        address: token.address,
-                        defaultText: token.symbol,
-                    }))}
-                />
-                <Typography>{label}</Typography>
-                <Typography size="xs" variant="tertiary" className={styles.fee}>
-                    {formatPercentage({
-                        percentage: data.fee,
-                        keepDust: true,
-                    })}
-                </Typography>
-            </div>
-            <Typography size="sm">
-                {formatUsdAmount({ amount: data.usdTvl })}
-            </Typography>
-        </div>
-    );
+    return <Pool {...data} label={label} />;
 };
 
 const selectedPrefix = (
@@ -80,20 +60,22 @@ const selectedPrefix = (
 export function PoolSelect({
     chainId,
     dex,
-    value,
+    pool,
     resetTrigger,
     onChange,
+    onError,
 }: PoolSelectProps) {
     const [baseTokenFilter, setBaseTokenFilter] = useState<
         Erc20Token | undefined
     >(undefined);
 
-    const t = useTranslations("newCampaign.inputs");
+    const t = useTranslations("newCampaign.inputs.poolSelect");
     const chainType = useChainType();
     const { pools, loading } = usePools({
         chainId,
         chainType,
-        dex,
+        dex: dex?.slug,
+        enabled: dex?.supportsFetchAllPools,
     });
 
     const prevResetTrigger = usePrevious(resetTrigger);
@@ -125,7 +107,7 @@ export function PoolSelect({
             }));
     }, [baseTokenFilter, loading, pools]);
 
-    const handleOnChange = useCallback(
+    const handleOnSelectChange = useCallback(
         (option: SelectOption<string, OptionData>) => {
             if (!pools) return;
 
@@ -137,19 +119,27 @@ export function PoolSelect({
         [pools, onChange],
     );
 
-    return (
+    const handleOnPickerChange = useCallback(
+        (pool?: AmmPool) => {
+            onChange({ pool });
+        },
+        [onChange],
+    );
+
+    return dex && dex.supportsFetchAllPools ? (
         <Select
             size="lg"
-            label={t("pool")}
+            label={t("label")}
             search
             loading={loading}
             disabled={!dex}
             options={options}
-            value={value?.id as string}
+            value={pool?.id as string}
             messages={{ noResults: t("noPools") }}
-            onChange={handleOnChange}
+            onChange={handleOnSelectChange}
             renderOption={option}
             renderSelectedPrefix={selectedPrefix}
+            noPrefixPadding
             listHeader={
                 <ListHeader
                     chainId={chainId}
@@ -159,6 +149,15 @@ export function PoolSelect({
             }
             listFooter={<ListFooter />}
             className={styles.root}
+        />
+    ) : (
+        <Picker
+            disabled={!dex}
+            chainId={chainId}
+            dex={dex}
+            pool={pool}
+            onChange={handleOnPickerChange}
+            onError={onError}
         />
     );
 }

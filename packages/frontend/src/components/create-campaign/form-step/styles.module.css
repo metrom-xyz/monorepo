@@ -1,7 +1,21 @@
 @reference "../../../app.css";
 
 .root {
-    @apply bg-gray-100 dark:bg-neutral-800;
+    @apply bg-gray-100
+        dark:bg-neutral-800
+        border
+        border-transparent
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.root.error {
+    @apply border-error;
+}
+
+.root.warning {
+    @apply border-warning;
 }
 
 .root :global(.preview):hover {
@@ -12,8 +26,32 @@
     @apply flex items-center gap-2.5;
 }
 
+.iconWrapper {
+    @apply flex items-center justify-center min-w-4 min-h-4;
+}
+
 .greenDot {
     @apply size-1.5 rounded-full bg-brand-green-dark dark:bg-brand-green;
+}
+
+.errorIcon {
+    @apply text-error size-4;
+}
+
+.warningIcon {
+    @apply text-warning size-4;
+}
+
+.checkIcon {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.errorText {
+    @apply text-error;
+}
+
+.warningText {
+    @apply text-warning;
 }
 
 .content {

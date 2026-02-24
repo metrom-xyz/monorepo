@@ -4,43 +4,24 @@ import {
     type CampaignPreviewFixedDistribution,
     type CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
-import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
-import {
-    CampaignKind,
-    DistributablesType,
-    SupportedAaveV3,
-} from "@metrom-xyz/sdk";
-import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
-import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
-import { Button } from "@metrom-xyz/ui";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { CampaignKind, SupportedAaveV3 } from "@metrom-xyz/sdk";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
-import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
-import { KpiStep } from "../../steps/kpi-step";
-import {
-    CampaignKindStep,
-    type CampaignKindOption,
-} from "../../steps/campaign-kind-step";
+import { type CampaignKindOption } from "../../steps/campaign-kind-step";
 import type { TranslationsKeys } from "@/src/types/utils";
 import {
     validateDistributables,
     validateDistributions,
 } from "@/src/utils/creation-form";
-import { AaveV3BlacklistedCrossBorrowCollateralsStep } from "../../steps/aave-v3-blacklisted-cross-borrow-collaterals";
-import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
-import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 import {
     AaveV3CampaignPreviewPayload,
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import { BasicsSteps } from "./basics-step";
+import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
+import { useMemo } from "react";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 import styles from "./styles.module.css";
 
@@ -116,7 +97,11 @@ function validatePayload(
 }
 
 interface AaveV3FormProps {
+    payload: AaveV3CampaignPayload;
+    errors: CampaignPayloadErrors;
     unsupportedChain: boolean;
+    onChange: (payload: AaveV3CampaignPayloadPart) => void;
+    onError: (errors: CampaignPayloadErrors) => void;
     onPreviewClick: (
         payload:
             | AaveV3CampaignPreviewPayload
@@ -142,21 +127,17 @@ export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
     },
 ] as const;
 
-const initialPayload: AaveV3CampaignPayload = {
-    distributables: { type: DistributablesType.Tokens },
-};
-
 export function AaveV3Form({
-    unsupportedChain,
-    onPreviewClick,
+    payload,
+    errors,
+    // unsupportedChain,
+    onChange,
+    onError,
+    // onPreviewClick,
 }: AaveV3FormProps) {
-    const t = useTranslations("newCampaign");
     const { id: chainId, type: chainType } = useChainWithType();
 
-    const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
-
-    const { loading: loadingUsdNetSupply, usdNetSupply } =
+    const { /*loading: loadingUsdNetSupply,*/ usdNetSupply } =
         useAaveV3CollateralUsdNetSupply({
             chainId,
             chainType,
@@ -168,68 +149,69 @@ export function AaveV3Form({
             enabled: payload.kind === CampaignKind.AaveV3NetSupply,
         });
 
-    const previewPayload = useMemo(() => {
+    useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
         return validatePayload(chainId, payload, usdNetSupply);
     }, [chainId, usdNetSupply, payload, errors]);
 
-    const noDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
+    // const noDistributables = useMemo(() => {
+    //     if (!payload.distributables) return true;
 
-        const { type } = payload.distributables;
+    //     const { type } = payload.distributables;
 
-        if (type === DistributablesType.FixedPoints)
-            return (
-                !payload.distributables.fee || !payload.distributables.points
-            );
-        if (type === DistributablesType.Tokens)
-            return (
-                !payload.distributables.tokens ||
-                payload.distributables.tokens.length === 0
-            );
+    //     if (type === DistributablesType.FixedPoints)
+    //         return (
+    //             !payload.distributables.fee || !payload.distributables.points
+    //         );
+    //     if (type === DistributablesType.Tokens)
+    //         return (
+    //             !payload.distributables.tokens ||
+    //             payload.distributables.tokens.length === 0
+    //         );
 
-        return true;
-    }, [payload.distributables]);
+    //     return true;
+    // }, [payload.distributables]);
 
-    const kindOptions = AAVE_V3_CAMPAIGN_KIND_OPTIONS.map((option) => ({
-        ...option,
-        label: t(option.label),
-    }));
+    // useEffect(() => {
+    //     setPayload(initialPayload);
+    // }, [chainId]);
 
-    useEffect(() => {
-        setPayload(initialPayload);
-    }, [chainId]);
+    // const handlePayloadOnChange = useCallback(
+    //     (part: AaveV3CampaignPayloadPart) => {
+    //         setPayload((prev) => ({ ...prev, ...part }));
+    //     },
+    //     [],
+    // );
 
-    const handlePayloadOnChange = useCallback(
-        (part: AaveV3CampaignPayloadPart) => {
-            setPayload((prev) => ({ ...prev, ...part }));
-        },
-        [],
-    );
+    // const handlePayloadOnError = useCallback(
+    //     (errors: CampaignPayloadErrors) => {
+    //         setErrors((state) => ({ ...state, ...errors }));
+    //     },
+    //     [],
+    // );
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
+    // function handlePreviewOnClick() {
+    //     onPreviewClick(previewPayload);
+    // }
 
-    function handlePreviewOnClick() {
-        onPreviewClick(previewPayload);
-    }
-
-    const usdTvl =
-        payload.kind === CampaignKind.AaveV3NetSupply
-            ? usdNetSupply
-            : getAaveV3UsdTarget({
-                  collateral: payload.collateral,
-                  kind: payload.kind,
-              });
+    // const usdTvl =
+    //     payload.kind === CampaignKind.AaveV3NetSupply
+    //         ? usdNetSupply
+    //         : getAaveV3UsdTarget({
+    //               collateral: payload.collateral,
+    //               kind: payload.kind,
+    //           });
 
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <AaveV3BrandStep
+                <BasicsSteps
+                    payload={payload}
+                    error={errors.basics}
+                    onApply={onChange}
+                    onError={onError}
+                />
+                {/* <AaveV3BrandStep
                     disabled={unsupportedChain}
                     brand={payload.brand}
                     onBrandChange={handlePayloadOnChange}
@@ -318,9 +300,9 @@ export function AaveV3Form({
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
             </div>
-            <Button
+            {/* <Button
                 icon={ArrowRightIcon}
                 iconPlacement="right"
                 disabled={!previewPayload}
@@ -328,7 +310,7 @@ export function AaveV3Form({
                 className={{ root: styles.button }}
             >
                 {t("submit.preview")}
-            </Button>
+            </Button> */}
         </div>
     );
 }

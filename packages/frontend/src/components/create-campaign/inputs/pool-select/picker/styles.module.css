@@ -1,0 +1,17 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-full sm:min-w-2/4 flex flex-col gap-6;
+}
+
+.trashIcon {
+    @apply size-4 cursor-pointer;
+}
+
+.popover {
+    @apply flex flex-col gap-3;
+}
+
+.header {
+    @apply flex justify-between items-center;
+}

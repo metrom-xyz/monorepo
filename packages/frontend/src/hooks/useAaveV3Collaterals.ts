@@ -11,7 +11,7 @@ import { useProtocolsInChain } from "./useProtocolsInChain";
 import { METROM_API_CLIENT } from "../commons";
 
 interface UseAaveV3CollateralsParams extends HookBaseParams {
-    chainId: SupportedChain;
+    chainId?: SupportedChain;
     chainType: ChainType;
     brand?: SupportedAaveV3;
     market?: string;
@@ -21,7 +21,7 @@ type QueryKey = [
     string,
     SupportedAaveV3 | undefined,
     string | undefined,
-    SupportedChain,
+    SupportedChain | undefined,
     ChainType,
 ];
 
@@ -45,7 +45,7 @@ export function useAaveV3Collaterals({
         queryKey: ["aave-v3-collaterals", brand, market, chainId, chainType],
         queryFn: async ({ queryKey }) => {
             const [, brand, market, chainId, chainType] = queryKey as QueryKey;
-            if (!brand || !market) return null;
+            if (!brand || !market || !chainId) return null;
 
             try {
                 const collaterals =

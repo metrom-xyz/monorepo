@@ -1,0 +1,13 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-1;
+}
+
+.poolIdentity {
+    @apply flex items-center gap-1.5;
+}
+
+.chainIcon {
+    @apply size-4;
+}
