@@ -72,7 +72,7 @@ export function EndDatePicker({
 
     useEffect(() => {
         if (!endDate || !startDate || !limits) {
-            onError({ endDate: false });
+            onError({ basics: undefined });
             setDateError("");
             return;
         }
@@ -97,7 +97,7 @@ export function EndDatePicker({
                 ),
             });
 
-        onError({ endDate: !!dateError });
+        onError({ basics: dateError });
         setDateError(dateError);
     }, [limits, endDate, startDate, onError, t]);
 
@@ -182,6 +182,7 @@ export function EndDatePicker({
                 onOpenChange={setPopover}
                 placement="bottom-start"
                 margin={4}
+                className={styles.popover}
             >
                 <DateTimePicker
                     value={endDate}

@@ -2,29 +2,18 @@ import {
     type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
 } from "@/src/types/campaign/common";
-import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import {
-    BaseCampaignType,
-    CampaignKind,
-    DistributablesType,
-} from "@metrom-xyz/sdk";
-import { Button, Typography } from "@metrom-xyz/ui";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import { validateDistributables } from "@/src/utils/creation-form";
-import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
-import { StepSection } from "../step-section";
-import { ChainSelect } from "../../inputs/chain-select";
-import { DexSelect } from "../../inputs/dex-select";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import { PoolSelect } from "../../inputs/pool-select";
+import { BasicsSteps } from "./basics-step";
 
 import styles from "./styles.module.css";
 
@@ -81,7 +70,11 @@ function validatePayload(
 
 interface AmmPoolLiquidityFormProps {
     kind: CampaignKind;
+    payload: AmmPoolLiquidityCampaignPayload;
+    errors: CampaignPayloadErrors;
     unsupportedChain: boolean;
+    onChange: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
+    onError: (errors: CampaignPayloadErrors) => void;
     onPreviewClick: (
         payload:
             | AmmPoolLiquidityCampaignPreviewPayload
@@ -96,16 +89,16 @@ const initialPayload: AmmPoolLiquidityCampaignPayload = {
 
 export function AmmPoolLiquidityForm({
     kind,
+    payload,
+    errors,
     // unsupportedChain,
-    onPreviewClick,
+    onChange,
+    onError,
+    // onPreviewClick,
 }: AmmPoolLiquidityFormProps) {
-    const t = useTranslations("newCampaign");
     const { id: chainId } = useChainWithType();
 
-    const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
-
-    const previewPayload = useMemo(() => {
+    useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
         return validatePayload(chainId, payload);
     }, [chainId, payload, errors]);
@@ -157,68 +150,40 @@ export function AmmPoolLiquidityForm({
     // }, [payload.pool]);
 
     useEffect(() => {
-        setPayload({ ...initialPayload, kind });
-    }, [chainId, kind]);
+        onChange({ ...initialPayload, kind });
+    }, [chainId, kind, onChange]);
 
-    const handlePayloadOnChange = useCallback(
-        (part: AmmPoolLiquidityCampaignPayloadPart) => {
-            setPayload((prev) => ({ ...prev, ...part }));
-        },
-        [],
-    );
+    // useEffect(() => {
+    //     onChange(payload);
+    // }, [payload, onChange]);
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
+    // const handlePayloadOnChange = useCallback(
+    //     (part: AmmPoolLiquidityCampaignPayloadPart) => {
+    //         setPayload((prev) => ({ ...prev, ...part }));
+    //     },
+    //     [],
+    // );
 
-    function handlePreviewOnClick() {
-        onPreviewClick(previewPayload);
-    }
+    // const handlePayloadOnError = useCallback(
+    //     (errors: CampaignPayloadErrors) => {
+    //         setErrors((state) => ({ ...state, ...errors }));
+    //     },
+    //     [],
+    // );
+
+    // TODO: should become on launch click
+    // function handlePreviewOnClick() {
+    //     onPreviewClick(previewPayload);
+    // }
 
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <CampaignBasicsStep
-                    startDatePickerDisabled={!payload.pool}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onError={handlePayloadOnError}
-                    onChange={handlePayloadOnChange}
-                    targetSection={
-                        <StepSection
-                            title={
-                                <Typography weight="semibold">
-                                    {t("defineTarget")}
-                                </Typography>
-                            }
-                        >
-                            <div className={styles.target}>
-                                <ChainSelect
-                                    campaignType={
-                                        BaseCampaignType.AmmPoolLiquidity
-                                    }
-                                    value={payload.chainId}
-                                    onChange={handlePayloadOnChange}
-                                />
-                                <DexSelect
-                                    chainId={payload.chainId}
-                                    value={payload.dex}
-                                    resetTrigger={payload.chainId}
-                                    onChange={handlePayloadOnChange}
-                                />
-                                <PoolSelect
-                                    chainId={payload.chainId}
-                                    dex={payload.dex?.slug}
-                                    value={payload.pool}
-                                    resetTrigger={payload.dex}
-                                    onChange={handlePayloadOnChange}
-                                />
-                            </div>
-                        </StepSection>
-                    }
+                <BasicsSteps
+                    payload={payload}
+                    error={errors.basics}
+                    onApply={onChange}
+                    onError={onError}
                 />
                 {/* <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
@@ -272,7 +237,7 @@ export function AmmPoolLiquidityForm({
                     onError={handlePayloadOnError}
                 /> */}
             </div>
-            <Button
+            {/* <Button
                 icon={ArrowRightIcon}
                 iconPlacement="right"
                 disabled={!previewPayload}
@@ -280,7 +245,7 @@ export function AmmPoolLiquidityForm({
                 className={{ root: styles.button }}
             >
                 {t("submit.preview")}
-            </Button>
+            </Button> */}
         </div>
     );
 }

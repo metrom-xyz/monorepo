@@ -1,0 +1,9 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-1;
+}
+
+.duration {
+    @apply flex items-center gap-1;
+}

@@ -8,6 +8,14 @@
     @apply flex flex-col gap-2;
 }
 
+.target {
+    @apply flex flex-col gap-4;
+}
+
+.row {
+    @apply flex flex-col sm:flex-row gap-4;
+}
+
 .button {
     @apply w-full h-16;
 }

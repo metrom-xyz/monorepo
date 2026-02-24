@@ -61,3 +61,14 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
 }
 
 export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
+
+export function isAaveV3CampaignPayload(
+    payload: BaseCampaignPayload,
+): payload is AaveV3CampaignPayload {
+    return (
+        payload.kind === CampaignKind.AaveV3Borrow ||
+        payload.kind === CampaignKind.AaveV3Supply ||
+        payload.kind === CampaignKind.AaveV3NetSupply ||
+        payload.kind === CampaignKind.AaveV3BridgeAndSupply
+    );
+}

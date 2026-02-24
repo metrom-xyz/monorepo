@@ -18,7 +18,7 @@ export function ListHeader({
     baseTokenFilter,
     onBaseTokenChange,
 }: ListHeaderProps) {
-    const t = useTranslations("newCampaign.inputs");
+    const t = useTranslations("newCampaign.inputs.poolSelect");
     const baseTokens = useBaseTokens(chainId);
 
     const getBaseTokenChangeHandler = useCallback(
@@ -69,7 +69,7 @@ export function ListHeader({
                     variant="tertiary"
                     uppercase
                 >
-                    {t("pool")}
+                    {t("label")}
                 </Typography>
                 <Typography
                     size="xs"

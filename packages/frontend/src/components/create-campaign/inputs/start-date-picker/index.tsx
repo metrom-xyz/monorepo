@@ -65,7 +65,7 @@ export function StartDatePicker({
         let dateError = "";
         if (startDate.isBefore(minDate)) dateError = t("dateInThePast");
 
-        onError({ startDate: !!dateError });
+        onError({ basics: dateError });
         setDateError(dateError);
     }, [startDate, minDate, onError, t]);
 

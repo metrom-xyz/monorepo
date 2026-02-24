@@ -15,5 +15,5 @@
 }
 
 .form {
-    @apply w-full flex flex-col gap-8 flex-[72%];
+    @apply w-full flex flex-col gap-8 flex-[71%];
 }

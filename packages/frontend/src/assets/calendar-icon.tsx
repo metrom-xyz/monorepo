@@ -3,48 +3,45 @@ import type { SVGIcon } from "../types/common";
 export function CalendarIcon(props: SVGIcon) {
     return (
         <svg
-            width="10"
-            height="10"
-            viewBox="0 0 10 10"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
-            <g clipPath="url(#clip0_1161_12295)">
-                <path
-                    d="M7.91667 1.66675H2.08333C1.6231 1.66675 1.25 2.03984 1.25 2.50008V8.33341C1.25 8.79365 1.6231 9.16675 2.08333 9.16675H7.91667C8.3769 9.16675 8.75 8.79365 8.75 8.33341V2.50008C8.75 2.03984 8.3769 1.66675 7.91667 1.66675Z"
-                    stroke="currentColor"
-                    strokeWidth="0.666667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <path
-                    d="M6.6665 0.833252V2.49992"
-                    stroke="currentColor"
-                    strokeWidth="0.666667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <path
-                    d="M3.3335 0.833252V2.49992"
-                    stroke="currentColor"
-                    strokeWidth="0.666667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <path
-                    d="M1.25 4.16675H8.75"
-                    stroke="currentColor"
-                    strokeWidth="0.666667"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-            </g>
-            <defs>
-                <clipPath id="clip0_1161_12295">
-                    <rect width="10" height="10" fill="white" />
-                </clipPath>
-            </defs>
+            <path
+                d="M5.33203 1.33325V3.33325"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M10.668 1.33325V3.33325"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M2.33203 6.06006H13.6654"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M14 5.66659V11.3333C14 13.3333 13 14.6666 10.6667 14.6666H5.33333C3 14.6666 2 13.3333 2 11.3333V5.66659C2 3.66659 3 2.33325 5.33333 2.33325H10.6667C13 2.33325 14 3.66659 14 5.66659Z"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
         </svg>
     );
 }
