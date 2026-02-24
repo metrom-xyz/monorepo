@@ -9,7 +9,7 @@
 }
 
 .target {
-    @apply flex flex-col sm:flex-row items-center gap-4;
+    @apply flex flex-col sm:flex-row gap-4;
 }
 
 .button {

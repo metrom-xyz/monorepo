@@ -5,7 +5,7 @@ import { Typography } from "@metrom-xyz/ui";
 import styles from "./styles.module.css";
 
 export function ListFooter() {
-    const t = useTranslations("newCampaign.inputs");
+    const t = useTranslations("newCampaign.inputs.poolSelect");
 
     return (
         <div className={styles.root}>

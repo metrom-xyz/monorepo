@@ -7,3 +7,7 @@
 .datePickers {
     @apply flex flex-col sm:flex-row gap-4;
 }
+
+.button {
+    @apply self-end;
+}

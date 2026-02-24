@@ -52,3 +52,9 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
 
 export type AmmPoolLiquidityCampaignPayloadPart =
     PropertyUnion<AmmPoolLiquidityCampaignPayload>;
+
+export function isAmmPoolLiquidityCampaignPayload(
+    payload: BaseCampaignPayload,
+): payload is AmmPoolLiquidityCampaignPayload {
+    return payload.kind === CampaignKind.AmmPoolLiquidity;
+}

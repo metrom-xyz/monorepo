@@ -1,6 +1,10 @@
 "use client";
 
-import { type CampaignPreviewPayload } from "@/src/types/campaign/common";
+import {
+    type CampaignPayload,
+    type CampaignPayloadErrors,
+    type CampaignPreviewPayload,
+} from "@/src/types/campaign/common";
 import {
     BaseCampaignType,
     CampaignKind,
@@ -9,7 +13,7 @@ import {
     type CampaignType,
 } from "@metrom-xyz/sdk";
 import { useAccount } from "@/src/hooks/useAccount";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { Button, Modal } from "@metrom-xyz/ui";
 import { CampaignPreview } from "../preview";
@@ -27,6 +31,8 @@ import { HoldFungibleAssetForm } from "./hold-fungible-asset-form";
 import { FormPreview } from "./preview";
 import { ArrowLeftIcon } from "@/src/assets/arrow-left-icon";
 import { useTranslations } from "next-intl";
+import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 
 import styles from "./styles.module.css";
 
@@ -42,7 +48,7 @@ export interface CreateCampaignFormProps<T> {
 
 export function CreateCampaignForm<T extends CampaignType>({
     campaignType,
-    // distributablesType,
+    distributablesType,
 }: CreateCampaignFormProps<T>) {
     const t = useTranslations("newCampaign");
 
@@ -56,13 +62,31 @@ export function CreateCampaignForm<T extends CampaignType>({
     });
 
     const [view, setView] = useState(View.Form);
-    const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);
+    // TODO: is this fine? The payload will become the finalized preview instance when confirming the campaign launch
+    const [previewPayload, setPreviewPayload] =
+        useState<CampaignPreviewPayload | null>(null);
+
+    const [payload, setPayload] = useState<CampaignPayload>({
+        distributables: { type: distributablesType },
+    });
+    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
 
     function handlePreviewOnClick(payload: CampaignPreviewPayload | null) {
-        setPayload(payload);
+        setPreviewPayload(payload);
         setView(View.Preview);
         trackFathomEvent("CLICK_CAMPAIGN_PREVIEW");
     }
+
+    const handlePayloadOnChange = useCallback((part: object | undefined) => {
+        setPayload((prev) => ({ ...prev, ...part }));
+    }, []);
+
+    const handlePayloadOnError = useCallback(
+        (errors: CampaignPayloadErrors) => {
+            setErrors((state) => ({ ...state, ...errors }));
+        },
+        [],
+    );
 
     function handleCreateNewOnClick() {
         router.push("/campaigns/create");
@@ -102,6 +126,11 @@ export function CreateCampaignForm<T extends CampaignType>({
                         <AmmPoolLiquidityForm
                             kind={CampaignKind.AmmPoolLiquidity}
                             unsupportedChain={unsupportedChain}
+                            payload={payload as AmmPoolLiquidityCampaignPayload}
+                            errors={errors}
+                            onChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
+                            // TODO: rename to onLaunchClick
                             onPreviewClick={handlePreviewOnClick}
                         />
                     )}
@@ -114,6 +143,10 @@ export function CreateCampaignForm<T extends CampaignType>({
                     {campaignType === BaseCampaignType.AaveV3 && (
                         <AaveV3Form
                             unsupportedChain={unsupportedChain}
+                            payload={payload as AaveV3CampaignPayload}
+                            errors={errors}
+                            onChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
                             onPreviewClick={handlePreviewOnClick}
                         />
                     )}
@@ -137,20 +170,24 @@ export function CreateCampaignForm<T extends CampaignType>({
                                 CampaignKind.JumperWhitelistedAmmPoolLiquidity
                             }
                             unsupportedChain={unsupportedChain}
+                            payload={payload}
+                            errors={errors}
+                            onChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
                             onPreviewClick={handlePreviewOnClick}
                         />
                     )}
-                    {!!payload && (
+                    {!!previewPayload && (
                         <Modal open={view === View.Preview}>
                             <CampaignPreview
                                 onBack={handleBackOnClick}
                                 onCreateNew={handleCreateNewOnClick}
-                                payload={payload}
+                                payload={previewPayload}
                             />
                         </Modal>
                     )}
                 </div>
-                <FormPreview payload={payload} />
+                <FormPreview payload={payload} errors={errors} />
             </div>
         </div>
     );

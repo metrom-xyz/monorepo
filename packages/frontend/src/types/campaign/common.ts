@@ -195,6 +195,11 @@ export type CampaignPreviewPayload =
     | AaveV3CampaignPreviewPayload
     | EmptyTargetCampaignPreviewPayload;
 
+export type CampaignPayload =
+    | AmmPoolLiquidityCampaignPayload
+    | LiquityV2CampaignPayload
+    | AaveV3CampaignPayload;
+
 export interface DistributablesCampaignPreviewPayload<
     T extends DistributablesType,
 > extends BaseCampaignPreviewPayload {
@@ -208,6 +213,9 @@ export interface DistributablesCampaignPreviewPayload<
 }
 
 export interface CampaignPayloadErrors {
+    basics?: string;
+
+    // TODO: remove single prop errors
     pool?: boolean;
     holdFungibleAsset?: boolean;
     startDate?: boolean;
