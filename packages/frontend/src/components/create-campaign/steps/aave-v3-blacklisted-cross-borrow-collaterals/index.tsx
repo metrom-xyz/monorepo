@@ -110,6 +110,13 @@ export function AaveV3BlacklistedCrossBorrowCollateralsStep({
     }, [enabled, open, pickedCollaterals.length, unsavedChanges]);
 
     useEffect(() => {
+        onBlacklistedCrossBorrowCollateralsChange({
+            blacklistedCollaterals: undefined,
+        });
+        setPickedCollaterals([]);
+    }, [collateral, onBlacklistedCrossBorrowCollateralsChange]);
+
+    useEffect(() => {
         onError({
             blacklistedCrossSupplyCollaterals:
                 enabled &&
