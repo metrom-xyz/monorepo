@@ -1,5 +1,5 @@
 import { DistributablesType } from "@metrom-xyz/sdk";
-import type { CampaignPayloadDistributables } from "../types/campaign";
+import type { CampaignPayloadDistributables } from "../types/campaign/common";
 
 export function validateDistributables(
     distributables: CampaignPayloadDistributables,

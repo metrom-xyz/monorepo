@@ -1,6 +1,6 @@
 import { Typography } from "@metrom-xyz/ui";
 import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import { type TargetedNamedCampaign } from "@/src/types/campaign/common";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
 

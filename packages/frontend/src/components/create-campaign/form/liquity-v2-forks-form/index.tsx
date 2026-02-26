@@ -1,11 +1,7 @@
 import {
     type CampaignPayloadErrors,
-    LiquityV2CampaignPreviewPayload,
-    type LiquityV2CampaignPayload,
-    type LiquityV2CampaignPayloadPart,
     type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -26,6 +22,12 @@ import {
 } from "../../steps/campaign-kind-step";
 import { validateDistributables } from "@/src/utils/creation-form";
 import type { TranslationsKeys } from "@/src/types/utils";
+import {
+    LiquityV2CampaignPreviewPayload,
+    type LiquityV2CampaignPayload,
+    type LiquityV2CampaignPayloadPart,
+} from "@/src/types/campaign/liquity-v2-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 
 import styles from "./styles.module.css";
 
@@ -59,6 +61,7 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
@@ -71,6 +74,7 @@ function validatePayload(
         kind,
         brand,
         collateral,
+        chainId,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,

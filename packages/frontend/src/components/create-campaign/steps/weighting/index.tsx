@@ -4,11 +4,11 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import {
-    type AmmPoolLiquidityCampaignPayload,
-    type AmmPoolLiquidityCampaignPayloadPart,
-    type CampaignPayloadErrors,
-} from "@/src/types/campaign";
+import { type CampaignPayloadErrors } from "@/src/types/campaign/common";
+import type {
+    AmmPoolLiquidityCampaignPayload,
+    AmmPoolLiquidityCampaignPayloadPart,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { WeightingInputs } from "./weighting-inputs";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useChainWithType } from "@/src/hooks/useChainWithType";

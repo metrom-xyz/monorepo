@@ -22,10 +22,12 @@ import { formatAmount } from "@/src/utils/format";
 import type {
     AmmPoolLiquidityCampaignPayload,
     AmmPoolLiquidityCampaignPayloadPart,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import type {
     AugmentedPriceRangeBound,
     AugmentedPriceRangeSpecification,
     CampaignPayloadErrors,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { LocalizedMessage } from "@/src/types/utils";
 
 import styles from "./styles.module.css";

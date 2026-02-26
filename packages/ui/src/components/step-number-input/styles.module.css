@@ -10,12 +10,42 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+.root {
+    @apply flex flex-col gap-1;
+}
+
 .wrapper {
-    @apply relative flex items-center;
+    @apply flex items-center;
+}
+
+.wrapper fieldset {
+    @apply rounded-r-none rounded-l-none border-r-0 border-l-0;
+}
+
+.wrapper:not(.error):focus-within fieldset {
+    @apply border-gray-500 dark:border-neutral-400;
+}
+
+.wrapper:not(.error):focus-within .stepButton {
+    @apply border-gray-500 dark:border-neutral-400;
+}
+
+.wrapper.error .stepButton {
+    @apply border-error;
 }
 
 .stepButton {
-    @apply bg-gray-300 dark:bg-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-700;
+    @apply border
+        border-gray-300
+        dark:border-neutral-700
+        bg-gray-300
+        dark:bg-neutral-700
+        hover:bg-gray-300
+        dark:hover:bg-neutral-700;
+}
+
+.stepButton.disabled {
+    @apply bg-gray-300 dark:bg-neutral-700;
 }
 
 .stepButton.xs {
@@ -39,39 +69,11 @@ input[type="number"] {
 }
 
 .stepDownButton {
-    @apply absolute left-0.5;
+    @apply rounded-r-none! border-r-0;
 }
 
 .stepUpButton {
-    @apply absolute right-0.5;
-}
-
-.wrapper.xs input {
-    @apply pl-10!;
-}
-.wrapper.xs input {
-    @apply pr-10!;
-}
-
-.wrapper.sm input {
-    @apply pl-11!;
-}
-.wrapper.sm input {
-    @apply pr-11!;
-}
-
-.wrapper.base input {
-    @apply pl-12!;
-}
-.wrapper.base input {
-    @apply pr-12!;
-}
-
-.wrapper.lg input {
-    @apply pl-14!;
-}
-.wrapper.lg input {
-    @apply pr-14!;
+    @apply rounded-l-none! border-l-0;
 }
 
 .hiddenInput {

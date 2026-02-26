@@ -105,7 +105,7 @@ export function formatUsdAmountChange({
 export function formatDateTime(dateTime?: Dayjs | number): string {
     if (!dateTime) return "-";
     if (typeof dateTime === "number") dateTime = dayjs.unix(dateTime);
-    return dateTime.format("DD MMM YYYY | HH:mm");
+    return dateTime.format("DD MMM YYYY, HH:mm");
 }
 
 export function formatDate(date?: Dayjs | number): string {

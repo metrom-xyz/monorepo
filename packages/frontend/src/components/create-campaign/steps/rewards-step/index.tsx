@@ -8,7 +8,7 @@ import {
     type BaseCampaignPayload,
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
 import { RewardPoints } from "./points";

@@ -114,7 +114,6 @@ export function ListPoolPicker({
                 <TextInput
                     value={search}
                     onChange={handleSearchOnChange}
-                    placeholder={t("list.label")}
                     icon={SearchIcon}
                     className={styles.searchInput}
                 />

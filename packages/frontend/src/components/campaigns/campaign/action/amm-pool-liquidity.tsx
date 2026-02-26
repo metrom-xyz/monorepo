@@ -2,7 +2,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { type AmmPoolLiquidityTargetType } from "@metrom-xyz/sdk";
-import type { TargetedNamedCampaign } from "@/src/types/campaign";
+import type { TargetedNamedCampaign } from "@/src/types/campaign/common";
 import type { ActionSizes } from ".";
 
 interface AmmPoolLiquidityProps<T extends AmmPoolLiquidityTargetType>

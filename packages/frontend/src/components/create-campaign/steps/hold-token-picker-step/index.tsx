@@ -1,10 +1,8 @@
 import { Step } from "@/src/components/step";
 import { StepContent } from "@/src/components/step/content";
 import { StepPreview } from "@/src/components/step/preview";
-import type {
-    CampaignPayloadErrors,
-    HoldFungibleAssetCampaignPayloadPart,
-} from "@/src/types/campaign";
+import type { CampaignPayloadErrors } from "@/src/types/campaign/common";
+import type { HoldFungibleAssetCampaignPayloadPart } from "@/src/types/campaign/hold-fungible-asset-campaign";
 import type { Address } from "viem";
 import classNames from "classnames";
 import { ErrorText, TextInput, Typography } from "@metrom-xyz/ui";
@@ -143,7 +141,12 @@ export function HoldFungibleAssetPickerStep({
                 <div className={styles.previewWrapper}>
                     <InfoMessage text={t("infoMessage")} />
                     <div className={styles.inputWrapper}>
-                        <Typography weight="medium" size="xs" uppercase variant="tertiary">
+                        <Typography
+                            weight="medium"
+                            size="xs"
+                            uppercase
+                            variant="tertiary"
+                        >
                             {t("tokenAddressInput.label")}
                         </Typography>
                         {!assetInfo && loadingAssetInfo ? (
@@ -157,7 +160,6 @@ export function HoldFungibleAssetPickerStep({
                         ) : (
                             <TextInput
                                 autoFocus
-                                placeholder={t("tokenAddressInput.placeholder")}
                                 value={assetAddress}
                                 error={!!assetError}
                                 onChange={handleAssetOnChange}

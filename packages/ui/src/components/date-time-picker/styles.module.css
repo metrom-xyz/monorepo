@@ -1,7 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full flex justify-between gap-6;
+    @apply w-fit flex justify-between gap-6;
 }
 
 .divider {
@@ -22,7 +22,7 @@
 
 .cellList {
     @apply relative
-        h-[14rem]
+        h-[15.2rem]
         overflow-y-auto
         overflow-x-hidden
         scroll-pt-0.5
@@ -34,8 +34,8 @@
 }
 
 .cell {
-    @apply min-h-8
-        min-w-8
+    @apply min-h-9
+        min-w-9
         snap-start
         select-none
         cursor-pointer

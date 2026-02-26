@@ -1,16 +1,21 @@
 "use client";
 
-import { type CampaignPreviewPayload } from "@/src/types/campaign";
+import {
+    type CampaignPayload,
+    type CampaignPayloadErrors,
+    type CampaignPreviewPayload,
+} from "@/src/types/campaign/common";
 import {
     BaseCampaignType,
     CampaignKind,
+    DistributablesType,
     PartnerCampaignType,
     type CampaignType,
 } from "@metrom-xyz/sdk";
 import { useAccount } from "@/src/hooks/useAccount";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { Modal } from "@metrom-xyz/ui";
+import { Button, Modal } from "@metrom-xyz/ui";
 import { CampaignPreview } from "../preview";
 import { FormHeader } from "./header";
 import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
@@ -23,6 +28,11 @@ import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 import { useForms } from "@/src/hooks/useForms";
 import { FormNotSupported } from "../form-not-supported";
 import { HoldFungibleAssetForm } from "./hold-fungible-asset-form";
+import { FormPreview } from "./preview";
+import { ArrowLeftIcon } from "@/src/assets/arrow-left-icon";
+import { useTranslations } from "next-intl";
+import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 
 import styles from "./styles.module.css";
 
@@ -32,39 +42,58 @@ enum View {
 }
 
 export interface CreateCampaignFormProps<T> {
-    type: T;
+    campaignType: T;
+    distributablesType: DistributablesType;
 }
 
 export function CreateCampaignForm<T extends CampaignType>({
-    type,
+    campaignType,
+    distributablesType,
 }: CreateCampaignFormProps<T>) {
+    const t = useTranslations("newCampaign");
+
     const { chainId: connectedChainId, connected } = useAccount();
     const { id: selectedChain } = useChainWithType();
     const activeChains = useActiveChains();
     const router = useRouter();
-    const forms = useForms({
-        chainId: selectedChain,
-    });
     const formsForType = useForms({
         chainId: selectedChain,
-        type,
+        type: campaignType,
     });
 
     const [view, setView] = useState(View.Form);
-    const [payload, setPayload] = useState<CampaignPreviewPayload | null>(null);
+    // TODO: is this fine? The payload will become the finalized preview instance when confirming the campaign launch
+    const [previewPayload, setPreviewPayload] =
+        useState<CampaignPreviewPayload | null>(null);
+
+    const [payload, setPayload] = useState<CampaignPayload>({
+        distributables: { type: distributablesType },
+    });
+    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
 
     function handlePreviewOnClick(payload: CampaignPreviewPayload | null) {
-        setPayload(payload);
+        setPreviewPayload(payload);
         setView(View.Preview);
         trackFathomEvent("CLICK_CAMPAIGN_PREVIEW");
     }
 
-    function handleBackOnClick() {
-        setView(View.Form);
-    }
+    const handlePayloadOnChange = useCallback((part: object | undefined) => {
+        setPayload((prev) => ({ ...prev, ...part }));
+    }, []);
+
+    const handlePayloadOnError = useCallback(
+        (errors: CampaignPayloadErrors) => {
+            setErrors((state) => ({ ...state, ...errors }));
+        },
+        [],
+    );
 
     function handleCreateNewOnClick() {
         router.push("/campaigns/create");
+    }
+
+    function handleBackOnClick() {
+        router.push(`/campaigns/create/${campaignType}`);
     }
 
     const unsupportedChain = useMemo(() => {
@@ -76,58 +105,90 @@ export function CreateCampaignForm<T extends CampaignType>({
     }, [activeChains, connectedChainId, connected, selectedChain]);
 
     if (formsForType.length === 0)
-        return <FormNotSupported type={type} chainId={selectedChain} />;
+        return <FormNotSupported type={campaignType} chainId={selectedChain} />;
 
     return (
         <div className={styles.root}>
-            {forms.length > 1 && <FormHeader type={type} />}
-            {type === BaseCampaignType.AmmPoolLiquidity && (
-                <AmmPoolLiquidityForm
-                    kind={CampaignKind.AmmPoolLiquidity}
-                    unsupportedChain={unsupportedChain}
-                    onPreviewClick={handlePreviewOnClick}
-                />
-            )}
-            {type === BaseCampaignType.LiquityV2 && (
-                <LiquityV2ForksForm
-                    unsupportedChain={unsupportedChain}
-                    onPreviewClick={handlePreviewOnClick}
-                />
-            )}
-            {type === BaseCampaignType.AaveV3 && (
-                <AaveV3Form
-                    unsupportedChain={unsupportedChain}
-                    onPreviewClick={handlePreviewOnClick}
-                />
-            )}
-            {type === BaseCampaignType.HoldFungibleAsset && (
-                <HoldFungibleAssetForm
-                    unsupportedChain={unsupportedChain}
-                    onPreviewClick={handlePreviewOnClick}
-                />
-            )}
-            {type === PartnerCampaignType.AaveV3BridgeAndSupply && (
-                <AaveV3BridgeAndSupplyForm
-                    unsupportedChain={unsupportedChain}
-                    onPreviewClick={handlePreviewOnClick}
-                />
-            )}
-            {type === PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity && (
-                <AmmPoolLiquidityForm
-                    kind={CampaignKind.JumperWhitelistedAmmPoolLiquidity}
-                    unsupportedChain={unsupportedChain}
-                    onPreviewClick={handlePreviewOnClick}
-                />
-            )}
-            {!!payload && (
-                <Modal open={view === View.Preview}>
-                    <CampaignPreview
-                        onBack={handleBackOnClick}
-                        onCreateNew={handleCreateNewOnClick}
-                        payload={payload}
-                    />
-                </Modal>
-            )}
+            <Button
+                size="sm"
+                variant="secondary"
+                border={false}
+                icon={ArrowLeftIcon}
+                onClick={handleBackOnClick}
+                className={{ root: styles.button }}
+            >
+                {t("back")}
+            </Button>
+            <div className={styles.content}>
+                <div className={styles.form}>
+                    <FormHeader type={campaignType} />
+                    {campaignType === BaseCampaignType.AmmPoolLiquidity && (
+                        <AmmPoolLiquidityForm
+                            kind={CampaignKind.AmmPoolLiquidity}
+                            unsupportedChain={unsupportedChain}
+                            payload={payload as AmmPoolLiquidityCampaignPayload}
+                            errors={errors}
+                            onChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
+                            // TODO: rename to onLaunchClick
+                            onPreviewClick={handlePreviewOnClick}
+                        />
+                    )}
+                    {campaignType === BaseCampaignType.LiquityV2 && (
+                        <LiquityV2ForksForm
+                            unsupportedChain={unsupportedChain}
+                            onPreviewClick={handlePreviewOnClick}
+                        />
+                    )}
+                    {campaignType === BaseCampaignType.AaveV3 && (
+                        <AaveV3Form
+                            unsupportedChain={unsupportedChain}
+                            payload={payload as AaveV3CampaignPayload}
+                            errors={errors}
+                            onChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
+                            onPreviewClick={handlePreviewOnClick}
+                        />
+                    )}
+                    {campaignType === BaseCampaignType.HoldFungibleAsset && (
+                        <HoldFungibleAssetForm
+                            unsupportedChain={unsupportedChain}
+                            onPreviewClick={handlePreviewOnClick}
+                        />
+                    )}
+                    {campaignType ===
+                        PartnerCampaignType.AaveV3BridgeAndSupply && (
+                        <AaveV3BridgeAndSupplyForm
+                            unsupportedChain={unsupportedChain}
+                            onPreviewClick={handlePreviewOnClick}
+                        />
+                    )}
+                    {campaignType ===
+                        PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity && (
+                        <AmmPoolLiquidityForm
+                            kind={
+                                CampaignKind.JumperWhitelistedAmmPoolLiquidity
+                            }
+                            unsupportedChain={unsupportedChain}
+                            payload={payload}
+                            errors={errors}
+                            onChange={handlePayloadOnChange}
+                            onError={handlePayloadOnError}
+                            onPreviewClick={handlePreviewOnClick}
+                        />
+                    )}
+                    {!!previewPayload && (
+                        <Modal open={view === View.Preview}>
+                            <CampaignPreview
+                                onBack={handleBackOnClick}
+                                onCreateNew={handleCreateNewOnClick}
+                                payload={previewPayload}
+                            />
+                        </Modal>
+                    )}
+                </div>
+                <FormPreview payload={payload} errors={errors} />
+            </div>
         </div>
     );
 }

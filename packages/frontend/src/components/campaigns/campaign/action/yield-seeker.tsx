@@ -1,6 +1,6 @@
 import type { TargetType } from "@metrom-xyz/sdk";
 import type { ActionSizes } from ".";
-import type { TargetedNamedCampaign } from "@/src/types/campaign";
+import type { TargetedNamedCampaign } from "@/src/types/campaign/common";
 import { Typography } from "@metrom-xyz/ui";
 import { CampaignTag } from "@/src/components/campaign-tag";
 import { useTranslations } from "next-intl";

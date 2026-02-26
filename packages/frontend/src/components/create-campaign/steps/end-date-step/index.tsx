@@ -11,7 +11,7 @@ import type {
     BaseCampaignPayload,
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import {
     Typography,

@@ -7,11 +7,11 @@ import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import { ErrorText, Typography } from "@metrom-xyz/ui";
 import { PoolStepPreview } from "./preview";
+import type { CampaignPayloadErrors } from "@/src/types/campaign/common";
 import type {
     AmmPoolLiquidityCampaignPayload,
     AmmPoolLiquidityCampaignPayloadPart,
-    CampaignPayloadErrors,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { ListPoolPicker } from "./list";
 import { AddressPoolPicker } from "./address-picker";
 
