@@ -12,10 +12,10 @@
         "generate-supported-protocols-file": "NEXT_PUBLIC_ENVIRONMENT=development tsx ./scripts/generate-supported-protocols-files.ts"
     },
     "dependencies": {
-        "@aptos-labs/js-pro": "^0.1.5",
-        "@aptos-labs/react": "^0.1.5",
+        "@aptos-labs/js-pro": "^0.1.7",
+        "@aptos-labs/react": "^0.1.7",
         "@aptos-labs/ts-sdk": "^6.0.0",
-        "@aptos-labs/wallet-adapter-react": "^8.2.2",
+        "@aptos-labs/wallet-adapter-react": "^8.3.0",
         "@fontsource/ibm-plex-mono": "^5.2.7",
         "@fontsource/ibm-plex-sans": "^5.2.8",
         "@metrom-xyz/aptos-contracts": "^0.9.0",
