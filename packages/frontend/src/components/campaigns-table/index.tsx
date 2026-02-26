@@ -10,7 +10,12 @@ import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
 import { Filters, type FilterParams, type RawFilters } from "./filters";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { APTOS } from "@/src/commons/env";
-import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
+import {
+    BackendCampaignType,
+    ChainType,
+    SupportedAaveV3,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { LoadingBar } from "../loading-bar";
 import { useDebounce, usePrevious } from "react-use";
 import { EmptyTable } from "./empty-table";
@@ -382,6 +387,14 @@ export function CampaignsTable({
                             <EmptyTable />
                         ) : (
                             campaigns?.map((campaign) => {
+                                // TODO: remove
+                                if (
+                                    campaign.target.type ===
+                                        TargetType.AaveV3NetSupply &&
+                                    campaign.target.brand.slug ===
+                                        SupportedAaveV3.Ploutos
+                                )
+                                    return null;
                                 return (
                                     <CampaignRow
                                         key={`${campaign.chainType}-${campaign.chainId}-${campaign.id}`}
