@@ -1,7 +1,6 @@
 import {
     BaseCampaignType,
     ChainType,
-    PartnerCampaignType,
     SupportedAaveV3,
     SupportedDex,
     TargetType,
@@ -41,11 +40,6 @@ export const aptosDevelopmentData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
-        },
-        {
-            active: true,
-            partner: true,
-            type: PartnerCampaignType.AaveV3BridgeAndSupply,
         },
     ],
     protocols: [
@@ -110,11 +104,6 @@ export const aptosDevelopmentProductionData: ChainData = {
             active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
-        },
-        {
-            active: true,
-            partner: true,
-            type: PartnerCampaignType.AaveV3BridgeAndSupply,
         },
     ],
     protocols: [
@@ -181,11 +170,6 @@ export const aptosProductionData: ChainData = {
             active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
-        },
-        {
-            active: true,
-            partner: true,
-            type: PartnerCampaignType.AaveV3BridgeAndSupply,
         },
         {
             active: true,
