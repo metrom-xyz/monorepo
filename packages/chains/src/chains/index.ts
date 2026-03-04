@@ -4,7 +4,7 @@ export { modeData } from "./mode";
 export { plasmaData } from "./plasma";
 export { mantleData } from "./mantle";
 export { sonicData } from "./sonic";
-export { swellDevelopmentData, swellProductionData } from "./swell";
+export { swellData } from "./swell";
 export { baseData } from "./base";
 export { baseSepoliaData } from "./base-sepolia";
 export { taikoData } from "./taiko";
