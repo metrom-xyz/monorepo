@@ -1,7 +1,11 @@
 @reference "../../theme.css";
 
 .root {
-    @apply w-full rounded-lg surface-primary;
+    @apply w-full rounded-lg surface-primary transition-opacity duration-200 ease-in-out;
+}
+
+.root.disabled {
+    @apply cursor-not-allowed opacity-50;
 }
 
 .preview {
@@ -11,13 +15,15 @@
         w-full
         p-4
         select-none
-        cursor-pointer
         justify-between
         rounded-lg
-        surface-primary-hover
         transition-all
         duration-200
         ease-in-out;
+}
+
+.preview:not(.disabled) {
+    @apply surface-primary-hover cursor-pointer;
 }
 
 .preview.open {

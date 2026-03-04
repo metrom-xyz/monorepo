@@ -40,6 +40,7 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
     value: V;
     search?: boolean;
     loading?: boolean;
+    noContained?: boolean;
     listHeader?: ReactNode;
     listFooter?: ReactNode;
     messages: {
@@ -52,6 +53,7 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
     className?: string;
     onChange: (option: O) => void;
     renderOption?: (option: O) => ReactElement;
+    optionDisabled?: (option: O) => boolean;
     renderSelectedPrefix?: (selected: O | null | undefined) => ReactElement;
 } & Omit<BaseInputProps<unknown>, "onChange" | "value" | "id">;
 
@@ -61,7 +63,7 @@ type ItemData<
     D = unknown,
 > = Pick<
     SelectProps<V, O>,
-    "options" | "value" | "onChange" | "renderOption"
+    "options" | "value" | "onChange" | "renderOption" | "optionDisabled"
 > & {
     data?: D;
     size?: BaseInputSize;
@@ -94,6 +96,7 @@ function Component<
         className,
         disabled,
         loading,
+        noContained,
         listHeader,
         listFooter,
         messages,
@@ -101,6 +104,7 @@ function Component<
         noPrefixPadding,
         onChange,
         renderOption,
+        optionDisabled,
         renderSelectedPrefix,
         ...rest
     }: SelectProps<V, O>,
@@ -173,6 +177,7 @@ function Component<
             size,
             onChange: handleInnerChange,
             renderOption,
+            optionDisabled,
             className,
             dataTestIds: {
                 option: dataTestIds?.option,
@@ -194,7 +199,7 @@ function Component<
     }, [filteredOptions.length, size]);
 
     return (
-        <div className={className} ref={dropdownRef}>
+        <div className={classNames("root", className)} ref={dropdownRef}>
             <TextInput
                 data-testid={dataTestIds?.textInput}
                 ref={(element) => {
@@ -229,11 +234,11 @@ function Component<
                 {...rest}
                 onChange={handleChange}
                 onClick={handleClick}
-                className={styles.input}
+                className={classNames("input", styles.input)}
             />
             <Popover
                 anchor={anchorEl}
-                contained
+                contained={!noContained}
                 open={open}
                 margin={4}
                 onOpenChange={setOpen}
@@ -264,9 +269,9 @@ function Component<
                             rowComponent={OptionRow}
                             style={{
                                 height: `${listHeight}px`,
-                                width:
-                                    anchorEl?.parentElement?.clientWidth ||
-                                    "auto",
+                                width: !noContained
+                                    ? anchorEl?.parentElement?.clientWidth
+                                    : "auto",
                             }}
                         />
                     </div>
@@ -286,13 +291,16 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
     size = "base",
     onChange,
     renderOption,
+    optionDisabled,
     dataTestIds,
 }: RowComponentProps<ItemData<ValueType, O>>) {
     const item = options[index];
+    const disabled = !!optionDisabled && optionDisabled(item);
 
     const handleClick = useCallback(() => {
+        if (disabled) return;
         onChange(item);
-    }, [item, onChange]);
+    }, [disabled, item, onChange]);
 
     return (
         <div
@@ -302,6 +310,7 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
             style={style}
             onClick={handleClick}
             className={classNames(styles.option, {
+                [styles.disabled]: disabled,
                 [styles.pickedOption]: value === item.value,
                 [styles[size]]: true,
             })}
