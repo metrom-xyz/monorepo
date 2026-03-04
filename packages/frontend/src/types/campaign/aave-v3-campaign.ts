@@ -62,6 +62,25 @@ export interface AaveV3CampaignPayload extends BaseCampaignPayload {
 
 export type AaveV3CampaignPayloadPart = PropertyUnion<AaveV3CampaignPayload>;
 
+export function getAaveV3TargetValue(
+    payload: AaveV3CampaignPayload,
+    usdNetSupply?: number,
+): TargetValue | undefined {
+    const { kind, collateral } = payload;
+    if (!collateral) return undefined;
+
+    if (kind === CampaignKind.AaveV3Borrow)
+        return { usd: collateral.usdDebt, raw: collateral.debt };
+
+    if (kind === CampaignKind.AaveV3NetSupply && usdNetSupply !== undefined)
+        return { usd: usdNetSupply };
+
+    return {
+        usd: collateral.usdSupply,
+        raw: collateral.supply,
+    };
+}
+
 export function isAaveV3CampaignPayload(
     payload: BaseCampaignPayload,
 ): payload is AaveV3CampaignPayload {

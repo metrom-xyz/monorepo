@@ -9,10 +9,12 @@ import { useQuery } from "@tanstack/react-query";
 import { type Address, formatUnits } from "viem";
 import { useClients } from "@aptos-labs/react";
 import { useWatchBlockNumber } from "../use-watch-block-number";
+import { chainIdToAptosNetwork } from "@/src/utils/chain";
 
 const collator = new Intl.Collator();
 
 export function useWatchBalancesMvm<T extends UsdPricedErc20Token>({
+    chainId,
     address,
     tokens,
     enabled = true,
@@ -24,24 +26,34 @@ export function useWatchBalancesMvm<T extends UsdPricedErc20Token>({
         queryKey: [
             "watch-whitelisted-tokens-balances",
             blockNumber,
+            chainId,
             tokens,
             address,
         ],
         queryFn: async ({ queryKey }) => {
-            const [, , tokens, address] = queryKey as [
+            const [, , chainId, tokens, address] = queryKey as [
                 string,
+                number | undefined,
                 number | undefined,
                 T[] | undefined,
                 Address | undefined,
             ];
 
-            if (!tokens || !address) return null;
+            if (!chainId || !tokens || !address) return null;
+
+            const network = chainIdToAptosNetwork(chainId);
+            if (!network) return null;
 
             try {
                 return await Promise.all(
                     tokens.map((token) =>
                         client.fetchBalance({
                             address,
+                            network: {
+                                // FIXME: fix type
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                network: network as any,
+                            },
                             asset: token.address,
                         }),
                     ),

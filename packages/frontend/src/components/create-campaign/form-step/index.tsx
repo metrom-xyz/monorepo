@@ -9,6 +9,7 @@ import styles from "./styles.module.css";
 interface FormStepProps {
     title: string;
     open: boolean;
+    disabled?: boolean;
     completed?: boolean;
     error?: string;
     warning?: string;
@@ -20,6 +21,7 @@ interface FormStepProps {
 export function FormStep({
     title,
     open,
+    disabled,
     completed,
     error,
     warning,
@@ -64,16 +66,25 @@ export function FormStep({
                 </div>
             }
             open={open}
+            disabled={disabled}
             noUnmount
             onToggle={onToggle}
             className={classNames(
                 "root",
                 styles.root,
-                { [styles.error]: error, [styles.warning]: warning },
+                {
+                    [styles.error]: error,
+                    [styles.warning]: warning,
+                    [styles.disabled]: disabled,
+                },
                 className,
             )}
         >
-            <div className={classNames("content", styles.content)}>
+            <div
+                className={classNames("content", styles.content, {
+                    [styles.disabled]: disabled,
+                })}
+            >
                 {children}
             </div>
         </Accordion>
