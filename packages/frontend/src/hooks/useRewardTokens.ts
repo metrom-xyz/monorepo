@@ -3,24 +3,26 @@ import { CHAIN_TYPE, METROM_API_CLIENT } from "../commons";
 import type { RewardToken } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-import { useChainWithType } from "./useChainWithType";
 
-type UseRewardTokensParams = HookBaseParams;
+interface UseRewardTokensParams extends HookBaseParams {
+    chainId?: number;
+}
 
-type QueryKey = [string, SupportedChain];
+type QueryKey = [string, SupportedChain | undefined];
 
 export function useRewardTokens({
+    chainId,
     enabled = true,
 }: UseRewardTokensParams = {}): {
     loading: boolean;
     tokens: RewardToken[] | undefined;
 } {
-    const { id: chainId } = useChainWithType();
-
     const { data: tokens, isPending: loading } = useQuery({
         queryKey: ["reward-tokens", chainId],
         queryFn: async ({ queryKey }) => {
             const [, chainId] = queryKey as QueryKey;
+            if (!chainId) return null;
+
             try {
                 return await METROM_API_CLIENT.fetchRewardTokens({
                     chainId,
@@ -31,11 +33,11 @@ export function useRewardTokens({
                 throw error;
             }
         },
-        enabled,
+        enabled: enabled && !!chainId,
     });
 
     return {
         loading,
-        tokens,
+        tokens: tokens || undefined,
     };
 }

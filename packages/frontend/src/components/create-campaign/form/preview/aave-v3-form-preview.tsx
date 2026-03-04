@@ -4,6 +4,7 @@ import { Duration } from "../../previews/duration";
 import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
 import { AaveV3Target } from "../../previews/aave-v3-target";
 import type { CampaignPayloadErrors } from "@/src/types/campaign/common";
+import { distributablesCompleted } from "@/src/utils/form";
 
 interface AaveV3FormPreviewProps {
     payload: AaveV3CampaignPayload;
@@ -23,6 +24,8 @@ export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
         !!payload.startDate &&
         !!payload.endDate;
 
+    const rewardsCompleted = distributablesCompleted(payload);
+
     return (
         <>
             <FormStepPreview
@@ -36,11 +39,13 @@ export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
                     endDate={payload.endDate}
                 />
             </FormStepPreview>
-            <FormStepPreview
-                title={t("rewards")}
-                // completed={rewardsCompleted}
-                error={!!errors.rewards}
-            ></FormStepPreview>
+            {rewardsCompleted && (
+                <FormStepPreview
+                    title={t("rewards")}
+                    completed={rewardsCompleted}
+                    error={!!errors.rewards}
+                ></FormStepPreview>
+            )}
         </>
     );
 }

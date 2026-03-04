@@ -1,0 +1,66 @@
+@reference "../../../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-1;
+}
+
+.wrapper {
+    @apply flex
+        items-center
+        gap-1
+        rounded-lg
+        h-11
+        pl-3
+        pr-0.5
+        bg-gray-200
+        dark:bg-neutral-800
+        border
+        border-transparent
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.wrapper.error {
+    @apply border-error;
+}
+
+.token {
+    @apply flex items-center gap-1;
+}
+
+.input :global(.input) {
+    @apply field-sizing-content h-10;
+}
+
+.input:not(.editing) :global(.input) {
+    @apply cursor-pointer hover:bg-gray-150 dark:hover:bg-neutral-700;
+}
+
+.input :global(.fieldset) {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.input:not(.editing) :global(.fieldset) {
+    @apply border-transparent;
+}
+
+.input.editing :global(.input) {
+    @apply cursor-default;
+}
+
+.removeButton {
+    @apply cursor-pointer ml-2 hover:bg-[#DC26261F];
+}
+
+.removeButton > svg {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.removeButton:hover > svg {
+    @apply text-error;
+}
+
+.popover {
+    @apply p-1.5;
+}

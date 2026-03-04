@@ -11,7 +11,3 @@
 .icon {
     @apply size-5 rounded-full;
 }
-
-.prefixIcon {
-    @apply size-4 rounded-full;
-}

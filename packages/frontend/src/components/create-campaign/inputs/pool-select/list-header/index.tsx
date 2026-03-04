@@ -38,30 +38,32 @@ export function ListHeader({
 
     return (
         <div className={styles.root}>
-            <div className={styles.chips}>
-                {baseTokens.map((token) => (
-                    <Chip
-                        key={token.address}
-                        size="xs"
-                        variant="secondary"
-                        active={baseTokenFilter?.address === token.address}
-                        onClick={getBaseTokenChangeHandler(token)}
-                    >
-                        <div className={styles.baseTokenChip}>
-                            <RemoteLogo
-                                size="xs"
-                                defaultText={" "}
-                                address={token.address}
-                                chain={chainId}
-                                className={styles.logo}
-                            />
-                            <Typography size="xs" weight="medium">
-                                {token.symbol}
-                            </Typography>
-                        </div>
-                    </Chip>
-                ))}
-            </div>
+            {baseTokens.length > 0 && (
+                <div className={styles.chips}>
+                    {baseTokens.map((token) => (
+                        <Chip
+                            key={token.address}
+                            size="xs"
+                            variant="secondary"
+                            active={baseTokenFilter?.address === token.address}
+                            onClick={getBaseTokenChangeHandler(token)}
+                        >
+                            <div className={styles.baseTokenChip}>
+                                <RemoteLogo
+                                    size="xs"
+                                    defaultText={" "}
+                                    address={token.address}
+                                    chain={chainId}
+                                    className={styles.logo}
+                                />
+                                <Typography size="xs" weight="medium">
+                                    {token.symbol}
+                                </Typography>
+                            </div>
+                        </Chip>
+                    ))}
+                </div>
+            )}
             <div className={styles.header}>
                 <Typography
                     size="xs"
