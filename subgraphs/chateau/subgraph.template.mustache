@@ -1,0 +1,26 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: never
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: chUSD
+    network: {{network}}
+    source:
+      address: "{{address}}"
+      startBlock: {{startBlock}}
+      abi: chUSD
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/chusd.ts
+      entities:
+        - Event
+      abis:
+        - name: chUSD
+          file: ./abis/chUSD.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer

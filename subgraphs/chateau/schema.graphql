@@ -1,0 +1,7 @@
+type Event @entity(immutable: true) {
+    id: Bytes!
+    timestamp: BigInt!
+    from: Bytes!
+    burn: Boolean!
+    amount: BigInt!
+}
