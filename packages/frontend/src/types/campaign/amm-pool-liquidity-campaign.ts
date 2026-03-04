@@ -53,6 +53,15 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
 export type AmmPoolLiquidityCampaignPayloadPart =
     PropertyUnion<AmmPoolLiquidityCampaignPayload>;
 
+export function getAmmPoolLiquidityTargetValue(
+    payload: AmmPoolLiquidityCampaignPayload,
+): TargetValue | undefined {
+    const { pool } = payload;
+    if (!pool) return undefined;
+
+    return { usd: pool.usdTvl, raw: pool.liquidity };
+}
+
 export function isAmmPoolLiquidityCampaignPayload(
     payload: BaseCampaignPayload,
 ): payload is AmmPoolLiquidityCampaignPayload {

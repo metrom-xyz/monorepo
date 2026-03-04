@@ -200,6 +200,8 @@
             "share": "Share",
             "saveAsPreset": "Save as preset",
             "campaignBasics": "Campaign basics",
+            "campaignPreview": "Campaign preview",
+            "emptyText": "Start filling in your campaign details to generate the preview",
             "rewards": "Rewards",
             "target": "Target",
             "duration": "Duration"
@@ -224,7 +226,6 @@
             "basics": {
                 "title": "Set your campaign basics",
                 "notSaved": "Not saved",
-                "defineTarget": "Define the target",
                 "defineDuration": "Define the duration",
                 "chain": "Chain",
                 "protocol": "Protocol",
@@ -232,6 +233,15 @@
                 "startDate": "Start date",
                 "endDate": "End date",
                 "saveBasics": "Save basics"
+            },
+            "rewards": {
+                "title": "Define the rewards to distribute",
+                "apr": "APR: {apr}",
+                "notSaved": "Not saved",
+                "defineAssets": "Define assets to distribute",
+                "defineRestrictions": "Define who can earn rewards",
+                "defineRestrictionDescription": "You can block unwanted addresses or allow only eligible ones. Zero and dead addresses are excluded by default.",
+                "saveRewards": "Save rewards"
             },
             "base": {
                 "kind": {
@@ -404,6 +414,8 @@
                 }
             },
             "aaveV3": {
+                "blockCrossBorrow": "Block cross-borrow positions",
+                "blockCrossBorrowDescription": "Borrowing any of the selected collateral assets will reduce the position share of the rewards.",
                 "action": "Action",
                 "noActions": "No actions found",
                 "brand": { "title": "Platform" },
@@ -471,6 +483,12 @@
                         "inconsistentDex": "The pool doesn't belong to {dex}"
                     }
                 },
+                "weighting": {
+                    "title": "Reward ratio",
+                    "description": "Rewards are based on {token0}-{token1} position size, liquidity depth, and price range concentration.",
+                    "readMore": "Read more 🡥",
+                    "fees": "Fees"
+                },
                 "range": {
                     "title": "Set range to reward",
                     "currentPrice": "Current price",
@@ -537,6 +555,7 @@
         },
         "back": "Back",
         "defineTarget": "Define the target",
+        "optional": "Optional",
         "inputs": {
             "chain": "Chain",
             "noChains": "No chains found",
@@ -581,9 +600,23 @@
                 "dateInThePast": "Date can't be in the past",
                 "minimumDate": "Campaign must exceed {duration}",
                 "maximumDate": "Campaign must be under {duration}"
+            },
+            "rewardsPicker": {
+                "label": "Token",
+                "add": "Add",
+                "noTokens": "No tokens found",
+                "token": "Token",
+                "balance": "Balance",
+                "noToken": "Don't see your token?",
+                "requestIt": "Request it here🡥",
+                "editAmount": "Click to edit amount",
+                "removeAsset": "Remove asset",
+                "errors": {
+                    "insufficientBalance": "Insufficient balance",
+                    "lowDistributionRate": "Low distribution rate"
+                }
             }
-        },
-        "previews": {}
+        }
     },
     "campaignPreview": {
         "header": {

@@ -1,11 +1,15 @@
-import { useCallback, useEffect, useMemo, type FunctionComponent } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
 import type { AaveV3CampaignPayloadPart } from "@/src/types/campaign/aave-v3-campaign";
-import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
+import {
+    ProtocolType,
+    type AaveV3Protocol,
+    type ProtocolBase,
+} from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useChainType } from "@/src/hooks/useChainType";
-import type { SVGIcon } from "@/src/types/common";
+import { ProtocolLogo } from "@/src/components/protocol-logo";
 
 import styles from "./styles.module.css";
 
@@ -16,7 +20,7 @@ interface AaveV3BrandSelectProps {
 }
 
 interface OptionData {
-    logo: FunctionComponent<SVGIcon>;
+    protocol: ProtocolBase;
 }
 
 const option = (option: SelectOption<string, OptionData>) => {
@@ -25,7 +29,11 @@ const option = (option: SelectOption<string, OptionData>) => {
 
     return (
         <div className={styles.option}>
-            <data.logo className={styles.icon} />
+            <ProtocolLogo
+                size="sm"
+                protocol={data.protocol}
+                className={styles.icon}
+            />
             <Typography>{label}</Typography>
         </div>
     );
@@ -37,7 +45,7 @@ const selectedPrefix = (
     if (!option || !option.data) return <></>;
     const { data } = option;
 
-    return <data.logo className={styles.prefixIcon} />;
+    return <ProtocolLogo size="xs" protocol={data.protocol} />;
 };
 
 export function AaveV3BrandSelect({
@@ -60,9 +68,7 @@ export function AaveV3BrandSelect({
             brands.map((protocol) => ({
                 label: protocol.name,
                 value: protocol.slug,
-                data: {
-                    logo: protocol.logo,
-                },
+                data: { protocol },
             })),
         [brands],
     );

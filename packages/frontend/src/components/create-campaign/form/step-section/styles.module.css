@@ -5,5 +5,13 @@
 }
 
 .header {
-    @apply flex gap-1.5;
+    @apply flex flex-col gap-0.5;
+}
+
+.title {
+    @apply flex items-center gap-1.5;
+}
+
+.optionalTag {
+    @apply px-2 py-1 rounded-sm border border-gray-300 dark:border-neutral-700;
 }

@@ -3,10 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
-import type {
-    CampaignPayloadErrors,
-    BaseCampaignPayloadPart,
-} from "@/src/types/campaign/common";
+import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { DateTimePicker, Chip, TextInput, Popover } from "@metrom-xyz/ui";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
@@ -20,7 +17,7 @@ interface EndDatePickerProps {
     startDate?: Dayjs;
     endDate?: Dayjs;
     onChange: (date: BaseCampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    onError: (error?: string) => void;
 }
 
 interface DurationPreset {
@@ -63,16 +60,9 @@ export function EndDatePicker({
     const popoverRef = useRef<HTMLDivElement>(null);
     const { limits } = useCampaignDurationLimits();
 
-    // const prevDate = usePrevious(endDate);
-
-    // const unsavedChanges = useMemo(() => {
-    //     if (!prevDate) return true;
-    //     return !prevDate.isSame(date);
-    // }, [date, prevDate]);
-
     useEffect(() => {
         if (!endDate || !startDate || !limits) {
-            onError({ basics: undefined });
+            onError(undefined);
             setDateError("");
             return;
         }
@@ -97,7 +87,7 @@ export function EndDatePicker({
                 ),
             });
 
-        onError({ basics: dateError });
+        onError(dateError);
         setDateError(dateError);
     }, [limits, endDate, startDate, onError, t]);
 
