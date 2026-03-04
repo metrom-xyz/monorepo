@@ -6,10 +6,7 @@ import classNames from "classnames";
 
 import styles from "./commons/styles.module.css";
 
-export type TextInputProps = Omit<
-    BaseInputProps<string>,
-    "id" | "filled" | "placeholder"
-> & {
+export type TextInputProps = Omit<BaseInputProps<string>, "id" | "filled"> & {
     id?: string;
     focused?: boolean;
 };
@@ -32,6 +29,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             value,
             loading,
             disabled,
+            placeholder,
             ...rest
         },
         ref,
@@ -66,7 +64,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                     disabled={loading || disabled}
                     {...rest}
                     autoComplete="off"
-                    placeholder=" "
+                    placeholder={placeholder && !label ? placeholder : " "}
                     className={classNames("input", styles.input)}
                 />
             </BaseInputWrapper>

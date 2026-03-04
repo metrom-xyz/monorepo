@@ -40,6 +40,10 @@
         duration-200;
 }
 
+.option.disabled {
+    @apply opacity-50 pointer-events-none;
+}
+
 .option.xs {
     @apply p-2;
 }

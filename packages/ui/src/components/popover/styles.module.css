@@ -3,7 +3,7 @@
 .root {
     @apply w-fit
         rounded-lg
-        border-1
+        border
         border-gray-500
         dark:border-neutral-400
         p-3

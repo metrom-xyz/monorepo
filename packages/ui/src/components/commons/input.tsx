@@ -16,6 +16,7 @@ export type BaseInputSize = "xs" | "sm" | "base" | "lg";
 export interface PartialBaseInputProps<V> {
     error?: boolean;
     errorText?: string;
+    placeholder?: string;
     size?: BaseInputSize;
     loading?: boolean;
     onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -171,18 +172,25 @@ export function BaseInputWrapper<V>({
                 {iconPlacement === "right" && icon}
                 {endAdornment && (
                     <div
-                        className={classNames(styles.adornment, {
+                        className={classNames("adornment", styles.adornment, {
                             [styles[size]]: true,
                         })}
                     >
                         {endAdornment}
                     </div>
                 )}
-                <fieldset aria-hidden="true" className={styles.fieldset}>
+                <fieldset
+                    aria-hidden="true"
+                    className={classNames("fieldset", styles.fieldset)}
+                >
                     <legend>
-                        <span className={classNames({ [styles[size]]: true })}>
-                            {label}
-                        </span>
+                        {label && (
+                            <span
+                                className={classNames({ [styles[size]]: true })}
+                            >
+                                {label}
+                            </span>
+                        )}
                     </legend>
                 </fieldset>
             </div>
