@@ -3,10 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
-import type {
-    CampaignPayloadErrors,
-    BaseCampaignPayloadPart,
-} from "@/src/types/campaign/common";
+import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { DateTimePicker, TextInput, Popover, Chip } from "@metrom-xyz/ui";
 import { getClosestAvailableDateTime } from "../../../../utils/date";
 import { formatDateTime } from "@/src/utils/format";
@@ -19,7 +16,7 @@ interface StartDatePickerProps {
     startDate?: Dayjs;
     endDate?: Dayjs;
     onChange: (date: BaseCampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    onError: (error?: string) => void;
 }
 
 export function StartDatePicker({
@@ -37,13 +34,6 @@ export function StartDatePicker({
     const t = useTranslations("newCampaign.inputs.startDatePicker");
     const popoverRef = useRef<HTMLDivElement>(null);
 
-    // const previousDate = usePrevious(date);
-    // const prevDate = usePrevious(startDate);
-    // const unsavedChanges = useMemo(() => {
-    //     if (!prevDate) return true;
-    //     return !prevDate.isSame(date);
-    // }, [date, prevDate]);
-
     useEffect(() => {
         if (minDate || disabled) return;
         setMinDate(getClosestAvailableDateTime());
@@ -60,12 +50,12 @@ export function StartDatePicker({
     }, [startDate, minDate]);
 
     useEffect(() => {
-        if (!startDate || !minDate /*|| !previousDate*/) return;
+        if (!startDate || !minDate) return;
 
         let dateError = "";
         if (startDate.isBefore(minDate)) dateError = t("dateInThePast");
 
-        onError({ basics: dateError });
+        onError(dateError);
         setDateError(dateError);
     }, [startDate, minDate, onError, t]);
 

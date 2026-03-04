@@ -214,13 +214,13 @@ export interface DistributablesCampaignPreviewPayload<
 
 export interface CampaignPayloadErrors {
     basics?: string;
+    rewards?: string;
 
     // TODO: remove single prop errors
     pool?: boolean;
     holdFungibleAsset?: boolean;
     startDate?: boolean;
     endDate?: boolean;
-    rewards?: boolean;
     weighting?: boolean;
     distribution?: boolean;
     priceRangeSpecification?: boolean;

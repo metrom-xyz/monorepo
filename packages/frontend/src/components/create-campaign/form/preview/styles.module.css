@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply hidden sm:flex flex-col gap-8 flex-[29%];
+    @apply hidden sm:flex flex-col gap-7 flex-[29%];
 }
 
 .header {
@@ -14,6 +14,22 @@
 
 .buttons {
     @apply flex items-center gap-2;
+}
+
+.button {
+    @apply h-9;
+}
+
+.empty {
+    @apply flex flex-col gap-2 items-center justify-center;
+}
+
+.documentTextIcon {
+    @apply text-tertiary;
+}
+
+.emptyText {
+    @apply flex flex-col text-center gap-1;
 }
 
 .content {

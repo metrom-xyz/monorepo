@@ -7,22 +7,20 @@ import { DexSelect } from "../../inputs/dex-select";
 import { PoolSelect } from "../../inputs/pool-select";
 import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
 import { StepSection } from "../step-section";
-import type {
-    BaseCampaignPayloadPart,
-    CampaignPayloadErrors,
-} from "@/src/types/campaign/common";
+import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { BaseCampaignType } from "@metrom-xyz/sdk";
 import { useMemo, useState } from "react";
 import { allFieldsFilled } from "@/src/utils/form";
+import type { CompletedRequiredSteps } from "..";
+import { useFormErrors } from "@/src/context/form-errors";
 
 import styles from "./styles.module.css";
 
-interface BasicsStepsProps {
+interface AmmPoolLiquidityBasicsStepsProps {
     payload: AmmPoolLiquidityCampaignPayload;
-    error?: string;
+    onComplete: (steps: Partial<CompletedRequiredSteps>) => void;
     onApply: (payload: BaseCampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
 }
 
 const BASIC_PAYLOAD_KEYS: Partial<keyof AmmPoolLiquidityCampaignPayload>[] = [
@@ -33,12 +31,11 @@ const BASIC_PAYLOAD_KEYS: Partial<keyof AmmPoolLiquidityCampaignPayload>[] = [
     "endDate",
 ];
 
-export function BasicsSteps({
+export function AmmPoolLiquidityBasicsSteps({
     payload,
-    error,
+    onComplete,
     onApply,
-    onError,
-}: BasicsStepsProps) {
+}: AmmPoolLiquidityBasicsStepsProps) {
     const [basicsPayload, setBasicsPayload] = useState(
         Object.fromEntries(
             BASIC_PAYLOAD_KEYS.map((key) => [key, payload[key]]),
@@ -49,9 +46,14 @@ export function BasicsSteps({
     );
 
     const t = useTranslations("newCampaign");
+    const { errors, updateErrors } = useFormErrors();
 
     const unsavedChanges = useMemo(() => {
-        if (!allFieldsFilled(payload, BASIC_PAYLOAD_KEYS)) return true;
+        if (
+            !allFieldsFilled(basicsPayload, BASIC_PAYLOAD_KEYS) &&
+            allFieldsFilled(payload, BASIC_PAYLOAD_KEYS)
+        )
+            return true;
         return BASIC_PAYLOAD_KEYS.some(
             (key) => basicsPayload[key] !== payload[key],
         );
@@ -62,12 +64,12 @@ export function BasicsSteps({
     }
 
     const applyDisabled =
-        !!error ||
+        !!errors.basics ||
         !unsavedChanges ||
         !allFieldsFilled(basicsPayload, BASIC_PAYLOAD_KEYS);
 
     const completed =
-        !error &&
+        !errors.basics &&
         !unsavedChanges &&
         allFieldsFilled(basicsPayload, BASIC_PAYLOAD_KEYS);
 
@@ -76,11 +78,10 @@ export function BasicsSteps({
             payload={basicsPayload}
             startDatePickerDisabled={!basicsPayload.pool}
             applyDisabled={applyDisabled}
-            error={error}
             completed={!!completed}
             unsavedChanges={unsavedChanges}
+            onComplete={onComplete}
             onApply={onApply}
-            onError={onError}
             onChange={handlePayloadOnChange}
             targetSection={
                 <StepSection title={t("defineTarget")}>
@@ -102,7 +103,7 @@ export function BasicsSteps({
                             pool={basicsPayload.pool}
                             resetTrigger={basicsPayload.dex}
                             onChange={handlePayloadOnChange}
-                            onError={onError}
+                            onError={updateErrors}
                         />
                     </div>
                 </StepSection>

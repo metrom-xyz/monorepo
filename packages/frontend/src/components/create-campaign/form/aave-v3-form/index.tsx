@@ -1,10 +1,13 @@
 import {
-    type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
     type CampaignPreviewFixedDistribution,
     type CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
-import { CampaignKind, SupportedAaveV3 } from "@metrom-xyz/sdk";
+import {
+    CampaignKind,
+    DistributablesType,
+    SupportedAaveV3,
+} from "@metrom-xyz/sdk";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import { type CampaignKindOption } from "../../steps/campaign-kind-step";
 import type { TranslationsKeys } from "@/src/types/utils";
@@ -18,10 +21,13 @@ import {
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import { BasicsSteps } from "./basics-step";
+import { AaveV3BasicsSteps } from "./aave-v3-basics-step";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
+import { AaveV3RewardsStep } from "./aave-v3-rewards-step";
+import type { CompletedRequiredSteps } from "..";
+import { useFormErrors } from "@/src/context/form-errors";
 
 import styles from "./styles.module.css";
 
@@ -97,11 +103,9 @@ function validatePayload(
 }
 
 interface AaveV3FormProps {
-    payload: AaveV3CampaignPayload;
-    errors: CampaignPayloadErrors;
     unsupportedChain: boolean;
-    onChange: (payload: AaveV3CampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    distributablesType: DistributablesType;
+    onStepComplete: (payload: AaveV3CampaignPayloadPart) => void;
     onPreviewClick: (
         payload:
             | AaveV3CampaignPreviewPayload
@@ -127,14 +131,26 @@ export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
     },
 ] as const;
 
+const INITIAL_COMPLETED_REQUIRED_STEPS: CompletedRequiredSteps = {
+    basics: false,
+    rewards: false,
+};
+
 export function AaveV3Form({
-    payload,
-    errors,
+    // errors,
+    distributablesType,
     // unsupportedChain,
-    onChange,
-    onError,
+    onStepComplete,
+    // onError,
     // onPreviewClick,
 }: AaveV3FormProps) {
+    const [payload, setPayload] = useState<AaveV3CampaignPayload>({
+        distributables: { type: distributablesType },
+    });
+    const [completedRequiredSteps, setCompletedRequiredSteps] =
+        useState<CompletedRequiredSteps>(INITIAL_COMPLETED_REQUIRED_STEPS);
+
+    const { errors } = useFormErrors();
     const { id: chainId, type: chainType } = useChainWithType();
 
     const { /*loading: loadingUsdNetSupply,*/ usdNetSupply } =
@@ -176,19 +192,20 @@ export function AaveV3Form({
     //     setPayload(initialPayload);
     // }, [chainId]);
 
-    // const handlePayloadOnChange = useCallback(
-    //     (part: AaveV3CampaignPayloadPart) => {
-    //         setPayload((prev) => ({ ...prev, ...part }));
-    //     },
-    //     [],
-    // );
+    const handleOnApply = useCallback(
+        (part: AaveV3CampaignPayloadPart) => {
+            setPayload((prev) => ({ ...prev, ...part }));
+            onStepComplete({ ...payload, ...part });
+        },
+        [payload, onStepComplete],
+    );
 
-    // const handlePayloadOnError = useCallback(
-    //     (errors: CampaignPayloadErrors) => {
-    //         setErrors((state) => ({ ...state, ...errors }));
-    //     },
-    //     [],
-    // );
+    const handleOnCompletedRequiredStep = useCallback(
+        (part: Partial<CompletedRequiredSteps>) => {
+            setCompletedRequiredSteps((prev) => ({ ...prev, ...part }));
+        },
+        [],
+    );
 
     // function handlePreviewOnClick() {
     //     onPreviewClick(previewPayload);
@@ -205,11 +222,16 @@ export function AaveV3Form({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <BasicsSteps
+                <AaveV3BasicsSteps
                     payload={payload}
-                    error={errors.basics}
-                    onApply={onChange}
-                    onError={onError}
+                    onComplete={handleOnCompletedRequiredStep}
+                    onApply={handleOnApply}
+                />
+                <AaveV3RewardsStep
+                    payload={payload}
+                    disabled={!completedRequiredSteps.basics}
+                    onComplete={handleOnCompletedRequiredStep}
+                    onApply={handleOnApply}
                 />
                 {/* <AaveV3BrandStep
                     disabled={unsupportedChain}

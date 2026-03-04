@@ -12,6 +12,7 @@ import type {
 const collator = new Intl.Collator();
 
 export function useWatchBalancesEvm<T extends UsdPricedErc20Token>({
+    chainId,
     address,
     tokens,
     enabled = true,
@@ -28,11 +29,12 @@ export function useWatchBalancesEvm<T extends UsdPricedErc20Token>({
                 address: token?.address,
                 abi: erc20Abi,
                 functionName: "balanceOf",
+                chainId,
                 args: [address],
             };
         }),
         allowFailure: true,
-        query: { enabled: enabled && !!address && !!tokens },
+        query: { enabled: enabled && !!chainId && !!address && !!tokens },
     });
 
     useEffect(() => {

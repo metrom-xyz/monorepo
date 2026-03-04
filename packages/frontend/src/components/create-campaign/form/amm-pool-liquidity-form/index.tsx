@@ -1,10 +1,9 @@
 import {
-    type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
     type CampaignPreviewFixedDistribution,
     type CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
-import { useEffect, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
@@ -18,7 +17,10 @@ import {
     type AmmPoolLiquidityCampaignPayloadPart,
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import { BasicsSteps } from "./basics-step";
+import { AmmPoolLiquidityBasicsSteps } from "./amm-pool-liquidity-basics-step";
+import type { CompletedRequiredSteps } from "..";
+import { AmmPoolLiquidityRewardsStep } from "./amm-pool-liquidity-rewards-step";
+import { useFormErrors } from "@/src/context/form-errors";
 
 import styles from "./styles.module.css";
 
@@ -79,11 +81,9 @@ function validatePayload(
 
 interface AmmPoolLiquidityFormProps {
     kind: CampaignKind;
-    payload: AmmPoolLiquidityCampaignPayload;
-    errors: CampaignPayloadErrors;
     unsupportedChain: boolean;
-    onChange: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    distributablesType: DistributablesType;
+    onStepComplete: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
     onPreviewClick: (
         payload:
             | AmmPoolLiquidityCampaignPreviewPayload
@@ -92,19 +92,28 @@ interface AmmPoolLiquidityFormProps {
     ) => void;
 }
 
-const initialPayload: AmmPoolLiquidityCampaignPayload = {
-    distributables: { type: DistributablesType.Tokens },
+const INITIAL_COMPLETED_REQUIRED_STEPS: CompletedRequiredSteps = {
+    basics: false,
+    rewards: false,
 };
 
 export function AmmPoolLiquidityForm({
     kind,
-    payload,
-    errors,
     // unsupportedChain,
-    onChange,
-    onError,
+    // completedRequiredSteps,
+    distributablesType,
+    onStepComplete,
     // onPreviewClick,
 }: AmmPoolLiquidityFormProps) {
+    const [payload, setPayload] = useState<AmmPoolLiquidityCampaignPayload>({
+        kind,
+        distributables: { type: distributablesType },
+        weighting: { liquidity: 100, token0: 0, token1: 0 },
+    });
+    const [completedRequiredSteps, setCompletedRequiredSteps] =
+        useState<CompletedRequiredSteps>(INITIAL_COMPLETED_REQUIRED_STEPS);
+
+    const { errors } = useFormErrors();
     const { id: chainId } = useChainWithType();
 
     useMemo(() => {
@@ -158,27 +167,28 @@ export function AmmPoolLiquidityForm({
     //     );
     // }, [payload.pool]);
 
-    useEffect(() => {
-        onChange({ ...initialPayload, kind });
-    }, [chainId, kind, onChange]);
+    // useEffect(() => {
+    //     onChange({ ...initialPayload, kind });
+    // }, [chainId, kind, onChange]);
 
     // useEffect(() => {
     //     onChange(payload);
     // }, [payload, onChange]);
 
-    // const handlePayloadOnChange = useCallback(
-    //     (part: AmmPoolLiquidityCampaignPayloadPart) => {
-    //         setPayload((prev) => ({ ...prev, ...part }));
-    //     },
-    //     [],
-    // );
+    const handleOnApply = useCallback(
+        (part: AmmPoolLiquidityCampaignPayloadPart) => {
+            setPayload((prev) => ({ ...prev, ...part }));
+            onStepComplete({ ...payload, ...part });
+        },
+        [payload, onStepComplete],
+    );
 
-    // const handlePayloadOnError = useCallback(
-    //     (errors: CampaignPayloadErrors) => {
-    //         setErrors((state) => ({ ...state, ...errors }));
-    //     },
-    //     [],
-    // );
+    const handleOnCompletedRequiredStep = useCallback(
+        (part: Partial<CompletedRequiredSteps>) => {
+            setCompletedRequiredSteps((prev) => ({ ...prev, ...part }));
+        },
+        [],
+    );
 
     // TODO: should become on launch click
     // function handlePreviewOnClick() {
@@ -188,11 +198,16 @@ export function AmmPoolLiquidityForm({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <BasicsSteps
+                <AmmPoolLiquidityBasicsSteps
                     payload={payload}
-                    error={errors.basics}
-                    onApply={onChange}
-                    onError={onError}
+                    onComplete={handleOnCompletedRequiredStep}
+                    onApply={handleOnApply}
+                />
+                <AmmPoolLiquidityRewardsStep
+                    payload={payload}
+                    disabled={!completedRequiredSteps.basics}
+                    onComplete={handleOnCompletedRequiredStep}
+                    onApply={handleOnApply}
                 />
                 {/* <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}

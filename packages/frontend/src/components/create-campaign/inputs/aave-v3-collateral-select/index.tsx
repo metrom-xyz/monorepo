@@ -104,7 +104,10 @@ export function AaveV3CollateralSelect({
                 ({ address }) => address === option.value,
             );
             if (!selected) return;
-            onChange({ collateral: selected });
+            onChange({
+                collateral: selected,
+                blacklistedCollaterals: undefined,
+            });
         },
         [collaterals, onChange],
     );

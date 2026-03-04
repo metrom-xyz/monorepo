@@ -8,7 +8,7 @@ import { METROM_API_CLIENT } from "../commons";
 import type { Address } from "viem";
 
 export interface UseAaveV3CollateralUsdNetSupplyParams extends HookBaseParams {
-    chainId: SupportedChain;
+    chainId?: SupportedChain;
     chainType: ChainType;
     brand?: SupportedAaveV3;
     market?: string;
@@ -19,7 +19,7 @@ export interface UseAaveV3CollateralUsdNetSupplyParams extends HookBaseParams {
 type QueryKey = [
     string,
     ChainType,
-    SupportedChain,
+    SupportedChain | undefined,
     SupportedAaveV3 | undefined,
     string | undefined,
     Address | undefined,
@@ -64,7 +64,7 @@ export function useAaveV3CollateralUsdNetSupply({
                 collateral,
                 blacklistedCrossBorrowCollaterals,
             ] = queryKey as QueryKey;
-            if (!brand || !market || !collateral) return null;
+            if (!chainId || !brand || !market || !collateral) return null;
 
             try {
                 const usdNetSupply =
