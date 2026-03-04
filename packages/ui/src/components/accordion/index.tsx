@@ -12,6 +12,7 @@ export interface AccordionProps {
     iconPlacement?: "left" | "right";
     noUnmount?: boolean;
     open?: boolean;
+    disabled?: boolean;
     noUnmount?: boolean;
     onToggle?: (open: boolean) => void;
     className?: string;
@@ -23,6 +24,7 @@ export function Accordion({
     iconPlacement = "left",
     noUnmount,
     open: controlledOpen,
+    disabled,
     noUnmount,
     onToggle,
     className,
@@ -33,18 +35,24 @@ export function Accordion({
     const open = controlled ? controlledOpen : internalOpen;
 
     const handleOnToggleOpen = useCallback(() => {
+        if (disabled) return;
         if (onToggle) onToggle(!open);
         if (!controlled) {
             setInternalOpen(!open);
         }
-    }, [open, controlled, onToggle]);
+    }, [open, disabled, controlled, onToggle]);
 
     return (
-        <div className={classNames("root", styles.root, className)}>
+        <div
+            className={classNames("root", styles.root, className, {
+                [styles.disabled]: !!disabled,
+            })}
+        >
             <div
                 onClick={handleOnToggleOpen}
                 className={classNames("preview", styles.preview, {
                     [styles.open]: open,
+                    [styles.disabled]: !!disabled,
                 })}
             >
                 {iconPlacement === "left" && (
