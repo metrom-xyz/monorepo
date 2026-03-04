@@ -30,6 +30,7 @@ export type StepNumberInputProps = {
     id?: string;
     step?: InputAttributes["step"];
     label?: string;
+    placeholder?: string;
     prefix?: string;
     error?: boolean;
     loading?: boolean;
@@ -50,6 +51,7 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
         {
             id,
             label,
+            placeholder,
             size = "base",
             errorText,
             error = false,
@@ -126,7 +128,9 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                             getInputRef={ref}
                             {...formatBaseProps}
                             autoComplete="off"
-                            placeholder=" "
+                            placeholder={
+                                placeholder && !label ? placeholder : " "
+                            }
                             onValueChange={handleOnValueChange}
                             onKeyDown={handleOnKeyDown}
                             onBlur={onBlur}
