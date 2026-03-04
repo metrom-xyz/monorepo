@@ -36,8 +36,6 @@ export enum SupportedDevelopmentEvmChain {
     BaseSepolia = SupportedChainEvm.BaseSepolia,
     // TODO: this is temporary as we are testing, remove this as soon as that is done
     Sei = SupportedChainEvm.Sei,
-    // TODO: this is temporary as we are testing, remove this as soon as that is done
-    Swell = SupportedChainEvm.Swell,
     // TODO: this is required for the Katana vault campaigns testing, remove this as soon as that is done
     Katana = katana.id,
 }
