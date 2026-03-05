@@ -30,6 +30,7 @@ export function ChainClaims({ loading, claimableFees }: ChainClaimsProps) {
                 chain={claims?.chain.name}
                 icon={claims?.chain.icon}
                 totalUsd={claims?.totalUsd}
+                tokens={sortedTokens}
             />
             <div className={styles.claims}>
                 {sortedTokens?.map((claim) => (
