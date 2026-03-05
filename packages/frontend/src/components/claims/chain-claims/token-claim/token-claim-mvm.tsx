@@ -60,8 +60,7 @@ export function TokenClaimMvm({
         isLoading: simulatingClaim,
         isError: simulatedClaimErrored,
     } = useSimulateTransaction({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: claimRewardsTxPayload as any,
+        data: claimRewardsTxPayload,
         transactionOptions: {
             expireTimestamp: dayjs().add(1, "minute").unix(),
         },
@@ -95,8 +94,7 @@ export function TokenClaimMvm({
             setClaiming(true);
             try {
                 const tx = await signAndSubmitTransactionAsync({
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    data: claimRewardsTxPayload as any,
+                    data: claimRewardsTxPayload,
                 });
                 const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,

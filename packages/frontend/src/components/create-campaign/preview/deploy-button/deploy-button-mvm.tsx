@@ -103,8 +103,7 @@ export function DeployButtonMvm({
         isError: simulateCreateErrored,
         error: simulateCreateError,
     } = useSimulateTransaction({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: txPayload as any,
+        data: txPayload,
     });
 
     const { signAndSubmitTransactionAsync } = useSignAndSubmitTransaction();
@@ -123,8 +122,7 @@ export function DeployButtonMvm({
             setDeploying(true);
             try {
                 const tx = await signAndSubmitTransactionAsync({
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    data: txPayload as any,
+                    data: txPayload,
                 });
                 const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,

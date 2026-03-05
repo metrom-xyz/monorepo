@@ -84,8 +84,7 @@ export function ChainOverviewMvm({
         isLoading: simulatingRecoverAll,
         isError: simulatedRecoverAllErrored,
     } = useSimulateTransaction({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: recoverRewardsTxPayload as any,
+        data: recoverRewardsTxPayload,
         refetchOnMount: false,
         options: {
             estimateGasUnitPrice: true,
@@ -99,8 +98,7 @@ export function ChainOverviewMvm({
         isLoading: simulatingClaimAll,
         isError: simulatedClaimAllErrored,
     } = useSimulateTransaction({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: claimRewardsTxPayload as any,
+        data: claimRewardsTxPayload,
         refetchOnMount: false,
         options: {
             estimateGasUnitPrice: true,
@@ -131,8 +129,7 @@ export function ChainOverviewMvm({
             setRecovering(true);
             try {
                 const tx = await signAndSubmitTransactionAsync({
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    data: recoverRewardsTxPayload as any,
+                    data: recoverRewardsTxPayload,
                 });
                 const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
@@ -175,8 +172,7 @@ export function ChainOverviewMvm({
             setClaiming(true);
             try {
                 const tx = await signAndSubmitTransactionAsync({
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    data: claimRewardsTxPayload as any,
+                    data: claimRewardsTxPayload,
                 });
                 const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
