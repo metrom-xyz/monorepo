@@ -100,7 +100,10 @@ export function useClaimsMvm({
 
             try {
                 return await Promise.all(
-                    payloads.map((payload) => aptos.view({ payload })),
+                    payloads.map((payload) =>
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        aptos.view({ payload: payload as any }),
+                    ),
                 );
             } catch (error) {
                 console.error(
