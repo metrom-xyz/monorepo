@@ -59,8 +59,7 @@ export function TokenReimbursementMvm({
         isLoading: simulatingRecover,
         isError: simulateRecoverErrored,
     } = useSimulateTransaction({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: recoverRewardsTxPayload as any,
+        data: recoverRewardsTxPayload,
         options: {
             estimateGasUnitPrice: true,
             estimateMaxGasAmount: true,
@@ -90,8 +89,7 @@ export function TokenReimbursementMvm({
             setRecovering(true);
             try {
                 const tx = await signAndSubmitTransactionAsync({
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    data: recoverRewardsTxPayload as any,
+                    data: recoverRewardsTxPayload,
                 });
                 const receipt = await aptos.waitForTransaction({
                     transactionHash: tx.hash,
