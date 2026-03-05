@@ -1,0 +1,77 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full;
+}
+
+.modal {
+    @apply h-auto
+        flex
+        flex-col
+        sm:min-w-[360px]
+        rounded-4xl
+        border
+        surface-primary
+        border-gray-300
+        dark:border-neutral-800
+        overflow-hidden;
+}
+
+.title {
+    @apply w-full flex items-center justify-between px-7 py-5;
+}
+
+.closeIcon {
+    @apply text-primary size-3 cursor-pointer;
+}
+
+.walletItem {
+    @apply flex items-center justify-between;
+}
+
+.walletButton {
+    @apply w-full
+        flex
+        items-center
+        justify-between
+        px-7
+        py-4
+        surface-primary
+        surface-primary-hover
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.leftContent {
+    @apply flex items-center gap-3;
+}
+
+.walletIcon {
+    @apply size-8;
+}
+
+.walletWrapper {
+    @apply bg-white dark:bg-zinc-800
+        sm:px-2
+        h-10
+        min-w-10
+        rounded-md
+        flex
+        items-center
+        sm:justify-between
+        justify-center
+        surface-primary-hover
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.account {
+    @apply sm:w-full flex gap-2 items-center justify-between;
+}
+
+.displayName {
+    @apply hidden sm:flex;
+}
