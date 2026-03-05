@@ -3,6 +3,7 @@ import { ChainType, type RewardToken } from "@metrom-xyz/sdk";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useActiveChains } from "./useActiveChains";
+import { APTOS } from "@/commons/env";
 
 interface UseRewardTokensReturnValue {
     loading: boolean;
@@ -23,8 +24,7 @@ export function useRewardTokens(): UseRewardTokensReturnValue {
                 try {
                     const rewardTokens =
                         await METROM_API_CLIENT.fetchRewardTokens({
-                            // TODO: add support for Aptos chain
-                            chainType: ChainType.Evm,
+                            chainType: APTOS ? ChainType.Aptos : ChainType.Evm,
                             chainId: chain.id,
                         });
 
