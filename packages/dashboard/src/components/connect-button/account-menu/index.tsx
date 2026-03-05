@@ -4,8 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { type Address } from "viem";
 import { RemoveScroll } from "react-remove-scroll";
-import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
-import { type AdapterBlueprint } from "@reown/appkit/adapters";
+import {
+    useAppKitAccount,
+    useAppKitBalance,
+    type AdapterBlueprint,
+} from "@reown/appkit/react";
 import { Account } from "../../account";
 import { SafeLogo } from "@/assets/logos/safe";
 import { useChainData } from "@/hooks/useChainData";
@@ -107,10 +110,18 @@ export function AccountMenu({
                         <div className={styles.balanceWrapper}>
                             {balance ? (
                                 <>
-                                    <Typography variant="tertiary"weight="medium" size="lg">
+                                    <Typography
+                                        variant="tertiary"
+                                        weight="medium"
+                                        size="lg"
+                                    >
                                         {balance.symbol}
                                     </Typography>
-                                    <Typography variant="tertiary"weight="medium" size="lg">
+                                    <Typography
+                                        variant="tertiary"
+                                        weight="medium"
+                                        size="lg"
+                                    >
                                         {formatAmount({
                                             amount: Number(balance.balance),
                                         })}
