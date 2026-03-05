@@ -121,7 +121,10 @@ export function useReimbursementsMvm({
 
             try {
                 return await Promise.all(
-                    recoveredPayloads.map((payload) => aptos.view({ payload })),
+                    recoveredPayloads.map((payload) =>
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        aptos.view({ payload: payload as any }),
+                    ),
                 );
             } catch (error) {
                 console.error(
@@ -150,7 +153,10 @@ export function useReimbursementsMvm({
 
             try {
                 return await Promise.all(
-                    claimedPayloads.map((payload) => aptos.view({ payload })),
+                    claimedPayloads.map((payload) =>
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        aptos.view({ payload: payload as any }),
+                    ),
                 );
             } catch (error) {
                 console.error(
