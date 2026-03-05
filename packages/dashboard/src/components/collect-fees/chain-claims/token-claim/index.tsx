@@ -13,11 +13,24 @@ import { useAccount, useChainId, useSimulateContract } from "wagmi";
 import { toast } from "sonner";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useChainData } from "@/hooks/useChainData";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { SAFE_APP_SDK } from "@/commons";
 import { encodeFunctionData } from "viem";
 import classNames from "classnames";
 import { ClaimReward } from "@/assets/claim-reward";
+import { APTOS } from "@/commons/env";
+import {
+    Hex,
+    InputEntryFunctionData,
+    MoveFunctionId,
+} from "@aptos-labs/ts-sdk";
+import {
+    useClients,
+    useSignAndSubmitTransaction,
+    useSimulateTransaction,
+    useAccount as useMvmAccount,
+} from "@aptos-labs/react";
+import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
 
@@ -26,12 +39,17 @@ type TokenClaimProps = UsdPricedErc20TokenAmount;
 export function TokenClaim({ amount, token }: TokenClaimProps) {
     const t = useTranslations("tokenClaim");
     const chainId = useChainId();
-    const { address } = useAccount();
+    const { address: evmAddress } = useAccount();
+    const mvmAddress = useMvmAccount();
+    const { aptos } = useClients();
     const chainData = useChainData(chainId);
+    const { signAndSubmitTransactionAsync } = useSignAndSubmitTransaction();
 
     const [claiming, setClaiming] = useState(false);
 
-    const { error: simulateClaimError, isLoading: simulatingClaim } =
+    const address = evmAddress || mvmAddress?.address.toString();
+
+    const { error: simulateEvmClaimError, isLoading: simulatingEvmClaim } =
         useSimulateContract({
             chainId,
             abi: metromAbi,
@@ -42,9 +60,38 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
             functionName: "claimFees",
             query: {
                 refetchOnMount: false,
-                enabled: !!address && !!chainData,
+                enabled: !!address && !!chainData && !APTOS,
             },
         });
+
+    const claimMvmTxPayload = useMemo(() => {
+        if (!address || !chainData || !APTOS) return undefined;
+
+        const { metromContract: metrom } = chainData;
+        const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claim_fees`;
+
+        return {
+            function: moveFunction,
+            functionArguments: [token.address, Hex.fromHexInput(address)],
+        } as InputEntryFunctionData;
+    }, [chainData, address, token]);
+
+    const {
+        data: simulatedMvmClaim,
+        isLoading: simulatingMvmClaim,
+        isError: simulateMvmClaimError,
+    } = useSimulateTransaction({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data: claimMvmTxPayload as any,
+        transactionOptions: {
+            expireTimestamp: dayjs().add(1, "minute").unix(),
+        },
+        options: {
+            estimateGasUnitPrice: true,
+            estimateMaxGasAmount: true,
+        },
+        enabled: APTOS,
+    });
 
     const handleClaimOnClick = useCallback(() => {
         if (!chainData || !address) {
@@ -57,27 +104,42 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
         const claim = async () => {
             setClaiming(true);
             try {
-                await SAFE_APP_SDK.txs.send({
-                    txs: [
-                        {
-                            to: chainData.metromContract.address,
-                            data: encodeFunctionData({
-                                abi: metromAbi,
-                                functionName: "claimFees",
-                                args: [
-                                    [
-                                        {
-                                            // TODO: what should be the receiver?
-                                            receiver: address,
-                                            token: token.address,
-                                        },
+                if (APTOS) {
+                    const tx = await signAndSubmitTransactionAsync({
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        data: simulatedMvmClaim as any,
+                    });
+                    const receipt = await aptos.waitForTransaction({
+                        transactionHash: tx.hash,
+                    });
+
+                    if (!receipt.success) {
+                        console.warn("Claim transaction reverted");
+                        throw new Error("Transaction reverted");
+                    }
+                } else {
+                    await SAFE_APP_SDK.txs.send({
+                        txs: [
+                            {
+                                to: chainData.metromContract.address,
+                                data: encodeFunctionData({
+                                    abi: metromAbi,
+                                    functionName: "claimFees",
+                                    args: [
+                                        [
+                                            {
+                                                // TODO: what should be the receiver?
+                                                receiver: address,
+                                                token: token.address,
+                                            },
+                                        ],
                                     ],
-                                ],
-                            }),
-                            value: "0",
-                        },
-                    ],
-                });
+                                }),
+                                value: "0",
+                            },
+                        ],
+                    });
+                }
 
                 toast.custom((toastId) => (
                     <ToastNotification
@@ -99,7 +161,11 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
                                 <Typography size="lg" weight="medium">
                                     {formatAmount({ amount: amount.formatted })}
                                 </Typography>
-                                <Typography weight="medium" size="sm" variant="tertiary">
+                                <Typography
+                                    weight="medium"
+                                    size="sm"
+                                    variant="tertiary"
+                                >
                                     {formatUsdAmount({
                                         amount: amount.usdValue,
                                     })}
@@ -116,7 +182,17 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
         };
 
         void claim();
-    }, [token, amount, address, chainData, chainId, t]);
+    }, [
+        chainData,
+        address,
+        signAndSubmitTransactionAsync,
+        simulatedMvmClaim,
+        aptos,
+        token,
+        t,
+        amount,
+        chainId,
+    ]);
 
     return (
         <Card key={token.address} className={styles.root}>
@@ -138,7 +214,11 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
                         <Typography weight="medium" size="lg">
                             {formatAmount({ amount: amount.formatted })}
                         </Typography>
-                        <Typography weight="medium" size="sm" variant="tertiary">
+                        <Typography
+                            weight="medium"
+                            size="sm"
+                            variant="tertiary"
+                        >
                             {formatUsdAmount({
                                 amount: amount.usdValue,
                             })}
@@ -147,13 +227,18 @@ export function TokenClaim({ amount, token }: TokenClaimProps) {
                 }
             />
             <Button
-                disabled={!!simulateClaimError || !address}
-                loading={simulatingClaim || claiming}
+                disabled={
+                    !!simulateEvmClaimError || simulateMvmClaimError || !address
+                }
+                loading={simulatingEvmClaim || simulatingMvmClaim || claiming}
                 size="sm"
                 variant="secondary"
                 onClick={handleClaimOnClick}
                 className={{
-                    root: classNames({ [styles.error]: !!simulateClaimError }),
+                    root: classNames({
+                        [styles.error]:
+                            !!simulateEvmClaimError || simulateMvmClaimError,
+                    }),
                 }}
             >
                 {t("claim")}

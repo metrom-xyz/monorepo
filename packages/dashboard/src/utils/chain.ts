@@ -1,29 +1,120 @@
 import {
     EVM_CHAIN_DATA,
     Environment,
+    MVM_CHAIN_DATA,
     SupportedDevelopmentEvmChain,
+    SupportedDevelopmentMvmChain,
     SupportedProductionEvmChain,
+    SupportedProductionMvmChain,
     type ChainData,
 } from "@metrom-xyz/chains";
-import { ENVIRONMENT } from "../commons/env";
+import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
+import { APTOS, ENVIRONMENT } from "../commons/env";
+import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
+import { ChainType } from "@metrom-xyz/sdk";
 
-// TODO: add support for Aptos
-export function getChainData(chainId: number): ChainData | undefined {
+export const APTOS_NETWORK_ID = {
+    [Environment.Development]: {
+        [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
+        [Network.TESTNET]: NetworkToChainId[Network.TESTNET],
+    },
+    [Environment.Production]: {
+        [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
+    },
+};
+
+export function aptosNetworkToId(network: string): number {
+    return NetworkToChainId[network];
+}
+
+export function chainIdToAptosNetwork(
+    chainId?: number,
+): SupportedChainMvm | null {
+    const chain = Object.entries(APTOS_NETWORK_ID[ENVIRONMENT]).find(
+        ([, id]) => chainId === id,
+    );
+
+    if (!chain) return null;
+    return chain[0] as SupportedChainMvm;
+}
+
+export function getCrossVmChainData(
+    chainId: number,
+    chainType: ChainType,
+): ChainData | undefined {
     let chainData: ChainData | undefined;
 
     switch (ENVIRONMENT) {
         case Environment.Development: {
             chainData =
-                EVM_CHAIN_DATA[Environment.Development][
-                    chainId as SupportedDevelopmentEvmChain
-                ];
+                chainType === ChainType.Aptos
+                    ? MVM_CHAIN_DATA[Environment.Development][
+                          chainIdToAptosNetwork(
+                              chainId,
+                          ) as unknown as SupportedDevelopmentMvmChain
+                      ]
+                    : EVM_CHAIN_DATA[Environment.Development][
+                          chainId as SupportedDevelopmentEvmChain
+                      ];
+
             break;
         }
         case Environment.Production: {
             chainData =
-                EVM_CHAIN_DATA[Environment.Production][
-                    chainId as SupportedProductionEvmChain
-                ];
+                chainType === ChainType.Aptos
+                    ? MVM_CHAIN_DATA[Environment.Production][
+                          chainIdToAptosNetwork(
+                              chainId,
+                          ) as unknown as SupportedProductionMvmChain
+                      ]
+                    : EVM_CHAIN_DATA[Environment.Production][
+                          chainId as SupportedProductionEvmChain
+                      ];
+
+            break;
+        }
+        default: {
+            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
+        }
+    }
+
+    return chainData;
+}
+
+export function getChainData(chainId: number): ChainData | undefined {
+    let chainData: ChainData | undefined;
+
+    switch (ENVIRONMENT) {
+        case Environment.Development: {
+            if (APTOS)
+                chainData =
+                    MVM_CHAIN_DATA[Environment.Development][
+                        chainIdToAptosNetwork(
+                            chainId,
+                        ) as unknown as SupportedDevelopmentMvmChain
+                    ];
+            else
+                chainData =
+                    EVM_CHAIN_DATA[Environment.Development][
+                        chainId as SupportedDevelopmentEvmChain
+                    ];
+
+            break;
+        }
+        case Environment.Production: {
+            if (APTOS)
+                chainData =
+                    MVM_CHAIN_DATA[Environment.Production][
+                        chainIdToAptosNetwork(
+                            chainId,
+                        ) as unknown as SupportedProductionMvmChain
+                    ];
+            else
+                chainData =
+                    EVM_CHAIN_DATA[Environment.Production][
+                        chainId as SupportedProductionEvmChain
+                    ];
+
             break;
         }
         default: {

@@ -51,7 +51,7 @@ const wagmiAdapter = new WagmiAdapter({
     projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
     // FIXME: override base rpc due to 429 errors
-    transports: { ...transports, [base.id]: http("https://base.llamarpc.com") },
+    transports: { ...transports, [base.id]: http("https://mainnet.base.org") },
     connectors: [safe()],
 });
 
