@@ -42,8 +42,8 @@
         dark:text-neutral-100
         border-gray-900
         dark:border-neutral-100
-        hover:bg-gray-950/[8%]
-        dark:hover:bg-neutral-100/[12%];
+        hover:bg-gray-950/8
+        dark:hover:bg-neutral-100/12;
 }
 
 .secondary.disabled {
