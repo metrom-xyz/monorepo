@@ -1,7 +1,6 @@
 import { useRewardTokens } from "@/src/hooks/useRewardTokens";
 import type {
     BaseCampaignPayloadPart,
-    CampaignPayloadErrors,
     CampaignPayloadTokenDistributables,
 } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
@@ -26,6 +25,7 @@ import { Reward } from "./reward";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { formatUnits, parseUnits } from "@/src/utils/format";
+import type { FormErrors } from "@/src/context/form-errors";
 
 import styles from "./styles.module.css";
 
@@ -34,7 +34,7 @@ interface RewardsPickerTokensProps {
     campaignDuration?: number;
     value?: CampaignPayloadTokenDistributables;
     onChange: (value: BaseCampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    onError: (errors: FormErrors) => void;
 }
 
 export type RewardsPickerErrorMessage =

@@ -4,7 +4,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { CampaignRewardsPopover } from "@/src/components/campaign-rewards-popover";
 import { formatDateTime, formatUsdAmount } from "@/src/utils/format";
 import { CampaignWeighting } from "@/src/components/campaign-weighting";
-import type { CampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign/common";
 import { DistributablesType, Status, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { CalendarIcon } from "@/src/assets/calendar-icon";

@@ -5,7 +5,7 @@ import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { LiquidityDensityChart } from "../../../../liquidity-density-chart";
 import classNames from "classnames";
 import { BoldText } from "../../../../bold-text";
-import type { CampaignItem, TargetedNamedCampaign } from "@/src/types/campaign";
+import type { CampaignItem, TargetedNamedCampaign } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

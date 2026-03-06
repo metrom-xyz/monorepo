@@ -6,15 +6,15 @@ import { shortenAddress } from "../utils/address";
 import { useMemo } from "react";
 import { useAccountName } from "../hooks/useAccountName";
 
-interface AccountProps extends Omit<TypographyProps, "children" | "variant"> {
+interface AccountProps extends Omit<TypographyProps, "children"> {
     address?: Address;
-    variant?: "full" | "long" | "short";
+    length?: "full" | "long" | "short";
     className?: string;
 }
 
 export function Account({
     address,
-    variant = "short",
+    length = "short",
     className,
     ...rest
 }: AccountProps) {
@@ -26,10 +26,10 @@ export function Account({
 
     const account = useMemo(() => {
         if (ensName) return ensName;
-        if (variant === "full") return address;
+        if (length === "full") return address;
 
-        return shortenAddress(address, variant === "long");
-    }, [address, variant, ensName]);
+        return shortenAddress(address, length === "long");
+    }, [address, length, ensName]);
 
     return (
         <Typography {...rest} weight="medium" className={className}>

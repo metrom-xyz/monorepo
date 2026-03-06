@@ -4,7 +4,7 @@ import type { CampaignDetailsPageProps } from "./page";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { CampaignDetails } from "@/src/types/campaign";
+import { CampaignDetails } from "@/src/types/campaign/common";
 import { getTranslations } from "next-intl/server";
 import {
     getCampaignTargetValueName,

@@ -22,7 +22,7 @@ import { EmptyState } from "@/src/components/empty-state";
 import type {
     CampaignItem,
     DistributablesNamedCampaign,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

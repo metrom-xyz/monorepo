@@ -10,7 +10,6 @@ import {
 import type {
     BaseCampaignPayload,
     BaseCampaignPayloadPart,
-    CampaignPayloadErrors,
 } from "@/src/types/campaign/common";
 import { StepSection } from "../../form/step-section";
 import { Button, Typography } from "@metrom-xyz/ui";
@@ -20,7 +19,8 @@ import classNames from "classnames";
 import { RewardsPicker } from "../../inputs/rewards-picker";
 import type { Dayjs } from "dayjs";
 import type { CompletedRequiredSteps } from "../../form";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormErrors, type FormErrors } from "@/src/context/form-errors";
+import { RestrictionsPicker } from "../../inputs/restrictions-picker";
 
 import styles from "./styles.module.css";
 
@@ -28,7 +28,7 @@ interface CampaignRewardsStepProps {
     chainId?: number;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    payload: Pick<BaseCampaignPayload, "distributables">;
+    payload: BaseCampaignPayload;
     apr?: number;
     initialOpen?: boolean;
     additionalSection?: ReactNode;
@@ -79,7 +79,7 @@ export function CampaignRewardsStep({
     }, [payload, onApply, onComplete]);
 
     const handleOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
+        (errors: FormErrors) => {
             updateErrors(errors);
             onComplete({ rewards: false });
         },
@@ -134,7 +134,10 @@ export function CampaignRewardsStep({
                 description={t("defineRestrictionDescription")}
                 optional
             >
-                TODO inputs
+                <RestrictionsPicker
+                    value={payload.restrictions}
+                    onChange={onChange}
+                />
             </StepSection>
             <Button
                 onClick={handleOnApply}
