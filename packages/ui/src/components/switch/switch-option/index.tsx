@@ -34,7 +34,7 @@ export function SwitchOption<T>({
                 <motion.div
                     layoutId={`${id}_background`}
                     transition={{ ease: easeInOut, duration: 0.2 }}
-                    className={styles.background}
+                    className={classNames("background", styles.background)}
                 />
             ) : null}
 
