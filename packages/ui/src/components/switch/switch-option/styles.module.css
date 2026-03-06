@@ -5,11 +5,11 @@
 }
 
 .background {
-    @apply absolute inset-0 z-[1] rounded-sm bg-gray-300 dark:bg-neutral-600;
+    @apply absolute inset-0 z-1 rounded-sm bg-gray-300 dark:bg-neutral-600;
 }
 
 .optionWrapper {
-    @apply relative z-[2] py-1 px-2;
+    @apply relative z-2 py-1 px-2;
 }
 
 .optionWrapper > * {
