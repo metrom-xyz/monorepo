@@ -63,27 +63,25 @@ export function Protocol({ campaign }: ProtocolProps) {
 
     return (
         <div className={styles.root}>
-            <div>
-                {protocol && (
-                    <Popover
-                        ref={dexDetailsPopoverRef}
-                        open={popoverOpen}
-                        anchor={details}
-                        onOpenChange={setPopoverOpen}
-                        placement="bottom"
-                    >
-                        <Typography weight="medium" size="sm">
-                            {protocol.name}
-                        </Typography>
-                    </Popover>
-                )}
-                <div
-                    ref={setDetails}
-                    onMouseEnter={handleDexDetailsPopoverOpen}
-                    onMouseLeave={handleDexDetailsPopoverClose}
+            {protocol && (
+                <Popover
+                    ref={dexDetailsPopoverRef}
+                    open={popoverOpen}
+                    anchor={details}
+                    onOpenChange={setPopoverOpen}
+                    placement="bottom"
                 >
-                    <ProtocolLogo protocol={protocol} size="sm" />
-                </div>
+                    <Typography weight="medium" size="sm">
+                        {protocol.name}
+                    </Typography>
+                </Popover>
+            )}
+            <div
+                ref={setDetails}
+                onMouseEnter={handleDexDetailsPopoverOpen}
+                onMouseLeave={handleDexDetailsPopoverClose}
+            >
+                <ProtocolLogo protocol={protocol} size="sm" />
             </div>
         </div>
     );
