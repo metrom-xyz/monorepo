@@ -68,7 +68,7 @@ export function Restrictions({ type, list }: RestrictionsProps) {
                                     height={20}
                                 />
                                 <Account
-                                    variant={width < 640 ? "short" : "full"}
+                                    length={width < 640 ? "short" : "full"}
                                     weight="medium"
                                     address={address}
                                 />

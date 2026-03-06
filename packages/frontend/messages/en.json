@@ -206,7 +206,16 @@
             "emptyText": "Start filling in your campaign details to generate the preview",
             "rewards": "Rewards",
             "target": "Target",
-            "duration": "Duration"
+            "duration": "Duration",
+            "apr": "APR: {apr}",
+            "dailyAndTot": "Daily {dailyUsd} | Tot. {totalUsd}",
+            "rewardRatio": "Reward ratio",
+            "fees": "Fees",
+            "addressRestrictions": "Address restrictions",
+            "blockedAddresses": "{count, plural, =1 {# blocked address} other {# blocked addresses}}",
+            "allowedAddresses": "{count, plural, =1 {# allowed address} other {# allowed addresses}}",
+            "showMore": "Show more",
+            "showLess": "Show less"
         },
         "pickDistributablesType": {
             "navigation": {
@@ -602,6 +611,20 @@
                 "errors": {
                     "insufficientBalance": "Insufficient balance",
                     "lowDistributionRate": "Low distribution rate"
+                }
+            },
+            "restrictionsPicker": {
+                "block": "Block",
+                "allow": "Allow",
+                "enterAddressToBlock": "Enter the address to block",
+                "enterAddressToAllow": "Enter the address to allow",
+                "importCsv": "Import CSV",
+                "add": "Add",
+                "removeAddress": "Remove address",
+                "removeAll": "Remove all",
+                "errors": {
+                    "notAnAddress": "Not a valid address",
+                    "alreadyRestricted": "Already restricted"
                 }
             }
         }

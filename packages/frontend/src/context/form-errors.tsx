@@ -6,9 +6,10 @@ import {
     type ReactNode,
 } from "react";
 
-interface FormErrors {
+export interface FormErrors {
     basics?: string;
     rewards?: string;
+    restrictions?: string;
 }
 
 interface FormErrorsContextValue {

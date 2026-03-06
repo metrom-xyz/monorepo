@@ -297,7 +297,7 @@ export function RestrictionsStep({
                                                 height={20}
                                             />
                                             <Account
-                                                variant="long"
+                                                length="long"
                                                 weight="medium"
                                                 address={address}
                                             />

@@ -1,0 +1,27 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-fit
+        max-w-40
+        flex
+        gap-1
+        items-center
+        justify-between
+        rounded-md
+        px-2.5
+        py-1.5
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        hover:bg-gray-950/8
+        dark:hover:bg-neutral-100/12;
+}
+
+.label {
+    @apply leading-none;
+}
+
+.input {
+    @apply hidden;
+}

@@ -4,6 +4,7 @@ import {
     distributablesCompleted,
     distributablesEqual,
     getCampaignApr,
+    restrictionsEqual,
     weightingEqual,
 } from "@/src/utils/form";
 import {
@@ -11,12 +12,13 @@ import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { DistributablesType, RestrictionType } from "@metrom-xyz/sdk";
 import type { CompletedRequiredSteps } from "..";
 import { StepSection } from "../step-section";
 import { useTranslations } from "next-intl";
 import { WeightingInputs } from "../../inputs/weighting-inputs";
 import { useFormErrors } from "@/src/context/form-errors";
+import type { Address } from "viem";
 
 interface AmmPoolLiquidityRewardsStepProps {
     payload: AmmPoolLiquidityCampaignPayload;
@@ -34,6 +36,10 @@ export function AmmPoolLiquidityRewardsStep({
     const [rewardsPayload, setRewardsPayload] = useState({
         distributables: payload.distributables,
         weighting: payload.weighting,
+        restrictions: {
+            type: RestrictionType.Blacklist,
+            list: [] as Address[],
+        },
     });
 
     const t = useTranslations("newCampaign.form.ammPoolLiquidity");
@@ -54,7 +60,8 @@ export function AmmPoolLiquidityRewardsStep({
 
         return (
             !distributablesEqual(payload, rewardsPayload) ||
-            !weightingEqual(payload, rewardsPayload)
+            !weightingEqual(payload, rewardsPayload) ||
+            !restrictionsEqual(payload, rewardsPayload)
         );
     }, [payload, rewardsPayload]);
 
@@ -92,7 +99,7 @@ export function AmmPoolLiquidityRewardsStep({
             applyDisabled={applyDisabled}
             completed={!!completed}
             disabled={disabled}
-            unsavedChanges={unsavedChanges}
+            unsavedChanges={!disabled && unsavedChanges}
             onChange={handlePayloadOnChange}
             onComplete={onComplete}
             onApply={onApply}

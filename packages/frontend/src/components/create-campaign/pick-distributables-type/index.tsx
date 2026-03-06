@@ -73,10 +73,7 @@ export function PickDistributablesType({
 
     const router = useRouter();
     const { id: chainId } = useChainWithType();
-    const { tokens: feeTokens, loading: loadingFeeTokens } = useFeeTokens({
-        // FIXME: enable this once the API works
-        enabled: false,
-    });
+    const { tokens: feeTokens, loading: loadingFeeTokens } = useFeeTokens();
 
     const formsByType = useForms({
         chainId,

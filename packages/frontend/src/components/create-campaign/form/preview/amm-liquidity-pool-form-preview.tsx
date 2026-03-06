@@ -1,13 +1,18 @@
 import { useTranslations } from "next-intl";
 import { FormStepPreview } from "../../form-step-preview";
 import { Duration } from "../../previews/duration";
-import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import {
+    getAmmPoolLiquidityTargetValue,
+    type AmmPoolLiquidityCampaignPayload,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { AmmLiquidityPoolTarget } from "../../previews/amm-liquidity-pool-target";
-import type { CampaignPayloadErrors } from "@/src/types/campaign/common";
+import type { FormErrors } from "@/src/context/form-errors";
+import { distributablesCompleted, getCampaignApr } from "@/src/utils/form";
+import { Rewards } from "../../previews/rewards";
 
 interface AmmLiquidityPoolFormPreviewProps {
     payload: AmmPoolLiquidityCampaignPayload;
-    errors: CampaignPayloadErrors;
+    errors: FormErrors;
 }
 
 export function AmmLiquidityPoolFormPreview({
@@ -24,14 +29,38 @@ export function AmmLiquidityPoolFormPreview({
         !!payload.startDate &&
         !!payload.endDate;
 
+    const rewardsCompleted = distributablesCompleted(payload);
+    const apr = getCampaignApr(
+        payload,
+        getAmmPoolLiquidityTargetValue(payload),
+    );
+
     return (
-        <FormStepPreview
-            title={t("campaignBasics")}
-            completed={completed}
-            error={!!errors.basics}
-        >
-            <AmmLiquidityPoolTarget payload={payload} />
-            <Duration startDate={payload.startDate} endDate={payload.endDate} />
-        </FormStepPreview>
+        <>
+            <FormStepPreview
+                title={t("campaignBasics")}
+                completed={completed}
+                error={!!errors.basics}
+            >
+                <AmmLiquidityPoolTarget payload={payload} />
+                <Duration
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                />
+            </FormStepPreview>
+            {rewardsCompleted && (
+                <Rewards
+                    chainId={payload.chainId}
+                    apr={apr}
+                    completed={rewardsCompleted}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                    distributables={payload.distributables}
+                    pool={payload.pool}
+                    weighting={payload.weighting}
+                    restrictions={payload.restrictions}
+                />
+            )}
+        </>
     );
 }
