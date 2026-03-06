@@ -17,7 +17,7 @@ import { formatAmount } from "@/src/utils/format";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 import { TargetValueChange } from "./target-value-change";
 import classNames from "classnames";
-import type { CampaignItemDetails } from "@/src/types/campaign";
+import type { CampaignItemDetails } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

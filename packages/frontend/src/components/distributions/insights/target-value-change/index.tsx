@@ -15,7 +15,7 @@ import {
 } from "@/src/utils/format";
 import dayjs from "dayjs";
 import classNames from "classnames";
-import type { CampaignItemDetails } from "@/src/types/campaign";
+import type { CampaignItemDetails } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

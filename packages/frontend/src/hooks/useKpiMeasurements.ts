@@ -7,7 +7,7 @@ import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import type { HookBaseParams } from "../types/hooks";
-import type { CampaignItem } from "../types/campaign";
+import type { CampaignItem } from "../types/campaign/common";
 
 interface UseKpiMeasurementsParams extends HookBaseParams {
     from?: number;

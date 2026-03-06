@@ -7,7 +7,7 @@ import type { TranslationsKeys } from "../types/utils";
 import type {
     CampaignDetails,
     CampaignItem,
-} from "../types/campaign";
+} from "../types/campaign/common";
 
 const TICK_ACTIVE_PROXIMITY_THRESHOLD = 1;
 

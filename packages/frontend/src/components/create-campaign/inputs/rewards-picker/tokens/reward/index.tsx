@@ -51,11 +51,12 @@ export function Reward({
     const [amountPopover, setAmountPopover] = useState(false);
     const [amountPopoverAnchor, setAmountPopoverAnchor] =
         useState<HTMLDivElement | null>(null);
-    const amountPopoverRef = useRef<HTMLDivElement>(null);
 
     const [removeAssetPopover, setRemoveAssetPopover] = useState(false);
     const [removeAssetPopoverAnchor, setRemoveAssetPopoverAnchor] =
         useState<HTMLButtonElement | null>(null);
+
+    const amountPopoverRef = useRef<HTMLDivElement>(null);
     const removeAssetPopoverRef = useRef<HTMLDivElement>(null);
 
     const { token, amount } = value;
@@ -208,7 +209,6 @@ export function Reward({
                     onMouseLeave={handleRemoveAssetPopoverClose}
                     className={{
                         root: styles.removeButton,
-                        icon: styles.trashIcon,
                     }}
                 />
             </div>

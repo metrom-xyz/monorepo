@@ -16,7 +16,7 @@ import { useClickAway } from "react-use";
 import { useDistributions } from "@/src/hooks/useDistributions";
 import type { ProcessedDistribution } from "@/src/types/distributions";
 import { Status } from "@metrom-xyz/sdk";
-import type { CampaignItemDetails } from "@/src/types/campaign";
+import type { CampaignItemDetails } from "@/src/types/campaign/common";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 import { getClosestAvailableTime } from "@/src/utils/date";

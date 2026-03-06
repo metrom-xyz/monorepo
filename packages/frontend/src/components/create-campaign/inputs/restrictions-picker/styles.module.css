@@ -1,0 +1,85 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.inputsWrapper {
+    @apply flex flex-col gap-1 items-end;
+}
+
+.switchAndInput {
+    @apply w-full flex;
+}
+
+.switch {
+    @apply max-h-11 p-0 rounded-r-none min-w-56 border border-gray-300 dark:border-neutral-700;
+}
+
+.switchOption {
+    @apply w-full h-full flex;
+}
+
+.switchOption :global(.option) {
+    @apply w-full flex items-center justify-center gap-2;
+}
+
+.switchOption:first-child :global(.option) {
+    @apply border-r border-gray-300 dark:border-neutral-700;
+}
+
+.switchOption:first-child :global(.background) {
+    @apply rounded-r-none;
+}
+
+.switchOption:last-child :global(.background) {
+    @apply rounded-l-none rounded-r-none;
+}
+
+.dot {
+    @apply size-2.5 rounded-full;
+}
+
+.dot.green {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.dot.red {
+    @apply bg-error;
+}
+
+.input {
+    @apply w-full;
+}
+
+.input :global(.fieldset) {
+    @apply rounded-l-none;
+}
+
+.input :global(.adornment) {
+    @apply px-1 py-1;
+}
+
+.addButton {
+    @apply h-9;
+}
+
+.list {
+    @apply flex flex-wrap gap-1;
+}
+
+.removeButton {
+    @apply h-8 cursor-pointer hover:bg-[#DC26261F];
+}
+
+.removeButton > * {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.removeButton:hover > * {
+    @apply text-error;
+}
+
+.popover {
+    @apply p-1.5;
+}

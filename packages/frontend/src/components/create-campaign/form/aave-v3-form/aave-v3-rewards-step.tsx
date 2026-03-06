@@ -101,7 +101,7 @@ export function AaveV3RewardsStep({
             applyDisabled={applyDisabled}
             completed={!!completed}
             disabled={disabled}
-            unsavedChanges={unsavedChanges}
+            unsavedChanges={!disabled && unsavedChanges}
             onComplete={onComplete}
             onApply={onApply}
             onChange={handlePayloadOnChange}

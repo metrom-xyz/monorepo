@@ -15,10 +15,10 @@ import type { AmmPool } from "@metrom-xyz/sdk";
 import { isAddress } from "@/src/utils/address";
 import type { DexProtocol } from "@metrom-xyz/chains";
 import { Pool } from "../pool";
-import type { CampaignPayloadErrors } from "@/src/types/campaign/common";
 import { useChainType } from "@/src/hooks/useChainType";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
+import type { FormErrors } from "@/src/context/form-errors";
 
 import styles from "./styles.module.css";
 
@@ -28,7 +28,7 @@ export interface PickerProps {
     dex?: DexProtocol;
     pool?: AmmPool;
     onChange: (pool?: AmmPool) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    onError: (errors: FormErrors) => void;
 }
 
 export function Picker({

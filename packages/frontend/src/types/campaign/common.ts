@@ -17,7 +17,6 @@ import {
     type BaseTargetedCampaign,
     type FixedPointDistributables,
     type DynamicPointDistributables,
-    type AmmPool,
     type Specification,
     SpecificationDistributionType,
     type RangePoolTvlKpiGoal,
