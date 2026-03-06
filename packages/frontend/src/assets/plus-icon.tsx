@@ -15,12 +15,14 @@ export function PlusIcon(props: SVGIcon) {
                 stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth={1.5}
             />
             <path
                 d="M2.50049 6.5H9.50049"
                 stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth={1.5}
             />
         </svg>
     );

@@ -71,6 +71,24 @@ export function distributablesEqual(
     return false;
 }
 
+export function restrictionsEqual(
+    prev: BaseCampaignPayload,
+    current: BaseCampaignPayload,
+): boolean {
+    if (
+        prev.restrictions?.list.length === 0 &&
+        current.restrictions?.list.length === 0
+    )
+        return true;
+
+    return (
+        prev.restrictions?.type === current.restrictions?.type &&
+        new Set(prev.restrictions?.list).symmetricDifference(
+            new Set(current.restrictions?.list),
+        ).size === 0
+    );
+}
+
 export function weightingEqual(
     prev: AmmPoolLiquidityCampaignPayload,
     current: AmmPoolLiquidityCampaignPayload,

@@ -6,7 +6,7 @@ import { ErrorIcon } from "@/src/assets/error-icon";
 import styles from "./styles.module.css";
 
 interface FormStepPreviewProps {
-    title: string;
+    title: ReactNode;
     completed?: boolean;
     error?: boolean;
     children?: ReactNode;
@@ -20,7 +20,7 @@ export function FormStepPreview({
 }: FormStepPreviewProps) {
     return (
         <div className={styles.root}>
-            <div className={styles.leftContent}>
+            <div className={styles.top}>
                 <div className={styles.iconWrapper}>
                     {error ? (
                         <ErrorIcon className={styles.errorIcon} />
@@ -30,13 +30,17 @@ export function FormStepPreview({
                         <div className={styles.greenDot} />
                     )}
                 </div>
-                <div className={styles.dash}></div>
+                {typeof title === "string" ? (
+                    <Typography size="xs" weight="semibold" uppercase>
+                        {title}
+                    </Typography>
+                ) : (
+                    title
+                )}
             </div>
-            <div className={styles.rightContent}>
-                <Typography size="xs" weight="semibold" uppercase>
-                    {title}
-                </Typography>
-                {children}
+            <div className={styles.bottom}>
+                <div className={styles.dash}></div>
+                <div className={styles.content}>{children}</div>
             </div>
         </div>
     );

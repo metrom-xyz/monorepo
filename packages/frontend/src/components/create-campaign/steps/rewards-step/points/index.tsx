@@ -97,7 +97,7 @@ export function RewardPoints({
 
     useEffect(() => {
         const error = costError || amountError;
-        onError({ rewards: !!error }, error ? t(error) : "");
+        onError({ rewards: error }, error ? t(error) : "");
     }, [onError, costError, t, amountError]);
 
     function handlePointsAmountOnChange(value: NumberFormatValues) {

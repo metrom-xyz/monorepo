@@ -1,17 +1,17 @@
 import type {
     BaseCampaignPayloadPart,
     CampaignPayloadDistributables,
-    CampaignPayloadErrors,
 } from "@/src/types/campaign/common";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { RewardsPickerTokens } from "./tokens";
+import type { FormErrors } from "@/src/context/form-errors";
 
 interface RewardsPickerProps {
     chainId?: number;
     campaignDuration?: number;
     value?: CampaignPayloadDistributables;
     onChange: (value: BaseCampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    onError: (errors: FormErrors) => void;
 }
 
 export function RewardsPicker({

@@ -7,7 +7,7 @@ import { Popover, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import { CampaignTag } from "@/src/components/campaign-tag";
-import type { CampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

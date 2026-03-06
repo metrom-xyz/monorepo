@@ -10,7 +10,6 @@ export interface AccordionProps {
     title: ReactNode;
     children: ReactNode;
     iconPlacement?: "left" | "right";
-    noUnmount?: boolean;
     open?: boolean;
     disabled?: boolean;
     noUnmount?: boolean;
@@ -22,7 +21,6 @@ export function Accordion({
     title,
     children,
     iconPlacement = "left",
-    noUnmount,
     open: controlledOpen,
     disabled,
     noUnmount,

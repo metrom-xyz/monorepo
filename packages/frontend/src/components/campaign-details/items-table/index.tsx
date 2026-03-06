@@ -10,7 +10,7 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import { Item, SkeletonItem } from "./item";
 import { useState } from "react";
 import { useCampaignItems } from "@/src/hooks/useCampaignItems";
-import type { CampaignDetails } from "@/src/types/campaign";
+import type { CampaignDetails } from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

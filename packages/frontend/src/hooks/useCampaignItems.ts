@@ -1,7 +1,7 @@
 import { METROM_API_CLIENT } from "../commons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-import { CampaignDetails, CampaignItem } from "../types/campaign";
+import { CampaignDetails, CampaignItem } from "../types/campaign/common";
 import { getChainData } from "../utils/chain";
 import { useTranslations } from "next-intl";
 import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";

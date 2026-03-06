@@ -126,10 +126,7 @@ export function RewardTokens({
     }, [campaignDuration, amount, token, tokenBalance]);
 
     useEffect(() => {
-        onError(
-            { rewards: !!rewardsError },
-            rewardsError ? t(rewardsError) : "",
-        );
+        onError({ rewards: rewardsError }, rewardsError ? t(rewardsError) : "");
     }, [onError, rewardsError, t]);
 
     const handleRewardTokenOnAdd = useCallback(() => {
