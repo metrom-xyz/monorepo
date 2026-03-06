@@ -11,6 +11,9 @@ import {
     FeeRebate,
     WhitelistedRewardToken,
     WhitelistedFeeToken,
+    CampaignSnapshot,
+    CampaignParticipant,
+    CampaignDailyMetrics,
 } from "../generated/schema";
 import { METROM_ADDRESS } from "./addresses";
 import { Erc20 } from "../generated/MetromV1/Erc20";
@@ -220,4 +223,70 @@ export function getOrCreateToken(address: Address): Token {
     token.save();
 
     return token;
+}
+
+// Performance tracking helpers
+export const SNAPSHOT_INTERVAL = BigInt.fromI32(3600); // 1 hour
+export const DAY_IN_SECONDS = BigInt.fromI32(86400);
+
+export function getSnapshotId(campaignId: Bytes, timestamp: BigInt): Bytes {
+    let roundedTimestamp = timestamp
+        .div(SNAPSHOT_INTERVAL)
+        .times(SNAPSHOT_INTERVAL);
+    return campaignId.concat(Bytes.fromBigInt(roundedTimestamp));
+}
+
+export function getParticipantId(campaignId: Bytes, participant: Bytes): Bytes {
+    return campaignId.concat(participant);
+}
+
+export function getDailyMetricsId(campaignId: Bytes, timestamp: BigInt): Bytes {
+    let dayTimestamp = timestamp.div(DAY_IN_SECONDS).times(DAY_IN_SECONDS);
+    return campaignId.concat(Bytes.fromBigInt(dayTimestamp));
+}
+
+export function getOrCreateParticipant(
+    campaignId: Bytes,
+    participant: Bytes,
+    timestamp: BigInt
+): CampaignParticipant {
+    let id = getParticipantId(campaignId, participant);
+    let entity = CampaignParticipant.load(id);
+
+    if (entity !== null) return entity;
+
+    entity = new CampaignParticipant(id);
+    entity.campaign = campaignId;
+    entity.participant = participant;
+    entity.firstClaimTimestamp = timestamp;
+    entity.lastClaimTimestamp = timestamp;
+    entity.totalClaimed = BI_0;
+    entity.claimCount = BI_0;
+    entity.save();
+
+    return entity;
+}
+
+export function getOrCreateDailyMetrics(
+    campaignId: Bytes,
+    timestamp: BigInt
+): CampaignDailyMetrics {
+    let id = getDailyMetricsId(campaignId, timestamp);
+    let metrics = CampaignDailyMetrics.load(id);
+
+    if (metrics !== null) return metrics;
+
+    metrics = new CampaignDailyMetrics(id);
+    metrics.campaign = campaignId;
+    metrics.day = timestamp.div(DAY_IN_SECONDS).times(DAY_IN_SECONDS);
+    metrics.claimsToday = BI_0;
+    metrics.claimedToday = BI_0;
+    metrics.uniqueClaimersToday = BI_0;
+    metrics.newParticipants = BI_0;
+    metrics.totalClaimsToDate = BI_0;
+    metrics.totalClaimedToDate = BI_0;
+    metrics.totalParticipantsToDate = BI_0;
+    metrics.save();
+
+    return metrics;
 }
