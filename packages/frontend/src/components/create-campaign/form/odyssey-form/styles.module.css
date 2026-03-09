@@ -1,0 +1,13 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-5 w-full;
+}
+
+.stepsWrapper {
+    @apply flex flex-col gap-2;
+}
+
+.button {
+    @apply w-full h-16;
+}

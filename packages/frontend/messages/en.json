@@ -156,7 +156,7 @@
                 "description": "Incentivize users holding any ERC20 token."
             },
             "odyssey": {
-                "title": "Odyssey strategy",
+                "title": "ODYSSEY",
                 "description": "Incentivize users opting for a particular strategy on Odyssey."
             },
             "partnerAction": {
@@ -348,6 +348,19 @@
                     "apply": "Apply"
                 }
             },
+            "odyssey": {
+                "brand": { "title": "Platform" },
+                "strategy": { "title": "Strategy" },
+                "assets": {
+                    "title": "Asset",
+                    "list": {
+                        "token": "Token",
+                        "empty": "Nothing here",
+                        "allocated": "Allocated",
+                        "deposited": "Deposited"
+                    }
+                }
+            },
             "aaveV3": {
                 "brand": { "title": "Platform" },
                 "actions": {
@@ -376,8 +389,7 @@
                         "empty": "Nothing here",
                         "debt": "Debt",
                         "deposits": "Deposits"
-                    },
-                    "apply": "Apply"
+                    }
                 },
                 "blacklistedCrossBorrowCollaterals": {
                     "title": "Block cross borrow",

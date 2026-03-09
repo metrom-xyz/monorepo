@@ -1,0 +1,17 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex
+        flex-col
+        gap-1
+        w-full
+        overflow-hidden;
+}
+
+.listHeader {
+    @apply flex justify-between items-center mb-1 p-4;
+}
+
+.empty {
+    @apply flex justify-center pt-4;
+}

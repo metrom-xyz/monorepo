@@ -1,0 +1,39 @@
+@reference "../../../../app.css";
+
+.preview {
+    @apply flex gap-2 items-center;
+}
+
+.brandWrapper {
+    @apply flex 
+        flex-col
+        gap-1
+        max-h-96
+        overflow-y-auto
+        rounded-b-2xl
+        scroll-pt-0.5
+        snap-y;
+}
+
+.brandRow {
+    @apply flex
+        h-[3.375rem]
+        gap-2
+        items-center
+        p-4
+        select-none
+        snap-start
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        surface-primary-hover;
+}
+
+.brandRowSelected {
+    @apply bg-gray-150 dark:bg-neutral-800;
+}
+
+.brandRow > * {
+    @apply pointer-events-none;
+}

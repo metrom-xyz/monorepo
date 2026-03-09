@@ -1,0 +1,26 @@
+@reference "../../../../app.css";
+
+.preview {
+    @apply flex gap-2 items-center;
+}
+
+.strategies {
+    @apply flex flex-col;
+}
+
+.strategy {
+    @apply w-full 
+        flex
+        gap-6
+        items-center
+        p-4
+        transition-colors
+        duration-200
+        ease-in-out
+        hover:cursor-pointer
+        surface-primary-hover;
+}
+
+.active {
+    @apply bg-gray-150 dark:bg-neutral-800;
+}

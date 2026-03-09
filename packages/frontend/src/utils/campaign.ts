@@ -24,7 +24,7 @@ import { SECONDS_IN_YEAR } from "../commons";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData, getCrossVmChainData } from "./chain";
-import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
+import { ODYSSEY_STRATEGIES } from "../commons/odyssey";
 
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
@@ -114,9 +114,9 @@ export function getCampaignName(
         case TargetType.Odyssey: {
             return t("campaignActions.odysseyStrategy", {
                 strategy:
-                    ODYSSEY_STRATEGIES_NAME[
+                    ODYSSEY_STRATEGIES[
                         campaign.target.strategyId as SupportedOdysseyStrategy
-                    ],
+                    ].name,
                 asset: campaign.target.asset.symbol,
             });
         }

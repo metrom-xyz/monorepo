@@ -42,11 +42,13 @@ export function useCampaignsFiltersOptions() {
     );
 
     const protocolOptions: SelectOption<string>[] = useMemo(() => {
-        return supportedProtocols.map((protocol) => ({
-            label: protocol.name,
-            protocol,
-            value: protocol.slug,
-        }));
+        return supportedProtocols
+            .map((protocol) => ({
+                label: protocol.name,
+                protocol,
+                value: protocol.slug,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label, "en"));
     }, [supportedProtocols]);
 
     const chainOptions: ChainFilterOption[] = useMemo(() => {
@@ -62,7 +64,7 @@ export function useCampaignsFiltersOptions() {
                 query: chainData.name.toLowerCase().replaceAll(" ", "_"),
             });
         }
-        return options;
+        return options.sort((a, b) => a.label.localeCompare(b.label, "en"));
     }, [supportedChains]);
 
     return { statusOptions, protocolOptions, chainOptions };
