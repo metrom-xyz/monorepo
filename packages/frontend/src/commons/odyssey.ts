@@ -13,6 +13,10 @@ export const ODYSSEY_STRATEGIES: Record<
     SupportedOdysseyStrategy,
     OdysseyStrategyData
 > = {
+    [SupportedOdysseyStrategy.AaveV2BorrowStrategy]: {
+        id: SupportedOdysseyStrategy.AaveV2BorrowStrategy,
+        name: "Aave V2 borrow",
+    },
     [SupportedOdysseyStrategy.AaveV3BorrowStrategy]: {
         id: SupportedOdysseyStrategy.AaveV3BorrowStrategy,
         name: "Aave V3 borrow",
@@ -56,6 +60,7 @@ export const ODYSSEY_STRATEGIES: Record<
 };
 
 export const ODYSSEY_BORROW_STRATEGIES: SupportedOdysseyStrategy[] = [
+    SupportedOdysseyStrategy.AaveV2BorrowStrategy,
     SupportedOdysseyStrategy.AaveV3BorrowStrategy,
     SupportedOdysseyStrategy.AjnaBorrowStrategy,
     SupportedOdysseyStrategy.CompoundV2BorrowStrategy,

@@ -317,7 +317,6 @@ export class OdysseyCampaignPreviewPayload extends BaseCampaignPreviewPayload {
     }
 
     getTargetValue(): TargetValue | undefined {
-        // TODO: if it's a borrow strategy the deposited? Otherwise the allocated?
         if (ODYSSEY_BORROW_STRATEGIES.includes(this.strategy.id))
             return {
                 usd: this.asset.usdTotalDeposited,

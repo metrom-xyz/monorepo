@@ -22,9 +22,9 @@ import { getOdysseyUsdTarget } from "@/src/utils/odyssey";
 import { OdysseyBrandStep } from "../../steps/odyssey-brand-step";
 import { OdysseyStrategyStep } from "../../steps/odyssey-strategy-step";
 import { OdysseyAssetsStep } from "../../steps/odyssey-assets-step";
+import { KpiStep } from "../../steps/kpi-step";
 
 import styles from "./styles.module.css";
-import { KpiStep } from "../../steps/kpi-step";
 
 function validatePayload(
     chainId: number,

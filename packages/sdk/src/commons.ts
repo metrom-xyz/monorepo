@@ -91,7 +91,7 @@ export type SupportedProtocol =
     | SupportedYieldSeeker;
 
 export enum SupportedOdysseyStrategy {
-    // TODO: strategy wity id 1 is missing the name
+    AaveV2BorrowStrategy = 1,
     AaveV3BorrowStrategy = 2,
     AjnaBorrowStrategy = 3,
     CompoundV2BorrowStrategy = 4,
