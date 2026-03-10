@@ -59,7 +59,11 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                 <Chain id={campaign.chainId} type={campaign.chainType} />
                 <Protocol campaign={campaign} />
                 <div className={styles.action}>
-                    <Action campaign={campaign} />
+                    <Action
+                        campaign={campaign}
+                        nameSize="base"
+                        feeSize="base"
+                    />
                 </div>
                 <Status
                     from={campaign.from}
