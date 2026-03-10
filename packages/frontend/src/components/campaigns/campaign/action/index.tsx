@@ -82,11 +82,7 @@ export function Action({
         <div className={classNames(styles.root, className)}>
             {empty && <Empty campaign={campaign} {...sizes} />}
             {ammPoolLiquidity && (
-                <AmmPoolLiquidity
-                    campaign={campaign}
-                    nameSize="base"
-                    feeSize="base"
-                />
+                <AmmPoolLiquidity campaign={campaign} {...sizes} />
             )}
             {gmxV1Liquidity && (
                 <GmxV1Liquidity campaign={campaign} {...sizes} />
