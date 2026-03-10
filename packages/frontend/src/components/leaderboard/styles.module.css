@@ -5,7 +5,7 @@
 }
 
 .titleContainer {
-    @apply flex gap-1 items-center;
+    @apply flex flex-col sm:flex-row gap-1 items-center;
 }
 
 .titleContainer.spaced {
@@ -13,7 +13,7 @@
 }
 
 .leftTitleContent {
-    @apply flex flex-col sm:flex-row gap-1 items-center;
+    @apply flex flex-col sm:flex-row gap-1 sm:items-center;
 }
 
 .distributionsLink {
@@ -37,11 +37,11 @@
 }
 
 .cardsWrapper > :first-child {
-    @apply flex-[2];
+    @apply flex-2;
 }
 
 .cardsWrapper > :last-child {
-    @apply flex-[1];
+    @apply flex-1;
 }
 
 .leaderboardWrapper {

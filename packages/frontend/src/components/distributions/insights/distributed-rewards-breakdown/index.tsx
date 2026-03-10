@@ -104,6 +104,7 @@ export function DistributedRewardsBreakdown({
             </Popover>
             <Typography
                 ref={setPopoverAnchor}
+                size="sm"
                 weight="medium"
                 onMouseEnter={onPopoverOpen}
                 onMouseLeave={onPopoverClose}

@@ -9,15 +9,11 @@
 }
 
 .link {
-    @apply flex w-full gap-3 md:max-w-1/2 surface-primary p-5 rounded-xl;
-}
-
-.iconWrapper {
-    @apply size-8 flex items-center justify-center rounded p-2 bg-gray-200 dark:bg-neutral-100;
+    @apply flex items-center w-full gap-3 md:max-w-1/2 surface-primary p-5 rounded-xl;
 }
 
 .articleIcon {
-    @apply size-4 text-gray-900 dark:text-neutral-800;
+    @apply size-5 text-primary;
 }
 
 .rightContent {

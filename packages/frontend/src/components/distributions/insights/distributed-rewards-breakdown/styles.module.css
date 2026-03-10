@@ -25,5 +25,5 @@
 }
 
 .mainText {
-    @apply text-[1.75rem] cursor-pointer;
+    @apply cursor-pointer;
 }

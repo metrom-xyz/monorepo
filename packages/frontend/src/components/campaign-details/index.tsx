@@ -14,6 +14,7 @@ import { useLeaderboard } from "@/src/hooks/useLeaderboard";
 import { Restrictions } from "./restrictions";
 import { ContentHeader, SkeletonContentHeader } from "./content-header";
 import { PriceRange } from "./price-range";
+import { BackButton } from "../back-button";
 
 import styles from "./styles.module.css";
 
@@ -54,6 +55,7 @@ export function CampaignDetails({
 
     return (
         <div className={styles.root}>
+            <BackButton />
             <div className={styles.headerWrapper}>
                 {!campaign || loadingCampaign ? (
                     <SkeletonHeader />

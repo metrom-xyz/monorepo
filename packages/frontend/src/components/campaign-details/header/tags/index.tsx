@@ -36,7 +36,7 @@ export function Tags({ campaign }: TagsProps) {
             )}
             <div className={styles.tag}>
                 <CalendarIcon className={styles.calendarIcon} />
-                <Typography size="sm" weight="medium" uppercase>
+                <Typography size="sm" weight="medium">
                     {`${formatDateTime(from)} - ${formatDateTime(to)}`}
                 </Typography>
             </div>
@@ -66,8 +66,8 @@ export function Tags({ campaign }: TagsProps) {
 export function SkeletonTags() {
     return (
         <div className={styles.root}>
-            <Skeleton width={80} height={24} />
-            <Skeleton width={200} height={24} />
+            <Skeleton width={80} height={28} />
+            <Skeleton width={200} height={28} />
         </div>
     );
 }

@@ -74,7 +74,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                     </Typography>
                     {campaign.target.pool.fee && (
                         <Typography
-                            size="lg"
+                            size="xl3"
                             weight="medium"
                             variant="tertiary"
                         >

@@ -1,7 +1,11 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-full flex items-center gap-1;
+    @apply w-full flex items-center gap-2;
+}
+
+.tag {
+    @apply h-7 w-fit border border-neutral-950 flex items-center px-1.5 rounded-lg;
 }
 
 .mainText {
@@ -13,7 +17,7 @@
 }
 
 .activeChip {
-    @apply flex items-center gap-1 bg-[#00000033] backdrop-blur-md rounded-sm px-1.5 py-0.5;
+    @apply h-7 flex items-center gap-1 bg-[#00000033] backdrop-blur-md rounded-lg px-1.5;
 }
 
 .activeChip.active {
@@ -21,7 +25,7 @@
 }
 
 .statusDot {
-    @apply bg-white/[28%]!;
+    @apply bg-white/28!;
 }
 
 .statusDot :global(.dot) {

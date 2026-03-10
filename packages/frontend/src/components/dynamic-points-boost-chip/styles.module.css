@@ -1,18 +1,18 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-fit rounded-sm p-[1px];
+    @apply w-fit rounded-lg p-px;
     background: linear-gradient(90deg, #3374d2, #d01773, #ee144b, #fb5d12);
 }
 
 .chip {
     @apply surface-primary
-        rounded-sm
+        rounded-lg
         px-2
         py-1
         flex
         items-center
-        bg-gradient-to-r
+        bg-linear-to-r
         from-[#3374d21a]
         via-[#bc27851a]
         to-[#fd680a1a]

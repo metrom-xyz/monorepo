@@ -104,7 +104,8 @@
             }
         },
         "projects": {
-            "campaigns": "<highlighted>{count}</highlighted> campaigns",
+            "campaigns": "Tot. campaigns <highlighted>{count}</highlighted>",
+            "campaignsShort": "<highlighted>{count}</highlighted> campaigns",
             "active": "{count} active",
             "empty": {
                 "title": "No projects found",
@@ -602,9 +603,9 @@
             "kpi": "KPI",
             "range": "Range",
             "status": {
-                "active": "LIVE ends in {days}",
-                "upcoming": "UPCOMING in {days}",
-                "expired": "ENDED {days} ago"
+                "active": "<status>Live</status> ends in {days}",
+                "upcoming": "<status>Upcoming</status> in {days}",
+                "expired": "<status>Ended</status> {days} ago"
             },
             "allowlist": "Rewards limited to only allowed addresses"
         },
@@ -683,8 +684,8 @@
         "insights": {
             "title": "Insights",
             "incetivizedAssets": "Incentivized assets",
-            "paid": "Paid",
-            "reimbursed": "Reimbursed",
+            "paid": "Paid assets",
+            "reimbursed": "Reimbursed assets",
             "totalUsdValue": "Total USD value",
             "addressesParticipated": "Addresses participated",
             "averageIncentive": "Average incentive",
@@ -908,14 +909,17 @@
     },
     "campaignTargetValueName": {
         "tvl": "TVL",
-        "debt": "debt",
-        "deposits": "deposits",
-        "netDeposits": "net deposits"
+        "debt": "Debt",
+        "deposits": "Deposits",
+        "netDeposits": "Net deposits"
     },
     "campaignRewardsPopover": {
         "totalUsdValue": "Total USD rewards"
     },
     "campaignWeighting": {
         "fees": "Fees"
+    },
+    "backButton": {
+        "back": "Back"
     }
 }

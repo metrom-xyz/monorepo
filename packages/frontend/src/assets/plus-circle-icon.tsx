@@ -3,41 +3,34 @@ import type { SVGIcon } from "../types/common";
 export function PlusCircleIcon(props: SVGIcon) {
     return (
         <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
-            <g clipPath="url(#clip0_1152_52256)">
-                <path
-                    d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z"
-                    stroke="currentColor"
-                    strokeWidth="0.925926"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <path
-                    d="M6 4V8"
-                    stroke="currentColor"
-                    strokeWidth="0.925926"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <path
-                    d="M4 6H8"
-                    stroke="currentColor"
-                    strokeWidth="0.925926"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-            </g>
-            <defs>
-                <clipPath id="clip0_1152_52256">
-                    <rect width="12" height="12" fill="white" />
-                </clipPath>
-            </defs>
+            <path
+                d="M10.0003 18.3334C14.6027 18.3334 18.3337 14.6025 18.3337 10.0001C18.3337 5.39771 14.6027 1.66675 10.0003 1.66675C5.39795 1.66675 1.66699 5.39771 1.66699 10.0001C1.66699 14.6025 5.39795 18.3334 10.0003 18.3334Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M10 6.66675V13.3334"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M6.66699 10H13.3337"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
         </svg>
     );
 }
