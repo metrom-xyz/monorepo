@@ -108,6 +108,7 @@ export function ProjectCard({
                                 {name}
                             </Typography>
                             <ProjectCampaignsTotals
+                                short
                                 total={totalCampaigns}
                                 active={activeCampaigns}
                             />

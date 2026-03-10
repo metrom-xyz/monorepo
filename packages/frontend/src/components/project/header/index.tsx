@@ -59,49 +59,49 @@ export function Header({
             <div className={styles.rightContent}>
                 <div className={styles.title}>
                     <Typography
-                        size="xl2"
-                        weight="semibold"
+                        size="xl3"
+                        weight="medium"
                         className={styles.mainText}
                     >
                         {t("title", { protocol: name })}
                     </Typography>
-                    {metadata.types.length > 0 && (
-                        <div className={styles.types}>
-                            {metadata.types.map((type) => (
-                                <div key={type} className={styles.type}>
-                                    <Typography
-                                        size="xs"
-                                        weight="medium"
-                                        uppercase
-                                        className={styles.activeText}
-                                    >
-                                        {type}
-                                    </Typography>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                    <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.externalLink}
-                    >
-                        <Typography
-                            size="xs"
-                            weight="medium"
-                            className={styles.mainText}
+                    <div className={styles.rightTitle}>
+                        {metadata.types.length > 0 && (
+                            <div className={styles.types}>
+                                {metadata.types.map((type) => (
+                                    <div key={type} className={styles.type}>
+                                        <Typography
+                                            size="xs"
+                                            weight="medium"
+                                            uppercase
+                                            className={styles.mainText}
+                                        >
+                                            {type}
+                                        </Typography>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.externalLink}
                         >
-                            {t("visitWebsite")}
-                        </Typography>
-                        <ArrowRightIcon className={styles.externalLinkIcon} />
-                    </a>
+                            <Typography
+                                size="xs"
+                                weight="medium"
+                                className={styles.mainText}
+                            >
+                                {t("visitWebsite")}
+                            </Typography>
+                            <ArrowRightIcon
+                                className={styles.externalLinkIcon}
+                            />
+                        </a>
+                    </div>
                 </div>
-                <Typography
-                    weight="medium"
-                    size="sm"
-                    className={styles.mainText}
-                >
+                <Typography weight="medium" className={styles.mainText}>
                     {description}
                 </Typography>
                 {loading || !project ? (

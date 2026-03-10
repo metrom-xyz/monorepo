@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full relative overflow-hidden flex gap-4 p-5 rounded-xl;
+    @apply w-full relative overflow-hidden flex gap-4 p-5 rounded-2xl;
 }
 
 .illustration {
@@ -17,11 +17,15 @@
 }
 
 .rightContent {
-    @apply flex flex-col gap-2 flex-1;
+    @apply flex flex-col gap-2.5 flex-1;
 }
 
 .title {
-    @apply flex flex-wrap items-center gap-2 sm:gap-4;
+    @apply flex flex-wrap items-center gap-2 sm:gap-3;
+}
+
+.rightTitle {
+    @apply flex items-center gap-2;
 }
 
 .types {
@@ -29,31 +33,27 @@
 }
 
 .type {
-    @apply py-1 px-3 backdrop-blur-sm bg-[#04040433];
+    @apply h-7 flex items-center px-3 backdrop-blur-sm bg-[#04040433];
 }
 
 .type.loading {
-    @apply w-16 h-6 bg-gray-200 dark:bg-neutral-800 animate-pulse rounded-md;
+    @apply w-16 h-7 bg-gray-200 dark:bg-neutral-800 animate-pulse rounded-md;
 }
 
 .type:first-child {
-    @apply rounded-l;
+    @apply rounded-l-lg;
 }
 
 .type:last-child {
-    @apply rounded-r;
+    @apply rounded-r-lg;
 }
 
 .mainText {
     @apply text-gray-900 dark:text-neutral-950;
 }
 
-.activeText {
-    @apply text-gray-50 dark:text-neutral-100;
-}
-
 .externalLink {
-    @apply h-6 w-fit flex items-center pb-1 pt-1.5 px-3 rounded-sm bg-neutral-100;
+    @apply h-7 w-fit border border-neutral-950 flex items-center pb-1 pt-1.5 px-3 rounded-lg;
 }
 
 .externalLinkIcon {

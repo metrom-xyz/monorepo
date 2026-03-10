@@ -55,6 +55,7 @@ export function Distributables({ chain, distributables }: DistributablesProps) {
             </Popover>
             <Typography
                 ref={setPopoverAnchor}
+                size="sm"
                 weight="medium"
                 onMouseEnter={onPopoverOpen}
                 onMouseLeave={onPopoverClose}

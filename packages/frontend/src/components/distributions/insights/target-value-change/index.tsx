@@ -172,10 +172,11 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
                 </div>
             </Popover>
             {loadingFirstKpiMeasurements || loadingLastKpiMeasurements ? (
-                <Skeleton size="lg" width={100} className={styles.loading} />
+                <Skeleton size="sm" className={styles.loading} />
             ) : (
                 <Typography
                     ref={setPopoverAnchor}
+                    size="sm"
                     weight="medium"
                     onMouseEnter={onPopoverOpen}
                     onMouseLeave={onPopoverClose}

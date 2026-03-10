@@ -110,6 +110,7 @@ export function AverageIncentive({
             </Popover>
             <Typography
                 ref={setPopoverAnchor}
+                size="sm"
                 weight="medium"
                 onMouseEnter={onPopoverOpen}
                 onMouseLeave={onPopoverClose}

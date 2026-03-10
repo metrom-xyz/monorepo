@@ -79,7 +79,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                     <Typography
                         size="xl2"
                         weight="medium"
-                        className={classNames(styles.mainText, {
+                        className={classNames({
                             [styles.lightText]: blueApr || orangeApr,
                         })}
                     >
@@ -100,11 +100,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                         >
                             {t("dailyPer1k")}
                         </Typography>
-                        <Typography
-                            size="xl2"
-                            weight="medium"
-                            className={styles.mainText}
-                        >
+                        <Typography size="xl2" weight="medium">
                             {formatUsdAmount({
                                 amount: campaign.distributables.dailyPer1k,
                                 cutoff: false,
@@ -121,11 +117,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                             >
                                 {t("totalPoints")}
                             </Typography>
-                            <Typography
-                                size="xl2"
-                                weight="medium"
-                                className={styles.mainText}
-                            >
+                            <Typography size="xl2" weight="medium">
                                 {formatAmount({
                                     amount: campaign.distributables.amount
                                         .formatted,
@@ -145,11 +137,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                 >
                     {targetValueName}
                 </Typography>
-                <Typography
-                    size="xl2"
-                    weight="medium"
-                    className={styles.mainText}
-                >
+                <Typography size="xl2" weight="medium">
                     {usdTvl === undefined
                         ? "-"
                         : formatUsdAmount({ amount: usdTvl })}
@@ -186,11 +174,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                         >
                             {t("dailyRewards")}
                         </Typography>
-                        <Typography
-                            size="xl2"
-                            weight="medium"
-                            className={styles.mainText}
-                        >
+                        <Typography size="xl2" weight="medium">
                             {formatUsdAmount({
                                 amount: campaign.distributables.dailyUsd,
                             })}
@@ -205,11 +189,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                         >
                             {t("totalValue")}
                         </Typography>
-                        <Typography
-                            size="xl2"
-                            weight="medium"
-                            className={styles.mainText}
-                        >
+                        <Typography size="xl2" weight="medium">
                             {formatUsdAmount({
                                 amount: campaign.distributables.amountUsdValue,
                             })}

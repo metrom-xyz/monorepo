@@ -3,6 +3,9 @@ import { TargetType } from "@metrom-xyz/sdk";
 import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
+
+import styles from "./styles.module.css";
 
 interface TurtleVaultProps<T extends TargetType.Turtle> extends ActionSizes {
     campaign: TargetedNamedCampaign<T>;
@@ -19,6 +22,7 @@ export function TurtleVault<T extends TargetType.Turtle>({
             <Typography size={nameSize} weight="medium" truncate>
                 {campaign.name}
             </Typography>
+            <ArrowRightIcon className={styles.externalLinkIcon} />
         </>
     );
 }

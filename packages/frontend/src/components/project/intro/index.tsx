@@ -26,9 +26,7 @@ export function Intro({ articles }: IntroProps) {
                             rel="noopener noreferrer"
                             className={styles.link}
                         >
-                            <div className={styles.iconWrapper}>
-                                <ArticleIcon className={styles.articleIcon} />
-                            </div>
+                            <ArticleIcon className={styles.articleIcon} />
                             <div className={styles.rightContent}>
                                 <Typography weight="medium">{title}</Typography>
                                 <ArrowRightIcon

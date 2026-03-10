@@ -9,12 +9,12 @@
         flex-1
         flex
         flex-row
-        sm:min-h-[7.25rem]
+        sm:min-h-[6.5rem]
         sm:flex-col
         items-center
         sm:items-start
         justify-between
-        gap-4
+        gap-3
         p-3
         sm:py-5
         sm:px-6
@@ -51,10 +51,6 @@
     @apply sm:w-full flex items-center justify-between gap-2;
 }
 
-.mainText {
-    @apply text-[1.75rem];
-}
-
 .infoIcon :global(.icon) {
     @apply text-neutral-100;
 }
@@ -86,7 +82,7 @@
         p-3
         sm:p-5
         gap-3
-        sm:gap-4;
+        sm:gap-3;
 }
 
 .rewardBox:not(:last-child) {

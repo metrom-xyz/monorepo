@@ -9,29 +9,28 @@ import styles from "./styles.module.css";
 interface ProjectCampaignsTotalsProps {
     total: number;
     active: number;
+    short?: boolean;
 }
 
 export function ProjectCampaignsTotals({
     total,
     active,
+    short = false,
 }: ProjectCampaignsTotalsProps) {
     const t = useTranslations("allCampaigns.projects");
 
     return (
         <div className={styles.root}>
-            <Typography
-                size="sm"
-                uppercase
-                weight="medium"
-                className={styles.lightText}
-            >
-                {t.rich("campaigns", {
-                    count: total,
-                    highlighted: (chunks) => (
-                        <span className={styles.mainText}>{chunks}</span>
-                    ),
-                })}
-            </Typography>
+            <div className={styles.tag}>
+                <Typography size="sm" className={styles.lightText}>
+                    {t.rich(short ? "campaignsShort" : "campaigns", {
+                        count: total,
+                        highlighted: (chunks) => (
+                            <span className={styles.mainText}>{chunks}</span>
+                        ),
+                    })}
+                </Typography>
+            </div>
             <div
                 className={classNames(styles.activeChip, {
                     [styles.active]: !!active,

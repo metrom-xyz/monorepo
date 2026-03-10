@@ -21,7 +21,7 @@
 }
 
 .mainText {
-    @apply text-[1.75rem] cursor-pointer;
+    @apply cursor-pointer;
 }
 
 .positive {
@@ -34,4 +34,8 @@
 
 .loading :global(.skeleton) {
     @apply bg-gray-200 dark:bg-neutral-700;
+}
+
+.loading {
+    @apply w-12;
 }
