@@ -26,8 +26,17 @@ export function Status({ from, to, status, size = "xs" }: StatusProps) {
     return (
         <div className={classNames(styles.root, { [styles[status]]: true })}>
             <CampaignStatusDot status={status} />
-            <Typography weight="medium" size={size}>
-                {t(status, { days: duration })}
+            <Typography weight="medium" size={size} className={styles.text}>
+                {t.rich(status, {
+                    days: duration,
+                    status: (chunks) => (
+                        <span
+                            className={classNames({ [styles[status]]: true })}
+                        >
+                            {chunks}
+                        </span>
+                    ),
+                })}
             </Typography>
         </div>
     );

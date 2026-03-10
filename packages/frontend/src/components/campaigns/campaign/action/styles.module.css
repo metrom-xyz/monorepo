@@ -21,10 +21,14 @@
 }
 
 .yieldSeekerBoostTag {
-    @apply w-fit rounded-sm p-[1px];
+    @apply w-fit rounded-lg p-[1px];
     background: linear-gradient(90deg, #53fdac, #4ffc82, #49fb43);
 }
 
 .yieldSeekerBoostTag > div {
     @apply surface-primary;
+}
+
+.externalLinkIcon {
+    @apply size-4 transform -rotate-45 -ml-1.5;
 }

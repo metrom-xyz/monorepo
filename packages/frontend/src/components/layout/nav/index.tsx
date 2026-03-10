@@ -5,8 +5,7 @@ import { useTranslations } from "next-intl";
 import { ConnectButton } from "../../connect-button";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { NewCampaignIcon } from "@/src/assets/new-campaign-icon";
-import { AllCampaignsIcon } from "@/src/assets/all-campaigns-icon";
+import { DiscoverIcon } from "@/src/assets/discover-icon";
 import { ClaimsIcon } from "@/src/assets/claims-icon";
 import { NetworkSelect } from "../../network-select";
 import { useMemo, type FunctionComponent } from "react";
@@ -20,6 +19,7 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 import { ThemeToggle } from "../../theme-toggle";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
+import { PlusCircleIcon } from "@/src/assets/plus-circle-icon";
 
 import styles from "./styles.module.css";
 
@@ -28,8 +28,8 @@ const ROUTES: {
     label: TranslationsKeys<"navigation">;
     icon: FunctionComponent<SVGIcon>;
 }[] = [
-    { path: "/", label: "discover", icon: AllCampaignsIcon },
-    { path: "/campaigns/create", label: "newCampaign", icon: NewCampaignIcon },
+    { path: "/", label: "discover", icon: DiscoverIcon },
+    { path: "/campaigns/create", label: "newCampaign", icon: PlusCircleIcon },
     { path: "/claims", label: "claims", icon: ClaimsIcon },
 ];
 

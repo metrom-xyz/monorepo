@@ -12,6 +12,7 @@ import type { FilterParams, RawFilters } from "../campaigns-table/filters";
 import { useCampaignsCount } from "@/src/hooks/useCampaignsCount";
 import { APTOS } from "@/src/commons/env";
 import { getChainDataBySlug } from "@/src/utils/chain";
+import { BackButton } from "../back-button";
 
 import styles from "./styles.module.css";
 
@@ -128,6 +129,7 @@ export function Project({ project }: ProjectProps) {
     return (
         <div className={styles.root}>
             <div className={styles.topContent}>
+                <BackButton />
                 <Header
                     name={name}
                     slug={project}

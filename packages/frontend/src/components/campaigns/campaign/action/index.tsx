@@ -69,7 +69,7 @@ export function Action({
     const turtleVault = campaign.isTargeting(TargetType.Turtle);
 
     const yieldSeeker = campaign.isTargeting(TargetType.YieldSeeker);
-    
+
     const odyssey = campaign.isTargeting(TargetType.Odyssey);
 
     const empty = campaign.isTargeting(TargetType.Empty);
@@ -82,7 +82,11 @@ export function Action({
         <div className={classNames(styles.root, className)}>
             {empty && <Empty campaign={campaign} {...sizes} />}
             {ammPoolLiquidity && (
-                <AmmPoolLiquidity campaign={campaign} {...sizes} />
+                <AmmPoolLiquidity
+                    campaign={campaign}
+                    nameSize="base"
+                    feeSize="base"
+                />
             )}
             {gmxV1Liquidity && (
                 <GmxV1Liquidity campaign={campaign} {...sizes} />

@@ -32,10 +32,6 @@
     @apply flex justify-between gap-7 items-center px-2;
 }
 
-.xl2 {
-    @apply text-[1.75rem];
-}
-
 .textRewards {
     @apply text-base min-w-[50px];
 }

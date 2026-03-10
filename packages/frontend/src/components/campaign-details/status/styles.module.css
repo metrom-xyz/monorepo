@@ -1,17 +1,29 @@
 @reference "../../../app.css";
 
 .root {
-    @apply flex py-1 px-2 items-center gap-1 h-6 border border-transparent rounded-sm;
+    @apply flex py-1 px-2 items-center gap-1 h-7 border border-transparent rounded-lg;
 }
 
 .root.active {
-    @apply bg-brand-green-dark/[12%] dark:bg-brand-green/[16%];
+    @apply border-brand-green-dark/32 dark:border-brand-green/32 bg-brand-green-dark/4 dark:bg-brand-green/4;
 }
 
 .root.upcoming {
-    @apply bg-brand-blue/[16%];
+    @apply border-brand-blue/32 bg-brand-blue/4;
 }
 
 .root.expired {
-    @apply border-gray-300 dark:border-neutral-700;
+    @apply border-gray-400 dark:border-neutral-700;
+}
+
+.active {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.upcoming {
+    @apply text-brand-blue;
+}
+
+.expired {
+    @apply text-gray-400 dark:text-neutral-400;
 }

@@ -5,18 +5,18 @@ import {
     type Campaign,
     type KpiSpecification,
 } from "@metrom-xyz/sdk";
-import { Typography } from "@metrom-xyz/ui";
+import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { SparklesIcon } from "@/src/assets/sparkles-icon";
 import { useMemo } from "react";
 import { useRewardsDistributionBreakdown } from "@/src/hooks/useRewardsDistributionBreakdown";
 import { DistributedRewardsBreakdown } from "./distributed-rewards-breakdown";
-import classNames from "classnames";
 import { Distributables } from "./distributables";
 import { AverageIncentive } from "./average-incentive";
 import { formatAmount } from "@/src/utils/format";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 import { TargetValueChange } from "./target-value-change";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -64,115 +64,105 @@ export function Insights({ campaign }: InsightsProps) {
     return (
         <div className={styles.root}>
             <div className={styles.container}>
-                <div className={styles.header}>
+                <div className={styles.titleWrapper}>
                     <SparklesIcon className={styles.icon} />
                     <Typography
+                        size="sm"
                         weight="medium"
-                        uppercase
                         className={styles.title}
                     >
                         {t("title")}
                     </Typography>
                 </div>
-            </div>
-            <div className={styles.content}>
-                <div className={styles.box}>
-                    <Typography
-                        size="sm"
-                        weight="medium"
-                        variant="tertiary"
-                        uppercase
-                    >
-                        {t("incetivizedAssets")}
-                    </Typography>
-                    {distributingTokens ? (
-                        <Distributables
-                            chain={campaign.chainId}
-                            distributables={campaign.distributables}
-                        />
-                    ) : (
-                        <Typography weight="medium" className={styles.mainText}>
-                            -
-                        </Typography>
-                    )}
-                </div>
-                {withKpi && (
-                    <div className={styles.boxes}>
-                        <div className={styles.box}>
-                            <Typography
-                                size="sm"
-                                weight="medium"
-                                variant="tertiary"
-                                uppercase
-                            >
-                                {t("paid")}
-                            </Typography>
-                            <DistributedRewardsBreakdown
-                                chain={campaign.chainId}
-                                totalUsdValue={
-                                    rewardsDistributionBreakdown?.distributedUsdValue
-                                }
-                                percentage={
-                                    rewardsDistributionBreakdown?.percentages
-                                        .distributed
-                                }
-                                rewards={
-                                    rewardsDistributionBreakdown?.distributedList
-                                }
-                            />
-                        </div>
-                        <div
-                            className={classNames(
-                                styles.box,
-                                styles.borderBottom,
-                            )}
-                        >
-                            <Typography
-                                size="sm"
-                                weight="medium"
-                                variant="tertiary"
-                                uppercase
-                            >
-                                {t("reimbursed")}
-                            </Typography>
-                            <DistributedRewardsBreakdown
-                                chain={campaign.chainId}
-                                totalUsdValue={
-                                    rewardsDistributionBreakdown?.reimbursedUsdValue
-                                }
-                                percentage={
-                                    rewardsDistributionBreakdown?.percentages
-                                        .reimbursed
-                                }
-                                rewards={
-                                    rewardsDistributionBreakdown?.reimbursedList
-                                }
-                            />
-                        </div>
-                    </div>
-                )}
-                <div className={styles.boxes}>
-                    <div className={styles.box}>
+                <div className={styles.content}>
+                    <div className={styles.insight}>
                         <Typography
                             size="sm"
                             weight="medium"
                             variant="tertiary"
-                            uppercase
+                        >
+                            {t("incetivizedAssets")}
+                        </Typography>
+                        {distributingTokens ? (
+                            <Distributables
+                                chain={campaign.chainId}
+                                distributables={campaign.distributables}
+                            />
+                        ) : (
+                            <Typography size="sm" weight="medium">
+                                -
+                            </Typography>
+                        )}
+                    </div>
+                    {withKpi && (
+                        <>
+                            <div className={styles.divider}></div>
+                            <div className={styles.insight}>
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="tertiary"
+                                >
+                                    {t("paid")}
+                                </Typography>
+                                <DistributedRewardsBreakdown
+                                    chain={campaign.chainId}
+                                    totalUsdValue={
+                                        rewardsDistributionBreakdown?.distributedUsdValue
+                                    }
+                                    percentage={
+                                        rewardsDistributionBreakdown
+                                            ?.percentages.distributed
+                                    }
+                                    rewards={
+                                        rewardsDistributionBreakdown?.distributedList
+                                    }
+                                />
+                            </div>
+                            <div className={styles.insight}>
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="tertiary"
+                                >
+                                    {t("reimbursed")}
+                                </Typography>
+                                <DistributedRewardsBreakdown
+                                    chain={campaign.chainId}
+                                    totalUsdValue={
+                                        rewardsDistributionBreakdown?.reimbursedUsdValue
+                                    }
+                                    percentage={
+                                        rewardsDistributionBreakdown
+                                            ?.percentages.reimbursed
+                                    }
+                                    rewards={
+                                        rewardsDistributionBreakdown?.reimbursedList
+                                    }
+                                />
+                            </div>
+                        </>
+                    )}
+                    <div className={styles.divider}></div>
+                    <div className={styles.insight}>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
                         >
                             {t("addressesParticipated")}
                         </Typography>
-                        <Typography weight="medium" className={styles.mainText}>
+                        <Typography size="sm" weight="medium">
                             {formatAmount({
                                 amount: campaign.accountsIncentivized,
                             })}
                         </Typography>
                     </div>
-                    <div className={styles.box}>
+                    <div className={styles.insight}>
                         <Typography
                             size="sm"
                             weight="medium"
                             variant="tertiary"
-                            uppercase
                         >
                             {t("averageIncentive")}
                         </Typography>
@@ -188,28 +178,29 @@ export function Insights({ campaign }: InsightsProps) {
                                 }
                             />
                         ) : (
-                            <Typography
-                                weight="medium"
-                                className={styles.mainText}
-                            >
+                            <Typography size="sm" weight="medium">
                                 -
                             </Typography>
                         )}
                     </div>
+                    {withKpi && (
+                        <>
+                            <div className={styles.divider}></div>
+                            <div className={styles.insight}>
+                                <Typography
+                                    size="sm"
+                                    weight="medium"
+                                    variant="tertiary"
+                                >
+                                    {t("targetValueChange", {
+                                        targetValueName,
+                                    })}
+                                </Typography>
+                                <TargetValueChange campaign={campaign} />
+                            </div>
+                        </>
+                    )}
                 </div>
-                {withKpi && (
-                    <div className={styles.box}>
-                        <Typography
-                            size="sm"
-                            weight="medium"
-                            variant="tertiary"
-                            uppercase
-                        >
-                            {t("targetValueChange", { targetValueName })}
-                        </Typography>
-                        <TargetValueChange campaign={campaign} />
-                    </div>
-                )}
             </div>
         </div>
     );
@@ -221,19 +212,24 @@ export function InsightsSkeleton() {
     return (
         <div className={styles.root}>
             <div className={styles.container}>
-                <div className={styles.header}>
+                <div className={styles.titleWrapper}>
                     <SparklesIcon className={styles.icon} />
                     <Typography
+                        size="sm"
                         weight="medium"
-                        uppercase
                         className={styles.title}
                     >
                         {t("title")}
                     </Typography>
                 </div>
-            </div>
-            <div className={classNames(styles.content, styles.loading)}>
-                <div className={classNames(styles.box, styles.loading)}></div>
+                <div className={classNames(styles.content, styles.loading)}>
+                    <Skeleton size="sm" width={180} />
+                    <Skeleton size="sm" width={130} />
+                    <Skeleton size="sm" width={180} />
+                    <Skeleton size="sm" width={150} />
+                    <Skeleton size="sm" width={150} />
+                    <Skeleton size="sm" width={200} />
+                </div>
             </div>
         </div>
     );

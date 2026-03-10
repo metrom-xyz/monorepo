@@ -113,13 +113,7 @@ export function CampaignRewardsPopover({
                     </div>
                 )}
                 {!hideSymbol && distributables.list.length === 1 && (
-                    <Typography
-                        size={symbolSize}
-                        weight="medium"
-                        className={classNames({
-                            [styles.xl2]: symbolSize === "xl2",
-                        })}
-                    >
+                    <Typography size={symbolSize} weight="medium">
                         {distributables.list[0].token.symbol}
                     </Typography>
                 )}

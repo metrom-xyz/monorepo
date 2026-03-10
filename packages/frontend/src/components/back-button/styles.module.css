@@ -1,0 +1,9 @@
+@reference "../../app.css";
+
+.button {
+    @apply h-9 self-start;
+}
+
+.icon {
+    @apply rotate-180;
+}
