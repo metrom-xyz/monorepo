@@ -6,7 +6,7 @@ import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { usePublicClient, useSimulateContract, useWriteContract } from "wagmi";
 import type { DeployButtonProps } from ".";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     DistributablesType,
     type UsdPricedErc20TokenAmount,
@@ -132,6 +132,13 @@ export function DeployButtonEvm({
                     pointsCampaignArgs.length > 0),
         },
     });
+
+    useEffect(() => {
+        if (simulateCreateErrored)
+            console.error(
+                `Create campaign tx simulation failed: ${simulateCreateError}`,
+            );
+    }, [simulateCreateError, simulateCreateErrored]);
 
     const handleSafeTransaction = useCallback(
         (tx: BaseTransaction) => {
