@@ -10,11 +10,14 @@ import {
     SupportedGmxV1,
 } from "../commons";
 import type {
+    BackendCampaign,
     BackendCampaignOrderBy,
-    BackendCampaignResponse,
+    BackendAggregatedCampaignResponse,
     BackendCampaignsResponse,
     BackendCampaignStatus,
     BackendCampaignType,
+    BackendAggregatedCampaignItem,
+    BackendAggregatedCampaignItemsResponse,
 } from "./types/campaigns";
 import type { BackendResolvedPricedTokensRegistry } from "./types/commons";
 import type {
@@ -47,6 +50,9 @@ import {
     type NoDistributables,
     type YieldSeekerTarget,
     type OdysseyTarget,
+    AggregatedCampaign,
+    SpecificationDistributionType,
+    AggregatedCampaignItem,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -169,13 +175,24 @@ export interface PaginatedCampaignsResponse {
     campaigns: Campaign[];
 }
 
+export interface PaginatedAggregatedCampaignItemsResponse {
+    totalItems: number;
+    items: AggregatedCampaignItem[];
+}
+
 export interface ChainParams {
     chainId: number;
     chainType: ChainType;
 }
 
-export interface FetchCampaignParams extends ChainParams {
+export interface FetchAggregatedCampaignParams extends ChainParams {
     id: Hex;
+}
+
+export interface FetchAggregatedCampaignItemsParams {
+    page: number;
+    pageSize: number;
+    aggregatedCampaign: AggregatedCampaign;
 }
 
 export interface FetchPoolsParams extends ChainParams {
@@ -207,7 +224,7 @@ export interface FetchWhitelistedRewardTokensParams {
 }
 
 export interface FetchKpiMeasurementsParams {
-    campaign: Campaign;
+    item: AggregatedCampaignItem;
     from: number;
     to: number;
 }
@@ -313,7 +330,9 @@ export class MetromApiClient {
         };
     }
 
-    async fetchCampaign(params: FetchCampaignParams): Promise<Campaign> {
+    async fetchAggregatedCampaign(
+        params: FetchAggregatedCampaignParams,
+    ): Promise<AggregatedCampaign> {
         const response = await fetch(
             new URL(
                 `v2/campaigns/${params.chainType}/${params.chainId}/${params.id}`,
@@ -322,23 +341,44 @@ export class MetromApiClient {
         );
         if (!response.ok)
             throw new Error(
-                `Response not ok while fetching campaign with id ${params.id} on chain id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
+                `Response not ok while fetching aggregated campaign with id ${params.id} on chain id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
             );
 
         const parsedResponse =
-            (await response.json()) as BackendCampaignResponse;
+            (await response.json()) as BackendAggregatedCampaignResponse;
 
-        const processedCampaigns = processCampaignsResponse({
-            totalItems: 1,
-            campaigns: [parsedResponse.campaign],
+        return processAggregatedCampaignResponse({
+            campaign: parsedResponse.campaign,
         });
+    }
 
-        if (processedCampaigns.length != 1)
+    async fetchAggregatedCampaignItems(
+        params: FetchAggregatedCampaignItemsParams,
+    ): Promise<PaginatedAggregatedCampaignItemsResponse> {
+        const { page, pageSize, aggregatedCampaign } = params;
+        const { chainType, chainId, id } = aggregatedCampaign;
+
+        const response = await fetch(
+            new URL(
+                `v2/campaigns/rewards/${chainType}/${chainId}/${id}/items?page=${page}&pageSize=${pageSize}`,
+                this.baseUrl,
+            ),
+        );
+        if (!response.ok)
             throw new Error(
-                `Inconsistent campaigns response processing length ${processedCampaigns.length}: 1 expected`,
+                `Response not ok while fetching aggregated campaign items with id ${id} on chain id ${chainId} and type ${chainType}: ${await response.text()}`,
             );
 
-        return processedCampaigns[0];
+        const parsedResponse =
+            (await response.json()) as BackendAggregatedCampaignItemsResponse;
+
+        return {
+            totalItems: parsedResponse.totalItems,
+            items: processAggregatedCampaignItemsResponse(
+                aggregatedCampaign,
+                parsedResponse,
+            ),
+        };
     }
 
     async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPool[]> {
@@ -580,9 +620,12 @@ export class MetromApiClient {
     async fetchKpiMeasurements(
         params: FetchKpiMeasurementsParams,
     ): Promise<KpiMeasurement[]> {
-        const { campaign, from, to } = params;
+        const { item: campaign, from, to } = params;
 
-        if (!campaign.specification || !campaign.specification.kpi)
+        if (
+            campaign?.specification?.distribution?.type !==
+            SpecificationDistributionType.Kpi
+        )
             throw new Error(
                 `Tried to fetch KPI measurements for campaign with id ${campaign.id} in chain with id ${campaign.chainId} with no attached KPI`,
             );
@@ -610,7 +653,7 @@ export class MetromApiClient {
             (await response.json()) as BackendKpiMeasurementResponse;
 
         const minimumPayoutPercentage =
-            campaign.specification!.kpi!.minimumPayoutPercentage || 0;
+            campaign.specification!.distribution!.minimumPayoutPercentage || 0;
 
         const totalCampaignDuration = campaign.to - campaign.from;
         return parsedResponse.measurements.map((measurement) => {
@@ -687,9 +730,9 @@ export class MetromApiClient {
             });
 
             const goalLowerTarget =
-                campaign.specification!.kpi!.goal.lowerUsdTarget;
+                campaign.specification!.distribution!.goal.lowerUsdTarget;
             const goalUpperTarget =
-                campaign.specification!.kpi!.goal.upperUsdTarget;
+                campaign.specification!.distribution!.goal.upperUsdTarget;
             const goalRange = goalUpperTarget - goalLowerTarget;
 
             return {
@@ -1080,252 +1123,8 @@ function processCampaignsResponse(
     const campaigns = [];
 
     for (const backendCampaign of response.campaigns) {
-        const { chainType, chainId } = backendCampaign.target;
-
-        let target;
-        switch (backendCampaign.target.type) {
-            case "amm-pool-liquidity": {
-                target = <AmmPoolLiquidityTarget>{
-                    type: TargetType.AmmPoolLiquidity,
-                    chainType,
-                    chainId,
-                    pool: {
-                        ...backendCampaign.target,
-                        dex: {
-                            slug: backendCampaign.target.dex,
-                            name: DEX_BRAND_NAME[backendCampaign.target.dex],
-                        },
-                    },
-                };
-                break;
-            }
-            case "gmx-v1-liquidity": {
-                target = <GmxV1LiquidityTarget>{
-                    type: TargetType.GmxV1Liquidity,
-                    brand: {
-                        slug: backendCampaign.target.brand,
-                        name: GMX_V1_BRAND_NAME[backendCampaign.target.brand],
-                    },
-                };
-                break;
-            }
-            case "liquity-v2-debt": {
-                target = <LiquityV2DebtTarget>{
-                    ...backendCampaign.target,
-                    type: TargetType.LiquityV2Debt,
-                    brand: {
-                        slug: backendCampaign.target.brand,
-                        name: LIQUITY_V2_BRAND_NAME[
-                            backendCampaign.target.brand
-                        ],
-                    },
-                };
-                break;
-            }
-            case "liquity-v2-stability-pool": {
-                target = <LiquityV2StabilityPoolTarget>{
-                    ...backendCampaign.target,
-                    type: TargetType.LiquityV2StabilityPool,
-                    brand: {
-                        slug: backendCampaign.target.brand,
-                        name: LIQUITY_V2_BRAND_NAME[
-                            backendCampaign.target.brand
-                        ],
-                    },
-                };
-                break;
-            }
-            case "aave-v3-borrow": {
-                target = <AaveV3BorrowTarget>{
-                    ...backendCampaign.target,
-                    type: TargetType.AaveV3Borrow,
-                    brand: {
-                        slug: backendCampaign.target.brand,
-                        name: AAVE_V3_BRAND_NAME[backendCampaign.target.brand],
-                    },
-                    market: backendCampaign.target.market,
-                };
-                break;
-            }
-            case "aave-v3-supply": {
-                target = <AaveV3SupplyTarget>{
-                    ...backendCampaign.target,
-                    type: TargetType.AaveV3Supply,
-                    brand: {
-                        slug: backendCampaign.target.brand,
-                        name: AAVE_V3_BRAND_NAME[backendCampaign.target.brand],
-                    },
-                    market: backendCampaign.target.market,
-                };
-                break;
-            }
-            case "aave-v3-net-supply": {
-                target = <AaveV3NetSupplyTarget>{
-                    ...backendCampaign.target,
-                    type: TargetType.AaveV3NetSupply,
-                    brand: {
-                        slug: backendCampaign.target.brand,
-                        name: AAVE_V3_BRAND_NAME[backendCampaign.target.brand],
-                    },
-                    market: backendCampaign.target.market,
-                };
-                break;
-            }
-            case "hold-fungible-asset": {
-                target = <HoldFungibleAssetTarget>{
-                    ...backendCampaign.target,
-                    type: TargetType.HoldFungibleAsset,
-                };
-                break;
-            }
-            case "aave-v3-bridge-and-supply": {
-                target = <AaveV3BridgeAndSupplyTarget>{
-                    type: TargetType.AaveV3BridgeAndSupply,
-                    bridge: {
-                        slug: backendCampaign.target.bridgeBrand,
-                        name: BRIDGE_BRAND_NAME[
-                            backendCampaign.target
-                                .bridgeBrand as SupportedBridge
-                        ],
-                    },
-                    brand: {
-                        slug: backendCampaign.target.aaveV3Brand,
-                        name: AAVE_V3_BRAND_NAME[
-                            backendCampaign.target
-                                .aaveV3Brand as SupportedAaveV3
-                        ],
-                    },
-                    market: backendCampaign.target.aaveV3Market,
-                    boostingFactor:
-                        (Number(backendCampaign.target.boostingFactor) /
-                            1_000_000) *
-                        100,
-                    collateral: backendCampaign.target.aaveV3Collateral,
-                };
-                break;
-            }
-            case "jumper-whitelisted-amm-pool-liquidity": {
-                target = <JumperWhitelistedAmmPoolLiquidityTarget>{
-                    type: TargetType.JumperWhitelistedAmmPoolLiquidity,
-                    chainType,
-                    chainId,
-                    pool: {
-                        ...backendCampaign.target,
-                        dex: {
-                            slug: backendCampaign.target.dex,
-                            name: DEX_BRAND_NAME[backendCampaign.target.dex],
-                        },
-                    },
-                };
-                break;
-            }
-            case "turtle": {
-                target = <TurtleTarget>{
-                    ...backendCampaign.target,
-                    type: TargetType.Turtle,
-                };
-                break;
-            }
-            case "amm-pool-net-swap-volume": {
-                target = <AmmPoolNetSwapVolumeTarget>{
-                    type: TargetType.AmmPoolNetSwapVolume,
-                    chainType,
-                    chainId,
-                    ammPool: {},
-                    targetToken: backendCampaign.target.targetToken,
-                };
-                break;
-            }
-            case "yield-seeker": {
-                target = <YieldSeekerTarget>{
-                    type: TargetType.YieldSeeker,
-                    chainType,
-                    chainId,
-                };
-                break;
-            }
-            case "odyssey": {
-                target = <OdysseyTarget>{
-                    type: TargetType.Odyssey,
-                    chainType,
-                    chainId,
-                    brand: backendCampaign.target.brand,
-                    strategyId: backendCampaign.target.strategyId,
-                    asset: backendCampaign.target.asset,
-                };
-                break;
-            }
-            case "empty": {
-                target = <EmptyTarget>{
-                    ...backendCampaign.target,
-                };
-            }
-        }
-
-        let distributables;
-        if ("rewards" in backendCampaign) {
-            distributables = <TokenDistributables>{
-                type: DistributablesType.Tokens,
-                dailyUsd: backendCampaign.rewards.dailyUsd,
-                list: [],
-                amountUsdValue: 0,
-                remainingUsdValue: 0,
-            };
-
-            for (const backendAsset of backendCampaign.rewards.assets) {
-                const amount = stringToUsdPricedOnChainAmount(
-                    backendAsset.amount,
-                    backendAsset.decimals,
-                    backendAsset.usdPrice,
-                );
-                const remaining = stringToUsdPricedOnChainAmount(
-                    backendAsset.remaining,
-                    backendAsset.decimals,
-                    backendAsset.usdPrice,
-                );
-
-                distributables.amountUsdValue += amount.usdValue;
-                distributables.remainingUsdValue += remaining.usdValue;
-
-                distributables.list.push(<TokenDistributable>{
-                    amount,
-                    remaining,
-                    token: backendAsset,
-                });
-            }
-        } else if ("fixedPoints" in backendCampaign) {
-            distributables = <FixedPointDistributables>{
-                type: DistributablesType.FixedPoints,
-                ...backendCampaign.fixedPoints,
-                amount: stringToOnChainAmount(
-                    backendCampaign.fixedPoints.amount,
-                    18,
-                ),
-            };
-        } else if ("dynamicPoints" in backendCampaign) {
-            distributables = <DynamicPointDistributables>{
-                type: DistributablesType.DynamicPoints,
-                ...backendCampaign.dynamicPoints,
-            };
-        } else {
-            distributables = <NoDistributables>{
-                type: DistributablesType.NoDistributables,
-            };
-        }
-
-        let restrictions: Restrictions | undefined = undefined;
-        if (backendCampaign.specification?.blacklist) {
-            restrictions = {
-                type: RestrictionType.Blacklist,
-                list: backendCampaign.specification.blacklist,
-            };
-        }
-        if (backendCampaign.specification?.whitelist) {
-            restrictions = {
-                type: RestrictionType.Whitelist,
-                list: backendCampaign.specification.whitelist,
-            };
-        }
+        const target = processCampaignTarget(backendCampaign);
+        const distributables = processCampaignDistributables(backendCampaign);
 
         if (!target)
             throw new Error(
@@ -1343,25 +1142,363 @@ function processCampaignsResponse(
 
         campaigns.push(
             new Campaign(
-                backendCampaign.chainId,
-                backendCampaign.chainType,
+                backendCampaign.opportunitiesAmount,
+                backendCampaign.hasKpi,
                 backendCampaign.id,
+                backendCampaign.chainType,
+                backendCampaign.chainId,
                 from,
                 to,
                 createdAt,
                 target,
                 distributables,
-                snapshottedAt,
-                backendCampaign.specification,
                 backendCampaign.usdTvl,
+                snapshottedAt,
                 backendCampaign.apr,
-                restrictions,
-                backendCampaign.accountsIncentivized,
             ),
         );
     }
 
     return campaigns;
+}
+
+function processAggregatedCampaignResponse(
+    response: BackendAggregatedCampaignResponse,
+): AggregatedCampaign {
+    const backendCampaign = response.campaign;
+
+    const target = processCampaignTarget(backendCampaign);
+    const distributables = processCampaignDistributables(backendCampaign);
+
+    if (!target)
+        throw new Error(
+            `Unsupported campaign target type ${backendCampaign.target.type}`,
+        );
+    if (!distributables) throw new Error("Unsupported campaign distributables");
+
+    const from = unix(new Date(backendCampaign.from));
+    const to = unix(new Date(backendCampaign.to));
+    const createdAt = unix(new Date(backendCampaign.createdAt));
+    const snapshottedAt = backendCampaign.snapshottedAt
+        ? unix(new Date(backendCampaign.snapshottedAt))
+        : undefined;
+
+    return new AggregatedCampaign(
+        backendCampaign.opportunitiesAmount,
+        backendCampaign.hasKpi,
+        backendCampaign.accountsIncentivized,
+        backendCampaign.id,
+        backendCampaign.chainType,
+        backendCampaign.chainId,
+        from,
+        to,
+        createdAt,
+        target,
+        distributables,
+        backendCampaign.usdTvl,
+        snapshottedAt,
+        backendCampaign.apr,
+    );
+}
+
+function processAggregatedCampaignItemsResponse(
+    aggregatedCampaign: AggregatedCampaign,
+    response: BackendAggregatedCampaignItemsResponse,
+): AggregatedCampaignItem[] {
+    const items: AggregatedCampaignItem[] = [];
+
+    // Single target from the aggregated campaign
+    const target = aggregatedCampaign.target;
+    if (!target) throw new Error("Missing campaign target");
+
+    for (const backendCampaign of response.campaigns) {
+        const distributables = processCampaignDistributables(backendCampaign);
+
+        if (!distributables)
+            throw new Error("Unsupported campaign distributables");
+
+        const from = unix(new Date(backendCampaign.from));
+        const to = unix(new Date(backendCampaign.to));
+        const createdAt = unix(new Date(backendCampaign.createdAt));
+        const snapshottedAt = backendCampaign.snapshottedAt
+            ? unix(new Date(backendCampaign.snapshottedAt))
+            : undefined;
+
+        const restrictions = processCampaignRestrictions(backendCampaign);
+
+        items.push(
+            new AggregatedCampaignItem(
+                backendCampaign.specification,
+                restrictions,
+                backendCampaign.accountsIncentivized,
+                backendCampaign.id,
+                aggregatedCampaign.chainType,
+                aggregatedCampaign.chainId,
+                from,
+                to,
+                createdAt,
+                target,
+                distributables,
+                aggregatedCampaign.usdTvl,
+                snapshottedAt,
+                backendCampaign.apr,
+            ),
+        );
+    }
+
+    return items;
+}
+
+function processCampaignRestrictions(
+    campaign: BackendAggregatedCampaignItem,
+): Restrictions | undefined {
+    let restrictions: Restrictions | undefined = undefined;
+    if (campaign.specification?.blacklist) {
+        restrictions = {
+            type: RestrictionType.Blacklist,
+            list: campaign.specification.blacklist,
+        };
+    }
+    if (campaign.specification?.whitelist) {
+        restrictions = {
+            type: RestrictionType.Whitelist,
+            list: campaign.specification.whitelist,
+        };
+    }
+
+    return restrictions;
+}
+
+function processCampaignTarget(campaign: BackendCampaign) {
+    const { chainType, chainId } = campaign;
+
+    let target;
+    switch (campaign.target.type) {
+        case "amm-pool-liquidity": {
+            target = <AmmPoolLiquidityTarget>{
+                type: TargetType.AmmPoolLiquidity,
+                chainType,
+                chainId,
+                pool: {
+                    ...campaign.target,
+                    dex: {
+                        slug: campaign.target.dex,
+                        name: DEX_BRAND_NAME[campaign.target.dex],
+                    },
+                },
+            };
+            break;
+        }
+        case "gmx-v1-liquidity": {
+            target = <GmxV1LiquidityTarget>{
+                type: TargetType.GmxV1Liquidity,
+                brand: {
+                    slug: campaign.target.brand,
+                    name: GMX_V1_BRAND_NAME[campaign.target.brand],
+                },
+            };
+            break;
+        }
+        case "liquity-v2-debt": {
+            target = <LiquityV2DebtTarget>{
+                ...campaign.target,
+                type: TargetType.LiquityV2Debt,
+                brand: {
+                    slug: campaign.target.brand,
+                    name: LIQUITY_V2_BRAND_NAME[campaign.target.brand],
+                },
+            };
+            break;
+        }
+        case "liquity-v2-stability-pool": {
+            target = <LiquityV2StabilityPoolTarget>{
+                ...campaign.target,
+                type: TargetType.LiquityV2StabilityPool,
+                brand: {
+                    slug: campaign.target.brand,
+                    name: LIQUITY_V2_BRAND_NAME[campaign.target.brand],
+                },
+            };
+            break;
+        }
+        case "aave-v3-borrow": {
+            target = <AaveV3BorrowTarget>{
+                ...campaign.target,
+                type: TargetType.AaveV3Borrow,
+                brand: {
+                    slug: campaign.target.brand,
+                    name: AAVE_V3_BRAND_NAME[campaign.target.brand],
+                },
+                market: campaign.target.market,
+            };
+            break;
+        }
+        case "aave-v3-supply": {
+            target = <AaveV3SupplyTarget>{
+                ...campaign.target,
+                type: TargetType.AaveV3Supply,
+                brand: {
+                    slug: campaign.target.brand,
+                    name: AAVE_V3_BRAND_NAME[campaign.target.brand],
+                },
+                market: campaign.target.market,
+            };
+            break;
+        }
+        case "aave-v3-net-supply": {
+            target = <AaveV3NetSupplyTarget>{
+                ...campaign.target,
+                type: TargetType.AaveV3NetSupply,
+                brand: {
+                    slug: campaign.target.brand,
+                    name: AAVE_V3_BRAND_NAME[campaign.target.brand],
+                },
+                market: campaign.target.market,
+            };
+            break;
+        }
+        case "hold-fungible-asset": {
+            target = <HoldFungibleAssetTarget>{
+                ...campaign.target,
+                type: TargetType.HoldFungibleAsset,
+            };
+            break;
+        }
+        case "aave-v3-bridge-and-supply": {
+            target = <AaveV3BridgeAndSupplyTarget>{
+                type: TargetType.AaveV3BridgeAndSupply,
+                bridge: {
+                    slug: campaign.target.bridgeBrand,
+                    name: BRIDGE_BRAND_NAME[
+                        campaign.target.bridgeBrand as SupportedBridge
+                    ],
+                },
+                brand: {
+                    slug: campaign.target.aaveV3Brand,
+                    name: AAVE_V3_BRAND_NAME[
+                        campaign.target.aaveV3Brand as SupportedAaveV3
+                    ],
+                },
+                market: campaign.target.aaveV3Market,
+                boostingFactor:
+                    (Number(campaign.target.boostingFactor) / 1_000_000) * 100,
+                collateral: campaign.target.aaveV3Collateral,
+            };
+            break;
+        }
+        case "jumper-whitelisted-amm-pool-liquidity": {
+            target = <JumperWhitelistedAmmPoolLiquidityTarget>{
+                type: TargetType.JumperWhitelistedAmmPoolLiquidity,
+                chainType,
+                chainId,
+                pool: {
+                    ...campaign.target,
+                    dex: {
+                        slug: campaign.target.dex,
+                        name: DEX_BRAND_NAME[campaign.target.dex],
+                    },
+                },
+            };
+            break;
+        }
+        case "turtle": {
+            target = <TurtleTarget>{
+                ...campaign.target,
+                type: TargetType.Turtle,
+            };
+            break;
+        }
+        case "amm-pool-net-swap-volume": {
+            target = <AmmPoolNetSwapVolumeTarget>{
+                type: TargetType.AmmPoolNetSwapVolume,
+                chainType,
+                chainId,
+                ammPool: {},
+                targetToken: campaign.target.targetToken,
+            };
+            break;
+        }
+        case "yield-seeker": {
+            target = <YieldSeekerTarget>{
+                type: TargetType.YieldSeeker,
+                chainType,
+                chainId,
+            };
+            break;
+        }
+        case "odyssey": {
+            target = <OdysseyTarget>{
+                type: TargetType.Odyssey,
+                chainType,
+                chainId,
+                brand: campaign.target.brand,
+                strategyId: campaign.target.strategyId,
+                asset: campaign.target.asset,
+            };
+            break;
+        }
+        case "empty": {
+            target = <EmptyTarget>{
+                ...campaign.target,
+            };
+        }
+    }
+
+    return target;
+}
+
+function processCampaignDistributables(
+    campaign: BackendCampaign | BackendAggregatedCampaignItem,
+) {
+    let distributables;
+    if ("rewards" in campaign) {
+        distributables = <TokenDistributables>{
+            type: DistributablesType.Tokens,
+            dailyUsd: campaign.rewards.dailyUsd,
+            list: [],
+            amountUsdValue: 0,
+            remainingUsdValue: 0,
+        };
+
+        for (const backendAsset of campaign.rewards.assets) {
+            const amount = stringToUsdPricedOnChainAmount(
+                backendAsset.amount,
+                backendAsset.decimals,
+                backendAsset.usdPrice,
+            );
+            const remaining = stringToUsdPricedOnChainAmount(
+                backendAsset.remaining,
+                backendAsset.decimals,
+                backendAsset.usdPrice,
+            );
+
+            distributables.amountUsdValue += amount.usdValue;
+            distributables.remainingUsdValue += remaining.usdValue;
+
+            distributables.list.push(<TokenDistributable>{
+                amount,
+                remaining,
+                token: backendAsset,
+            });
+        }
+    } else if ("fixedPoints" in campaign) {
+        distributables = <FixedPointDistributables>{
+            type: DistributablesType.FixedPoints,
+            ...campaign.fixedPoints,
+            amount: stringToOnChainAmount(campaign.fixedPoints.amount, 18),
+        };
+    } else if ("dynamicPoints" in campaign) {
+        distributables = <DynamicPointDistributables>{
+            type: DistributablesType.DynamicPoints,
+            ...campaign.dynamicPoints,
+        };
+    } else {
+        distributables = <NoDistributables>{
+            type: DistributablesType.NoDistributables,
+        };
+    }
+
+    return distributables;
 }
 
 function resolveToken(
