@@ -25,6 +25,7 @@ export * from "./components/switch/switch-option";
 export * from "./components/toggle";
 export * from "./components/tabs";
 export * from "./components/tabs/tab";
+export * from "./components/tabs/underlined-tab";
 export * from "./components/text-field";
 export * from "./components/toast-notification";
 export * from "./components/typography";

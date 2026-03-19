@@ -1,7 +1,7 @@
 @reference "../../theme.css";
 
 .root {
-    @apply relative rounded-sm ml-2;
+    @apply relative rounded-md ml-2;
 }
 
 .root.xs,

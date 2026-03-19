@@ -4,14 +4,18 @@
     @apply w-fit
         flex
         items-center
+        border-b-2
+        border-gray-300
+        dark:border-neutral-700
         gap-2
         select-none
-        rounded-t-xl
         px-3
         py-2
         text-xs
         hover:text-brand-green-dark
         hover:dark:text-brand-green
+        hover:border-brand-green-dark
+        hover:dark:border-brand-green
         cursor-pointer;
 }
 
@@ -26,15 +30,11 @@
         ease-in-out;
 }
 
-.root.active {
-    @apply bg-gray-100 dark:bg-neutral-900;
-}
-
 .root.active,
 .root.active > p {
-    @apply text-brand-green-dark dark:text-brand-green;
+    @apply text-brand-green-dark dark:text-brand-green border-brand-green-dark dark:border-brand-green;
 }
 
 .active {
-    @apply theme-surface-2-active opacity-100;
+    @apply opacity-100;
 }

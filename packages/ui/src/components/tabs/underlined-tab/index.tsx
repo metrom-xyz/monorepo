@@ -4,7 +4,7 @@ import type { TabProps } from "..";
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
 
-export function Tab<T>({
+export function UnderlinedTab<T>({
     onClick,
     size = "base",
     icon: Icon,
