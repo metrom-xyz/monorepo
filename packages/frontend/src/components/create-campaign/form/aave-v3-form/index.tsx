@@ -50,7 +50,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        kpiSpecification,
+        distribution,
         blacklistedCollaterals,
         restrictions,
     } = payload;
@@ -81,7 +81,7 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            kpiSpecification,
+            distribution,
             restrictions,
         );
     }
@@ -97,7 +97,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        kpiSpecification,
+        distribution,
         restrictions,
     );
 }
@@ -292,7 +292,7 @@ export function AaveV3Form({
                         }
                         startDate={payload.startDate}
                         endDate={payload.endDate}
-                        kpiSpecification={payload.kpiSpecification}
+                        distribution={payload.distribution}
                         onKpiChange={handlePayloadOnChange}
                         onError={handlePayloadOnError}
                     />

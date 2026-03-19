@@ -1,8 +1,8 @@
 import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import {
     CAMPAIGN_TARGET_TO_KIND,
+    SpecificationDistributionType,
     Status,
-    type Campaign,
 } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
@@ -14,12 +14,13 @@ import {
     formatUsdAmount,
 } from "@/src/utils/format";
 import dayjs from "dayjs";
+import classNames from "classnames";
+import type { AggregatedCampaignItem } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
-import classNames from "classnames";
 
 interface TargetValueChangeProps {
-    campaign: Campaign;
+    campaign: AggregatedCampaignItem;
 }
 
 export function TargetValueChange({ campaign }: TargetValueChangeProps) {
@@ -49,7 +50,10 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
         campaign,
         from: dayjs.unix(campaign.from).utc().unix(),
         to: dayjs.unix(campaign.from).utc().add(1, "hour").unix(),
-        enabled: campaign && !!campaign.specification?.kpi,
+        enabled:
+            campaign &&
+            campaign.specification?.distribution?.type ===
+                SpecificationDistributionType.Kpi,
     });
 
     const {
@@ -57,7 +61,10 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
         loading: loadingLastKpiMeasurements,
     } = useKpiMeasurements({
         campaign,
-        enabled: campaign && !!campaign.specification?.kpi,
+        enabled:
+            campaign &&
+            campaign.specification?.distribution?.type ===
+                SpecificationDistributionType.Kpi,
     });
 
     const {

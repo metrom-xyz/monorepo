@@ -1,11 +1,14 @@
 import { Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import {
+    AggregatedCampaign,
+    type TargetedNamedCampaign,
+} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface EmptyHeaderProps {
-    campaign: TargetedNamedCampaign<TargetType.Empty>;
+    campaign: TargetedNamedCampaign<TargetType.Empty, AggregatedCampaign>;
 }
 
 export function EmptyHeader({ campaign }: EmptyHeaderProps) {

@@ -1,0 +1,13 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-3;
+}
+
+.card {
+    @apply w-full flex flex-col sm:max-w-3/5 p-3 sm:p-4 bg-white dark:bg-neutral-900;
+}
+
+.chartWrapper {
+    @apply w-full flex-1 mt-4;
+}

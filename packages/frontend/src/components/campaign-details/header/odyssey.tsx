@@ -1,13 +1,16 @@
 import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { Tags } from "./tags";
 import { RemoteLogo } from "../../remote-logo";
+import type {
+    AggregatedCampaign,
+    TargetedNamedCampaign,
+} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface OdysseyHeaderProps {
-    campaign: TargetedNamedCampaign<TargetType.Odyssey>;
+    campaign: TargetedNamedCampaign<TargetType.Odyssey, AggregatedCampaign>;
 }
 
 export function OdysseyHeader({ campaign }: OdysseyHeaderProps) {

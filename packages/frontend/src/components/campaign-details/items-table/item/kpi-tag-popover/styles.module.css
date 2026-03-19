@@ -1,0 +1,21 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-fit justify-center pointer-events-none md:pointer-events-auto;
+}
+
+.popover {
+    @apply pb-0!;
+}
+
+.content {
+    @apply flex flex-col gap-2 w-[400px];
+}
+
+.chartWrapper {
+    @apply w-full max-w-[400px] h-[270px];
+}
+
+.chartWrapper.loading {
+    @apply mb-3;
+}

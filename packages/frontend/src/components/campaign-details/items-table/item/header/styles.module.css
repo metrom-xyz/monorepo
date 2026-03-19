@@ -1,0 +1,17 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex px-3 pt-3 gap-2 items-center flex-wrap;
+}
+
+.tag {
+    @apply flex items-center gap-1;
+}
+
+.calendarIcon {
+    @apply size-3.5 text-primary;
+}
+
+.higlightedText {
+    @apply font-medium text-primary;
+}

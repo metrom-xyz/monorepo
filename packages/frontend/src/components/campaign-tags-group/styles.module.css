@@ -1,0 +1,21 @@
+@reference "../../app.css";
+
+.root {
+    @apply flex items-center;
+}
+
+.root > div:first-child {
+    @apply rounded-r-none;
+}
+
+.root > div:not(:first-child):not(:last-child) {
+    @apply rounded-r-none rounded-l-none border-l-0;
+}
+
+.root > div:last-child {
+    @apply rounded-l-none border-l-0;
+}
+/* 
+.root > div:nth-child(even) {
+    @apply border-l-0;
+} */

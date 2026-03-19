@@ -172,7 +172,7 @@ export function CampaignPreview({
             uploadSpecification(specification);
     }, [
         payload,
-        payload.kpiSpecification,
+        payload.kpiDistribution,
         payload.restrictions,
         tokensApproved,
     ]);
@@ -189,7 +189,7 @@ export function CampaignPreview({
     const tokens = payload.isDistributing(DistributablesType.Tokens);
     const emptyTargetCampaign =
         payload instanceof EmptyTargetCampaignPreviewPayload;
-    const kpi = !!payload.kpiSpecification && tokens;
+    const kpi = !!payload.kpiDistribution && tokens;
 
     const range = ammPoolLiquidityCampaign && !!payload.priceRangeSpecification;
     const weighting = ammPoolLiquidityCampaign && !!payload.weighting;
@@ -236,7 +236,7 @@ export function CampaignPreview({
                                             liquidityByAddresses,
                                             aaveV3CollateralUsdNetSupply,
                                         )}
-                                        kpi={!!payload.kpiSpecification}
+                                        kpi={!!payload.kpiDistribution}
                                     />
                                 }
                             />
@@ -272,7 +272,7 @@ export function CampaignPreview({
                             from={payload.startDate}
                             to={payload.endDate}
                             distributables={payload.distributables}
-                            specification={payload.kpiSpecification}
+                            distribution={payload.kpiDistribution}
                         />
                     )}
                     {range && (

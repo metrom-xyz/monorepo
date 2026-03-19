@@ -83,9 +83,6 @@
             "rewards": "Daily rewards",
             "dailyPer1k": "Points/$1k/day"
         },
-        "apr": {
-            "title": "This campaign has KPI set"
-        },
         "pool": {
             "range": "Range"
         },
@@ -584,7 +581,38 @@
     },
     "campaignDetails": {
         "title": "Campaign details",
+        "itemsTable": {
+            "tableHeader": {
+                "id": "Id",
+                "status": "Status",
+                "apr": "APR",
+                "tokens": "Tokens",
+                "dailyRewards": "Daily rewards"
+            },
+            "pagination": {
+                "prev": "Prev",
+                "next": "Next"
+            },
+            "noActiveCampaigns": "No active campaigns",
+            "range": "Range",
+            "item": {
+                "kpiTag": {
+                    "label": "KPI",
+                    "title": "This campaign has KPI set"
+                },
+                "tokens": "Tokens",
+                "dailyRewards": "Daily rewards <highlighted>{usdValue}</highlighted>",
+                "tabs": {
+                    "kpi": "KPI",
+                    "priceRange": "Price range",
+                    "leaderboard": "Leaderboard",
+                    "addressRestrictions": "Address restrictions"
+                }
+            }
+        },
+        "totValue": "Tot. value <highlighted>{usdValue}</highlighted>",
         "header": {
+            "groupedTarget": "Grouped target",
             "ammPoolLiquidity": {
                 "deposit": "Deposit"
             },
@@ -600,13 +628,7 @@
                 "aave-v3-bridge": "Bridge {collateral}",
                 "and-supply": "Supply {collateral} on {brand}"
             },
-            "kpi": "KPI",
             "range": "Range",
-            "status": {
-                "active": "<status>Live</status> ends in {days}",
-                "upcoming": "<status>Upcoming</status> in {days}",
-                "expired": "<status>Ended</status> {days} ago"
-            },
             "allowlist": "Rewards limited to only allowed addresses"
         },
         "content": {
@@ -615,7 +637,6 @@
             "tokens": "Tokens",
             "dailyRewards": "Daily rewards",
             "totalValue": "Total value",
-            "rewardRatio": "Reward ratio",
             "dailyPer1k": "Points/$1k/day",
             "totalPoints": "Total points",
             "tvlChange": "TVL change"
@@ -626,7 +647,6 @@
             "daily": "Daily"
         },
         "priceRange": {
-            "title": "Price range",
             "chart": "Range visualizer <bold>{token1} PER {token0}</bold>"
         },
         "kpi": {
@@ -646,11 +666,10 @@
             }
         },
         "restrictions": {
-            "restrictions": "Address restrictions",
-            "allowed": "{count} allowed",
-            "blocked": "{count} blocked",
-            "addressBlocked": "Your address is blocked",
-            "addressAllowed": "Your address is allowed"
+            "allowed": "<highlighted>Allowed {count, plural, one {address} other {addresses}}</highlighted> {count}",
+            "blocked": "<highlighted>Blocked {count, plural, one {address} other {addresses}}</highlighted> {count}",
+            "addressBlocked": "You're blocked",
+            "addressAllowed": "You're allowed"
         },
         "leaderboard": {
             "title": "Leaderboard",
@@ -917,9 +936,24 @@
         "totalUsdValue": "Total USD rewards"
     },
     "campaignWeighting": {
-        "fees": "Fees"
+        "rewardsRatio": "Rewards ratio",
+        "token0": "<highlighted>{value}</highlighted> {symbol}",
+        "token1": "<highlighted>{value}</highlighted> {symbol}",
+        "fees": "<highlighted>{value}</highlighted> Fees"
     },
     "backButton": {
         "back": "Back"
+    },
+    "campaignStatus": {
+        "status": {
+            "active": "Live",
+            "upcoming": "Upcoming",
+            "expired": "Ended"
+        },
+        "timeSuffix": {
+            "active": "{time} left",
+            "upcoming": "in {time}",
+            "expired": "{time} ago"
+        }
     }
 }

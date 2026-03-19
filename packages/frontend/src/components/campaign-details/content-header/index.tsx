@@ -1,5 +1,4 @@
-import type { Campaign } from "@/src/types/campaign";
-import { AprInfoTooltip } from "../../apr-info-tooltip";
+import type { AggregatedCampaign } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
@@ -12,16 +11,14 @@ import {
     CAMPAIGN_TARGET_TO_KIND,
     DistributablesType,
     Status,
-    TargetType,
 } from "@metrom-xyz/sdk";
 import { CampaignRewardsPopover } from "../../campaign-rewards-popover";
-import { CampaignWeighting } from "../../campaign-weighting";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 import styles from "./styles.module.css";
 
 interface ContentHeaderProps {
-    campaign: Campaign;
+    campaign: AggregatedCampaign;
 }
 
 export function ContentHeader({ campaign }: ContentHeaderProps) {
@@ -30,7 +27,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
         kind: CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
     });
 
-    const { status, apr, usdTvl, specification } = campaign;
+    const { status, apr, usdTvl } = campaign;
 
     const distributingTokens = campaign?.isDistributing(
         DistributablesType.Tokens,
@@ -43,10 +40,11 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
     );
     const distributingPoints =
         distributingDynamicPoints || distributingFixedPoints;
-    const ammPoolCampaign = campaign?.isTargeting(TargetType.AmmPoolLiquidity);
 
     const blueApr = status === Status.Active;
-    const orangeApr = status === Status.Active && specification?.kpi;
+    const orangeApr = status === Status.Active && campaign.hasKpi;
+
+    if (campaign.status === Status.Expired) return;
 
     return (
         <div className={styles.root}>
@@ -69,12 +67,6 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                         >
                             {t("apr")}
                         </Typography>
-                        <AprInfoTooltip
-                            campaign={campaign}
-                            className={classNames({
-                                [styles.infoIcon]: blueApr || orangeApr,
-                            })}
-                        />
                     </div>
                     <Typography
                         size="xl2"
@@ -195,22 +187,6 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                             })}
                         </Typography>
                     </div>
-                </div>
-            )}
-            {specification && specification.weighting && ammPoolCampaign && (
-                <div className={styles.box}>
-                    <Typography
-                        size="sm"
-                        variant="tertiary"
-                        weight="medium"
-                        uppercase
-                    >
-                        {t("rewardRatio")}
-                    </Typography>
-                    <CampaignWeighting
-                        pool={campaign.target.pool}
-                        specification={specification}
-                    />
                 </div>
             )}
         </div>

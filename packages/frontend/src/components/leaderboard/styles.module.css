@@ -1,7 +1,7 @@
 @reference "../../app.css";
 
 .root {
-    @apply w-full flex flex-col gap-4;
+    @apply w-full flex flex-col gap-3;
 }
 
 .titleContainer {
@@ -58,11 +58,11 @@
 }
 
 .noDistribution {
-    @apply min-h-[23.438rem] flex flex-col items-center justify-center bg-gray-100 dark:bg-neutral-800;
+    @apply min-h-[23.438rem] flex flex-col items-center justify-center bg-white dark:bg-neutral-900;
 }
 
 .tableWrapper {
-    @apply flex flex-col p-0 bg-gray-100 dark:bg-neutral-800;
+    @apply flex flex-col p-0 bg-white dark:bg-neutral-900 border-2 border-white dark:border-neutral-900;
 }
 
 .header {
@@ -86,8 +86,8 @@
         sm:py-4;
 }
 
-.row:not(:last-child) {
-    @apply border-b border-gray-150 dark:border-neutral-700;
+.row:not(:nth-last-child(-n + 2)) {
+    @apply border-b stroke-divider;
 }
 
 .row > :first-child {

@@ -1,12 +1,13 @@
 import { Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import { Campaign, type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
 
-interface HoldFungibleAssetProps<T extends TargetType.HoldFungibleAsset>
-    extends ActionSizes {
-    campaign: TargetedNamedCampaign<T>;
+interface HoldFungibleAssetProps<
+    T extends TargetType.HoldFungibleAsset,
+> extends ActionSizes {
+    campaign: TargetedNamedCampaign<T, Campaign>;
 }
 
 export function HoldFungibleAsset<T extends TargetType.HoldFungibleAsset>({

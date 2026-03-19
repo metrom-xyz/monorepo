@@ -50,7 +50,7 @@ function validatePayload(
         endDate,
         distributables,
         weighting,
-        kpiSpecification,
+        distribution,
         priceRangeSpecification,
         restrictions,
     } = payload;
@@ -65,7 +65,7 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            kpiSpecification,
+            distribution,
             restrictions,
         );
     }
@@ -79,7 +79,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        kpiSpecification,
+        distribution,
         restrictions,
     );
 }
@@ -241,7 +241,7 @@ export function AmmPoolLiquidityForm({
                     }
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    kpiSpecification={payload.kpiSpecification}
+                    distribution={payload.distribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />

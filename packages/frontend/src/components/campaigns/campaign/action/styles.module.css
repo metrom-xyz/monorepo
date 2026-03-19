@@ -20,13 +20,21 @@
     @apply flex gap-1.5;
 }
 
+.grouped {
+    @apply flex items-center gap-1;
+}
+
+.groupedIcon {
+    @apply size-4;
+}
+
 .yieldSeekerBoostTag {
-    @apply w-fit rounded-lg p-[1px];
+    @apply w-fit rounded-lg p-px;
     background: linear-gradient(90deg, #53fdac, #4ffc82, #49fb43);
 }
 
 .yieldSeekerBoostTag > div {
-    @apply surface-primary;
+    @apply surface-primary rounded-lg py-1 px-2;
 }
 
 .externalLinkIcon {

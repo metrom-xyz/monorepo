@@ -8,6 +8,7 @@ import { Network } from "@aptos-labs/ts-sdk";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import updateLocale from "dayjs/plugin/updateLocale";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import Fathom from "./fathom";
@@ -25,7 +26,26 @@ import AptosCoreProvider from "./aptos-core-provider";
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
+dayjs.extend(updateLocale);
 dayjs.extend(utc);
+
+dayjs.updateLocale("en", {
+    relativeTime: {
+        future: "in %s",
+        past: "%s ago",
+        s: "a few sec",
+        m: "1m",
+        mm: "%dm",
+        h: "1hr",
+        hh: "%dhr",
+        d: "1d",
+        dd: "%dd",
+        M: "1mo",
+        MM: "%dmo",
+        y: "1y",
+        yy: "%dy",
+    },
+});
 
 // Set up queryClient
 // TODO: if we need to have SSR prefetching https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#server-components--nextjs-app-router

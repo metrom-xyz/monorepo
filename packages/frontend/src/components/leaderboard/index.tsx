@@ -80,19 +80,10 @@ export function Leaderboard({
     if (!loading && !leaderboard) {
         return (
             <div className={styles.root}>
-                <div className={styles.titleContainer}>
-                    <Typography weight="medium" uppercase>
-                        {t("title")}
+                <div className={styles.subtitleContainer}>
+                    <Typography size="sm" variant="tertiary">
+                        {t("noDistribution")}
                     </Typography>
-                    <div className={styles.subtitleContainer}>
-                        <Typography
-                            weight="medium"
-                            size="sm"
-                            variant="tertiary"
-                        >
-                            {t("noDistribution")}
-                        </Typography>
-                    </div>
                 </div>
                 <div className={styles.cardsWrapper}>
                     <div className={styles.leaderboardWrapper}>
@@ -112,45 +103,35 @@ export function Leaderboard({
     return (
         <div className={styles.root}>
             <div className={classNames(styles.titleContainer, styles.spaced)}>
-                <div className={styles.leftTitleContent}>
-                    <Typography weight="medium" uppercase>
-                        {t("title")}
-                    </Typography>
-                    {!noDistributionDate && (
-                        <div className={styles.subtitleContainer}>
+                {!noDistributionDate && (
+                    <div className={styles.subtitleContainer}>
+                        <Typography size="sm" variant="tertiary">
+                            {leaderboard && t("subtitleLatest")}
+                        </Typography>
+                        {loading ? (
+                            <Skeleton width={130} size="sm" />
+                        ) : (
                             <Typography
-                                weight="medium"
                                 size="sm"
-                                variant="tertiary"
+                                weight="medium"
+                                variant="primary"
                             >
-                                {leaderboard && t("subtitleLatest")}
+                                {leaderboard && leaderboard.timestamp
+                                    ? dayjs
+                                          .unix(leaderboard.timestamp)
+                                          .format("DD MMM YYYY, HH:mm")
+                                    : t("noDistribution")}
                             </Typography>
-                            {loading ? (
-                                <Skeleton width={130} size="sm" />
-                            ) : (
-                                <Typography
-                                    weight="medium"
-                                    size="sm"
-                                    variant="tertiary"
-                                    uppercase
-                                >
-                                    {leaderboard && leaderboard.timestamp
-                                        ? dayjs
-                                              .unix(leaderboard.timestamp)
-                                              .format("DD/MMM/YY HH:mm")
-                                        : t("noDistribution")}
-                                </Typography>
-                            )}
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
                 {/* TODO: do we need to enable distributions page for points campaigns as well?` */}
                 {distributablesType === DistributablesType.Tokens && (
                     <Link
                         href={`${pathname}/distributions`}
                         className={styles.distributionsLink}
                     >
-                        <Typography size="sm" weight="semibold">
+                        <Typography size="sm" weight="medium">
                             {t("seeDistributions")}
                         </Typography>
                         <ArrowRightIcon />

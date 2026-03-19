@@ -138,7 +138,7 @@ export function buildSpecificationBundle(
 ): Specification {
     const specification: Specification = {};
 
-    if (payload.kpiSpecification) specification.kpi = payload.kpiSpecification;
+    if (payload.kpiDistribution) specification.distribution = payload.kpiDistribution;
 
     if (payload.restrictions)
         specification[payload.restrictions.type] = payload.restrictions.list;

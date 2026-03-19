@@ -36,7 +36,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        kpiSpecification,
+        distribution,
         restrictions,
     } = payload;
 
@@ -51,7 +51,7 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            kpiSpecification,
+            distribution,
             restrictions,
         );
     }
@@ -62,7 +62,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        kpiSpecification,
+        distribution,
         restrictions,
     );
 }

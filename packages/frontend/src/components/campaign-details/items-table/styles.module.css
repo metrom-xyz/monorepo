@@ -1,0 +1,58 @@
+@reference "../../../app.css";
+
+.root {
+    @apply bg-white dark:bg-neutral-900 rounded-b-xl;
+}
+
+.root.expired {
+    @apply rounded-t-xl;
+}
+
+.tableWrapper {
+    @apply overflow-x-scroll sm:overflow-x-auto;
+}
+
+.table {
+    @apply min-w-[50rem] grid gap-x-8 items-center;
+}
+
+.table.rewards {
+    @apply grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.1fr];
+}
+
+.header {
+    @apply grid
+        grid-cols-subgrid
+        col-span-full
+        items-center
+        px-3
+        sm:px-5
+        py-5
+        border-b
+        stroke-divider;
+}
+
+.body {
+    @apply sm:w-full
+        overflow-x-hidden
+        my-0
+        grid
+        grid-cols-subgrid
+        col-span-full;
+}
+
+.empty {
+    @apply h-[4.188rem] px-3 py-5 grid col-span-full items-center justify-center;
+}
+
+.column {
+    @apply w-full flex items-center gap-1;
+}
+
+.footer {
+    @apply w-full flex px-5 py-3 border-t stroke-divider;
+}
+
+.toggleEndedButton > div {
+    @apply font-semibold;
+}

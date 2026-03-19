@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: CampaignDetailsPageProps) {
     const t = await getTranslations();
 
     try {
-        const campaignData = await METROM_API_CLIENT.fetchCampaign({
+        const campaignData = await METROM_API_CLIENT.fetchAggregatedCampaign({
             id: campaignId,
             chainType,
             chainId: parseInt(chain),

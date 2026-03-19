@@ -1,0 +1,53 @@
+@reference "../../../../app.css";
+
+.accordion,
+.accordion > :global(.preview) {
+    @apply grid col-span-full grid-cols-subgrid rounded-none;
+}
+
+.accordion > :global(.preview) {
+    @apply min-h-[4.188rem] gap-x-8
+        bg-white
+        dark:bg-neutral-900
+        stroke-divider
+        hover:bg-gray-150
+        dark:hover:bg-neutral-800;
+}
+
+.accordion:not(:first-child) > :global(.preview) {
+    @apply border-t;
+}
+
+.accordion > :global(.content) {
+    @apply px-5 grid col-span-full bg-white dark:bg-neutral-900;
+}
+
+.idColumn {
+    @apply flex items-center gap-2;
+}
+
+.content {
+    @apply flex flex-col gap-5 my-4 rounded-2xl bg-gray-150 dark:bg-neutral-800;
+}
+
+.skeleton {
+    @apply min-h-[4.188rem]
+        pointer-events-none
+        px-4
+        grid
+        col-span-full
+        grid-cols-subgrid
+        items-center
+        rounded-none
+        stroke-divider
+        hover:bg-gray-150
+        dark:hover:bg-neutral-800;
+}
+
+.skeleton:not(:first-child) {
+    @apply border-t;
+}
+
+.skeletonStatus {
+    @apply flex items-center gap-1;
+}

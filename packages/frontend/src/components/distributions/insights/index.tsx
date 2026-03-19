@@ -2,8 +2,8 @@ import {
     CAMPAIGN_TARGET_TO_KIND,
     DistributablesType,
     KpiMetric,
-    type Campaign,
-    type KpiSpecification,
+    SpecificationDistributionType,
+    type KpiDistributionSpecification,
 } from "@metrom-xyz/sdk";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
@@ -17,11 +17,12 @@ import { formatAmount } from "@/src/utils/format";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 import { TargetValueChange } from "./target-value-change";
 import classNames from "classnames";
+import type {  AggregatedCampaignItem } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface InsightsProps {
-    campaign: Campaign;
+    campaign: AggregatedCampaignItem;
     loading?: boolean;
 }
 
@@ -34,12 +35,18 @@ export function Insights({ campaign }: InsightsProps) {
     const distributingTokens = campaign.isDistributing(
         DistributablesType.Tokens,
     );
-    const withKpi = !!campaign.specification?.kpi;
+    const withKpi =
+        campaign.specification?.distribution?.type ===
+        SpecificationDistributionType.Kpi;
 
     const { measurement: kpiMeasurementPercentage, minimumPayoutPercentage } =
-        useMemo<KpiSpecification>(() => {
-            if (!campaign.specification?.kpi)
+        useMemo<KpiDistributionSpecification>(() => {
+            if (
+                campaign.specification?.distribution?.type !==
+                SpecificationDistributionType.Kpi
+            )
                 return {
+                    type: SpecificationDistributionType.Kpi,
                     goal: {
                         metric: KpiMetric.RangePoolTvl,
                         lowerUsdTarget: 0,
@@ -48,7 +55,7 @@ export function Insights({ campaign }: InsightsProps) {
                 };
 
             const { goal, measurement, minimumPayoutPercentage } =
-                campaign.specification.kpi;
+                campaign.specification.distribution;
 
             return { goal, measurement, minimumPayoutPercentage };
         }, [campaign]);

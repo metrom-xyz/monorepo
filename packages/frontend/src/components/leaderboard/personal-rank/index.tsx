@@ -80,7 +80,7 @@ export function PersonalRank({
                             onClick={handleOnConnect}
                             className={styles.connectWallet}
                         >
-                            <Typography weight="semibold">
+                            <Typography weight="medium">
                                 {t("connect")}
                             </Typography>
                             <ArrowRightIcon className={styles.arrowIcon} />

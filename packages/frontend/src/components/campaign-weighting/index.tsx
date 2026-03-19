@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { WEIGHT_UNIT } from "@/src/commons";
 import { Typography } from "@metrom-xyz/ui";
 import { formatPercentage } from "@/src/utils/format";
+import { CampaignTag } from "../campaign-tag";
 
 import styles from "./styles.module.css";
 
@@ -25,52 +26,67 @@ export function CampaignWeighting({
     const liquidityWeight = (liquidity / WEIGHT_UNIT) * 100;
 
     return (
-        <div className={styles.root}>
-            <div className={styles.barWrapper}>
-                <div
-                    className={styles.bar}
-                    style={{ width: `${token0Weight}%` }}
-                ></div>
-                <div
-                    className={styles.bar}
-                    style={{ width: `${token1Weight}%` }}
-                ></div>
-                <div
-                    className={styles.bar}
-                    style={{ width: `${liquidityWeight}%` }}
-                ></div>
-            </div>
-            <div className={styles.labelsWrapper}>
-                <div className={styles.labels}>
-                    <Typography size="sm" weight="medium">
-                        {formatPercentage({ percentage: token0Weight })}
+        <CampaignTag
+            variant="secondary"
+            text={
+                <div className={styles.root}>
+                    <Typography size="sm" variant="tertiary">
+                        {t("rewardsRatio")}
                     </Typography>
-                    <Typography size="sm" weight="medium" variant="tertiary">
-                        {pool.tokens[0].symbol}
-                    </Typography>
+                    <div className={styles.labels}>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                        >
+                            {t.rich("token0", {
+                                symbol: pool.tokens[0].symbol,
+                                value: formatPercentage({
+                                    percentage: token0Weight,
+                                }),
+                                highlighted: (chunks) => (
+                                    <span className={styles.higlightedText}>
+                                        {chunks}
+                                    </span>
+                                ),
+                            })}
+                        </Typography>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                        >
+                            {t.rich("token1", {
+                                symbol: pool.tokens[1].symbol,
+                                value: formatPercentage({
+                                    percentage: token1Weight,
+                                }),
+                                highlighted: (chunks) => (
+                                    <span className={styles.higlightedText}>
+                                        {chunks}
+                                    </span>
+                                ),
+                            })}
+                        </Typography>
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            variant="tertiary"
+                        >
+                            {t.rich("fees", {
+                                value: formatPercentage({
+                                    percentage: liquidityWeight,
+                                }),
+                                highlighted: (chunks) => (
+                                    <span className={styles.higlightedText}>
+                                        {chunks}
+                                    </span>
+                                ),
+                            })}
+                        </Typography>
+                    </div>
                 </div>
-                <div className={styles.labels}>
-                    <Typography size="sm" weight="medium">
-                        {formatPercentage({ percentage: token1Weight })}
-                    </Typography>
-                    <Typography size="sm" weight="medium" variant="tertiary">
-                        {pool.tokens[1].symbol}
-                    </Typography>
-                </div>
-                <div className={styles.labels}>
-                    <Typography size="sm" weight="medium">
-                        {formatPercentage({ percentage: liquidityWeight })}
-                    </Typography>
-                    <Typography
-                        size="sm"
-                        weight="medium"
-                        variant="tertiary"
-                        uppercase
-                    >
-                        {t("fees")}
-                    </Typography>
-                </div>
-            </div>
-        </div>
+            }
+        />
     );
 }

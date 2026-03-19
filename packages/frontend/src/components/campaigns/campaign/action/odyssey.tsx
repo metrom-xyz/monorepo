@@ -1,11 +1,11 @@
-import type { TargetedNamedCampaign } from "@/src/types/campaign";
+import type { Campaign, TargetedNamedCampaign } from "@/src/types/campaign";
 import type { TargetType } from "@metrom-xyz/sdk";
 import type { ActionSizes } from ".";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { Typography } from "@metrom-xyz/ui";
 
 interface OdysseyProps<T extends TargetType.Odyssey> extends ActionSizes {
-    campaign: TargetedNamedCampaign<T>;
+    campaign: TargetedNamedCampaign<T, Campaign>;
 }
 
 export function Odyssey<T extends TargetType.Odyssey>({

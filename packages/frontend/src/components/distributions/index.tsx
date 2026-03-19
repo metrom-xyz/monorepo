@@ -20,7 +20,7 @@ import {
 import { type Address, type Hex } from "viem";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useCampaign } from "@/src/hooks/useCampaign";
+import { useAggregatedCampaign } from "@/src/hooks/useAggregatedCampaign";
 import { Header, SkeletonHeader } from "../campaign-details/header";
 import { Filters } from "./filters";
 import classNames from "classnames";
@@ -45,7 +45,7 @@ import { EmptyState } from "../empty-state";
 import { CalendarSearchIcon } from "@/src/assets/calendar-search-icon";
 import { getColorFromAddress } from "@/src/utils/address";
 import { SearchOffIcon } from "@/src/assets/search-off-icon";
-import { Insights, InsightsSkeleton } from "./insights";
+import { InsightsSkeleton } from "./insights";
 import { InfoMessage } from "../info-message";
 
 import styles from "./styles.module.css";
@@ -93,7 +93,7 @@ export function Distributions({
 
     const timestampTabsRef = useRef<HTMLDivElement | null>(null);
 
-    const { campaign, loading: loadingCampaign } = useCampaign({
+    const { campaign, loading: loadingCampaign } = useAggregatedCampaign({
         chainId: chain,
         chainType,
         id: campaignId,
@@ -288,7 +288,9 @@ export function Distributions({
             {loadingCampaign || !campaign ? (
                 <InsightsSkeleton />
             ) : (
-                <Insights campaign={campaign} />
+                // FIXME: enable insights
+                // <Insights campaign={campaign} />
+                <></>
             )}
             <Filters
                 campaign={campaign}

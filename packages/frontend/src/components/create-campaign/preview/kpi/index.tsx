@@ -18,7 +18,7 @@ interface KpiProps {
     from: BaseCampaignPayload["startDate"];
     to: BaseCampaignPayload["endDate"];
     distributables?: CampaignPayloadTokenDistributables;
-    specification: BaseCampaignPayload["kpiSpecification"];
+    distribution: BaseCampaignPayload["distribution"];
 }
 
 export function Kpi({
@@ -27,7 +27,7 @@ export function Kpi({
     from,
     to,
     distributables,
-    specification,
+    distribution,
 }: KpiProps) {
     const t = useTranslations("campaignPreview.kpi");
     const targetValueName = useCampaignTargetValueName({ kind });
@@ -42,12 +42,12 @@ export function Kpi({
         return total;
     }, [distributables]);
 
-    if (!specification) return null;
+    if (!distribution) return null;
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },
         minimumPayoutPercentage,
-    } = specification;
+    } = distribution;
 
     return (
         <div className={styles.root}>

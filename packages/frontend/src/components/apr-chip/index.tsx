@@ -3,7 +3,7 @@ import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import { AprInfoTooltip } from "../apr-info-tooltip";
-import type { Campaign } from "@/src/types/campaign";
+import { AggregatedCampaignItem, type Campaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
@@ -13,7 +13,7 @@ interface AprChipProps {
     prefix?: boolean;
     placeholder?: boolean;
     kpi?: boolean;
-    campaign?: Campaign;
+    campaign?: Campaign | AggregatedCampaignItem;
     className?: string;
 }
 
@@ -42,8 +42,13 @@ export function AprChip({
     return (
         <div className={styles.root}>
             {apr !== undefined && (
-                <>
-                    {campaign && <AprInfoTooltip campaign={campaign} />}
+                <AprInfoTooltip
+                    campaign={
+                        campaign && campaign instanceof AggregatedCampaignItem
+                            ? campaign
+                            : undefined
+                    }
+                >
                     <div
                         className={classNames(styles.chip, className, {
                             [styles.witkKpi]: kpi,
@@ -72,7 +77,7 @@ export function AprChip({
                             </Typography>
                         </div>
                     </div>
-                </>
+                </AprInfoTooltip>
             )}
             {apr === undefined && placeholder && (
                 <Typography size={sizes[size][1]} weight="medium">

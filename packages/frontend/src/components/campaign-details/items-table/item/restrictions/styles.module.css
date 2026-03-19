@@ -1,0 +1,49 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply max-w-screen-xl flex flex-col gap-3;
+}
+
+.titleWrapper {
+    @apply flex gap-2 items-center;
+}
+
+.dot {
+    @apply size-2 rounded-full;
+}
+
+.dot.blacklist {
+    @apply bg-error;
+}
+
+.dot.whitelist {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.red {
+    @apply text-error;
+}
+
+.green {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.list {
+    @apply flex flex-wrap gap-2;
+}
+
+.restriction {
+    @apply flex gap-2 items-center justify-between rounded-lg px-2 py-1 border border-gray-300 dark:border-neutral-700;
+}
+
+.restriction.blacklist.connected {
+    @apply bg-error/4 border-error/32;
+}
+
+.restriction.whitelist.connected {
+    @apply bg-brand-green-dark/4 dark:bg-brand-green/4 border-brand-green-dark/32 dark:border-brand-green/32;
+}
+
+.account {
+    @apply flex items-center gap-1;
+}

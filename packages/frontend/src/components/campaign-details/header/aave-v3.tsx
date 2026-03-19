@@ -1,17 +1,20 @@
 import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { TargetType, type AaveV3TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { RemoteLogo } from "../../remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Tags } from "./tags";
+import type {
+    AggregatedCampaign,
+    TargetedNamedCampaign,
+} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface AaveV3HeaderProps {
-    campaign: TargetedNamedCampaign<AaveV3TargetType>;
+    campaign: TargetedNamedCampaign<AaveV3TargetType, AggregatedCampaign>;
 }
 
 export function AaveV3Header({ campaign }: AaveV3HeaderProps) {

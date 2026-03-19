@@ -1,15 +1,12 @@
 import {
     Skeleton,
+    Typography,
     type RemoteLogoSize,
     type TypographySize,
 } from "@metrom-xyz/ui";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import classNames from "classnames";
-import {
-    DistributablesType,
-    RestrictionType,
-    TargetType,
-} from "@metrom-xyz/sdk";
+import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import type { Campaign } from "@/src/types/campaign";
 import { LiquityV2 } from "./liquity-v2";
@@ -23,6 +20,7 @@ import { DynamicPointsBoostChip } from "@/src/components/dynamic-points-boost-ch
 import { CampaignTag } from "@/src/components/campaign-tag";
 import { YieldSeeker } from "./yield-seeker";
 import { Odyssey } from "./odyssey";
+import { ElementPlusIcon } from "@/src/assets/element-plus-icon";
 
 import styles from "./styles.module.css";
 
@@ -103,16 +101,30 @@ export function Action({
             )}
             {!hideChips && (
                 <div className={styles.tags}>
-                    {campaign.specification?.kpi && (
-                        <CampaignTag text={t("kpi")} />
+                    {campaign.hasKpi && <CampaignTag text={t("kpi")} />}
+                    {campaign.opportunitiesAmount > 1 && (
+                        <CampaignTag
+                            variant="secondary"
+                            text={
+                                <div className={styles.grouped}>
+                                    <ElementPlusIcon
+                                        className={styles.groupedIcon}
+                                    />
+                                    <Typography size="xs" weight="medium">
+                                        {campaign.opportunitiesAmount}
+                                    </Typography>
+                                </div>
+                            }
+                        />
                     )}
-                    {campaign.specification?.priceRange && (
+                    {/* TODO: we need hasRange and hasRestrictions if we want to show these */}
+                    {/* {campaign.specification?.priceRange && (
                         <CampaignTag text={t("pool.range")} />
                     )}
                     {campaign.restrictions?.type ===
                         RestrictionType.Whitelist && (
                         <CampaignTag text={t("restricted")} />
-                    )}
+                    )} */}
                 </div>
             )}
         </div>

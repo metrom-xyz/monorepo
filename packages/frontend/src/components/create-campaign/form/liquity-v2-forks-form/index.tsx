@@ -40,7 +40,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        kpiSpecification,
+        distribution,
         restrictions,
     } = payload;
 
@@ -62,7 +62,7 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            kpiSpecification,
+            distribution,
             restrictions,
         );
     }
@@ -74,7 +74,7 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        kpiSpecification,
+        distribution,
         restrictions,
     );
 }
@@ -244,7 +244,7 @@ export function LiquityV2ForksForm({
                     }
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    kpiSpecification={payload.kpiSpecification}
+                    distribution={payload.distribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
