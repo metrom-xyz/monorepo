@@ -1,3 +1,3 @@
-||Arbitrum One|Aptos|
-|---|---|---|
-|[Aave](https://aave.com/)|○|●|
+||Aptos|
+|---|---|
+|[Aave](https://aave.com/)|●|

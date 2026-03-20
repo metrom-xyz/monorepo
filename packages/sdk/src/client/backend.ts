@@ -109,6 +109,7 @@ const BI_1_000_000 = BigInt(1_000_000);
 
 const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.UniswapV3]: "Uniswap v3",
+    [SupportedDex.UniswapV4]: "Uniswap v4",
     [SupportedDex.TestIntegral]: "Test Integral",
     [SupportedDex.Swapsicle]: "Swapsicle",
     [SupportedDex.Panko]: "Panko",

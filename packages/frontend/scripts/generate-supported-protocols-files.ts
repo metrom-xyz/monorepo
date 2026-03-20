@@ -21,6 +21,7 @@ const DEX_HOMEPAGE: Record<SupportedDex, string> = {
     [SupportedDex.ThirdTrade]: "https://third.trade/",
     [SupportedDex.Unagi]: "https://unagiswap.xyz/",
     [SupportedDex.UniswapV3]: "https://app.uniswap.org/",
+    [SupportedDex.UniswapV4]: "https://app.uniswap.org/",
     [SupportedDex.Carbon]: "https://carbondefi.xyz/",
     [SupportedDex.Velodrome]: "https://velo.drome.eth.limo/",
     [SupportedDex.Morphex]: "https://morphex.exchange/",
