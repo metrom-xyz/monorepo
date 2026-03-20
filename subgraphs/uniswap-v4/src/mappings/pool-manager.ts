@@ -1,4 +1,4 @@
-import { Address, Bytes, crypto, log } from "@graphprotocol/graph-ts";
+import { Address, Bytes, crypto } from "@graphprotocol/graph-ts";
 import {
     Initialize as InitializeEvent,
     Swap as SwapEvent,
@@ -8,6 +8,7 @@ import {
 import { Position, Pool } from "../../generated/schema";
 import {
     BI_0,
+    BI_MINUS_1,
     getFeeAdjustedAmount,
     getOrCreateNftPosition,
     getOrCreateTick,
@@ -45,17 +46,23 @@ export function handleSwap(event: SwapEvent): void {
     const pool = Pool.load(event.params.id);
     if (pool === null) return;
 
-    pool.liquidity = event.params.liquidity;
-    pool.token0Tvl = pool.token0Tvl.plus(
-        getFeeAdjustedAmount(event.params.amount0, pool.fee),
+    const amount0 = getFeeAdjustedAmount(
+        event.params.amount0.times(BI_MINUS_1),
+        pool.fee,
     );
-    pool.token1Tvl = pool.token1Tvl.plus(
-        getFeeAdjustedAmount(event.params.amount1, pool.fee),
+    const amount1 = getFeeAdjustedAmount(
+        event.params.amount1.times(BI_MINUS_1),
+        pool.fee,
     );
-    pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
 
+    pool.liquidity = event.params.liquidity;
+    pool.token0Tvl = pool.token0Tvl.plus(amount0);
+    pool.token1Tvl = pool.token1Tvl.plus(amount1);
+    pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
+    pool.fee = event.params.fee;
     pool.tick = event.params.tick;
     pool.sqrtPriceX96 = event.params.sqrtPriceX96;
+
     pool.save();
 }
 
@@ -151,7 +158,6 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
 
     if (event.params.liquidityDelta.isZero()) return;
 
-    let positionId: Bytes;
     if (event.params.sender == POSITION_MANAGER_ADDRESS) {
         const position = getOrCreateNftPosition(
             pool,
@@ -164,8 +170,6 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
             event.params.liquidityDelta,
         );
         position.save();
-
-        positionId = position.id;
     } else {
         const position = getOrCreateDirectPosition(
             pool,
@@ -179,8 +183,6 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
             event.params.liquidityDelta,
         );
         position.save();
-
-        positionId = position.id;
     }
 }
 

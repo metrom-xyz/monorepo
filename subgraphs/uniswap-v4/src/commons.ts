@@ -12,6 +12,7 @@ import { Erc20BytesName } from "../generated/PoolManager/Erc20BytesName";
 import { hexToBigInt } from "./math";
 
 export const BI_0 = BigInt.zero();
+export const BI_MINUS_1 = BigInt.fromString("-1");
 export const BI_1 = BigInt.fromI32(1);
 export const BI_1_000_000 = BigInt.fromI32(1_000_000);
 export const BI_MAX_U256 = hexToBigInt(
