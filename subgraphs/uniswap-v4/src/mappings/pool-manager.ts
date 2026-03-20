@@ -5,20 +5,13 @@ import {
     ModifyLiquidity as ModifyLiquidityEvent,
     Donate as DonateEvent,
 } from "../../generated/PoolManager/PoolManager";
-import {
-    Position,
-    Pool,
-    LiquidityChange,
-    SwapChange,
-} from "../../generated/schema";
+import { Position, Pool } from "../../generated/schema";
 import {
     BI_0,
-    getEventId,
     getFeeAdjustedAmount,
     getOrCreateNftPosition,
     getOrCreateTick,
     getOrCreateToken,
-    getPoolOrThrow,
     getPrice,
 } from "../commons";
 import { POSITION_MANAGER_ADDRESS } from "../constants";
@@ -27,19 +20,11 @@ import { getAmount0, getAmount1, hexToBigInt } from "../math";
 export function handleInitialize(event: InitializeEvent): void {
     const token0 = getOrCreateToken(event.params.currency0);
     if (token0 === null) {
-        log.warning(
-            "Could not correctly resolve ERC20 token 0 at address {}, skipping pool indexing",
-            [event.params.currency0.toHexString()],
-        );
         return;
     }
 
     const token1 = getOrCreateToken(event.params.currency1);
     if (token1 === null) {
-        log.warning(
-            "Could not correctly resolve ERC20 token 1 at address {}, skipping pool indexing",
-            [event.params.currency1.toHexString()],
-        );
         return;
     }
 
@@ -57,7 +42,9 @@ export function handleInitialize(event: InitializeEvent): void {
 }
 
 export function handleSwap(event: SwapEvent): void {
-    const pool = getPoolOrThrow(event.params.id);
+    const pool = Pool.load(event.params.id);
+    if (pool === null) return;
+
     pool.liquidity = event.params.liquidity;
     pool.token0Tvl = pool.token0Tvl.plus(
         getFeeAdjustedAmount(event.params.amount0, pool.fee),
@@ -66,19 +53,6 @@ export function handleSwap(event: SwapEvent): void {
         getFeeAdjustedAmount(event.params.amount1, pool.fee),
     );
     pool.price = getPrice(event.params.sqrtPriceX96, pool.token0, pool.token1);
-
-    if (
-        event.params.sqrtPriceX96.notEqual(pool.sqrtPriceX96) ||
-        event.params.tick != pool.tick
-    ) {
-        const swapChange = new SwapChange(getEventId(event));
-        swapChange.timestamp = event.block.timestamp;
-        swapChange.blockNumber = event.block.number;
-        swapChange.pool = pool.id;
-        swapChange.tick = event.params.tick;
-        swapChange.sqrtPriceX96 = event.params.sqrtPriceX96;
-        swapChange.save();
-    }
 
     pool.tick = event.params.tick;
     pool.sqrtPriceX96 = event.params.sqrtPriceX96;
@@ -104,17 +78,15 @@ function getDirectPositionId(
 }
 
 function getOrCreateDirectPosition(
-    poolId: Bytes,
+    pool: Pool,
     owner: Address,
     lowerTick: i32,
     upperTick: i32,
     salt: Bytes,
 ): Position {
-    const id = getDirectPositionId(poolId, owner, lowerTick, upperTick, salt);
+    const id = getDirectPositionId(pool.id, owner, lowerTick, upperTick, salt);
     let position = Position.load(id);
     if (position != null) return position;
-
-    const pool = getPoolOrThrow(poolId);
 
     position = new Position(id);
     position.owner = owner;
@@ -129,7 +101,9 @@ function getOrCreateDirectPosition(
 }
 
 export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
-    const pool = getPoolOrThrow(event.params.id);
+    const pool = Pool.load(event.params.id);
+    if (pool === null) return;
+
     pool.token0Tvl = pool.token0Tvl.plus(
         getAmount0(
             event.params.tickLower,
@@ -180,6 +154,7 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
     let positionId: Bytes;
     if (event.params.sender == POSITION_MANAGER_ADDRESS) {
         const position = getOrCreateNftPosition(
+            pool,
             hexToBigInt(event.params.salt.toHexString()),
         );
         position.pool = pool.id;
@@ -193,7 +168,7 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
         positionId = position.id;
     } else {
         const position = getOrCreateDirectPosition(
-            pool.id,
+            pool,
             event.params.sender,
             event.params.tickLower,
             event.params.tickUpper,
@@ -207,17 +182,12 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
 
         positionId = position.id;
     }
-
-    const liquidityChange = new LiquidityChange(getEventId(event));
-    liquidityChange.timestamp = event.block.timestamp;
-    liquidityChange.blockNumber = event.block.number;
-    liquidityChange.delta = event.params.liquidityDelta;
-    liquidityChange.position = positionId;
-    liquidityChange.save();
 }
 
 export function handleDonate(event: DonateEvent): void {
-    const pool = getPoolOrThrow(event.params.id);
+    const pool = Pool.load(event.params.id);
+    if (pool === null) return;
+
     pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
     pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
 

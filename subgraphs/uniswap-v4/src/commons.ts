@@ -1,20 +1,10 @@
-import {
-    Address,
-    BigDecimal,
-    BigInt,
-    Bytes,
-    ethereum,
-} from "@graphprotocol/graph-ts";
-import { Pool, Position, Tick, Token } from "../generated/schema";
-import { PositionManager } from "../generated/PositionManager/PositionManager";
-import { PoolManager } from "../generated/PoolManager/PoolManager";
+import { Address, BigDecimal, BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { _NftMint, Pool, Position, Tick, Token } from "../generated/schema";
 import {
     NATIVE_TOKEN_ADDRESS,
     NATIVE_TOKEN_DECIMALS,
     NATIVE_TOKEN_NAME,
     NATIVE_TOKEN_SYMBOL,
-    POOL_MANAGER_ADDRESS,
-    POSITION_MANAGER_ADDRESS,
 } from "./constants";
 import { Erc20 } from "../generated/PoolManager/Erc20";
 import { Erc20BytesSymbol } from "../generated/PoolManager/Erc20BytesSymbol";
@@ -46,24 +36,6 @@ export const BD_Q192 = BigDecimal.fromString(
 );
 
 export const BYTES_EMPTY_POOL_ID = Bytes.fromHexString("0x00");
-
-export const PositionManagerContract = PositionManager.bind(
-    POSITION_MANAGER_ADDRESS,
-);
-export const PoolManagerContract = PoolManager.bind(POOL_MANAGER_ADDRESS);
-
-export function getEventId(event: ethereum.Event): Bytes {
-    return changetype<Bytes>(
-        event.block.number.leftShift(40).plus(event.logIndex).reverse(),
-    );
-}
-
-export function getPoolOrThrow(id: Bytes): Pool {
-    let pool = Pool.load(id);
-    if (pool != null) return pool;
-
-    throw new Error(`Could not find pool with id ${id.toHex()}`);
-}
 
 export function getTokenOrThrow(address: Address): Token {
     let token = Token.load(address);
@@ -99,7 +71,18 @@ export function fetchTokenName(address: Address): string | null {
 export function fetchTokenDecimals(address: Address): i32 {
     let contract = Erc20.bind(address);
     let result = contract.try_decimals();
-    return result.reverted ? -1 : result.value.toI32();
+
+    if (result.reverted) {
+        return -1;
+    }
+
+    let value = result.value;
+
+    if (!value.isI32()) {
+        return -1;
+    }
+
+    return value.toI32();
 }
 
 export function getOrCreateToken(address: Address): Token | null {
@@ -191,18 +174,24 @@ export function getNftPositionId(tokenId: BigInt): Bytes {
     return Bytes.fromByteArray(Bytes.fromBigInt(tokenId));
 }
 
-export function getOrCreateNftPosition(tokenId: BigInt): Position {
+export function getOrCreateNftPosition(pool: Pool, tokenId: BigInt): Position {
     const id = getNftPositionId(tokenId);
     let position = Position.load(id);
     if (position != null) return position;
 
+    const mint = _NftMint.load(Bytes.fromByteArray(Bytes.fromBigInt(tokenId)));
+    if (mint === null)
+        throw new Error(
+            `Missing direct mint for mint of NFT with id ${tokenId}`,
+        );
+
     position = new Position(id);
-    position.owner = Address.zero();
+    position.owner = mint.owner;
     position.lowerTick = 0;
     position.upperTick = 0;
     position.liquidity = BI_0;
     position.direct = false;
-    position.pool = BYTES_EMPTY_POOL_ID;
+    position.pool = pool.id;
     position.save();
 
     return position;

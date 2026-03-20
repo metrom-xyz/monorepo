@@ -28,36 +28,15 @@ type Position @entity(immutable: false) {
     pool: Pool!
 }
 
-type LiquidityChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    delta: BigInt!
-    position: Position!
-}
-
-type LiquidityTransfer @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    from: Bytes!
-    to: Bytes!
-    position: Position!
-}
-
-type SwapChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    pool: Pool!
-    tick: Int!
-    sqrtPriceX96: BigInt!
-}
-
 type Tick @entity(immutable: false) {
     id: Bytes!
     idx: Int!
     pool: Pool!
     liquidityGross: BigInt!
     liquidityNet: BigInt!
+}
+
+type _NftMint @entity(immutable: true) {
+    id: Bytes!
+    owner: Bytes!
 }
