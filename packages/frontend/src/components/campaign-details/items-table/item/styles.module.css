@@ -6,7 +6,7 @@
 }
 
 .accordion > :global(.preview) {
-    @apply min-h-[4.188rem] gap-x-8
+    @apply h-[4.25rem] gap-x-8
         bg-white
         dark:bg-neutral-900
         stroke-divider
@@ -31,7 +31,7 @@
 }
 
 .skeleton {
-    @apply min-h-[4.188rem]
+    @apply h-[4.25rem]
         pointer-events-none
         px-4
         grid
