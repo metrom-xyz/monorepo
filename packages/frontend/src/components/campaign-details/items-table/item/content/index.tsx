@@ -91,7 +91,7 @@ export function ItemContent({ item }: ItemContentProps) {
                 ))}
             </Tabs>
             <div className={styles.tabContentWrapper}>
-                {tab === TabType.Kpi && tokensItem && <Kpi campaign={item} />}
+                {tab === TabType.Kpi && tokensItem && <Kpi item={item} />}
                 {tab === TabType.Range && ammPoolLiquidityItem && (
                     <PriceRange campaign={item} />
                 )}

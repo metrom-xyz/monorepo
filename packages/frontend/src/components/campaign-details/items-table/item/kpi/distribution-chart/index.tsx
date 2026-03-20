@@ -35,7 +35,7 @@ export interface DistributionChartData {
 }
 
 interface DistributionChartProps {
-    campaign?: DistributablesNamedCampaign<
+    item?: DistributablesNamedCampaign<
         DistributablesType.Tokens,
         AggregatedCampaignItem
     >;
@@ -51,7 +51,7 @@ const Y_AXIS_TICKS = [0, 1];
 const BAR_CHART_STYLES = { cursor: "pointer" };
 
 export function DistributionChart({
-    campaign,
+    item,
     minimumPayoutPercentage = 0,
     loading,
 }: DistributionChartProps) {
@@ -62,7 +62,7 @@ export function DistributionChart({
     const [to, setTo] = useState<number>();
 
     const { kpiMeasurements, loading: loadingKpiMeasurements } =
-        useKpiMeasurements({ campaign, from, to });
+        useKpiMeasurements({ campaign: item, from, to });
 
     const chartData: DistributionChartData[] = useMemo(() => {
         if (!kpiMeasurements || kpiMeasurements.length === 0) return [];
@@ -96,21 +96,21 @@ export function DistributionChart({
     }, [kpiMeasurements, minimumPayoutPercentage]);
 
     const weeksCount = useMemo(() => {
-        if (!campaign) return 0;
+        if (!item) return 0;
 
         const campaignDaysDuration =
             dayjs
-                .unix(Math.min(campaign.to, dayjs().unix()))
-                .diff(dayjs.unix(campaign.from), "hours") / 24;
+                .unix(Math.min(item.to, dayjs().unix()))
+                .diff(dayjs.unix(item.from), "hours") / 24;
         const weeks = campaignDaysDuration / 7;
 
         return weeks > 1 ? weeks : 0;
-    }, [campaign]);
+    }, [item]);
 
     const getWeekOnClickHandler = useCallback(
         (newWeek: number) => {
             return () => {
-                if (!campaign) return;
+                if (!item) return;
 
                 if (week === newWeek) {
                     setFrom(undefined);
@@ -120,7 +120,7 @@ export function DistributionChart({
                 }
 
                 const from = dayjs
-                    .unix(campaign.from)
+                    .unix(item.from)
                     .utc()
                     .add(newWeek, "weeks")
                     .unix();
@@ -131,10 +131,10 @@ export function DistributionChart({
                 setTo(to);
             };
         },
-        [campaign, week],
+        [item, week],
     );
 
-    if (!campaign || loading)
+    if (!item || loading)
         return (
             <Card className={styles.root}>
                 <div className={styles.header}>
@@ -271,9 +271,7 @@ export function DistributionChart({
                         <Tooltip
                             isAnimationActive={false}
                             cursor={false}
-                            content={
-                                <TooltipContent chain={campaign?.chainId} />
-                            }
+                            content={<TooltipContent chain={item?.chainId} />}
                         />
                     </BarChart>
                 </ResponsiveContainer>

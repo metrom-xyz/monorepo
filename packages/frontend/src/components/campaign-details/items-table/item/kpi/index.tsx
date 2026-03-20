@@ -22,18 +22,18 @@ import { useWindowSize } from "react-use";
 import styles from "./styles.module.css";
 
 interface KpiProps {
-    campaign?: DistributablesNamedCampaign<
+    item?: DistributablesNamedCampaign<
         DistributablesType.Tokens,
         AggregatedCampaignItem
     >;
 }
 
-export function Kpi({ campaign }: KpiProps) {
+export function Kpi({ item }: KpiProps) {
     const t = useTranslations("campaignDetails.kpi");
 
     const { width } = useWindowSize();
     const { kpiMeasurements, loading: loadingKpiMeasurements } =
-        useKpiMeasurements({ campaign });
+        useKpiMeasurements({ campaign: item });
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },
@@ -41,7 +41,7 @@ export function Kpi({ campaign }: KpiProps) {
         minimumPayoutPercentage,
     } = useMemo<KpiDistributionSpecification>(() => {
         if (
-            campaign?.specification?.distribution?.type !==
+            item?.specification?.distribution?.type !==
             SpecificationDistributionType.Kpi
         )
             return {
@@ -54,43 +54,40 @@ export function Kpi({ campaign }: KpiProps) {
             };
 
         const { goal, measurement, minimumPayoutPercentage } =
-            campaign.specification.distribution;
+            item.specification.distribution;
 
         return { goal, measurement, minimumPayoutPercentage };
-    }, [campaign]);
+    }, [item]);
 
-    if (!campaign?.specification?.distribution) return null;
+    if (!item?.specification?.distribution) return null;
 
-    const specificationLoading = !campaign;
+    const specificationLoading = !item;
     // const reachedGoalPercentage = measurement || 0;
 
     let usdTvl: number | undefined;
-    if (campaign.status === Status.Expired)
+    if (item.status === Status.Expired)
         usdTvl =
             loadingKpiMeasurements || kpiMeasurements.length === 0
                 ? undefined
                 : kpiMeasurements[kpiMeasurements.length - 1].value;
-    else usdTvl = campaign.usdTvl;
+    else usdTvl = item.usdTvl;
 
     return (
         <div className={styles.root}>
-            {campaign.status !== Status.Expired && (
-                <KpiAprSummary item={campaign} />
-            )}
+            {item.status !== Status.Expired && <KpiAprSummary item={item} />}
             <div className={styles.distributionChartsWrapper}>
                 <DistributionChart
-                    campaign={campaign}
+                    item={item}
                     loading={loadingKpiMeasurements}
                     minimumPayoutPercentage={minimumPayoutPercentage}
                 />
                 <AverageDistributionChart
-                    chain={campaign.chainId}
+                    chain={item.chainId}
                     loading={loadingKpiMeasurements}
-                    distributables={campaign.distributables}
+                    distributables={item.distributables}
                     kpiMeasurementPercentage={measurement}
                     minimumPayoutPercentage={
-                        campaign.specification.distribution
-                            .minimumPayoutPercentage
+                        item.specification.distribution.minimumPayoutPercentage
                     }
                 />
             </div>
@@ -104,7 +101,7 @@ export function Kpi({ campaign }: KpiProps) {
                             weight="medium"
                         >
                             {t("chart", {
-                                targetValueName: campaign.targetValueName,
+                                targetValueName: item.targetValueName,
                             })}
                         </Typography>
                         <div className={styles.chartWrapper}>
@@ -115,16 +112,12 @@ export function Kpi({ campaign }: KpiProps) {
                                     specificationLoading ||
                                     loadingKpiMeasurements
                                 }
-                                targetValueName={campaign.targetValueName}
+                                targetValueName={item.targetValueName}
                                 targetUsdValue={usdTvl}
-                                campaignEnded={
-                                    campaign.status === Status.Expired
-                                }
-                                campaignDurationSeconds={
-                                    campaign.to - campaign.from
-                                }
+                                campaignEnded={item.status === Status.Expired}
+                                campaignDurationSeconds={item.to - item.from}
                                 totalRewardsUsd={
-                                    campaign.distributables.amountUsdValue
+                                    item.distributables.amountUsdValue
                                 }
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
