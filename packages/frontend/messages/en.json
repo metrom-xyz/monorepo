@@ -634,6 +634,8 @@
         "content": {
             "tvl": "TVL",
             "apr": "APR",
+            "aggregatedApr": "Aggregated APR",
+            "combinedApr": "Combined APR from all active incentive campaigns for this target.",
             "tokens": "Tokens",
             "dailyRewards": "Daily rewards",
             "totalValue": "Total value",
