@@ -5,7 +5,7 @@
 }
 
 .titleContainer {
-    @apply flex flex-col sm:flex-row gap-1 items-center;
+    @apply flex flex-col sm:flex-row gap-1 sm:items-center;
 }
 
 .titleContainer.spaced {
@@ -17,7 +17,7 @@
 }
 
 .distributionsLink {
-    @apply flex items-center gap-1 justify-self-end;
+    @apply max-h-4 flex items-center gap-1 justify-self-end;
 }
 
 .distributionsLink > svg {

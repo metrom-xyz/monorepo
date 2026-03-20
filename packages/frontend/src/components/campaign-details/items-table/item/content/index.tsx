@@ -83,7 +83,12 @@ export function ItemContent({ item }: ItemContentProps) {
 
     return (
         <div>
-            <Tabs value={tab} onChange={setTab} size="sm">
+            <Tabs
+                value={tab}
+                onChange={setTab}
+                size="sm"
+                className={styles.tabs}
+            >
                 {tabOptions.map(({ type, label }) => (
                     <UnderlinedTab key={type} value={type}>
                         {t(`tabs.${label}`)}
