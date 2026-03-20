@@ -1,6 +1,6 @@
 import type { AggregatedCampaign } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
-import { Typography } from "@metrom-xyz/ui";
+import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import {
     formatAmount,
@@ -27,7 +27,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
         kind: CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
     });
 
-    const { status, apr, usdTvl } = campaign;
+    const { status, apr, usdTvl, opportunitiesAmount } = campaign;
 
     const distributingTokens = campaign?.isDistributing(
         DistributablesType.Tokens,
@@ -65,8 +65,17 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                                 [styles.lightText]: blueApr || orangeApr,
                             })}
                         >
-                            {t("apr")}
+                            {opportunitiesAmount > 1
+                                ? t("aggregatedApr")
+                                : t("apr")}
                         </Typography>
+                        {opportunitiesAmount > 1 && (
+                            <InfoTooltip className={styles.infoTooltip}>
+                                <Typography size="sm">
+                                    {t("combinedApr")}
+                                </Typography>
+                            </InfoTooltip>
+                        )}
                     </div>
                     <Typography
                         size="xl2"

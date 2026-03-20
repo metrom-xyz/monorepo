@@ -48,7 +48,11 @@
 }
 
 .label {
-    @apply sm:w-full flex items-center justify-between gap-2;
+    @apply sm:w-full flex items-center gap-2;
+}
+
+.infoTooltip :global(.icon) {
+    @apply text-white;
 }
 
 .box:first-child {
