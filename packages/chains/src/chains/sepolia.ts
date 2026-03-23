@@ -14,6 +14,7 @@ import { CarbonLogo } from "../assets/logos/dexes/carbon";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import { BalancerLogo } from "../assets/logos/dexes/balancer";
+import { UniswapLogo } from "../assets";
 
 export const sepoliaData: ChainData = {
     active: true,
@@ -99,6 +100,19 @@ export const sepoliaData: ChainData = {
                 template: "https://balancer.fi/pools/sepolia/v2/{pool}",
             },
             supportsFetchAllPools: false,
+        },
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.UniswapV4,
+            logo: UniswapLogo,
+            name: "Uniswap v4",
+            depositUrl: {
+                type: DepositUrlType.PathTokenAddresses,
+                template:
+                    "https://app.uniswap.org/explore/pools/sepolia/{pool}",
+            },
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [

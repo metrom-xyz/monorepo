@@ -9,6 +9,7 @@ export enum SupportedAmm {
     AlgebraIntegral = "algebra-integral",
     Velodrome = "velodrome",
     UniswapV3 = "uniswap-v3",
+    UniswapV4 = "uniswap-v4",
     Carbon = "carbon",
     PancakeV3 = "pancake-v3",
     Izumi = "izumi",
@@ -23,6 +24,7 @@ export enum SupportedAmm {
 
 export enum SupportedDex {
     UniswapV3 = "uniswap-v3",
+    UniswapV4 = "uniswap-v4",
     TestIntegral = "test-integral",
     Swapsicle = "swapsicle",
     Panko = "panko",
