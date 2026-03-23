@@ -35,8 +35,7 @@ export const megaethData: ChainData = {
             name: "Purrlend",
             markets: [
                 {
-                    address:
-                        "0x39ddcd9e1a39fa14f25e3f9ec8a86074d05cc0881cbf667df8a6ee70942016fb",
+                    address: "0x402d38c3415ad92a0e766e1491dc222871b1df7a",
                     name: "MegaETH market",
                     slug: "megaeth",
                 },
