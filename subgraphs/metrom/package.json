@@ -27,6 +27,7 @@
         "deploy:plasma": "npm run prepare:deploy plasma-mainnet && npm run codegen && graph build && goldsky subgraph deploy metrom-plasma/0.0.1",
         "deploy:saga": "npm run prepare:deploy saga-evm && npm run codegen && graph build && goldsky subgraph deploy metrom-saga/0.0.1",
         "deploy:bsc": "npm run prepare:deploy bsc && npm run codegen && graph deploy metrom-bsc -l 0.0.1",
+        "deploy:megaeth": "npm run prepare:deploy megaeth && npm run codegen && graph deploy metrom-megaeth -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },
@@ -38,7 +39,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.34.0",
-        "@metrom-xyz/contracts": "^0.54.0",
+        "@metrom-xyz/contracts": "^0.55.0",
         "@types/mustache": "^4.2.6",
         "@types/node": "^24.3.1",
         "eslint": "^9.34.0",
