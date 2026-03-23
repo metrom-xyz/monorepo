@@ -43,4 +43,24 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    base: {
+        nativeToken: {
+            address: "0x0000000000000000000000000000000000000000",
+            decimals: 18,
+            name: "Ether",
+            symbol: "ETH",
+        },
+        dexes: {
+            "uni-v4": {
+                PoolManager: {
+                    address: "0x498581ff718922c3f8e6a244956af099b2652b2b",
+                    startBlock: 25350988,
+                },
+                PositionManager: {
+                    address: "0x7c5f5a4bbd8fd63184577525326123b519429bdc",
+                    startBlock: 25350993,
+                },
+            },
+        },
+    },
 };
