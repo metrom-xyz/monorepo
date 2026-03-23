@@ -16,4 +16,12 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    megaeth: {
+        purrlend: {
+            PoolAddressesProviderRegistry: {
+                address: "0x09fe668F684Cd276f083c1b264441153B45075fC",
+                startBlock: 10506811,
+            },
+        },
+    },
 };
