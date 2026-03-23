@@ -11,28 +11,31 @@ export function getAmount0(
     const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickLower);
     const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickUpper);
 
+    const isNegative = amount.lt(BI_0);
+    const absAmount = isNegative ? amount.neg() : amount;
+    const roundUp = !isNegative;
+
     let amount0 = BI_0;
-    const roundUp = amount.gt(BI_0);
 
     if (currTick < tickLower) {
         amount0 = SqrtPriceMath.getAmount0Delta(
             sqrtRatioAX96,
             sqrtRatioBX96,
-            amount,
+            absAmount,
             roundUp,
         );
     } else if (currTick < tickUpper) {
         amount0 = SqrtPriceMath.getAmount0Delta(
             currSqrtPriceX96,
             sqrtRatioBX96,
-            amount,
+            absAmount,
             roundUp,
         );
     } else {
-        amount0 = BI_0;
+        return BI_0;
     }
 
-    return amount0;
+    return isNegative ? amount0.neg() : amount0;
 }
 
 export function getAmount1(
@@ -45,28 +48,31 @@ export function getAmount1(
     const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickLower);
     const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickUpper);
 
+    const isNegative = amount.lt(BI_0);
+    const absAmount = isNegative ? amount.neg() : amount;
+    const roundUp = !isNegative;
+
     let amount1 = BI_0;
-    const roundUp = amount.gt(BI_0);
 
     if (currTick < tickLower) {
-        amount1 = BI_0;
+        return BI_0;
     } else if (currTick < tickUpper) {
         amount1 = SqrtPriceMath.getAmount1Delta(
             sqrtRatioAX96,
             currSqrtPriceX96,
-            amount,
+            absAmount,
             roundUp,
         );
     } else {
         amount1 = SqrtPriceMath.getAmount1Delta(
             sqrtRatioAX96,
             sqrtRatioBX96,
-            amount,
+            absAmount,
             roundUp,
         );
     }
 
-    return amount1;
+    return isNegative ? amount1.neg() : amount1;
 }
 
 function mulShift(val: BigInt, mulBy: BigInt): BigInt {
@@ -203,6 +209,8 @@ export abstract class SqrtPriceMath {
         liquidity: BigInt,
         roundUp: boolean,
     ): BigInt {
+        if (liquidity.isZero()) return BI_0;
+
         if (sqrtRatioAX96.gt(sqrtRatioBX96)) {
             const temp = sqrtRatioAX96;
             sqrtRatioAX96 = sqrtRatioBX96;
@@ -234,6 +242,8 @@ export abstract class SqrtPriceMath {
         liquidity: BigInt,
         roundUp: boolean,
     ): BigInt {
+        if (liquidity.isZero()) return BI_0;
+
         if (sqrtRatioAX96.gt(sqrtRatioBX96)) {
             const temp = sqrtRatioAX96;
             sqrtRatioAX96 = sqrtRatioBX96;

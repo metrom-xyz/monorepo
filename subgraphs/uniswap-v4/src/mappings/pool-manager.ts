@@ -3,13 +3,11 @@ import {
     Initialize as InitializeEvent,
     Swap as SwapEvent,
     ModifyLiquidity as ModifyLiquidityEvent,
-    Donate as DonateEvent,
 } from "../../generated/PoolManager/PoolManager";
 import { Position, Pool } from "../../generated/schema";
 import {
     BI_0,
     BI_MINUS_1,
-    getFeeAdjustedAmount,
     getOrCreateNftPosition,
     getOrCreateTick,
     getOrCreateToken,
@@ -46,14 +44,8 @@ export function handleSwap(event: SwapEvent): void {
     const pool = Pool.load(event.params.id);
     if (pool === null) return;
 
-    const amount0 = getFeeAdjustedAmount(
-        event.params.amount0.times(BI_MINUS_1),
-        pool.fee,
-    );
-    const amount1 = getFeeAdjustedAmount(
-        event.params.amount1.times(BI_MINUS_1),
-        pool.fee,
-    );
+    const amount0 = event.params.amount0.times(BI_MINUS_1);
+    const amount1 = event.params.amount1.times(BI_MINUS_1);
 
     pool.liquidity = event.params.liquidity;
     pool.token0Tvl = pool.token0Tvl.plus(amount0);
@@ -184,14 +176,4 @@ export function handleModifyLiquidity(event: ModifyLiquidityEvent): void {
         );
         position.save();
     }
-}
-
-export function handleDonate(event: DonateEvent): void {
-    const pool = Pool.load(event.params.id);
-    if (pool === null) return;
-
-    pool.token0Tvl = pool.token0Tvl.plus(event.params.amount0);
-    pool.token1Tvl = pool.token1Tvl.plus(event.params.amount1);
-
-    pool.save();
 }

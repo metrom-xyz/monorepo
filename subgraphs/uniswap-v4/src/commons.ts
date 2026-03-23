@@ -134,17 +134,6 @@ export function getOrCreateTick(poolAddress: Bytes, idx: i32): Tick {
     return tick;
 }
 
-export function getFeeAdjustedAmount(amount: BigInt, fee: i32): BigInt {
-    // fees are taken from the input amount, so if the given amount
-    // is negative (i.e. removing from pool, we just leave the
-    // amount unchanged)
-    return amount.lt(BI_0)
-        ? amount
-        : amount
-              .times(BI_1_000_000.minus(BigInt.fromI32(fee)))
-              .div(BI_1_000_000);
-}
-
 function exponentToBigDecimal(decimals: i32): BigDecimal {
     let result = "1";
 
