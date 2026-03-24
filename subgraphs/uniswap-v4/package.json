@@ -7,6 +7,7 @@
         "codegen": "graph codegen",
         "deploy:uni-v4:sepolia": "npm run prepare:deploy sepolia uni-v4 && npm run codegen && graph deploy metrom-uni-v-4-sepolia -l 0.0.28",
         "deploy:uni-v4:base": "npm run prepare:deploy base uni-v4 && npm run codegen && graph deploy metrom-uni-v-4-base -l 0.0.1",
+        "deploy:uni-v4:megaeth": "npm run prepare:deploy megaeth uni-v4 && npm run codegen && graph deploy metrom-uni-v-4-megaeth -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

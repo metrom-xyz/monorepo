@@ -63,4 +63,24 @@ export const DEPLOYMENTS: {
             },
         },
     },
+    megaeth: {
+        nativeToken: {
+            address: "0x0000000000000000000000000000000000000000",
+            decimals: 18,
+            name: "Ether",
+            symbol: "ETH",
+        },
+        dexes: {
+            "uni-v4": {
+                PoolManager: {
+                    address: "0xacb7e78fa05d562e0a5d3089ec896d57d057d38e",
+                    startBlock: 7009653,
+                },
+                PositionManager: {
+                    address: "0x9ae0921e981aaa7308f176f8d4f9129b9247c89d",
+                    startBlock: 7009656,
+                },
+            },
+        },
+    },
 };
