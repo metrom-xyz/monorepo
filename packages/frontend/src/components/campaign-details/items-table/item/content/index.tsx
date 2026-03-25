@@ -105,7 +105,7 @@ export function ItemContent({ item }: ItemContentProps) {
                         chainId={item.chainId}
                         chainType={item.chainType}
                         restrictions={item.restrictions}
-                        distributablesType={item.distributables.type}
+                        // distributablesType={item.distributables.type}
                         leaderboard={leaderboard}
                         loading={loadingLeaderboard}
                     />

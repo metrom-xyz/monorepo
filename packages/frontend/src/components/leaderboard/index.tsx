@@ -1,6 +1,6 @@
 import {
     ChainType,
-    DistributablesType,
+    // DistributablesType,
     RestrictionType,
     type Restrictions,
     type UsdPricedErc20TokenAmount,
@@ -33,7 +33,7 @@ import { useWindowSize } from "react-use";
 import { useAccount } from "@/src/hooks/useAccount";
 import classNames from "classnames";
 import { EmptyState } from "../empty-state";
-import { Link, usePathname } from "@/src/i18n/routing";
+import {} from /* Link, usePathname */ "@/src/i18n/routing";
 
 import styles from "./styles.module.css";
 
@@ -41,7 +41,7 @@ interface LeaderboardProps {
     chainId?: SupportedChain;
     chainType?: ChainType;
     restrictions?: Restrictions;
-    distributablesType?: DistributablesType;
+    // distributablesType?: DistributablesType;
     leaderboard?: Leaderboard;
     noDistributionDate?: boolean;
     loading: boolean;
@@ -63,7 +63,7 @@ export function Leaderboard({
     chainId,
     chainType,
     restrictions,
-    distributablesType,
+    // distributablesType,
     leaderboard,
     noDistributionDate,
     loading,
@@ -73,7 +73,7 @@ export function Leaderboard({
 
     const { address: connectedAddress } = useAccount();
     const { width } = useWindowSize();
-    const pathname = usePathname();
+    // const pathname = usePathname();
 
     const whitelist = restrictions?.type === RestrictionType.Whitelist;
 

@@ -28,7 +28,7 @@ export function useCampaign(
             const [, chainId, chainType, id] = queryKey as QueryKey;
 
             try {
-                return await metromClient.fetchCampaign({
+                return await metromClient.fetchAggregatedCampaign({
                     chainId,
                     chainType,
                     id,
