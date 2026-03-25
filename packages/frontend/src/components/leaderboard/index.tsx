@@ -126,7 +126,8 @@ export function Leaderboard({
                     </div>
                 )}
                 {/* TODO: do we need to enable distributions page for points campaigns as well?` */}
-                {distributablesType === DistributablesType.Tokens && (
+                {/* TODO: reenable once single campaign fetching is working */}
+                {/* {distributablesType === DistributablesType.Tokens && (
                     <Link
                         href={`${pathname}/distributions`}
                         className={styles.distributionsLink}
@@ -136,7 +137,7 @@ export function Leaderboard({
                         </Typography>
                         <ArrowRightIcon />
                     </Link>
-                )}
+                )} */}
             </div>
             <div className={styles.cardsWrapper}>
                 <div className={styles.leaderboardWrapper}>
