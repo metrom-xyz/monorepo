@@ -158,7 +158,7 @@ export function AprInfoTooltip({ campaign, children }: AprInfoTooltiProps) {
         setPopover(false);
     }
 
-    if (!priceRange && !weighting && !aaveV3Collateral) return null;
+    if (!priceRange && !weighting && !aaveV3Collateral) return children;
 
     return (
         <>
