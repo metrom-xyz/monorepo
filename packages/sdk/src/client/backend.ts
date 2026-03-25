@@ -152,6 +152,7 @@ const LIQUITY_V2_BRAND_NAME: Record<SupportedLiquityV2, string> = {
 const AAVE_V3_BRAND_NAME: Record<SupportedAaveV3, string> = {
     [SupportedAaveV3.Aave]: "Aave",
     [SupportedAaveV3.Ploutos]: "Ploutos",
+    [SupportedAaveV3.Purrlend]: "Purrlend",
 };
 
 const BRIDGE_BRAND_NAME: Record<SupportedBridge, string> = {

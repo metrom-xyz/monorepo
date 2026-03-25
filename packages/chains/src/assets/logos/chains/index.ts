@@ -19,3 +19,4 @@ export * from "./sonic";
 export * from "./swell";
 export * from "./taiko";
 export * from "./telos";
+export * from "./megaeth";
