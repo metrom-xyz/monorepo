@@ -1,0 +1,62 @@
+@reference "../../../../../../app.css";
+
+.root {
+    @apply h-full flex flex-col gap-3 p-3 sm:p-4 bg-white dark:bg-neutral-900;
+}
+
+.header {
+    @apply w-full flex items-start justify-between h-7;
+}
+
+.leftContent {
+    @apply flex items-baseline gap-1;
+}
+
+.rightContent {
+    @apply hidden md:flex gap-1;
+}
+
+.skeletonChip :global(.skeleton) {
+    @apply rounded-[2.813rem] bg-gray-200 dark:bg-neutral-700;
+}
+
+.rightContent.loading {
+    @apply w-full flex justify-end;
+}
+
+.container {
+    @apply h-full min-h-72 outline-none;
+}
+
+.container.loading {
+    @apply flex items-end gap-1;
+}
+
+.container.empty {
+    @apply flex flex-col gap-2 justify-center items-center min-h-[18.75rem];
+}
+
+.loadingBar {
+    @apply h-72 animate-pulse w-full bg-gray-200 dark:bg-neutral-700 max-w-10 rounded-t-md;
+}
+
+.reimbursedBar {
+    @apply fill-gray-300 dark:fill-neutral-700;
+}
+
+.distributedBar {
+    @apply fill-brand-green-dark dark:fill-brand-green;
+}
+
+.timeTick {
+    @apply font-sans
+        uppercase
+        text-xs
+        leading-none
+        font-medium
+        fill-light-text-primary
+        dark:fill-dark-text-primary
+        transition-colors
+        duration-200
+        ease-in-out;
+}

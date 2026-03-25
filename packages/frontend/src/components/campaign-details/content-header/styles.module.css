@@ -18,13 +18,13 @@
         p-3
         sm:py-5
         sm:px-6
-        bg-gray-100
+        bg-gray-150
         dark:bg-neutral-800;
 }
 
 .box:not(:last-child),
 .tokenRewards:not(:last-child) {
-    @apply border-b-[0.125rem] sm:border-r-[0.125rem] sm:border-b-0 border-gray-150 dark:border-neutral-900;
+    @apply border-b-[0.125rem] sm:border-r-[0.125rem] sm:border-b-0 border-gray-200 dark:border-neutral-900;
 }
 
 .box.blue {
@@ -48,11 +48,11 @@
 }
 
 .label {
-    @apply sm:w-full flex items-center justify-between gap-2;
+    @apply sm:w-full flex items-center gap-2;
 }
 
-.infoIcon :global(.icon) {
-    @apply text-neutral-100;
+.infoTooltip :global(.icon) {
+    @apply text-white;
 }
 
 .box:first-child {
@@ -64,7 +64,7 @@
 }
 
 .tokenRewards {
-    @apply w-full flex flex-[2.6] flex-col sm:flex-row sm:gap-3 bg-gray-100 dark:bg-neutral-800;
+    @apply w-full flex flex-[2.6] flex-col sm:flex-row sm:gap-3 bg-gray-150 dark:bg-neutral-800;
 }
 
 .tokenRewards:last-child {
@@ -86,7 +86,7 @@
 }
 
 .rewardBox:not(:last-child) {
-    @apply border-b-[0.125rem] sm:border-b-0 border-gray-150 dark:border-neutral-900;
+    @apply border-b-[0.125rem] sm:border-b-0 border-gray-200 dark:border-neutral-900;
 }
 
 .tokenIcons {

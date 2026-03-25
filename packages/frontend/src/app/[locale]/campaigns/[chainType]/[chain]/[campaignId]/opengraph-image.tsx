@@ -4,7 +4,7 @@ import type { CampaignDetailsPageProps } from "./page";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { Campaign } from "@/src/types/campaign";
+import { AggregatedCampaign } from "@/src/types/campaign";
 import { getTranslations } from "next-intl/server";
 import {
     getCampaignTargetValueName,
@@ -53,13 +53,13 @@ async function getCampaign(
     try {
         const t = await getTranslations();
 
-        const campaign = await METROM_API_CLIENT.fetchCampaign({
+        const campaign = await METROM_API_CLIENT.fetchAggregatedCampaign({
             id,
             chainType,
             chainId,
         });
 
-        return new Campaign(
+        return new AggregatedCampaign(
             campaign,
             await getSocialPreviewCampaignName(campaign),
             getCampaignTargetValueName(
@@ -174,147 +174,128 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
         campaign.isTargeting(TargetType.AaveV3BridgeAndSupply);
 
     return new ImageResponse(
-        (
+        <div
+            tw="w-full h-full flex flex-col p-16 bg-gray-100"
+            style={{ gap: 4 }}
+        >
+            <div tw="w-full flex items-center justify-end" style={{ gap: 12 }}>
+                <span tw="text-2xl">METROM.XYZ</span>
+                <MetromSquareLogo width={48} height={48} />
+            </div>
+            <div tw="w-full flex items-center gap-6" style={{ gap: 24 }}>
+                {!!protocol?.logo && (
+                    <div tw="flex w-32 h-32">
+                        <protocol.logo width={128} height={128} />
+                    </div>
+                )}
+                <span tw="text-[52px]">{campaign.name}</span>
+            </div>
             <div
-                tw="w-full h-full flex flex-col p-16 bg-gray-100"
-                style={{ gap: 4 }}
+                tw="flex flex-col p-7 rounded-2xl mt-16 bg-white"
+                style={{ gap: 64 }}
             >
-                <div
-                    tw="w-full flex items-center justify-end"
-                    style={{ gap: 12 }}
-                >
-                    <span tw="text-2xl">METROM.XYZ</span>
-                    <MetromSquareLogo width={48} height={48} />
+                <div tw="flex items-center justify-between">
+                    <div tw="flex items-center">
+                        {aaveV3 && (
+                            <AaveV3
+                                address={campaign.target.collateral.address}
+                                symbol={campaign.target.collateral.symbol}
+                                tokenUris={tokenUris}
+                            />
+                        )}
+                        {ammPoolLiquidity && (
+                            <AmmLiquidityPool
+                                pool={campaign.target.pool}
+                                tokenUris={tokenUris}
+                            />
+                        )}
+                        {liquityV2 && (
+                            <LiquityV2
+                                address={campaign.target.collateral.address}
+                                symbol={campaign.target.collateral.symbol}
+                                tokenUris={tokenUris}
+                            />
+                        )}
+                    </div>
+                    <KpiAndApr apr={campaign.apr} kpi={campaign.hasKpi} />
                 </div>
-                <div tw="w-full flex items-center gap-6" style={{ gap: 24 }}>
-                    {!!protocol?.logo && (
-                        <div tw="flex w-32 h-32">
-                            <protocol.logo width={128} height={128} />
-                        </div>
+                <div tw="flex items-center" style={{ gap: 24 }}>
+                    {(campaign.isDistributing(DistributablesType.FixedPoints) ||
+                        campaign.isDistributing(
+                            DistributablesType.DynamicPoints,
+                        )) && (
+                        <TextField
+                            title={t("socialCampaignPreview.totalRewards")}
+                            value={
+                                <div tw="flex items-center justify-between">
+                                    <span tw="text-[30px]">
+                                        {formatAmount({
+                                            amount: campaign.distributables
+                                                .dailyPer1k,
+                                        })}
+                                    </span>
+                                    <div tw="relative flex" style={{ gap: 1 }}>
+                                        <PointsIcon
+                                            style={{
+                                                height: 46,
+                                                width: 46,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            }
+                        />
                     )}
-                    <span tw="text-[52px]">{campaign.name}</span>
-                </div>
-                <div
-                    tw="flex flex-col p-7 rounded-2xl mt-16 bg-white"
-                    style={{ gap: 64 }}
-                >
-                    <div tw="flex items-center justify-between">
-                        <div tw="flex items-center">
-                            {aaveV3 && (
-                                <AaveV3
-                                    address={campaign.target.collateral.address}
-                                    symbol={campaign.target.collateral.symbol}
-                                    tokenUris={tokenUris}
-                                />
-                            )}
-                            {ammPoolLiquidity && (
-                                <AmmLiquidityPool
-                                    pool={campaign.target.pool}
-                                    tokenUris={tokenUris}
-                                />
-                            )}
-                            {liquityV2 && (
-                                <LiquityV2
-                                    address={campaign.target.collateral.address}
-                                    symbol={campaign.target.collateral.symbol}
-                                    tokenUris={tokenUris}
-                                />
-                            )}
-                        </div>
-                        <KpiAndApr
-                            apr={campaign.apr}
-                            kpi={!!campaign.specification?.kpi}
-                        />
-                    </div>
-                    <div tw="flex items-center" style={{ gap: 24 }}>
-                        {(campaign.isDistributing(
-                            DistributablesType.FixedPoints,
-                        ) ||
-                            campaign.isDistributing(
-                                DistributablesType.DynamicPoints,
-                            )) && (
-                            <TextField
-                                title={t("socialCampaignPreview.totalRewards")}
-                                value={
-                                    <div tw="flex items-center justify-between">
-                                        <span tw="text-[30px]">
-                                            {formatAmount({
-                                                amount: campaign.distributables
-                                                    .dailyPer1k,
-                                            })}
-                                        </span>
-                                        <div
-                                            tw="relative flex"
-                                            style={{ gap: 1 }}
-                                        >
-                                            <PointsIcon
-                                                style={{
-                                                    height: 46,
-                                                    width: 46,
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                }
-                            />
-                        )}
-                        {campaign.isDistributing(DistributablesType.Tokens) && (
-                            <TextField
-                                title={t("socialCampaignPreview.totalRewards")}
-                                value={
-                                    <div tw="flex items-center justify-between">
-                                        <span tw="text-[30px]">
-                                            {formatUsdAmount({
-                                                amount: campaign.distributables
-                                                    .amountUsdValue,
-                                            })}
-                                        </span>
-                                        <div
-                                            tw="relative flex"
-                                            style={{ gap: 1 }}
-                                        >
-                                            {campaign.distributables.list.map(
-                                                ({ token }, index) => (
-                                                    <RemoteLogo
-                                                        key={index}
-                                                        src={
-                                                            tokenUris[
-                                                                token.address
-                                                            ]
-                                                        }
-                                                        style={{
-                                                            height: 46,
-                                                            width: 46,
-                                                            marginLeft:
-                                                                index * -12,
-                                                        }}
-                                                    />
-                                                ),
-                                            )}
-                                        </div>
-                                    </div>
-                                }
-                            />
-                        )}
+                    {campaign.isDistributing(DistributablesType.Tokens) && (
                         <TextField
-                            title={t("socialCampaignPreview.startDate")}
-                            light
-                            value={dayjs
-                                .unix(campaign.from)
-                                .format("DD/MMM/YY | HH:mm")
-                                .toUpperCase()}
+                            title={t("socialCampaignPreview.totalRewards")}
+                            value={
+                                <div tw="flex items-center justify-between">
+                                    <span tw="text-[30px]">
+                                        {formatUsdAmount({
+                                            amount: campaign.distributables
+                                                .amountUsdValue,
+                                        })}
+                                    </span>
+                                    <div tw="relative flex" style={{ gap: 1 }}>
+                                        {campaign.distributables.list.map(
+                                            ({ token }, index) => (
+                                                <RemoteLogo
+                                                    key={index}
+                                                    src={
+                                                        tokenUris[token.address]
+                                                    }
+                                                    style={{
+                                                        height: 46,
+                                                        width: 46,
+                                                        marginLeft: index * -12,
+                                                    }}
+                                                />
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                            }
                         />
-                        <TextField
-                            title={t("socialCampaignPreview.duration")}
-                            light
-                            value={dayjs
-                                .unix(campaign.from)
-                                .to(dayjs.unix(campaign.to), true)}
-                        />
-                    </div>
+                    )}
+                    <TextField
+                        title={t("socialCampaignPreview.startDate")}
+                        light
+                        value={dayjs
+                            .unix(campaign.from)
+                            .format("DD/MMM/YY | HH:mm")
+                            .toUpperCase()}
+                    />
+                    <TextField
+                        title={t("socialCampaignPreview.duration")}
+                        light
+                        value={dayjs
+                            .unix(campaign.from)
+                            .to(dayjs.unix(campaign.to), true)}
+                    />
                 </div>
             </div>
-        ),
+        </div>,
         {
             ...size,
             fonts: [

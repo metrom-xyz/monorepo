@@ -1,6 +1,9 @@
 import {
     CampaignKind,
+    BaseCampaign as SdkBaseCampaign,
     Campaign as SdkCampaign,
+    AggregatedCampaign as SdkAggregatedCampaign,
+    AggregatedCampaignItem as SdkAggregatedCampaignItem,
     TargetType,
     type Claim,
     type AaveV3Collateral,
@@ -12,7 +15,6 @@ import {
     type UsdPricedOnChainAmount,
     type Weighting,
     type DistributablesType,
-    type KpiSpecification,
     type TokenDistributables,
     type LiquityV2Collateral,
     type BaseTargetedCampaign,
@@ -20,6 +22,9 @@ import {
     type FixedPointDistributables,
     type DynamicPointDistributables,
     type AmmPool,
+    type Specification,
+    type KpiDistributionSpecification,
+    SpecificationDistributionType,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
@@ -72,7 +77,7 @@ export interface BaseCampaignPayload {
     startDate?: Dayjs;
     endDate?: Dayjs;
     distributables?: CampaignPayloadDistributables;
-    kpiSpecification?: KpiSpecification;
+    distribution?: KpiDistributionSpecification;
     restrictions?: Restrictions;
 }
 
@@ -165,7 +170,7 @@ export abstract class BaseCampaignPreviewPayload {
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
         public readonly distributables: CampaignPreviewDistributables,
-        public readonly kpiSpecification?: KpiSpecification,
+        public readonly kpiDistribution?: KpiDistributionSpecification,
         public readonly restrictions?: Restrictions,
     ) {}
 
@@ -331,7 +336,7 @@ export interface CampaignPayloadErrors {
     endDate?: boolean;
     rewards?: boolean;
     weighting?: boolean;
-    kpiSpecification?: boolean;
+    distribution?: boolean;
     priceRangeSpecification?: boolean;
     boostingFactor?: boolean;
     blacklistedCrossSupplyCollaterals?: boolean;
@@ -368,32 +373,31 @@ export class Campaign extends SdkCampaign {
         public readonly chainData?: ChainData,
     ) {
         super(
-            campaign.chainId,
-            campaign.chainType,
+            campaign.opportunitiesAmount,
+            campaign.hasKpi,
             campaign.id,
+            campaign.chainType,
+            campaign.chainId,
             campaign.from,
             campaign.to,
             campaign.createdAt,
             campaign.target,
             campaign.distributables,
-            campaign.snapshottedAt,
-            campaign.specification,
             campaign.usdTvl,
+            campaign.snapshottedAt,
             campaign.apr,
-            campaign.restrictions,
-            campaign.accountsIncentivized,
         );
     }
 
     isDistributing<T extends DistributablesType>(
         type: T,
-    ): this is DistributablesNamedCampaign<T> {
+    ): this is DistributablesNamedCampaign<T, this> {
         return this.distributables.type === type;
     }
 
     isTargeting<T extends TargetType>(
         type: T,
-    ): this is TargetedNamedCampaign<T> {
+    ): this is TargetedNamedCampaign<T, this> {
         return this.target.type === type;
     }
 
@@ -447,8 +451,146 @@ export class Campaign extends SdkCampaign {
     }
 }
 
-export interface DistributablesNamedCampaign<T extends DistributablesType>
-    extends Campaign {
+export class AggregatedCampaign extends SdkAggregatedCampaign {
+    constructor(
+        campaign: SdkAggregatedCampaign,
+        public readonly name: string,
+        public readonly targetValueName: string,
+        public readonly chainData?: ChainData,
+    ) {
+        super(
+            campaign.opportunitiesAmount,
+            campaign.hasKpi,
+            campaign.accountsIncentivized,
+            campaign.id,
+            campaign.chainType,
+            campaign.chainId,
+            campaign.from,
+            campaign.to,
+            campaign.createdAt,
+            campaign.target,
+            campaign.distributables,
+            campaign.usdTvl,
+            campaign.snapshottedAt,
+            campaign.apr,
+        );
+    }
+
+    isDistributing<T extends DistributablesType>(
+        type: T,
+    ): this is DistributablesNamedCampaign<T, this> {
+        return this.distributables.type === type;
+    }
+
+    isTargeting<T extends TargetType>(
+        type: T,
+    ): this is TargetedNamedCampaign<T, this> {
+        return this.target.type === type;
+    }
+
+    getDepositLiquidityUrl(
+        params?: Record<string, string | number>,
+    ): string | undefined {
+        if (!this.isTargeting(TargetType.AmmPoolLiquidity)) return undefined;
+
+        const pool = this.target.pool;
+        const dex = this.chainData?.protocols.find(
+            (protocol) =>
+                protocol.type === ProtocolType.Dex &&
+                protocol.slug === pool.dex.slug,
+        );
+
+        if (!dex) return undefined;
+        const { depositUrl } = dex as DexProtocol;
+        const { template, type } = depositUrl;
+        const queryParams = params
+            ? Object.entries(params)
+                  .map(([key, value]) => `&${key}=${value}`)
+                  .join("")
+            : "";
+
+        switch (type) {
+            case DepositUrlType.PathPoolAddress: {
+                return template
+                    .replace("{pool}", `${pool.id}`)
+                    .concat(queryParams);
+            }
+            case DepositUrlType.PathTokenAddresses: {
+                return template
+                    .replace(
+                        "{pool}",
+                        `${pool.tokens.map(({ address }) => address).join("/")}`,
+                    )
+                    .concat(queryParams);
+            }
+            case DepositUrlType.QueryTokenAddresses: {
+                const url = template
+                    .replace("{token_0}", pool.tokens[0].address)
+                    .replace("{token_1}", pool.tokens[1].address)
+                    .concat(queryParams);
+
+                return pool.fee ? `${url}&fee=${pool.fee * 10000}` : url;
+            }
+            default: {
+                return undefined;
+            }
+        }
+    }
+}
+
+export class AggregatedCampaignItem extends SdkAggregatedCampaignItem {
+    constructor(
+        campaign: SdkAggregatedCampaignItem,
+        public readonly name: string,
+        public readonly targetValueName: string,
+        public readonly chainData?: ChainData,
+    ) {
+        super(
+            campaign.specification,
+            campaign.restrictions,
+            campaign.accountsIncentivized,
+            campaign.id,
+            campaign.chainType,
+            campaign.chainId,
+            campaign.from,
+            campaign.to,
+            campaign.createdAt,
+            campaign.target,
+            campaign.distributables,
+            campaign.usdTvl,
+            campaign.snapshottedAt,
+            campaign.apr,
+        );
+    }
+
+    isDistributing<T extends DistributablesType>(
+        type: T,
+    ): this is DistributablesNamedCampaign<T, this> {
+        return this.distributables.type === type;
+    }
+
+    isTargeting<T extends TargetType>(
+        type: T,
+    ): this is TargetedNamedCampaign<T, this> {
+        return this.target.type === type;
+    }
+
+    hasKpiDistribution(): this is this & {
+        specification: Specification & {
+            distribution: KpiDistributionSpecification;
+        };
+    } {
+        return (
+            this.specification?.distribution?.type ===
+            SpecificationDistributionType.Kpi
+        );
+    }
+}
+
+export type DistributablesNamedCampaign<
+    T extends DistributablesType,
+    C extends SdkBaseCampaign,
+> = C & {
     distributables: T extends DistributablesType.Tokens
         ? TokenDistributables
         : T extends DistributablesType.FixedPoints
@@ -456,7 +598,9 @@ export interface DistributablesNamedCampaign<T extends DistributablesType>
           : T extends DistributablesType.DynamicPoints
             ? DynamicPointDistributables
             : never;
-}
+};
 
-export type TargetedNamedCampaign<T extends TargetType> =
-    BaseTargetedCampaign<T> & Campaign;
+export type TargetedNamedCampaign<
+    T extends TargetType,
+    C extends SdkBaseCampaign,
+> = C & BaseTargetedCampaign<T>;

@@ -1,0 +1,9 @@
+@reference "../../../../../app.css";
+
+.tabs {
+    @apply whitespace-nowrap overflow-x-auto;
+}
+
+.tabContentWrapper {
+    @apply mt-2 p-3;
+}

@@ -1,5 +1,13 @@
 @reference "../../app.css";
 
 .root {
-    @apply bg-gray-200 dark:bg-neutral-700 rounded-lg py-1 px-2 w-fit;
+    @apply h-7 flex items-center rounded-lg py-1 px-2 w-fit;
+}
+
+.root.primary {
+    @apply bg-gray-200 dark:bg-neutral-700;
+}
+
+.root.secondary {
+    @apply border border-gray-300 dark:border-neutral-700;
 }

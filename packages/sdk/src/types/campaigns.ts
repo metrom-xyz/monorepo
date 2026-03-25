@@ -117,8 +117,7 @@ export interface AaveV3Target<T> extends BaseTarget {
     collateral: Erc20Token;
 }
 
-export interface LiquityV2CollateralWithStabilityPoolDeposit
-    extends Erc20Token {
+export interface LiquityV2CollateralWithStabilityPoolDeposit extends Erc20Token {
     usdDeposit: number;
 }
 
@@ -128,8 +127,7 @@ export type LiquityV2StabilityPoolTarget =
 
 export type AaveV3BorrowTarget = AaveV3Target<TargetType.AaveV3Borrow>;
 export type AaveV3SupplyTarget = AaveV3Target<TargetType.AaveV3Supply>;
-export interface AaveV3NetSupplyTarget
-    extends AaveV3Target<TargetType.AaveV3NetSupply> {
+export interface AaveV3NetSupplyTarget extends AaveV3Target<TargetType.AaveV3NetSupply> {
     blacklistedCrossBorrowCollaterals: Erc20Token[];
 }
 export type AaveV3BridgeAndSupplyTarget = BaseTarget & {
@@ -262,11 +260,18 @@ export interface RangePoolTvlKpiGoal {
     upperUsdTarget: number;
 }
 
-export interface KpiSpecification {
+export enum SpecificationDistributionType {
+    Kpi = "kpi",
+}
+
+export interface KpiDistributionSpecification {
+    type?: SpecificationDistributionType.Kpi;
     measurement?: number;
     minimumPayoutPercentage?: number;
     goal: RangePoolTvlKpiGoal;
 }
+
+export type DistributionSpecification = KpiDistributionSpecification;
 
 export interface PriceRangeSpecification {
     from: number;
@@ -282,7 +287,7 @@ export interface Weighting {
 export interface Specification {
     whitelist?: Address[];
     blacklist?: Address[];
-    kpi?: KpiSpecification;
+    distribution?: DistributionSpecification;
     priceRange?: PriceRangeSpecification;
     weighting?: Weighting;
 }
@@ -303,24 +308,21 @@ export enum Status {
     Expired = "expired",
 }
 
-export class Campaign {
+export class BaseCampaign {
     public readonly status;
 
     constructor(
-        public readonly chainId: number,
-        public readonly chainType: ChainType,
         public readonly id: Hex,
+        public readonly chainType: ChainType,
+        public readonly chainId: number,
         public readonly from: number,
         public readonly to: number,
         public readonly createdAt: number,
         public readonly target: CampaignTarget,
         public readonly distributables: CampaignDistributables,
-        public readonly snapshottedAt?: number,
-        public readonly specification?: Specification,
         public readonly usdTvl?: number,
+        public readonly snapshottedAt?: number,
         public readonly apr?: number,
-        public readonly restrictions?: Restrictions,
-        public readonly accountsIncentivized?: number,
     ) {
         const now = Number(Math.floor(Date.now() / 1000));
         this.status =
@@ -330,27 +332,38 @@ export class Campaign {
                   ? Status.Expired
                   : Status.Active;
     }
+}
 
-    isDistributing<T extends DistributablesType>(
-        type: T,
-    ): this is DistributablesCampaign<T> {
-        return this.distributables.type === type;
-    }
-
-    isTargeting<T extends TargetType>(type: T): this is TargetedCampaign<T> {
-        return this.target.type === type;
+export class Campaign extends BaseCampaign {
+    constructor(
+        public readonly opportunitiesAmount: number,
+        public readonly hasKpi?: boolean,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaign>
+    ) {
+        super(...baseArgs);
     }
 }
 
-export interface DistributablesCampaign<T extends DistributablesType>
-    extends Campaign {
-    distributables: T extends DistributablesType.Tokens
-        ? TokenDistributables
-        : T extends DistributablesType.FixedPoints
-          ? FixedPointDistributables
-          : T extends DistributablesType.DynamicPoints
-            ? DynamicPointDistributables
-            : never;
+export class AggregatedCampaign extends BaseCampaign {
+    constructor(
+        public readonly opportunitiesAmount: number,
+        public readonly hasKpi?: boolean,
+        public readonly accountsIncentivized?: number,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaign>
+    ) {
+        super(...baseArgs);
+    }
+}
+
+export class AggregatedCampaignItem extends BaseCampaign {
+    constructor(
+        public readonly specification?: Specification,
+        public readonly restrictions?: Restrictions,
+        public readonly accountsIncentivized?: number,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaign>
+    ) {
+        super(...baseArgs);
+    }
 }
 
 export interface BaseTargetedCampaign<T extends TargetType> {

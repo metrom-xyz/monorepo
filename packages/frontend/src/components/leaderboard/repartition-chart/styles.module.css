@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply sm:max-w-80 flex flex-col gap-3 p-3 sm:p-5 bg-gray-100 dark:bg-neutral-800;
+    @apply sm:max-w-80 flex flex-col gap-3 p-3 sm:p-4 bg-white dark:bg-neutral-900;
 }
 
 .container {
@@ -15,15 +15,15 @@
         self-center
         size-[15.625rem]
         rounded-full
-        bg-gray-200
-        dark:bg-neutral-900
+        bg-gray-150
+        dark:bg-neutral-800
         transition-colors
         duration-200
         ease-in-out;
 }
 
 .loading {
-    @apply animate-pulse bg-gray-200 dark:bg-neutral-900;
+    @apply animate-pulse bg-gray-150 dark:bg-neutral-800;
 }
 
 .noDistribution {

@@ -59,7 +59,7 @@ export function CampaignRewardsPopover({
         <div className={styles.root}>
             <Popover
                 ref={breakdownPopoverRef}
-                open={popoverOpen}
+                open={showRewards && popoverOpen}
                 anchor={rewardsBreakdown}
                 onOpenChange={setPopoverOpen}
                 placement="bottom"

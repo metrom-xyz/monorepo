@@ -15,7 +15,8 @@ import dayjs from "dayjs";
 import { useClickAway } from "react-use";
 import { useDistributions } from "@/src/hooks/useDistributions";
 import type { ProcessedDistribution } from "@/src/types/distributions";
-import { Campaign, Status } from "@metrom-xyz/sdk";
+import { Status } from "@metrom-xyz/sdk";
+import type { AggregatedCampaign } from "@/src/types/campaign";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 import { getClosestAvailableTime } from "@/src/utils/date";
@@ -27,7 +28,7 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 
 interface FiltersProps {
-    campaign?: Campaign;
+    campaign?: AggregatedCampaign;
     loading?: boolean;
     onFetched: (distributions: ProcessedDistribution[]) => void;
     onLoading: (loading: boolean) => void;

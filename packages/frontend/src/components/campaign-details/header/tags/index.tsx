@@ -1,64 +1,58 @@
-import type { Campaign } from "@/src/types/campaign";
-import { CampaignTag } from "@/src/components/campaign-tag";
-import { useTranslations } from "next-intl";
+import type { AggregatedCampaign } from "@/src/types/campaign";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
-import { ErrorText, Skeleton, Typography } from "@metrom-xyz/ui";
+import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { formatDateTime } from "@/src/utils/format";
-import { Status } from "../../status";
-import { RestrictionType } from "@metrom-xyz/sdk";
+import { CampaignStatus } from "../../../campaign-status";
+import { CampaignTag } from "@/src/components/campaign-tag";
+import { ElementPlusIcon } from "@/src/assets/element-plus-icon";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
 interface TagsProps {
-    campaign: Campaign;
+    campaign: AggregatedCampaign;
 }
 
 export function Tags({ campaign }: TagsProps) {
     const t = useTranslations("campaignDetails.header");
-
-    const { specification, restrictions, from, to } = campaign;
+    const { from, to, opportunitiesAmount } = campaign;
 
     return (
         <div className={styles.root}>
-            {specification?.kpi && (
+            {opportunitiesAmount > 1 && (
                 <CampaignTag
-                    size="sm"
-                    text={t("kpi")}
-                    className={styles.campaignTag}
+                    variant="secondary"
+                    text={
+                        <div className={styles.tag}>
+                            <ElementPlusIcon
+                                className={styles.elementPlusIcon}
+                            />
+                            <Typography size="sm" weight="medium">
+                                {t("groupedTarget")}
+                            </Typography>
+                        </div>
+                    }
                 />
             )}
-            {specification?.priceRange && (
+            {opportunitiesAmount === 1 && (
                 <CampaignTag
-                    size="sm"
-                    text={t("range")}
-                    className={styles.campaignTag}
+                    variant="secondary"
+                    text={
+                        <div className={styles.tag}>
+                            <CalendarIcon className={styles.calendarIcon} />
+                            <Typography size="sm" weight="medium">
+                                {`${formatDateTime(from)} - ${formatDateTime(to)}`}
+                            </Typography>
+                        </div>
+                    }
                 />
             )}
-            <div className={styles.tag}>
-                <CalendarIcon className={styles.calendarIcon} />
-                <Typography size="sm" weight="medium">
-                    {`${formatDateTime(from)} - ${formatDateTime(to)}`}
-                </Typography>
-            </div>
-            <Status
-                size="sm"
+            <CampaignStatus
+                tag
                 from={campaign.from}
                 to={campaign.to}
                 status={campaign.status}
             />
-            {restrictions &&
-                restrictions.type === RestrictionType.Whitelist && (
-                    <div className={styles.restrictions}>
-                        <ErrorText
-                            mountAnimation={false}
-                            level="warning"
-                            size="sm"
-                            weight="medium"
-                        >
-                            {t("allowlist")}
-                        </ErrorText>
-                    </div>
-                )}
         </div>
     );
 }

@@ -1,7 +1,13 @@
-import React, { type ReactElement } from "react";
+import React, {
+    type FunctionComponent,
+    type ReactElement,
+    type ReactNode,
+    type SVGProps,
+} from "react";
 import classNames from "classnames";
 import { matchChildByType } from "../../utils/components";
-import { Tab, type TabProps } from "./tab";
+import { Tab } from "./tab";
+import { UnderlinedTab } from "./underlined-tab";
 
 import styles from "./styles.module.css";
 
@@ -12,6 +18,16 @@ export interface TabsProps<T> {
     size?: TabsSize;
     value?: T;
     children: ReactElement[] | ReactElement;
+    className?: string;
+}
+
+export interface TabProps<T> {
+    onClick?: (value: T) => void;
+    size?: TabsSize;
+    icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
+    active?: T;
+    value: T;
+    children?: ReactNode;
     className?: string;
 }
 
@@ -27,13 +43,10 @@ export function Tabs<T>({
     }
 
     return (
-        <div
-            className={classNames(styles.root, className, {
-                [styles[size]]: true,
-            })}
-        >
+        <div className={classNames(styles.tabs, className)}>
             {React.Children.map(children, (child) => {
-                return matchChildByType<TabProps<T>>(child, Tab)
+                return matchChildByType<TabProps<T>>(child, Tab) ||
+                    matchChildByType<TabProps<T>>(child, UnderlinedTab)
                     ? React.cloneElement(child, {
                           ...child.props,
                           size,

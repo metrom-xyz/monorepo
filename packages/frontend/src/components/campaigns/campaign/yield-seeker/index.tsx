@@ -3,7 +3,6 @@ import { Button, Card, Modal, Popover, Typography, X } from "@metrom-xyz/ui";
 import { Chain } from "../chain";
 import { Protocol } from "../protocol";
 import { Action } from "../action";
-import { Status } from "../status";
 import { BackendCampaignType } from "@metrom-xyz/sdk";
 import { Apr } from "../apr";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
@@ -20,6 +19,7 @@ import { BoldText } from "@/src/components/bold-text";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
+import { CampaignStatus } from "@/src/components/campaign-status";
 
 interface YieldSeekerProps {
     type: BackendCampaignType;
@@ -72,18 +72,14 @@ export function YieldSeeker({ type, campaign }: YieldSeekerProps) {
                     <div className={commonStyles.action}>
                         <Action campaign={campaign} />
                     </div>
-                    <Status
+                    <CampaignStatus
                         from={campaign.from}
                         to={campaign.to}
                         status={campaign.status}
-                        showDuration={false}
+                        hideDuration
                     />
                     {type === BackendCampaignType.Rewards && (
-                        <Apr
-                            campaign={campaign}
-                            apr={campaign.apr}
-                            kpi={!!campaign.specification?.kpi}
-                        />
+                        <Apr apr={campaign.apr} kpi={campaign.hasKpi} />
                     )}
                     <Typography weight="medium">
                         {campaign.usdTvl !== undefined

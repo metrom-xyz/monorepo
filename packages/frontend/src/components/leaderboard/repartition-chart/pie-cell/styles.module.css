@@ -4,8 +4,8 @@
     @apply cursor-pointer
         outline-none
         hover:opacity-85
-        stroke-gray-200
-        dark:stroke-neutral-900
+        stroke-gray-150
+        dark:stroke-neutral-800
         transition-all
         duration-200
         ease-in-out;

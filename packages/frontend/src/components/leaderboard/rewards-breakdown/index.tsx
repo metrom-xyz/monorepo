@@ -117,9 +117,7 @@ export function RewardsBreakdown({
                 onMouseLeave={handleRewardedAmountPopoverClose}
                 className={styles.rankWrapper}
             >
-                <Typography weight="medium" variant="tertiary">
-                    {totalDistributedUsd}
-                </Typography>
+                <Typography weight="medium">{totalDistributedUsd}</Typography>
             </div>
         </>
     );

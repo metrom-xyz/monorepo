@@ -1,0 +1,45 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.infoTooltip {
+    @apply hidden sm:flex;
+}
+
+.detailsAccordion > :global(.preview) {
+    @apply hover:bg-white hover:dark:bg-neutral-900 bg-white dark:bg-neutral-900;
+}
+
+.detailsAccordion > :global(.content) {
+    @apply px-4 bg-white dark:bg-neutral-900;
+}
+
+.wrapper {
+    @apply w-full flex flex-col sm:flex-row gap-4 py-4;
+}
+
+.leftContentWrapper {
+    @apply w-full flex-1 flex flex-col justify-between gap-4;
+}
+
+.chart {
+    @apply sm:min-h-[25rem] w-full flex-2 flex flex-col items-stretch;
+}
+
+.chartWrapper {
+    @apply w-full flex-1 bg-white dark:bg-neutral-900;
+}
+
+.distributionChartsWrapper {
+    @apply flex flex-col sm:flex-row justify-between gap-4;
+}
+
+.distributionChartsWrapper > :first-child {
+    @apply flex-2;
+}
+
+.distributionChartsWrapper > :last-child {
+    @apply flex-1;
+}

@@ -1,0 +1,37 @@
+@reference "../../app.css";
+
+.root {
+    @apply w-fit flex flex-wrap items-center gap-1;
+}
+
+.root.tag {
+    @apply py-1 px-2 h-7 border border-transparent rounded-lg;
+}
+
+.root.tag.active {
+    @apply border-brand-green-dark/32 dark:border-brand-green/32 bg-brand-green-dark/4 dark:bg-brand-green/4;
+}
+
+.root.tag.upcoming {
+    @apply border-brand-blue/32 bg-brand-blue/4;
+}
+
+.root.tag.expired {
+    @apply border-gray-400 dark:border-neutral-700;
+}
+
+.status {
+    @apply flex gap-1 items-center;
+}
+
+.active {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.upcoming {
+    @apply text-brand-blue;
+}
+
+.expired {
+    @apply text-gray-400 dark:text-neutral-400;
+}

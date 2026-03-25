@@ -1,14 +1,16 @@
 import {
-    Campaign,
     TargetType,
     DistributablesType,
     type LiquidityInRange,
-    type KpiSpecification,
     type LiquityV2DebtTarget,
     type LiquidityByAddresses,
     RestrictionType,
     CampaignKind,
     SupportedOdysseyStrategy,
+    BaseCampaign,
+    type KpiDistributionSpecification,
+    AggregatedCampaign as SdkAggregatedCampaign,
+    AggregatedCampaignItem,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -17,6 +19,7 @@ import {
     type BaseCampaignPreviewPayload,
     AaveV3CampaignPreviewPayload,
     HoldFungibleAssetCampaignPreviewPayload,
+    AggregatedCampaign,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
@@ -29,7 +32,7 @@ import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
     t: TranslationsType<never>,
-    campaign: Campaign,
+    campaign: BaseCampaign | AggregatedCampaignItem,
 ): string {
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {
@@ -246,7 +249,7 @@ export function getCampaignPreviewName(
 }
 
 export async function getSocialPreviewCampaignName(
-    campaign: Campaign,
+    campaign: AggregatedCampaign | SdkAggregatedCampaign,
 ): Promise<string> {
     const t = await getTranslations();
 
@@ -295,7 +298,7 @@ export function getCampaignPreviewApr(
     if (duration <= 0 || !payload.isDistributing(DistributablesType.Tokens))
         return undefined;
 
-    const { distributables, kpiSpecification } = payload;
+    const { distributables, kpiDistribution } = payload;
 
     let rewardsUsdValue = 0;
     for (const reward of distributables.tokens) {
@@ -310,7 +313,7 @@ export function getCampaignPreviewApr(
         duration,
         usdTvl: usdTvl || liquidity?.usd,
         liquidity: liquidity?.raw,
-        kpiSpecification,
+        kpiDistribution,
         range,
         liquidityByAddresses,
     });
@@ -321,7 +324,7 @@ export function getCampaignApr({
     usdRewards,
     usdTvl,
     liquidity,
-    kpiSpecification,
+    kpiDistribution,
     range,
     liquidityByAddresses,
 }: {
@@ -329,7 +332,7 @@ export function getCampaignApr({
     usdRewards?: number;
     usdTvl?: number;
     liquidity?: bigint;
-    kpiSpecification?: KpiSpecification;
+    kpiDistribution?: KpiDistributionSpecification;
     range?: LiquidityInRange;
     liquidityByAddresses?: LiquidityByAddresses;
 }) {
@@ -337,12 +340,12 @@ export function getCampaignApr({
         return undefined;
 
     let distributableUsdRewards = usdRewards;
-    if (kpiSpecification) {
+    if (kpiDistribution) {
         distributableUsdRewards *= getDistributableRewardsPercentage(
             usdTvl,
-            kpiSpecification.goal.lowerUsdTarget,
-            kpiSpecification.goal.upperUsdTarget,
-            kpiSpecification.minimumPayoutPercentage,
+            kpiDistribution.goal.lowerUsdTarget,
+            kpiDistribution.goal.upperUsdTarget,
+            kpiDistribution.minimumPayoutPercentage,
         );
     }
 

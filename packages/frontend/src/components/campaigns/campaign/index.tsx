@@ -1,6 +1,6 @@
 import { Apr, SkeletonApr } from "./apr";
 import { Action, SkeletonAction } from "./action";
-import { SkeletonStatus, Status } from "./status";
+import { SkeletonStatus } from "./status";
 import {
     CampaignRewardsPopover,
     SkeletonCampaignRewards,
@@ -22,6 +22,7 @@ import { TURTLE_APP_EARN_URL, TURTLE_REFERRAL_CODE } from "@/src/commons";
 import { YieldSeeker } from "./yield-seeker";
 
 import styles from "./styles.module.css";
+import { CampaignStatus } from "../../campaign-status";
 
 interface CampaignProps {
     type: BackendCampaignType;
@@ -65,18 +66,14 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                         feeSize="base"
                     />
                 </div>
-                <Status
+                <CampaignStatus
                     from={campaign.from}
                     to={campaign.to}
                     status={campaign.status}
-                    showDuration={!turtleCampaign}
+                    hideDuration={turtleCampaign}
                 />
                 {type === BackendCampaignType.Rewards && (
-                    <Apr
-                        campaign={campaign}
-                        apr={campaign.apr}
-                        kpi={!!campaign.specification?.kpi}
-                    />
+                    <Apr apr={campaign.apr} kpi={campaign.hasKpi} />
                 )}
                 <Typography weight="medium">
                     {campaign.usdTvl !== undefined

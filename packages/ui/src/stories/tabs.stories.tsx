@@ -3,6 +3,7 @@ import { useState } from "storybook/preview-api";
 import { Tabs } from "../components/tabs/index";
 import { Tab } from "../components/tabs/tab";
 import { SettingsIcon } from "../assets";
+import { UnderlinedTab } from "../components/tabs/underlined-tab";
 
 const meta: Meta = {
     title: "Input/Tabs",
@@ -21,17 +22,30 @@ export const Base: Story = {
         const [value, setValue] = useState(0);
 
         return (
-            <Tabs {...args} value={value} onChange={setValue}>
-                <Tab value={0} icon={SettingsIcon}>
-                    First tab
-                </Tab>
-                <Tab value={1} icon={SettingsIcon}>
-                    Second tab
-                </Tab>
-                <Tab value={2} icon={SettingsIcon}>
-                    Third tab
-                </Tab>
-            </Tabs>
+            <div className="flex flex-col gap-4">
+                <Tabs {...args} value={value} onChange={setValue}>
+                    <Tab value={0} icon={SettingsIcon}>
+                        First tab
+                    </Tab>
+                    <Tab value={1} icon={SettingsIcon}>
+                        Second tab
+                    </Tab>
+                    <Tab value={2} icon={SettingsIcon}>
+                        Third tab
+                    </Tab>
+                </Tabs>
+                <Tabs {...args} value={value} onChange={setValue}>
+                    <UnderlinedTab value={0} icon={SettingsIcon}>
+                        First tab
+                    </UnderlinedTab>
+                    <UnderlinedTab value={1} icon={SettingsIcon}>
+                        Second tab
+                    </UnderlinedTab>
+                    <UnderlinedTab value={2} icon={SettingsIcon}>
+                        Third tab
+                    </UnderlinedTab>
+                </Tabs>
+            </div>
         );
     },
 };
@@ -42,6 +56,17 @@ export const Sizes: Story = {
 
         return (
             <div className="flex flex-col gap-4">
+                <Tabs {...args} value={value} onChange={setValue} size="xs">
+                    <Tab value={0} icon={SettingsIcon}>
+                        First tab
+                    </Tab>
+                    <Tab value={1} icon={SettingsIcon}>
+                        Second tab
+                    </Tab>
+                    <Tab value={2} icon={SettingsIcon}>
+                        Third tab
+                    </Tab>
+                </Tabs>
                 <Tabs {...args} value={value} onChange={setValue} size="xs">
                     <Tab value={0} icon={SettingsIcon}>
                         First tab

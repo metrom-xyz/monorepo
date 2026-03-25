@@ -1,33 +1,13 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex flex-col items-start gap-3;
-}
-
-.barWrapper {
-    @apply w-full sm:min-w-48 flex h-3 overflow-hidden rounded-full;
-}
-
-.labelsWrapper {
-    @apply flex items-center gap-2 overflow-ellipsis;
-}
-
-.bar {
-    @apply h-3;
-}
-
-.bar:first-child {
-    @apply bg-[#4E80EE];
-}
-
-.bar:nth-child(2) {
-    @apply bg-[#3563CB];
-}
-
-.bar:last-child {
-    @apply bg-[#90B2FF];
+    @apply flex items-center gap-1;
 }
 
 .labels {
-    @apply flex items-center gap-1;
+    @apply flex items-center gap-2;
+}
+
+.higlightedText {
+    @apply font-medium text-primary;
 }

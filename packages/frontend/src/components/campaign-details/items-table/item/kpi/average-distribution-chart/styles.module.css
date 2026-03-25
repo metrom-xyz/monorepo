@@ -1,0 +1,84 @@
+@reference "../../../../../../app.css";
+
+.root {
+    @apply flex
+        flex-col
+        gap-6
+        sm:max-w-80
+        p-3
+        sm:p-4
+        bg-white
+        dark:bg-neutral-900;
+}
+
+.popoverContent {
+    @apply flex flex-col gap-3;
+}
+
+.header {
+    @apply flex justify-between px-2;
+}
+
+.rows {
+    @apply flex flex-col gap-2;
+}
+
+.headerTextWrapper {
+    @apply flex items-center gap-1;
+}
+
+.legendDot {
+    @apply size-2 rounded-full;
+}
+
+.legendDot.reimbursed {
+    @apply bg-gray-300 dark:bg-neutral-700;
+}
+
+.legendDot.distributed {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.tokenRow {
+    @apply flex items-center gap-6 justify-between bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+}
+
+.tokenRow > div {
+    @apply flex items-center gap-2;
+}
+
+.tokenWrapper {
+    @apply flex items-center gap-2;
+}
+
+.chartWrapper {
+    @apply flex
+        items-center
+        justify-center
+        self-center
+        mt-4
+        size-[15.625rem]
+        rounded-full
+        bg-gray-150
+        dark:bg-neutral-800
+        background-main
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.chartWrapper.empty {
+    @apply flex-col gap-2 bg-transparent mt-2;
+}
+
+.loading {
+    @apply animate-pulse bg-gray-150 dark:bg-neutral-800;
+}
+
+.chartWrapperLoading {
+    @apply animate-pulse background-main;
+}
+
+.chartContainer {
+    @apply h-[240px] w-[240px];
+}

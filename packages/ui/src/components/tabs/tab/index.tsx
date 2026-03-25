@@ -1,18 +1,8 @@
-import type { FunctionComponent, ReactNode, SVGProps } from "react";
 import classNames from "classnames";
-import type { TabsSize } from "..";
+import type { TabProps } from "..";
 
 import styles from "./styles.module.css";
-
-export interface TabProps<T> {
-    onClick?: (value: T) => void;
-    size?: TabsSize;
-    icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
-    active?: T;
-    value: T;
-    children?: ReactNode;
-    className?: string;
-}
+import commonStyles from "../styles.module.css";
 
 export function Tab<T>({
     onClick,
@@ -30,10 +20,16 @@ export function Tab<T>({
     return (
         <div
             onClick={handleOnClick}
-            className={classNames("root", styles.root, className, {
-                [styles.active]: value === active,
-                [styles[size]]: true,
-            })}
+            className={classNames(
+                "root",
+                styles.root,
+                commonStyles.tab,
+                className,
+                {
+                    [styles.active]: value === active,
+                    [commonStyles[size]]: true,
+                },
+            )}
         >
             {Icon && (
                 <Icon

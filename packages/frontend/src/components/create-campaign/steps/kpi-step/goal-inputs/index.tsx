@@ -17,7 +17,7 @@ interface GoalInputsProps {
     error?: boolean;
     enabled?: boolean;
     kind?: CampaignKind;
-    kpiSpecification?: BaseCampaignPayload["kpiSpecification"];
+    kpiDistribution?: BaseCampaignPayload["distribution"];
     onLowerUsdTargetChange: (value: number | undefined) => void;
     onUpperUsdTargetChange: (value: number | undefined) => void;
     onMinimumPayoutPercentageChange: (value: number) => void;
@@ -32,7 +32,7 @@ export function GoalInputs({
     error,
     enabled,
     kind,
-    kpiSpecification,
+    kpiDistribution,
     onLowerUsdTargetChange,
     onUpperUsdTargetChange,
     onMinimumPayoutPercentageChange,
@@ -41,15 +41,15 @@ export function GoalInputs({
     const targetValueName = useCampaignTargetValueName({ kind });
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] = useState(
-        kpiSpecification?.minimumPayoutPercentage || 0,
+        kpiDistribution?.minimumPayoutPercentage || 0,
     );
     const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<
         NumberInputValues | undefined
     >(() => {
-        if (kpiSpecification) {
+        if (kpiDistribution) {
             return {
-                raw: kpiSpecification.goal.lowerUsdTarget,
-                formatted: kpiSpecification.goal.lowerUsdTarget.toString(),
+                raw: kpiDistribution.goal.lowerUsdTarget,
+                formatted: kpiDistribution.goal.lowerUsdTarget.toString(),
             };
         }
         return undefined;
@@ -57,10 +57,10 @@ export function GoalInputs({
     const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<
         NumberInputValues | undefined
     >(() => {
-        if (kpiSpecification) {
+        if (kpiDistribution) {
             return {
-                raw: kpiSpecification.goal.upperUsdTarget,
-                formatted: kpiSpecification.goal.upperUsdTarget.toString(),
+                raw: kpiDistribution.goal.upperUsdTarget,
+                formatted: kpiDistribution.goal.upperUsdTarget.toString(),
             };
         }
         return undefined;

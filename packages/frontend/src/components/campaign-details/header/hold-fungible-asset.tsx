@@ -1,17 +1,23 @@
 import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "../../remote-logo";
 import { trackFathomEvent } from "@/src/utils/fathom";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getFungibleAssetExplorerLink } from "@/src/utils/explorer";
 import { Tags } from "./tags";
 import classNames from "classnames";
+import type {
+    AggregatedCampaign,
+    TargetedNamedCampaign,
+} from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface HoldFungibleAssetProps {
-    campaign: TargetedNamedCampaign<TargetType.HoldFungibleAsset>;
+    campaign: TargetedNamedCampaign<
+        TargetType.HoldFungibleAsset,
+        AggregatedCampaign
+    >;
 }
 
 export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {

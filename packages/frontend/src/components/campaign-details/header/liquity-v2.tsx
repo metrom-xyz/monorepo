@@ -1,7 +1,10 @@
 import { Typography, Button, InfoTooltip } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { type LiquityV2TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import {
+    AggregatedCampaign,
+    type TargetedNamedCampaign,
+} from "@/src/types/campaign";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { RemoteLogo } from "../../remote-logo";
@@ -11,7 +14,7 @@ import { Tags } from "./tags";
 import styles from "./styles.module.css";
 
 interface LiquityV2HeaderProps {
-    campaign: TargetedNamedCampaign<LiquityV2TargetType>;
+    campaign: TargetedNamedCampaign<LiquityV2TargetType, AggregatedCampaign>;
 }
 
 export function LiquityV2Header({ campaign }: LiquityV2HeaderProps) {

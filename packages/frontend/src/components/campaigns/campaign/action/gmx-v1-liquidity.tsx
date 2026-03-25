@@ -1,11 +1,12 @@
 import { Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import { Campaign, type TargetedNamedCampaign } from "@/src/types/campaign";
 import type { ActionSizes } from ".";
 
-interface GmxV1LiquidityProps<T extends TargetType.GmxV1Liquidity>
-    extends ActionSizes {
-    campaign: TargetedNamedCampaign<T>;
+interface GmxV1LiquidityProps<
+    T extends TargetType.GmxV1Liquidity,
+> extends ActionSizes {
+    campaign: TargetedNamedCampaign<T, Campaign>;
 }
 
 export function GmxV1Liquidity<T extends TargetType.GmxV1Liquidity>({

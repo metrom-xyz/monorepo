@@ -1,11 +1,11 @@
 import { Typography } from "@metrom-xyz/ui";
 import { type AaveV3TargetType } from "@metrom-xyz/sdk";
-import { type TargetedNamedCampaign } from "@/src/types/campaign";
+import { Campaign, type TargetedNamedCampaign } from "@/src/types/campaign";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
 
 interface AaveV3Props<T extends AaveV3TargetType> extends ActionSizes {
-    campaign: TargetedNamedCampaign<T>;
+    campaign: TargetedNamedCampaign<T, Campaign>;
 }
 
 export function AaveV3<T extends AaveV3TargetType>({

@@ -1,6 +1,6 @@
 import {
     ChainType,
-    DistributablesType,
+    // DistributablesType,
     RestrictionType,
     type Restrictions,
     type UsdPricedErc20TokenAmount,
@@ -33,7 +33,7 @@ import { useWindowSize } from "react-use";
 import { useAccount } from "@/src/hooks/useAccount";
 import classNames from "classnames";
 import { EmptyState } from "../empty-state";
-import { Link, usePathname } from "@/src/i18n/routing";
+import {} from /* Link, usePathname */ "@/src/i18n/routing";
 
 import styles from "./styles.module.css";
 
@@ -41,7 +41,7 @@ interface LeaderboardProps {
     chainId?: SupportedChain;
     chainType?: ChainType;
     restrictions?: Restrictions;
-    distributablesType?: DistributablesType;
+    // distributablesType?: DistributablesType;
     leaderboard?: Leaderboard;
     noDistributionDate?: boolean;
     loading: boolean;
@@ -63,7 +63,7 @@ export function Leaderboard({
     chainId,
     chainType,
     restrictions,
-    distributablesType,
+    // distributablesType,
     leaderboard,
     noDistributionDate,
     loading,
@@ -73,26 +73,17 @@ export function Leaderboard({
 
     const { address: connectedAddress } = useAccount();
     const { width } = useWindowSize();
-    const pathname = usePathname();
+    // const pathname = usePathname();
 
     const whitelist = restrictions?.type === RestrictionType.Whitelist;
 
     if (!loading && !leaderboard) {
         return (
             <div className={styles.root}>
-                <div className={styles.titleContainer}>
-                    <Typography weight="medium" uppercase>
-                        {t("title")}
+                <div className={styles.subtitleContainer}>
+                    <Typography size="sm" variant="tertiary">
+                        {t("noDistribution")}
                     </Typography>
-                    <div className={styles.subtitleContainer}>
-                        <Typography
-                            weight="medium"
-                            size="sm"
-                            variant="tertiary"
-                        >
-                            {t("noDistribution")}
-                        </Typography>
-                    </div>
                 </div>
                 <div className={styles.cardsWrapper}>
                     <div className={styles.leaderboardWrapper}>
@@ -112,50 +103,41 @@ export function Leaderboard({
     return (
         <div className={styles.root}>
             <div className={classNames(styles.titleContainer, styles.spaced)}>
-                <div className={styles.leftTitleContent}>
-                    <Typography weight="medium" uppercase>
-                        {t("title")}
-                    </Typography>
-                    {!noDistributionDate && (
-                        <div className={styles.subtitleContainer}>
+                {!noDistributionDate && (
+                    <div className={styles.subtitleContainer}>
+                        <Typography size="sm" variant="tertiary">
+                            {leaderboard && t("subtitleLatest")}
+                        </Typography>
+                        {loading ? (
+                            <Skeleton width={130} size="sm" />
+                        ) : (
                             <Typography
-                                weight="medium"
                                 size="sm"
-                                variant="tertiary"
+                                weight="medium"
+                                variant="primary"
                             >
-                                {leaderboard && t("subtitleLatest")}
+                                {leaderboard && leaderboard.timestamp
+                                    ? dayjs
+                                          .unix(leaderboard.timestamp)
+                                          .format("DD MMM YYYY, HH:mm")
+                                    : t("noDistribution")}
                             </Typography>
-                            {loading ? (
-                                <Skeleton width={130} size="sm" />
-                            ) : (
-                                <Typography
-                                    weight="medium"
-                                    size="sm"
-                                    variant="tertiary"
-                                    uppercase
-                                >
-                                    {leaderboard && leaderboard.timestamp
-                                        ? dayjs
-                                              .unix(leaderboard.timestamp)
-                                              .format("DD/MMM/YY HH:mm")
-                                        : t("noDistribution")}
-                                </Typography>
-                            )}
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
                 {/* TODO: do we need to enable distributions page for points campaigns as well?` */}
-                {distributablesType === DistributablesType.Tokens && (
+                {/* TODO: reenable once single campaign fetching is working */}
+                {/* {distributablesType === DistributablesType.Tokens && (
                     <Link
                         href={`${pathname}/distributions`}
                         className={styles.distributionsLink}
                     >
-                        <Typography size="sm" weight="semibold">
+                        <Typography size="sm" weight="medium">
                             {t("seeDistributions")}
                         </Typography>
                         <ArrowRightIcon />
                     </Link>
-                )}
+                )} */}
             </div>
             <div className={styles.cardsWrapper}>
                 <div className={styles.leaderboardWrapper}>

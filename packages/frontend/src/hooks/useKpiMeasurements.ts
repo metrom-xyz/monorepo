@@ -1,18 +1,23 @@
-import { Status, type Campaign, type KpiMeasurement } from "@metrom-xyz/sdk";
+import {
+    SpecificationDistributionType,
+    Status,
+    type KpiMeasurement,
+} from "@metrom-xyz/sdk";
 import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import type { HookBaseParams } from "../types/hooks";
+import type { AggregatedCampaignItem } from "../types/campaign";
 
 interface UseKpiMeasurementsParams extends HookBaseParams {
     from?: number;
     to?: number;
-    campaign?: Campaign;
+    campaign?: AggregatedCampaignItem;
 }
 
 type QueryKey = [
     string,
-    Campaign | undefined,
+    AggregatedCampaignItem | undefined,
     number | undefined,
     number | undefined,
 ];
@@ -55,7 +60,7 @@ export function useKpiMeasurements({
 
             try {
                 return METROM_API_CLIENT.fetchKpiMeasurements({
-                    campaign,
+                    item: campaign,
                     from: derivedFrom,
                     to: derivedTo,
                 });
@@ -67,7 +72,11 @@ export function useKpiMeasurements({
             }
         },
         staleTime: 60000,
-        enabled: enabled && !!campaign && !!campaign.specification?.kpi,
+        enabled:
+            enabled &&
+            !!campaign &&
+            campaign.specification?.distribution?.type ===
+                SpecificationDistributionType.Kpi,
     });
 
     return {

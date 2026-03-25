@@ -1,8 +1,12 @@
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
-import type { Campaign } from "@/src/types/campaign";
+import {
+    DistributablesType,
+    SpecificationDistributionType,
+    TargetType,
+} from "@metrom-xyz/sdk";
+import type { AggregatedCampaignItem } from "@/src/types/campaign";
 import { useMemo } from "react";
 import { getCampaignApr } from "@/src/utils/campaign";
 import { getCampaignAprTargetText } from "@/src/utils/kpi";
@@ -12,58 +16,60 @@ import { usePool } from "@/src/hooks/usePool";
 import styles from "./styles.module.css";
 
 interface KpiAprSummaryProps {
-    campaign?: Campaign;
+    item?: AggregatedCampaignItem;
 }
 
 // TODO: add support for non amm pool liquidity campaigns
-export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
+export function KpiAprSummary({ item }: KpiAprSummaryProps) {
     const t = useTranslations("kpiAprSummary");
 
-    const tokensCampaign = campaign?.isDistributing(DistributablesType.Tokens);
+    const tokensCampaign = item?.isDistributing(DistributablesType.Tokens);
+
     const ammPoolLiquidityCampaign =
-        campaign?.isTargeting(TargetType.AmmPoolLiquidity) ||
-        campaign?.isTargeting(TargetType.JumperWhitelistedAmmPoolLiquidity);
+        item?.isTargeting(TargetType.AmmPoolLiquidity) ||
+        item?.isTargeting(TargetType.JumperWhitelistedAmmPoolLiquidity);
 
     const { loading: loadingPool, pool } = usePool({
-        id: ammPoolLiquidityCampaign ? campaign?.target.pool.id : undefined,
-        chainId: campaign?.target.chainId,
-        chainType: campaign?.target.chainType,
-        enabled: campaign && ammPoolLiquidityCampaign,
+        id: ammPoolLiquidityCampaign ? item?.target.pool.id : undefined,
+        chainId: item?.target.chainId,
+        chainType: item?.target.chainType,
+        enabled: item && ammPoolLiquidityCampaign,
     });
 
     const { loading: loadingLiquidityByAddresses, liquidityByAddresses } =
         useLiquidityByAddresses({
-            type: campaign?.restrictions?.type,
+            type: item?.restrictions?.type,
             pool: pool,
-            addresses: campaign?.restrictions?.list,
-            enabled: !!pool && !!campaign?.restrictions,
+            addresses: item?.restrictions?.list,
+            enabled: !!pool && !!item?.restrictions,
         });
 
     const maxApr = useMemo(() => {
         if (
-            !campaign ||
+            !item ||
             !tokensCampaign ||
-            !campaign.specification?.kpi ||
+            item?.specification?.distribution?.type !==
+                SpecificationDistributionType.Kpi ||
             loadingPool ||
             loadingLiquidityByAddresses ||
-            (campaign.restrictions && !liquidityByAddresses)
+            (item.restrictions && !liquidityByAddresses)
         )
             return undefined;
 
-        const { kpi } = campaign.specification;
+        const { distribution } = item.specification;
 
         return getCampaignApr({
-            usdRewards: campaign.distributables.amountUsdValue,
-            duration: campaign.to - campaign.from,
-            usdTvl: kpi.goal.upperUsdTarget,
-            kpiSpecification: kpi,
+            usdRewards: item.distributables.amountUsdValue,
+            duration: item.to - item.from,
+            usdTvl: distribution.goal.upperUsdTarget,
+            kpiDistribution: distribution,
             liquidity: pool?.liquidity,
             liquidityByAddresses,
             // TODO: add liquidity in range
             // range: liquidityInRange,
         });
     }, [
-        campaign,
+        item,
         liquidityByAddresses,
         loadingLiquidityByAddresses,
         loadingPool,
@@ -71,9 +77,10 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
         pool?.liquidity,
     ]);
 
-    const lowerBound = campaign?.specification?.kpi?.goal.lowerUsdTarget;
-    const upperBound = campaign?.specification?.kpi?.goal.upperUsdTarget;
-    const minimumPayout = campaign?.specification?.kpi?.minimumPayoutPercentage;
+    const lowerBound = item?.specification?.distribution?.goal.lowerUsdTarget;
+    const upperBound = item?.specification?.distribution?.goal.upperUsdTarget;
+    const minimumPayout =
+        item?.specification?.distribution?.minimumPayoutPercentage;
 
     if (loadingPool || loadingLiquidityByAddresses)
         return (
@@ -84,13 +91,13 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
             </div>
         );
 
-    if (!maxApr || !campaign) return null;
+    if (!maxApr || !item) return null;
 
     return (
-        <Typography size="sm" variant="tertiary" className={styles.text}>
+        <Typography size="sm" className={styles.text}>
             {minimumPayout
                 ? t.rich("textWithMinPayout", {
-                      targetValueName: campaign.targetValueName,
+                      targetValueName: item.targetValueName,
                       minimumPayout: formatPercentage({
                           percentage: minimumPayout * 100,
                       }),
@@ -109,8 +116,8 @@ export function KpiAprSummary({ campaign }: KpiAprSummaryProps) {
                       ),
                   })
                 : t.rich("textNoMinPayout", {
-                      targetValueName: campaign.targetValueName,
-                      target: t(getCampaignAprTargetText(campaign)),
+                      targetValueName: item.targetValueName,
+                      target: t(getCampaignAprTargetText(item)),
                       lowerBound: formatUsdAmount({
                           amount: lowerBound,
                           cutoff: false,

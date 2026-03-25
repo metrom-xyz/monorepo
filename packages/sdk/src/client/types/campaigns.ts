@@ -22,14 +22,12 @@ export interface BackendEmptyTarget extends BaseTarget {
 }
 
 export interface BackendAmmPoolLiquidityTarget
-    extends BaseTarget,
-        BackendCampaignAmmPool {
+    extends BaseTarget, BackendCampaignAmmPool {
     type: "amm-pool-liquidity";
 }
 
 export interface BackendJumperWhitelistedAmmPoolLiquidityTarget
-    extends BaseTarget,
-        BackendCampaignAmmPool {
+    extends BaseTarget, BackendCampaignAmmPool {
     type: "jumper-whitelisted-amm-pool-liquidity";
 }
 
@@ -66,8 +64,7 @@ export type BackendLiquityV2StabilityPoolTarget =
 
 export type BackendAaveV3BorrowTarget = BackendAaveV3Target<"aave-v3-borrow">;
 export type BackendAaveV3SupplyTarget = BackendAaveV3Target<"aave-v3-supply">;
-export interface BackendAaveV3NetSupplyTarget
-    extends BackendAaveV3Target<"aave-v3-net-supply"> {
+export interface BackendAaveV3NetSupplyTarget extends BackendAaveV3Target<"aave-v3-net-supply"> {
     blacklistedCrossBorrowCollaterals: Erc20Token[];
 }
 
@@ -177,9 +174,7 @@ export interface BackendLiquityV2Collateral {
 }
 
 export interface BackendBaseCampaign {
-    chainId: number;
     id: Hex;
-    chainType: ChainType;
     from: string;
     to: string;
     createdAt: string;
@@ -200,8 +195,6 @@ export interface BackendBaseCampaign {
         | BackendAmmPoolNetSwapVolumeTarget
         | BackendYieldSeekerTarget
         | BackendOdysseyTarget;
-    specification?: Specification;
-    accountsIncentivized?: number;
     usdTvl?: number;
     apr?: number;
 }
@@ -218,8 +211,33 @@ export interface BackendRewardsCampaign {
     rewards: BackendRewards;
 }
 
-export type BackendCampaign = BackendBaseCampaign &
-    (
+export type BackendCampaign = BackendBaseCampaign & {
+    chainType: ChainType;
+    chainId: number;
+    hasKpi: boolean;
+    opportunitiesAmount: number;
+} & (
+        | BackendFixedPointsCampaign
+        | BackendDynamicPointsCampaign
+        | BackendRewardsCampaign
+    );
+
+export type BackendAggregatedCampaign = BackendBaseCampaign & {
+    chainType: ChainType;
+    chainId: number;
+    hasKpi: boolean;
+    opportunitiesAmount: number;
+    accountsIncentivized?: number;
+} & (
+        | BackendFixedPointsCampaign
+        | BackendDynamicPointsCampaign
+        | BackendRewardsCampaign
+    );
+
+export type BackendAggregatedCampaignItem = BackendBaseCampaign & {
+    specification?: Specification;
+    accountsIncentivized?: number;
+} & (
         | BackendFixedPointsCampaign
         | BackendDynamicPointsCampaign
         | BackendRewardsCampaign
@@ -230,6 +248,11 @@ export interface BackendCampaignsResponse {
     campaigns: BackendCampaign[];
 }
 
-export interface BackendCampaignResponse {
-    campaign: BackendCampaign;
+export interface BackendAggregatedCampaignResponse {
+    campaign: BackendAggregatedCampaign;
+}
+
+export interface BackendAggregatedCampaignItemsResponse {
+    totalItems: number;
+    campaigns: BackendAggregatedCampaignItem[];
 }

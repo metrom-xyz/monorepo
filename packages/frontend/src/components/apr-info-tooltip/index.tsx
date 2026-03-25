@@ -1,22 +1,25 @@
-import { InfoTooltip } from "@metrom-xyz/ui";
+import { Popover } from "@metrom-xyz/ui";
 import { InfoMessage } from "../info-message";
 import { useTranslations } from "next-intl";
-import { useCallback } from "react";
+import { useCallback, useRef, useState, type ReactNode } from "react";
 import { formatPercentage } from "@/src/utils/format";
 import { WEIGHT_UNIT } from "@/src/commons";
-import type { Campaign } from "@/src/types/campaign";
 import { TargetType } from "@metrom-xyz/sdk";
-import classNames from "classnames";
+import type { AggregatedCampaignItem } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface AprInfoTooltiProps {
-    campaign: Campaign;
-    className?: string;
+    campaign?: AggregatedCampaignItem;
+    children: ReactNode;
 }
 
-export function AprInfoTooltip({ campaign, className }: AprInfoTooltiProps) {
+export function AprInfoTooltip({ campaign, children }: AprInfoTooltiProps) {
+    const [popover, setPopover] = useState(false);
+    const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
+
     const t = useTranslations("aprInfoTooltip");
+    const popoverRef = useRef<HTMLDivElement>(null);
 
     const ammPoolLiquidityCampaign = campaign?.isTargeting(
         TargetType.AmmPoolLiquidity,
@@ -147,11 +150,35 @@ export function AprInfoTooltip({ campaign, className }: AprInfoTooltiProps) {
         t,
     ]);
 
+    function handlePopoverOpen() {
+        setPopover(true);
+    }
+
+    function handlePopoverClose() {
+        setPopover(false);
+    }
+
     if (!priceRange && !weighting && !aaveV3Collateral) return null;
 
     return (
-        <InfoTooltip className={classNames(styles.tooltip, className)}>
-            {getInfoMessage()}
-        </InfoTooltip>
+        <>
+            <Popover
+                ref={popoverRef}
+                open={popover}
+                anchor={anchor}
+                onOpenChange={setPopover}
+                placement="bottom"
+                className={styles.root}
+            >
+                {getInfoMessage()}
+            </Popover>
+            <div
+                ref={setAnchor}
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+            >
+                {children}
+            </div>
+        </>
     );
 }
