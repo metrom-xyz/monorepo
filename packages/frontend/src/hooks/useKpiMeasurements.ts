@@ -7,17 +7,17 @@ import { METROM_API_CLIENT } from "../commons";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import type { HookBaseParams } from "../types/hooks";
-import type { AggregatedCampaignItem } from "../types/campaign";
+import type { CampaignItem } from "../types/campaign";
 
 interface UseKpiMeasurementsParams extends HookBaseParams {
     from?: number;
     to?: number;
-    campaign?: AggregatedCampaignItem;
+    campaign?: CampaignItem;
 }
 
 type QueryKey = [
     string,
-    AggregatedCampaignItem | undefined,
+    CampaignItem | undefined,
     number | undefined,
     number | undefined,
 ];

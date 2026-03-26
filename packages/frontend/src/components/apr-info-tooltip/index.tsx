@@ -5,12 +5,12 @@ import { useCallback, useRef, useState, type ReactNode } from "react";
 import { formatPercentage } from "@/src/utils/format";
 import { WEIGHT_UNIT } from "@/src/commons";
 import { TargetType } from "@metrom-xyz/sdk";
-import type { AggregatedCampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface AprInfoTooltiProps {
-    campaign?: AggregatedCampaignItem;
+    campaign?: CampaignItem;
     children: ReactNode;
 }
 

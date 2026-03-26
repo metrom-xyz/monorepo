@@ -4,7 +4,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { CampaignRewardsPopover } from "@/src/components/campaign-rewards-popover";
 import { formatDateTime, formatUsdAmount } from "@/src/utils/format";
 import { CampaignWeighting } from "@/src/components/campaign-weighting";
-import type { AggregatedCampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign";
 import { DistributablesType, Status, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
@@ -12,17 +12,17 @@ import { CalendarIcon } from "@/src/assets/calendar-icon";
 import styles from "./styles.module.css";
 
 interface HeaderProps {
-    item: AggregatedCampaignItem;
+    campaignItem: CampaignItem;
 }
 
-export function Header({ item }: HeaderProps) {
-    const t = useTranslations("campaignDetails.itemsTable.item");
+export function Header({ campaignItem }: HeaderProps) {
+    const t = useTranslations("campaignDetails.itemsTable.campaignItem");
 
-    const ammPoolItem = item.isTargeting(TargetType.AmmPoolLiquidity);
-    const notExpired = item.status !== Status.Expired;
+    const ammPoolItem = campaignItem.isTargeting(TargetType.AmmPoolLiquidity);
+    const notExpired = campaignItem.status !== Status.Expired;
 
-    const rewards = item.isDistributing(DistributablesType.Tokens);
-    const { from, to, status, chainId, specification } = item;
+    const rewards = campaignItem.isDistributing(DistributablesType.Tokens);
+    const { from, to, status, chainId, specification } = campaignItem;
 
     return (
         <div className={styles.root}>
@@ -43,7 +43,9 @@ export function Header({ item }: HeaderProps) {
                                         hideUsdValue
                                         status={status}
                                         chainId={chainId}
-                                        distributables={item.distributables}
+                                        distributables={
+                                            campaignItem.distributables
+                                        }
                                     />
                                 </div>
                             }
@@ -54,7 +56,7 @@ export function Header({ item }: HeaderProps) {
                                 <Typography size="sm" variant="tertiary">
                                     {t.rich("dailyRewards", {
                                         usdValue: formatUsdAmount({
-                                            amount: item.distributables
+                                            amount: campaignItem.distributables
                                                 .dailyUsd,
                                         }),
                                         highlighted: (chunks) => (
@@ -87,7 +89,7 @@ export function Header({ item }: HeaderProps) {
             {specification && specification.weighting && ammPoolItem && (
                 <CampaignWeighting
                     specification={specification}
-                    pool={item.target.pool}
+                    pool={campaignItem.target.pool}
                 />
             )}
         </div>

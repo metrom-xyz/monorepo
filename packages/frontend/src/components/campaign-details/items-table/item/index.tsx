@@ -10,23 +10,22 @@ import { useTranslations } from "next-intl";
 import { ItemContent } from "./content";
 import { CampaignTag } from "@/src/components/campaign-tag";
 import { CampaignStatus } from "../../../campaign-status";
-import type { AggregatedCampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign";
 import { KpiTagPopover } from "./kpi-tag-popover";
 import { Header } from "./header";
 
 import styles from "./styles.module.css";
 
 interface ItemProps {
-    item: AggregatedCampaignItem;
+    campaignItem: CampaignItem;
 }
 
-export function Item({ item }: ItemProps) {
+export function Item({ campaignItem }: ItemProps) {
     const t = useTranslations("campaignDetails.itemsTable");
+    const { id, chainId, status, apr, from, to, specification } = campaignItem;
 
-    const { id, status, apr, from, to, specification } = item;
-    const hasKpi = item.hasKpiDistribution();
-
-    const rewards = item.isDistributing(DistributablesType.Tokens);
+    const hasKpi = campaignItem.hasKpiDistribution();
+    const rewards = campaignItem.isDistributing(DistributablesType.Tokens);
 
     return (
         <Accordion
@@ -36,7 +35,9 @@ export function Item({ item }: ItemProps) {
                         <Typography weight="medium">
                             {shortenAddress(id, true)}
                         </Typography>
-                        {hasKpi && <KpiTagPopover item={item} />}
+                        {hasKpi && (
+                            <KpiTagPopover campaignItem={campaignItem} />
+                        )}
                         {specification?.priceRange && (
                             <CampaignTag size="sm" text={t("range")} />
                         )}
@@ -50,7 +51,7 @@ export function Item({ item }: ItemProps) {
                     <AprChip
                         apr={apr}
                         kpi={hasKpi}
-                        campaign={item}
+                        campaign={campaignItem}
                         placeholder
                     />
                     {rewards && (
@@ -58,9 +59,9 @@ export function Item({ item }: ItemProps) {
                             logoSize="xs"
                             hideSymbol
                             hideOnExpired
-                            status={item.status}
-                            chainId={item.chainId}
-                            distributables={item.distributables}
+                            status={status}
+                            chainId={chainId}
+                            distributables={campaignItem.distributables}
                         />
                     )}
                 </>
@@ -69,8 +70,8 @@ export function Item({ item }: ItemProps) {
             className={styles.accordion}
         >
             <div className={styles.content}>
-                <Header item={item} />
-                <ItemContent item={item} />
+                <Header campaignItem={campaignItem} />
+                <ItemContent campaignItem={campaignItem} />
             </div>
         </Accordion>
     );

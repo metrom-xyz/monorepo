@@ -2,8 +2,9 @@ import {
     CampaignKind,
     BaseCampaign as SdkBaseCampaign,
     Campaign as SdkCampaign,
-    AggregatedCampaign as SdkAggregatedCampaign,
-    AggregatedCampaignItem as SdkAggregatedCampaignItem,
+    CampaignDetails as SdkCampaignDetails,
+    CampaignItem as SdkCampaignItem,
+    CampaignItemDetails as SdkCampaignItemDetails,
     TargetType,
     type Claim,
     type AaveV3Collateral,
@@ -451,28 +452,28 @@ export class Campaign extends SdkCampaign {
     }
 }
 
-export class AggregatedCampaign extends SdkAggregatedCampaign {
+export class CampaignDetails extends SdkCampaignDetails {
     constructor(
-        campaign: SdkAggregatedCampaign,
+        campaignDetails: SdkCampaignDetails,
         public readonly name: string,
         public readonly targetValueName: string,
         public readonly chainData?: ChainData,
     ) {
         super(
-            campaign.opportunitiesAmount,
-            campaign.hasKpi,
-            campaign.accountsIncentivized,
-            campaign.id,
-            campaign.chainType,
-            campaign.chainId,
-            campaign.from,
-            campaign.to,
-            campaign.createdAt,
-            campaign.target,
-            campaign.distributables,
-            campaign.usdTvl,
-            campaign.snapshottedAt,
-            campaign.apr,
+            campaignDetails.opportunitiesAmount,
+            campaignDetails.hasKpi,
+            campaignDetails.accountsIncentivized,
+            campaignDetails.id,
+            campaignDetails.chainType,
+            campaignDetails.chainId,
+            campaignDetails.from,
+            campaignDetails.to,
+            campaignDetails.createdAt,
+            campaignDetails.target,
+            campaignDetails.distributables,
+            campaignDetails.usdTvl,
+            campaignDetails.snapshottedAt,
+            campaignDetails.apr,
         );
     }
 
@@ -538,28 +539,28 @@ export class AggregatedCampaign extends SdkAggregatedCampaign {
     }
 }
 
-export class AggregatedCampaignItem extends SdkAggregatedCampaignItem {
+export class CampaignItem extends SdkCampaignItem {
     constructor(
-        campaign: SdkAggregatedCampaignItem,
+        campaignItem: SdkCampaignItem,
         public readonly name: string,
         public readonly targetValueName: string,
         public readonly chainData?: ChainData,
     ) {
         super(
-            campaign.specification,
-            campaign.restrictions,
-            campaign.accountsIncentivized,
-            campaign.id,
-            campaign.chainType,
-            campaign.chainId,
-            campaign.from,
-            campaign.to,
-            campaign.createdAt,
-            campaign.target,
-            campaign.distributables,
-            campaign.usdTvl,
-            campaign.snapshottedAt,
-            campaign.apr,
+            campaignItem.specification,
+            campaignItem.restrictions,
+            campaignItem.accountsIncentivized,
+            campaignItem.id,
+            campaignItem.chainType,
+            campaignItem.chainId,
+            campaignItem.from,
+            campaignItem.to,
+            campaignItem.createdAt,
+            campaignItem.target,
+            campaignItem.distributables,
+            campaignItem.usdTvl,
+            campaignItem.snapshottedAt,
+            campaignItem.apr,
         );
     }
 
@@ -584,6 +585,107 @@ export class AggregatedCampaignItem extends SdkAggregatedCampaignItem {
             this.specification?.distribution?.type ===
             SpecificationDistributionType.Kpi
         );
+    }
+}
+
+export class CampaignItemDetails extends SdkCampaignItemDetails {
+    // To avoid having to define another campaign item type
+    public readonly opportunitiesAmount = 0;
+
+    constructor(
+        campaignItemDetails: SdkCampaignItemDetails,
+        public readonly name: string,
+        public readonly targetValueName: string,
+        public readonly chainData?: ChainData,
+    ) {
+        super(
+            campaignItemDetails.specification,
+            campaignItemDetails.restrictions,
+            campaignItemDetails.accountsIncentivized,
+            campaignItemDetails.id,
+            campaignItemDetails.chainType,
+            campaignItemDetails.chainId,
+            campaignItemDetails.from,
+            campaignItemDetails.to,
+            campaignItemDetails.createdAt,
+            campaignItemDetails.target,
+            campaignItemDetails.distributables,
+            campaignItemDetails.usdTvl,
+            campaignItemDetails.snapshottedAt,
+            campaignItemDetails.apr,
+        );
+    }
+
+    isDistributing<T extends DistributablesType>(
+        type: T,
+    ): this is DistributablesNamedCampaign<T, this> {
+        return this.distributables.type === type;
+    }
+
+    isTargeting<T extends TargetType>(
+        type: T,
+    ): this is TargetedNamedCampaign<T, this> {
+        return this.target.type === type;
+    }
+
+    hasKpiDistribution(): this is this & {
+        specification: Specification & {
+            distribution: KpiDistributionSpecification;
+        };
+    } {
+        return (
+            this.specification?.distribution?.type ===
+            SpecificationDistributionType.Kpi
+        );
+    }
+
+    getDepositLiquidityUrl(
+        params?: Record<string, string | number>,
+    ): string | undefined {
+        if (!this.isTargeting(TargetType.AmmPoolLiquidity)) return undefined;
+
+        const pool = this.target.pool;
+        const dex = this.chainData?.protocols.find(
+            (protocol) =>
+                protocol.type === ProtocolType.Dex &&
+                protocol.slug === pool.dex.slug,
+        );
+
+        if (!dex) return undefined;
+        const { depositUrl } = dex as DexProtocol;
+        const { template, type } = depositUrl;
+        const queryParams = params
+            ? Object.entries(params)
+                  .map(([key, value]) => `&${key}=${value}`)
+                  .join("")
+            : "";
+
+        switch (type) {
+            case DepositUrlType.PathPoolAddress: {
+                return template
+                    .replace("{pool}", `${pool.id}`)
+                    .concat(queryParams);
+            }
+            case DepositUrlType.PathTokenAddresses: {
+                return template
+                    .replace(
+                        "{pool}",
+                        `${pool.tokens.map(({ address }) => address).join("/")}`,
+                    )
+                    .concat(queryParams);
+            }
+            case DepositUrlType.QueryTokenAddresses: {
+                const url = template
+                    .replace("{token_0}", pool.tokens[0].address)
+                    .replace("{token_1}", pool.tokens[1].address)
+                    .concat(queryParams);
+
+                return pool.fee ? `${url}&fee=${pool.fee * 10000}` : url;
+            }
+            default: {
+                return undefined;
+            }
+        }
     }
 }
 

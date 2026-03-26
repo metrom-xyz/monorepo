@@ -222,7 +222,7 @@ export type BackendCampaign = BackendBaseCampaign & {
         | BackendRewardsCampaign
     );
 
-export type BackendAggregatedCampaign = BackendBaseCampaign & {
+export type BackendCampaignDetails = BackendBaseCampaign & {
     chainType: ChainType;
     chainId: number;
     hasKpi: boolean;
@@ -234,7 +234,19 @@ export type BackendAggregatedCampaign = BackendBaseCampaign & {
         | BackendRewardsCampaign
     );
 
-export type BackendAggregatedCampaignItem = BackendBaseCampaign & {
+export type BackendCampaignItem = BackendBaseCampaign & {
+    specification?: Specification;
+    accountsIncentivized?: number;
+} & (
+        | BackendFixedPointsCampaign
+        | BackendDynamicPointsCampaign
+        | BackendRewardsCampaign
+    );
+
+export type BackendCampaignItemDetails = BackendBaseCampaign & {
+    chainType: ChainType;
+    chainId: number;
+    hasKpi: boolean;
     specification?: Specification;
     accountsIncentivized?: number;
 } & (
@@ -249,10 +261,14 @@ export interface BackendCampaignsResponse {
 }
 
 export interface BackendAggregatedCampaignResponse {
-    campaign: BackendAggregatedCampaign;
+    campaign: BackendCampaignDetails;
+}
+
+export interface BackendCampaignItemDetailsResponse {
+    campaign: BackendCampaignItemDetails;
 }
 
 export interface BackendAggregatedCampaignItemsResponse {
     totalItems: number;
-    campaigns: BackendAggregatedCampaignItem[];
+    campaigns: BackendCampaignItem[];
 }

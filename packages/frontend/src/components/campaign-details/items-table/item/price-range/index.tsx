@@ -5,40 +5,37 @@ import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { LiquidityDensityChart } from "../../../../liquidity-density-chart";
 import classNames from "classnames";
 import { BoldText } from "../../../../bold-text";
-import type {
-    AggregatedCampaignItem,
-    TargetedNamedCampaign,
-} from "@/src/types/campaign";
+import type { CampaignItem, TargetedNamedCampaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 const COMPUTE_TICKS_AMOUNT = 3000;
 
 interface PriceRangeProps {
-    campaign?: TargetedNamedCampaign<
+    campaignItem?: TargetedNamedCampaign<
         TargetType.AmmPoolLiquidity,
-        AggregatedCampaignItem
+        CampaignItem
     >;
 }
 
-export function PriceRange({ campaign }: PriceRangeProps) {
+export function PriceRange({ campaignItem }: PriceRangeProps) {
     const t = useTranslations("campaignDetails.priceRange");
 
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity({
-            pool: campaign?.target.pool,
+            pool: campaignItem?.target.pool,
             computeAmount: COMPUTE_TICKS_AMOUNT,
-            enabled: campaign && !!campaign.specification?.priceRange,
+            enabled: campaignItem && !!campaignItem.specification?.priceRange,
         });
 
     if (
-        !campaign?.isTargeting(TargetType.AmmPoolLiquidity) ||
-        !campaign?.specification?.priceRange
+        !campaignItem?.isTargeting(TargetType.AmmPoolLiquidity) ||
+        !campaignItem?.specification?.priceRange
     )
         return null;
 
-    const { priceRange } = campaign.specification;
-    const { pool } = campaign.target;
+    const { priceRange } = campaignItem.specification;
+    const { pool } = campaignItem.target;
 
     const fromPrice = tickToScaledPrice(priceRange.from, pool, true);
     const toPrice = tickToScaledPrice(priceRange.to, pool, true);

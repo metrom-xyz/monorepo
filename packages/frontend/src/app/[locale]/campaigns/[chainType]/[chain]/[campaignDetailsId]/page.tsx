@@ -10,7 +10,7 @@ import type { Hex } from "viem";
 export interface Params {
     chain: string;
     chainType: ChainType;
-    campaignId: Hex;
+    campaignDetailsId: Hex;
     locale: Locale;
 }
 
@@ -19,12 +19,12 @@ export interface CampaignDetailsPageProps {
 }
 
 export async function generateMetadata({ params }: CampaignDetailsPageProps) {
-    const { chain, chainType, campaignId } = await params;
+    const { chain, chainType, campaignDetailsId } = await params;
     const t = await getTranslations();
 
     try {
-        const campaignData = await METROM_API_CLIENT.fetchAggregatedCampaign({
-            id: campaignId,
+        const campaignData = await METROM_API_CLIENT.fetchCampaignDetails({
+            id: campaignDetailsId,
             chainType,
             chainId: parseInt(chain),
         });
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: CampaignDetailsPageProps) {
 export default async function CampaignDetailsPage({
     params,
 }: CampaignDetailsPageProps) {
-    const { locale, chain, chainType, campaignId } = await params;
+    const { locale, chain, chainType, campaignDetailsId } = await params;
 
     if (!routing.locales.includes(locale)) notFound();
 
@@ -53,7 +53,7 @@ export default async function CampaignDetailsPage({
         <CampaignDetails
             chain={parseInt(chain)}
             chainType={chainType}
-            campaignId={campaignId}
+            campaignId={campaignDetailsId}
         />
     );
 }

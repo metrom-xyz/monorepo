@@ -17,32 +17,34 @@ import { formatAmount } from "@/src/utils/format";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 import { TargetValueChange } from "./target-value-change";
 import classNames from "classnames";
-import type {  AggregatedCampaignItem } from "@/src/types/campaign";
+import type { CampaignItemDetails } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface InsightsProps {
-    campaign: AggregatedCampaignItem;
+    campaignItemDetails: CampaignItemDetails;
     loading?: boolean;
 }
 
-export function Insights({ campaign }: InsightsProps) {
+export function Insights({ campaignItemDetails }: InsightsProps) {
     const t = useTranslations("campaignDistributions.insights");
+
+    const { chainId, accountsIncentivized } = campaignItemDetails;
     const targetValueName = useCampaignTargetValueName({
-        kind: CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+        kind: CAMPAIGN_TARGET_TO_KIND[campaignItemDetails.target.type],
     });
 
-    const distributingTokens = campaign.isDistributing(
+    const distributingTokens = campaignItemDetails.isDistributing(
         DistributablesType.Tokens,
     );
     const withKpi =
-        campaign.specification?.distribution?.type ===
+        campaignItemDetails.specification?.distribution?.type ===
         SpecificationDistributionType.Kpi;
 
     const { measurement: kpiMeasurementPercentage, minimumPayoutPercentage } =
         useMemo<KpiDistributionSpecification>(() => {
             if (
-                campaign.specification?.distribution?.type !==
+                campaignItemDetails.specification?.distribution?.type !==
                 SpecificationDistributionType.Kpi
             )
                 return {
@@ -55,14 +57,19 @@ export function Insights({ campaign }: InsightsProps) {
                 };
 
             const { goal, measurement, minimumPayoutPercentage } =
-                campaign.specification.distribution;
+                campaignItemDetails.specification.distribution;
 
-            return { goal, measurement, minimumPayoutPercentage };
-        }, [campaign]);
+            return {
+                type: SpecificationDistributionType.Kpi,
+                goal,
+                measurement,
+                minimumPayoutPercentage,
+            };
+        }, [campaignItemDetails]);
 
     const rewardsDistributionBreakdown = useRewardsDistributionBreakdown({
         distributables: distributingTokens
-            ? campaign.distributables
+            ? campaignItemDetails.distributables
             : undefined,
         kpiMeasurementPercentage,
         minimumPayoutPercentage,
@@ -92,8 +99,10 @@ export function Insights({ campaign }: InsightsProps) {
                         </Typography>
                         {distributingTokens ? (
                             <Distributables
-                                chain={campaign.chainId}
-                                distributables={campaign.distributables}
+                                chain={chainId}
+                                distributables={
+                                    campaignItemDetails.distributables
+                                }
                             />
                         ) : (
                             <Typography size="sm" weight="medium">
@@ -113,7 +122,7 @@ export function Insights({ campaign }: InsightsProps) {
                                     {t("paid")}
                                 </Typography>
                                 <DistributedRewardsBreakdown
-                                    chain={campaign.chainId}
+                                    chain={chainId}
                                     totalUsdValue={
                                         rewardsDistributionBreakdown?.distributedUsdValue
                                     }
@@ -135,7 +144,7 @@ export function Insights({ campaign }: InsightsProps) {
                                     {t("reimbursed")}
                                 </Typography>
                                 <DistributedRewardsBreakdown
-                                    chain={campaign.chainId}
+                                    chain={chainId}
                                     totalUsdValue={
                                         rewardsDistributionBreakdown?.reimbursedUsdValue
                                     }
@@ -161,7 +170,7 @@ export function Insights({ campaign }: InsightsProps) {
                         </Typography>
                         <Typography size="sm" weight="medium">
                             {formatAmount({
-                                amount: campaign.accountsIncentivized,
+                                amount: accountsIncentivized,
                             })}
                         </Typography>
                     </div>
@@ -175,11 +184,11 @@ export function Insights({ campaign }: InsightsProps) {
                         </Typography>
                         {distributingTokens ? (
                             <AverageIncentive
-                                chain={campaign.chainId}
-                                distributables={campaign.distributables}
-                                accountsIncentivized={
-                                    campaign.accountsIncentivized
+                                chain={chainId}
+                                distributables={
+                                    campaignItemDetails.distributables
                                 }
+                                accountsIncentivized={accountsIncentivized}
                                 distributedUsdValue={
                                     rewardsDistributionBreakdown?.distributedUsdValue
                                 }
@@ -203,7 +212,9 @@ export function Insights({ campaign }: InsightsProps) {
                                         targetValueName,
                                     })}
                                 </Typography>
-                                <TargetValueChange campaign={campaign} />
+                                <TargetValueChange
+                                    campaignItemDetails={campaignItemDetails}
+                                />
                             </div>
                         </>
                     )}

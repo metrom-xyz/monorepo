@@ -7,39 +7,49 @@ import { Popover, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import { CampaignTag } from "@/src/components/campaign-tag";
-import type { AggregatedCampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface KpiTagPopoverProps {
-    item: AggregatedCampaignItem;
+    campaignItem: CampaignItem;
 }
 
-export function KpiTagPopover({ item }: KpiTagPopoverProps) {
+export function KpiTagPopover({ campaignItem }: KpiTagPopoverProps) {
     const [popover, setPopover] = useState(false);
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
-    const t = useTranslations("campaignDetails.itemsTable.item.kpiTag");
+    const t = useTranslations("campaignDetails.itemsTable.campaignItem.kpiTag");
     const popoverRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    const ammCampaign = item.isTargeting(TargetType.AmmPoolLiquidity);
-    const tokensCampaign = item.isDistributing(DistributablesType.Tokens);
+    const ammCampaign = campaignItem.isTargeting(TargetType.AmmPoolLiquidity);
+    const tokensCampaign = campaignItem.isDistributing(
+        DistributablesType.Tokens,
+    );
 
     const { loading: loadingPool, pool } = usePool({
-        id: ammCampaign ? item.target.pool.id : undefined,
-        chainId: item?.target.chainId,
-        chainType: item.chainType,
-        enabled: !!item && popover && item.hasKpiDistribution() && ammCampaign,
+        id: ammCampaign ? campaignItem.target.pool.id : undefined,
+        chainId: campaignItem?.target.chainId,
+        chainType: campaignItem.chainType,
+        enabled:
+            !!campaignItem &&
+            popover &&
+            campaignItem.hasKpiDistribution() &&
+            ammCampaign,
     });
 
     const handlePopoverOpen = useCallback(() => {
-        if (item.apr === undefined || !item.hasKpiDistribution()) return;
+        if (
+            campaignItem.apr === undefined ||
+            !campaignItem.hasKpiDistribution()
+        )
+            return;
 
         setPopover(true);
 
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    }, [item]);
+    }, [campaignItem]);
 
     const handlePopoverClose = useCallback(() => {
         // Used to keep the popover open while moving to it
@@ -48,11 +58,12 @@ export function KpiTagPopover({ item }: KpiTagPopoverProps) {
         }, 100);
     }, []);
 
-    if (!item.hasKpiDistribution()) return;
+    if (!campaignItem.hasKpiDistribution()) return;
 
-    const { goal, minimumPayoutPercentage } = item.specification.distribution;
+    const { goal, minimumPayoutPercentage } =
+        campaignItem.specification.distribution;
 
-    const loading = loadingPool || !item || (ammCampaign && !pool);
+    const loading = loadingPool || !campaignItem || (ammCampaign && !pool);
 
     return (
         <div
@@ -73,18 +84,20 @@ export function KpiTagPopover({ item }: KpiTagPopoverProps) {
                     <Typography size="sm" weight="semibold" uppercase>
                         {t("title")}
                     </Typography>
-                    <KpiAprSummary item={item} />
+                    <KpiAprSummary campaignItem={campaignItem} />
                     {loading ? (
                         <SkeletonPopover />
-                    ) : tokensCampaign && item.hasKpiDistribution() ? (
+                    ) : tokensCampaign && campaignItem.hasKpiDistribution() ? (
                         <div className={styles.chartWrapper}>
                             <KpiSimulationChart
                                 loading={loading}
-                                targetValueName={item.targetValueName}
-                                targetUsdValue={item.usdTvl}
-                                campaignDurationSeconds={item.to - item.from}
+                                targetValueName={campaignItem.targetValueName}
+                                targetUsdValue={campaignItem.usdTvl}
+                                campaignDurationSeconds={
+                                    campaignItem.to - campaignItem.from
+                                }
                                 totalRewardsUsd={
-                                    item.distributables.amountUsdValue
+                                    campaignItem.distributables.amountUsdValue
                                 }
                                 lowerUsdTarget={goal.lowerUsdTarget}
                                 upperUsdTarget={goal.upperUsdTarget}

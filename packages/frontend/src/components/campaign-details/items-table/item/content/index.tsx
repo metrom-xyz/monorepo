@@ -1,4 +1,4 @@
-import type { AggregatedCampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign";
 import { Tabs, UnderlinedTab } from "@metrom-xyz/ui";
 import { useEffect, useMemo, useState } from "react";
 import type { TranslationsKeys } from "@/src/types/utils";
@@ -8,12 +8,12 @@ import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { PriceRange } from "../price-range";
 import { Leaderboard } from "@/src/components/leaderboard";
 import { useLeaderboard } from "@/src/hooks/useLeaderboard";
-
-import styles from "./styles.module.css";
 import { Restrictions } from "../restrictions";
 
+import styles from "./styles.module.css";
+
 interface ItemContentProps {
-    item: AggregatedCampaignItem;
+    campaignItem: CampaignItem;
 }
 
 enum TabType {
@@ -25,7 +25,7 @@ enum TabType {
 
 const TABS: {
     type: TabType;
-    label: TranslationsKeys<"campaignDetails.itemsTable.item.tabs">;
+    label: TranslationsKeys<"campaignDetails.itemsTable.campaignItem.tabs">;
 }[] = [
     {
         type: TabType.Kpi,
@@ -45,24 +45,24 @@ const TABS: {
     },
 ];
 
-export function ItemContent({ item }: ItemContentProps) {
+export function ItemContent({ campaignItem }: ItemContentProps) {
     const [tab, setTab] = useState<TabType>();
 
-    const t = useTranslations("campaignDetails.itemsTable.item");
+    const t = useTranslations("campaignDetails.itemsTable.campaignItem");
 
     const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
-        campaignId: item.id,
-        chainId: item.chainId,
-        chainType: item.chainType,
+        campaignId: campaignItem.id,
+        chainId: campaignItem.chainId,
+        chainType: campaignItem.chainType,
         enabled: tab === TabType.Leaderboard,
     });
 
     const tabOptions = useMemo(
         () =>
             TABS.filter(({ type }) => {
-                const { specification } = item;
+                const { specification } = campaignItem;
 
-                if (type === TabType.Kpi) return !!item.hasKpiDistribution();
+                if (type === TabType.Kpi) return !!campaignItem.hasKpiDistribution();
                 if (type === TabType.Range) return !!specification?.priceRange;
                 if (type === TabType.Restrictions)
                     return (
@@ -70,7 +70,7 @@ export function ItemContent({ item }: ItemContentProps) {
                     );
                 return true;
             }),
-        [item],
+        [campaignItem],
     );
 
     useEffect(() => {
@@ -78,8 +78,8 @@ export function ItemContent({ item }: ItemContentProps) {
         setTab(tabOptions[0].type);
     }, [tabOptions, tab]);
 
-    const tokensItem = item.isDistributing(DistributablesType.Tokens);
-    const ammPoolLiquidityItem = item.isTargeting(TargetType.AmmPoolLiquidity);
+    const tokensItem = campaignItem.isDistributing(DistributablesType.Tokens);
+    const ammPoolLiquidityItem = campaignItem.isTargeting(TargetType.AmmPoolLiquidity);
 
     return (
         <div>
@@ -96,22 +96,19 @@ export function ItemContent({ item }: ItemContentProps) {
                 ))}
             </Tabs>
             <div className={styles.tabContentWrapper}>
-                {tab === TabType.Kpi && tokensItem && <Kpi item={item} />}
+                {tab === TabType.Kpi && tokensItem && <Kpi campaignItem={campaignItem} />}
                 {tab === TabType.Range && ammPoolLiquidityItem && (
-                    <PriceRange campaign={item} />
+                    <PriceRange campaignItem={campaignItem} />
                 )}
                 {tab === TabType.Leaderboard && (
                     <Leaderboard
-                        chainId={item.chainId}
-                        chainType={item.chainType}
-                        restrictions={item.restrictions}
-                        // distributablesType={item.distributables.type}
+                        campaignItem={campaignItem}
                         leaderboard={leaderboard}
                         loading={loadingLeaderboard}
                     />
                 )}
-                {tab === TabType.Restrictions && item.restrictions && (
-                    <Restrictions {...item.restrictions} />
+                {tab === TabType.Restrictions && campaignItem.restrictions && (
+                    <Restrictions {...campaignItem.restrictions} />
                 )}
             </div>
         </div>

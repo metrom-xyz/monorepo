@@ -4,7 +4,7 @@ import type { CampaignDetailsPageProps } from "./page";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { AggregatedCampaign } from "@/src/types/campaign";
+import { CampaignDetails } from "@/src/types/campaign";
 import { getTranslations } from "next-intl/server";
 import {
     getCampaignTargetValueName,
@@ -45,7 +45,7 @@ export const contentType = "image/png";
 
 type TokenIcons = Record<number, Record<Address, string>>;
 
-async function getCampaign(
+async function getCampaignDetails(
     id: Address,
     chainType: ChainType,
     chainId: SupportedChain,
@@ -53,13 +53,13 @@ async function getCampaign(
     try {
         const t = await getTranslations();
 
-        const campaign = await METROM_API_CLIENT.fetchAggregatedCampaign({
+        const campaign = await METROM_API_CLIENT.fetchCampaignDetails({
             id,
             chainType,
             chainId,
         });
 
-        return new AggregatedCampaign(
+        return new CampaignDetails(
             campaign,
             await getSocialPreviewCampaignName(campaign),
             getCampaignTargetValueName(
@@ -125,14 +125,18 @@ async function getTokenUris(
 }
 
 export default async function Image({ params }: CampaignDetailsPageProps) {
-    const { chain, chainType, campaignId } = await params;
+    const { chain, chainType, campaignDetailsId } = await params;
     const t = await getTranslations();
 
     const ibmPlexSans = await readFile(
         join(process.cwd(), "assets/ibm-plex-sans-500.ttf"),
     );
 
-    const campaign = await getCampaign(campaignId, chainType, parseInt(chain));
+    const campaign = await getCampaignDetails(
+        campaignDetailsId,
+        chainType,
+        parseInt(chain),
+    );
     const protocol = getCampaignTargetProtocol(
         chainType,
         parseInt(chain),

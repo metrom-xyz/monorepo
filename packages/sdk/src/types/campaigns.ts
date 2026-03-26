@@ -265,7 +265,7 @@ export enum SpecificationDistributionType {
 }
 
 export interface KpiDistributionSpecification {
-    type?: SpecificationDistributionType.Kpi;
+    type: SpecificationDistributionType.Kpi;
     measurement?: number;
     minimumPayoutPercentage?: number;
     goal: RangePoolTvlKpiGoal;
@@ -344,7 +344,7 @@ export class Campaign extends BaseCampaign {
     }
 }
 
-export class AggregatedCampaign extends BaseCampaign {
+export class CampaignDetails extends BaseCampaign {
     constructor(
         public readonly opportunitiesAmount: number,
         public readonly hasKpi?: boolean,
@@ -355,7 +355,18 @@ export class AggregatedCampaign extends BaseCampaign {
     }
 }
 
-export class AggregatedCampaignItem extends BaseCampaign {
+export class CampaignItem extends BaseCampaign {
+    constructor(
+        public readonly specification?: Specification,
+        public readonly restrictions?: Restrictions,
+        public readonly accountsIncentivized?: number,
+        ...baseArgs: ConstructorParameters<typeof BaseCampaign>
+    ) {
+        super(...baseArgs);
+    }
+}
+
+export class CampaignItemDetails extends BaseCampaign {
     constructor(
         public readonly specification?: Specification,
         public readonly restrictions?: Restrictions,

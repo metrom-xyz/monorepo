@@ -20,7 +20,7 @@ import { useKpiMeasurements } from "@/src/hooks/useKpiMeasurements";
 import { getAggregatedKpiMeasurements } from "@/src/utils/kpi";
 import { EmptyState } from "@/src/components/empty-state";
 import type {
-    AggregatedCampaignItem,
+    CampaignItem,
     DistributablesNamedCampaign,
 } from "@/src/types/campaign";
 
@@ -37,7 +37,7 @@ export interface DistributionChartData {
 interface DistributionChartProps {
     item?: DistributablesNamedCampaign<
         DistributablesType.Tokens,
-        AggregatedCampaignItem
+        CampaignItem
     >;
     minimumPayoutPercentage?: number;
     loading?: boolean;

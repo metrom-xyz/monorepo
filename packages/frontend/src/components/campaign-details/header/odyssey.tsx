@@ -3,18 +3,19 @@ import { TargetType } from "@metrom-xyz/sdk";
 import { Tags } from "./tags";
 import { RemoteLogo } from "../../remote-logo";
 import type {
-    AggregatedCampaign,
+    CampaignDetails,
     TargetedNamedCampaign,
 } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface OdysseyHeaderProps {
-    campaign: TargetedNamedCampaign<TargetType.Odyssey, AggregatedCampaign>;
+    campaignDetails: TargetedNamedCampaign<TargetType.Odyssey, CampaignDetails>;
 }
 
-export function OdysseyHeader({ campaign }: OdysseyHeaderProps) {
-    const ChainIcon = campaign.chainData?.icon;
+export function OdysseyHeader({ campaignDetails }: OdysseyHeaderProps) {
+    const { chainData, name, target } = campaignDetails;
+    const ChainIcon = chainData?.icon;
 
     return (
         <div className={styles.titleContainer}>
@@ -23,21 +24,19 @@ export function OdysseyHeader({ campaign }: OdysseyHeaderProps) {
                     <InfoTooltip
                         icon={<ChainIcon className={styles.chainLogo} />}
                     >
-                        <Typography size="sm">
-                            {campaign.chainData.name}
-                        </Typography>
+                        <Typography size="sm">{chainData.name}</Typography>
                     </InfoTooltip>
                 )}
                 <RemoteLogo
                     size="lg"
-                    address={campaign.target.asset.address}
-                    chain={campaign.target.chainId}
+                    address={target.asset.address}
+                    chain={target.chainId}
                 />
                 <Typography size="xl3" weight="medium">
-                    {campaign.name}
+                    {name}
                 </Typography>
             </div>
-            <Tags campaign={campaign} />
+            <Tags campaignDetails={campaignDetails} />
         </div>
     );
 }

@@ -9,7 +9,7 @@ export interface Params {
     locale: Locale;
     chain: string;
     chainType: ChainType;
-    campaignId: Hex;
+    campaignItemId: Hex;
 }
 
 export interface DistributionsPageProps {
@@ -23,7 +23,7 @@ export const metadata = {
 export default async function DistributionsPage({
     params,
 }: DistributionsPageProps) {
-    const { locale, chain, chainType, campaignId } = await params;
+    const { locale, chain, chainType, campaignItemId } = await params;
 
     if (!routing.locales.includes(locale)) notFound();
 
@@ -33,7 +33,7 @@ export default async function DistributionsPage({
         <Distributions
             chain={parseInt(chain)}
             chainType={chainType}
-            campaignId={campaignId}
+            campaignItemId={campaignItemId}
         />
     );
 }

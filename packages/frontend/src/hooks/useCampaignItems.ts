@@ -1,31 +1,31 @@
 import { METROM_API_CLIENT } from "../commons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-import { AggregatedCampaign, AggregatedCampaignItem } from "../types/campaign";
+import { CampaignDetails, CampaignItem } from "../types/campaign";
 import { getChainData } from "../utils/chain";
 import { useTranslations } from "next-intl";
 import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import { CAMPAIGN_TARGET_TO_KIND } from "@metrom-xyz/sdk";
 
-interface UseAggregatedCampaignItemsParams extends HookBaseParams {
+interface UseCampaignItemsParams extends HookBaseParams {
     page: number;
     pageSize: number;
-    aggregatedCampaign?: AggregatedCampaign;
+    campaignDetails?: CampaignDetails;
 }
 
-type QueryKey = [string, number, number, AggregatedCampaign | undefined];
+type QueryKey = [string, number, number, CampaignDetails | undefined];
 
-export function useAggregatedCampaignItems({
+export function useCampaignItems({
     page,
     pageSize,
-    aggregatedCampaign,
+    campaignDetails,
     enabled = true,
-}: UseAggregatedCampaignItemsParams): {
+}: UseCampaignItemsParams): {
     loading: boolean;
     fetching: boolean;
     placeholderData: boolean;
-    totalCampaigns: number;
-    items?: AggregatedCampaignItem[];
+    totalCampaignItems: number;
+    campaignItems?: CampaignItem[];
 } {
     const t = useTranslations();
 
@@ -35,28 +35,23 @@ export function useAggregatedCampaignItems({
         isPending: loading,
         isFetching: fetching,
     } = useQuery({
-        queryKey: [
-            "aggreagated-campaign-items",
-            page,
-            pageSize,
-            aggregatedCampaign,
-        ],
+        queryKey: ["campaign-items", page, pageSize, campaignDetails],
         queryFn: async ({ queryKey }) => {
-            const [, page, pageSize, aggregatedCampaign] = queryKey as QueryKey;
-            if (!aggregatedCampaign) return null;
+            const [, page, pageSize, campaignDetails] = queryKey as QueryKey;
+            if (!campaignDetails) return null;
 
             try {
                 const { items, totalItems } =
-                    await METROM_API_CLIENT.fetchAggregatedCampaignItems({
+                    await METROM_API_CLIENT.fetchCampaignItems({
                         page,
                         pageSize,
-                        aggregatedCampaign,
+                        campaignDetails,
                     });
 
                 return {
                     totalItems,
                     items: items.map((item) => {
-                        return new AggregatedCampaignItem(
+                        return new CampaignItem(
                             item,
                             getCampaignName(t, item),
                             getCampaignTargetValueName(
@@ -68,21 +63,19 @@ export function useAggregatedCampaignItems({
                     }),
                 };
             } catch (error) {
-                console.error(
-                    `Could not fetch aggregated campaign items: ${error}`,
-                );
+                console.error(`Could not fetch campaign items: ${error}`);
                 throw error;
             }
         },
         placeholderData: keepPreviousData,
-        enabled: enabled && !!aggregatedCampaign,
+        enabled: enabled && !!campaignDetails,
     });
 
     return {
         loading,
         fetching,
         placeholderData,
-        totalCampaigns: pagedItems?.totalItems || 0,
-        items: pagedItems?.items,
+        totalCampaignItems: pagedItems?.totalItems || 0,
+        campaignItems: pagedItems?.items,
     };
 }

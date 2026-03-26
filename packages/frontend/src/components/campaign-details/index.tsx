@@ -4,7 +4,7 @@ import { usePrevious } from "react-use";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { ChainType } from "@metrom-xyz/sdk";
-import { useAggregatedCampaign } from "@/src/hooks/useAggregatedCampaign";
+import { useCampaignDetails } from "@/src/hooks/useCampaignDetails";
 import type { Hex } from "viem";
 import { Header, SkeletonHeader } from "./header";
 import { PageNotFound } from "../page-not-found";
@@ -27,41 +27,36 @@ export function CampaignDetails({
 }: CampaignDetailsProps) {
     const t = useTranslations("campaignDetails");
 
-    const { loading: loadingAggregatedCampaign, campaign: aggregatedCampaign } =
-        useAggregatedCampaign({
-            id: campaignId,
-            chainId: chain,
-            chainType,
-        });
+    const { loading, campaignDetails } = useCampaignDetails({
+        id: campaignId,
+        chainId: chain,
+        chainType,
+    });
 
-    const prevLoadingCampaign = usePrevious(loadingAggregatedCampaign);
-    if (
-        prevLoadingCampaign &&
-        !loadingAggregatedCampaign &&
-        !aggregatedCampaign
-    )
+    const prevLoadingCampaign = usePrevious(loading);
+    if (prevLoadingCampaign && !loading && !campaignDetails)
         return <PageNotFound message={t("notFound")} />;
 
     return (
         <div className={styles.root}>
             <BackButton />
             <div className={styles.headerWrapper}>
-                {!aggregatedCampaign || loadingAggregatedCampaign ? (
+                {!campaignDetails || loading ? (
                     <SkeletonHeader />
                 ) : (
-                    <Header campaign={aggregatedCampaign} />
+                    <Header campaignDetails={campaignDetails} />
                 )}
             </div>
             <div className={styles.contentWrapper}>
-                {!aggregatedCampaign || loadingAggregatedCampaign ? (
+                {!campaignDetails || loading ? (
                     <SkeletonContentHeader />
                 ) : (
-                    <ContentHeader campaign={aggregatedCampaign} />
+                    <ContentHeader campaign={campaignDetails} />
                 )}
 
                 <ItemsTable
-                    aggregatedCampaign={aggregatedCampaign}
-                    loadingAggregatedCampaign={loadingAggregatedCampaign}
+                    campaignDetails={campaignDetails}
+                    loadingCampaignDetails={loading}
                 />
             </div>
         </div>

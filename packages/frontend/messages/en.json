@@ -595,7 +595,7 @@
             },
             "noActiveCampaigns": "No active campaigns",
             "range": "Range",
-            "item": {
+            "campaignItem": {
                 "kpiTag": {
                     "label": "KPI",
                     "title": "This campaign has KPI set"

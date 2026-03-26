@@ -9,14 +9,14 @@ import { Pagination, Typography } from "@metrom-xyz/ui";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { Item, SkeletonItem } from "./item";
 import { useState } from "react";
-import { useAggregatedCampaignItems } from "@/src/hooks/useAggregatedCampaignItems";
-import type { AggregatedCampaign } from "@/src/types/campaign";
+import { useCampaignItems } from "@/src/hooks/useCampaignItems";
+import type { CampaignDetails } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface ItemsTableProps {
-    loadingAggregatedCampaign?: boolean;
-    aggregatedCampaign?: AggregatedCampaign;
+    loadingCampaignDetails?: boolean;
+    campaignDetails?: CampaignDetails;
 }
 
 const COLUMNS: TranslationsKeys<"campaignDetails.itemsTable">[] = [
@@ -29,8 +29,8 @@ const COLUMNS: TranslationsKeys<"campaignDetails.itemsTable">[] = [
 const PAGE_SIZE = 5;
 
 export function ItemsTable({
-    loadingAggregatedCampaign,
-    aggregatedCampaign,
+    loadingCampaignDetails,
+    campaignDetails,
 }: ItemsTableProps) {
     const [pageNumber, setPageNumber] = useState(1);
 
@@ -40,12 +40,12 @@ export function ItemsTable({
         loading: loadingItems,
         fetching,
         placeholderData,
-        items,
-        totalCampaigns,
-    } = useAggregatedCampaignItems({
+        campaignItems,
+        totalCampaignItems,
+    } = useCampaignItems({
         page: pageNumber,
         pageSize: PAGE_SIZE,
-        aggregatedCampaign,
+        campaignDetails,
     });
 
     function handlePreviousPage() {
@@ -60,12 +60,11 @@ export function ItemsTable({
         setPageNumber(page);
     }
 
-    const aggregatedCampaignExpired =
-        aggregatedCampaign?.status === Status.Expired;
-    const loading = loadingAggregatedCampaign || loadingItems;
-    const type = !aggregatedCampaign
+    const expired = campaignDetails?.status === Status.Expired;
+    const loading = loadingCampaignDetails || loadingItems;
+    const type = !campaignDetails
         ? BackendCampaignType.Rewards
-        : aggregatedCampaign?.isDistributing(DistributablesType.Tokens)
+        : campaignDetails?.isDistributing(DistributablesType.Tokens)
           ? BackendCampaignType.Rewards
           : BackendCampaignType.Points;
 
@@ -73,7 +72,7 @@ export function ItemsTable({
     return (
         <div
             className={classNames(styles.root, {
-                [styles.expired]: aggregatedCampaignExpired,
+                [styles.expired]: expired,
             })}
         >
             <div className={styles.tableWrapper}>
@@ -101,18 +100,20 @@ export function ItemsTable({
                             Array.from({ length: PAGE_SIZE }).map((_, i) => (
                                 <SkeletonItem key={i} />
                             ))
-                        ) : !items || items.length === 0 ? (
+                        ) : !campaignItems || campaignItems.length === 0 ? (
                             <div className={styles.empty}>
                                 <Typography size="sm" weight="medium" uppercase>
                                     {t("noActiveCampaigns")}
                                 </Typography>
                             </div>
                         ) : (
-                            items.map((item) => {
+                            campaignItems.map((campaignItem) => {
+                                const { chainType, chainId, id } = campaignItem;
+
                                 return (
                                     <Item
-                                        key={`${item.chainType}-${item.chainId}-${item.id}`}
-                                        item={item}
+                                        key={`${chainType}-${chainId}-${id}`}
+                                        campaignItem={campaignItem}
                                     />
                                 );
                             })
@@ -124,7 +125,7 @@ export function ItemsTable({
                 <Pagination
                     page={pageNumber}
                     loading={loading || (placeholderData && fetching)}
-                    totalPages={Math.ceil(totalCampaigns / PAGE_SIZE)}
+                    totalPages={Math.ceil(totalCampaignItems / PAGE_SIZE)}
                     messages={{
                         previous: t("pagination.prev"),
                         next: t("pagination.next"),

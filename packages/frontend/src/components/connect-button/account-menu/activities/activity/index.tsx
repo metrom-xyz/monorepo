@@ -7,7 +7,7 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getTxExplorerLink } from "@/src/utils/explorer";
-import { useAggregatedCampaign } from "@/src/hooks/useAggregatedCampaign";
+import { useCampaignDetails } from "@/src/hooks/useCampaignDetails";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
@@ -26,7 +26,7 @@ interface ActivityProps extends Activity {
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
     const t = useTranslations("accountMenu.activities");
 
-    const { campaign, loading } = useAggregatedCampaign({
+    const { campaignDetails: campaign, loading } = useCampaignDetails({
         chainId,
         chainType: CHAIN_TYPE,
         id: payload.type === "create-campaign" ? payload.id : undefined,

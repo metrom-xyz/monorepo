@@ -7,32 +7,33 @@ import { RemoteLogo } from "../../remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Tags } from "./tags";
 import type {
-    AggregatedCampaign,
+    CampaignDetails,
     TargetedNamedCampaign,
 } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface AaveV3HeaderProps {
-    campaign: TargetedNamedCampaign<AaveV3TargetType, AggregatedCampaign>;
+    campaignDetails: TargetedNamedCampaign<AaveV3TargetType, CampaignDetails>;
 }
 
-export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
+export function AaveV3Header({ campaignDetails }: AaveV3HeaderProps) {
     const t = useTranslations("campaignDetails.header");
+    const { chainId, chainType, target, chainData, name } = campaignDetails;
 
     const brand = useProtocolsInChain({
-        chainId: campaign.chainId,
-        chainType: campaign.chainType,
+        chainId,
+        chainType,
         type: ProtocolType.AaveV3,
         crossVm: true,
-    }).find((brand) => brand.slug === campaign.target.brand.slug);
+    }).find((brand) => brand.slug === target.brand.slug);
 
-    const ChainIcon = campaign.chainData?.icon;
-    const actionLink = brand?.actionUrls[campaign.target.type];
+    const ChainIcon = chainData?.icon;
+    const actionLink = brand?.actionUrls[target.type];
     const supplyActionLink = brand?.actionUrls[TargetType.AaveV3Supply];
     const bridgeActionLink = brand?.actionUrls[
         TargetType.AaveV3BridgeAndSupply
-    ].replace("{collateral}", campaign.target.collateral.address);
+    ].replace("{collateral}", target.collateral.address);
 
     return (
         <>
@@ -42,24 +43,22 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                         <InfoTooltip
                             icon={<ChainIcon className={styles.chainLogo} />}
                         >
-                            <Typography size="sm">
-                                {campaign.chainData.name}
-                            </Typography>
+                            <Typography size="sm">{chainData.name}</Typography>
                         </InfoTooltip>
                     )}
                     <RemoteLogo
                         size="lg"
-                        address={campaign.target.collateral.address}
-                        chain={campaign.target.chainId}
+                        address={target.collateral.address}
+                        chain={target.chainId}
                     />
                     <Typography size="xl3" weight="medium">
-                        {campaign.name}
+                        {name}
                     </Typography>
                 </div>
-                <Tags campaign={campaign} />
+                <Tags campaignDetails={campaignDetails} />
             </div>
             <div className={styles.actions}>
-                {campaign.target.type === TargetType.AaveV3BridgeAndSupply && (
+                {target.type === TargetType.AaveV3BridgeAndSupply && (
                     <>
                         <Button
                             size="sm"
@@ -74,8 +73,8 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             }}
                         >
                             {t("aaveV3.aave-v3-bridge", {
-                                collateral: campaign.target.collateral.symbol,
-                                bridge: campaign.target.bridge.name,
+                                collateral: target.collateral.symbol,
+                                bridge: target.bridge.name,
                             })}
                         </Button>
                         <Button
@@ -91,13 +90,13 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             }}
                         >
                             {t("aaveV3.aave-v3-supply", {
-                                collateral: campaign.target.collateral.symbol,
-                                brand: campaign.target.brand.name,
+                                collateral: target.collateral.symbol,
+                                brand: target.brand.name,
                             })}
                         </Button>
                     </>
                 )}
-                {campaign.target.type !== TargetType.AaveV3BridgeAndSupply && (
+                {target.type !== TargetType.AaveV3BridgeAndSupply && (
                     <Button
                         size="sm"
                         href={actionLink || undefined}
@@ -110,9 +109,9 @@ export function AaveV3Header({ campaign }: AaveV3HeaderProps) {
                             icon: styles.externalLinkIcon,
                         }}
                     >
-                        {t(`aaveV3.${campaign.target.type}`, {
-                            collateral: campaign.target.collateral.symbol,
-                            brand: campaign.target.brand.name,
+                        {t(`aaveV3.${target.type}`, {
+                            collateral: target.collateral.symbol,
+                            brand: target.brand.name,
                         })}
                     </Button>
                 )}
