@@ -8,7 +8,7 @@ import {
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "../commons/env";
-import { useAggregatedCampaign } from "./useAggregatedCampaign";
+import { useCampaignDetails } from "./useCampaignDetails";
 import { type Address, type Hex, formatUnits } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -51,7 +51,7 @@ export function useDistributions({
 }: UseDistributionsParams): UseDistributionsReturnValue {
     const [completed, setCompleted] = useState(0);
 
-    const { campaign } = useAggregatedCampaign({ id: campaignId, chainId, chainType });
+    const { campaignDetails: campaign } = useCampaignDetails({ id: campaignId, chainId, chainType });
 
     const {
         data: hashes,

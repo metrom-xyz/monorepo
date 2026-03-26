@@ -14,7 +14,7 @@ import { DistributionChart } from "./distribution-chart";
 import { AverageDistributionChart } from "./average-distribution-chart";
 import { KpiAprSummary } from "../../../../kpi-apr-summary";
 import type {
-    AggregatedCampaignItem,
+    CampaignItem,
     DistributablesNamedCampaign,
 } from "@/src/types/campaign";
 import { useWindowSize } from "react-use";
@@ -22,18 +22,18 @@ import { useWindowSize } from "react-use";
 import styles from "./styles.module.css";
 
 interface KpiProps {
-    item?: DistributablesNamedCampaign<
+    campaignItem?: DistributablesNamedCampaign<
         DistributablesType.Tokens,
-        AggregatedCampaignItem
+        CampaignItem
     >;
 }
 
-export function Kpi({ item }: KpiProps) {
+export function Kpi({ campaignItem }: KpiProps) {
     const t = useTranslations("campaignDetails.kpi");
 
     const { width } = useWindowSize();
     const { kpiMeasurements, loading: loadingKpiMeasurements } =
-        useKpiMeasurements({ campaign: item });
+        useKpiMeasurements({ campaign: campaignItem });
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },
@@ -41,7 +41,7 @@ export function Kpi({ item }: KpiProps) {
         minimumPayoutPercentage,
     } = useMemo<KpiDistributionSpecification>(() => {
         if (
-            item?.specification?.distribution?.type !==
+            campaignItem?.specification?.distribution?.type !==
             SpecificationDistributionType.Kpi
         )
             return {
@@ -54,40 +54,51 @@ export function Kpi({ item }: KpiProps) {
             };
 
         const { goal, measurement, minimumPayoutPercentage } =
-            item.specification.distribution;
+            campaignItem.specification.distribution;
 
-        return { goal, measurement, minimumPayoutPercentage };
-    }, [item]);
+        return {
+            type: SpecificationDistributionType.Kpi,
+            goal,
+            measurement,
+            minimumPayoutPercentage,
+        };
+    }, [campaignItem]);
 
-    if (!item?.specification?.distribution) return null;
+    if (!campaignItem?.specification?.distribution) return null;
 
-    const specificationLoading = !item;
+    const specificationLoading = !campaignItem;
     // const reachedGoalPercentage = measurement || 0;
 
     let usdTvl: number | undefined;
-    if (item.status === Status.Expired)
+    if (campaignItem.status === Status.Expired)
         usdTvl =
             loadingKpiMeasurements || kpiMeasurements.length === 0
                 ? undefined
                 : kpiMeasurements[kpiMeasurements.length - 1].value;
-    else usdTvl = item.usdTvl;
+    else usdTvl = campaignItem.usdTvl;
+
+    const { chainId, status, from, to, targetValueName, distributables } =
+        campaignItem;
 
     return (
         <div className={styles.root}>
-            {item.status !== Status.Expired && <KpiAprSummary item={item} />}
+            {campaignItem.status !== Status.Expired && (
+                <KpiAprSummary campaignItem={campaignItem} />
+            )}
             <div className={styles.distributionChartsWrapper}>
                 <DistributionChart
-                    item={item}
+                    item={campaignItem}
                     loading={loadingKpiMeasurements}
                     minimumPayoutPercentage={minimumPayoutPercentage}
                 />
                 <AverageDistributionChart
-                    chain={item.chainId}
+                    chain={chainId}
                     loading={loadingKpiMeasurements}
-                    distributables={item.distributables}
+                    distributables={distributables}
                     kpiMeasurementPercentage={measurement}
                     minimumPayoutPercentage={
-                        item.specification.distribution.minimumPayoutPercentage
+                        campaignItem.specification.distribution
+                            .minimumPayoutPercentage
                     }
                 />
             </div>
@@ -101,7 +112,7 @@ export function Kpi({ item }: KpiProps) {
                             weight="medium"
                         >
                             {t("chart", {
-                                targetValueName: item.targetValueName,
+                                targetValueName,
                             })}
                         </Typography>
                         <div className={styles.chartWrapper}>
@@ -112,13 +123,11 @@ export function Kpi({ item }: KpiProps) {
                                     specificationLoading ||
                                     loadingKpiMeasurements
                                 }
-                                targetValueName={item.targetValueName}
+                                targetValueName={targetValueName}
                                 targetUsdValue={usdTvl}
-                                campaignEnded={item.status === Status.Expired}
-                                campaignDurationSeconds={item.to - item.from}
-                                totalRewardsUsd={
-                                    item.distributables.amountUsdValue
-                                }
+                                campaignEnded={status === Status.Expired}
+                                campaignDurationSeconds={to - from}
+                                totalRewardsUsd={distributables.amountUsdValue}
                                 lowerUsdTarget={lowerUsdTarget}
                                 upperUsdTarget={upperUsdTarget}
                                 minimumPayoutPercentage={

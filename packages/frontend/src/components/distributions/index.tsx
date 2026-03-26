@@ -20,7 +20,6 @@ import {
 import { type Address, type Hex } from "viem";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { useAggregatedCampaign } from "@/src/hooks/useAggregatedCampaign";
 import { Header, SkeletonHeader } from "../campaign-details/header";
 import { Filters } from "./filters";
 import classNames from "classnames";
@@ -45,15 +44,16 @@ import { EmptyState } from "../empty-state";
 import { CalendarSearchIcon } from "@/src/assets/calendar-search-icon";
 import { getColorFromAddress } from "@/src/utils/address";
 import { SearchOffIcon } from "@/src/assets/search-off-icon";
-import { InsightsSkeleton } from "./insights";
+import { Insights, InsightsSkeleton } from "./insights";
 import { InfoMessage } from "../info-message";
+import { useCampaignItemDetails } from "@/src/hooks/useCampaignItemDetails";
 
 import styles from "./styles.module.css";
 
 interface DistributionsProps {
     chain: SupportedChain;
     chainType: ChainType;
-    campaignId: Hex;
+    campaignItemId: Hex;
 }
 
 export type DistributionChartData = ProcessedDistribution;
@@ -81,7 +81,7 @@ const TOP_ACCOUNTS_COUNT = 10;
 export function Distributions({
     chain,
     chainType,
-    campaignId,
+    campaignItemId,
 }: DistributionsProps) {
     const t = useTranslations("campaignDistributions");
 
@@ -93,11 +93,14 @@ export function Distributions({
 
     const timestampTabsRef = useRef<HTMLDivElement | null>(null);
 
-    const { campaign, loading: loadingCampaign } = useAggregatedCampaign({
-        chainId: chain,
-        chainType,
-        id: campaignId,
-    });
+    const { campaignItemDetails, loading: loadingCampaignItemsDetails } =
+        useCampaignItemDetails({
+            chainId: chain,
+            chainType,
+            id: campaignItemId,
+        });
+
+    console.log({ campaignItemDetails });
 
     useEffect(() => {
         if (distros.length === 0) return;
@@ -201,7 +204,7 @@ export function Distributions({
 
     const notFirstDistro = useMemo(() => {
         if (
-            !campaign?.from ||
+            !campaignItemDetails?.from ||
             activeIndex === undefined ||
             distros.length < 2 ||
             !distros[activeIndex]
@@ -215,10 +218,10 @@ export function Distributions({
         return (
             dayjs
                 .unix(distros[activeIndex].timestamp)
-                .diff(dayjs.unix(campaign.from), "hours") > distroTimeHours &&
-            activeIndex === 0
+                .diff(dayjs.unix(campaignItemDetails.from), "hours") >
+                distroTimeHours && activeIndex === 0
         );
-    }, [campaign?.from, activeIndex, distros]);
+    }, [campaignItemDetails?.from, activeIndex, distros]);
 
     // there are cases where distributions are skipped
     const aggregatedDistros = useMemo(() => {
@@ -279,22 +282,20 @@ export function Distributions({
     return (
         <div className={styles.root}>
             <div className={styles.header}>
-                {loadingCampaign || !campaign ? (
+                {loadingCampaignItemsDetails || !campaignItemDetails ? (
                     <SkeletonHeader />
                 ) : (
-                    <Header campaign={campaign} />
+                    <Header campaignDetails={campaignItemDetails} />
                 )}
             </div>
-            {loadingCampaign || !campaign ? (
+            {loadingCampaignItemsDetails || !campaignItemDetails ? (
                 <InsightsSkeleton />
             ) : (
-                // FIXME: enable insights
-                // <Insights campaign={campaign} />
-                <></>
+                <Insights campaignItemDetails={campaignItemDetails} />
             )}
             <Filters
-                campaign={campaign}
-                loading={loadingCampaign || !campaign}
+                campaignItemDetails={campaignItemDetails}
+                loading={loadingCampaignItemsDetails || !campaignItemDetails}
                 onLoading={setLoading}
                 onFetched={setDistros}
             />
@@ -413,7 +414,7 @@ export function Distributions({
                                             "warningMessages.notFirstDistribution",
                                             {
                                                 from: formatDateTime(
-                                                    campaign?.from,
+                                                    campaignItemDetails?.from,
                                                 ),
                                             },
                                         )}

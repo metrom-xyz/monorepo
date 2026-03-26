@@ -6,9 +6,9 @@ import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
 import { getCrossVmChainData } from "../utils/chain";
 import { CAMPAIGN_TARGET_TO_KIND, ChainType } from "@metrom-xyz/sdk";
-import { AggregatedCampaign } from "../types/campaign";
+import { CampaignItemDetails } from "../types/campaign";
 
-interface UseAggregatedCampaignParams extends HookBaseParams {
+interface UseCampaignItemDetailsParams extends HookBaseParams {
     chainId?: number;
     chainType?: ChainType;
     id?: Hex;
@@ -21,34 +21,36 @@ type QueryKey = [
     Hex | undefined,
 ];
 
-export function useAggregatedCampaign({
+export function useCampaignItemDetails({
     id,
     chainId,
     chainType,
     enabled = true,
-}: UseAggregatedCampaignParams = {}) {
+}: UseCampaignItemDetailsParams = {}) {
     const t = useTranslations();
 
-    const { data: campaign, isPending: loading } = useQuery({
-        queryKey: ["campaign", chainId, chainType, id],
+    const { data: campaignItemDetails, isPending: loading } = useQuery({
+        queryKey: ["campaign-item-details", chainId, chainType, id],
         queryFn: async ({ queryKey }) => {
             const [, chainId, chainType, id] = queryKey as QueryKey;
             if (!chainId || !chainType || !id) return null;
 
             try {
-                const campaign =
-                    await METROM_API_CLIENT.fetchAggregatedCampaign({
+                const campaignItemDetails =
+                    await METROM_API_CLIENT.fetchCampaignItemDetails({
                         chainId,
                         chainType,
                         id,
                     });
 
-                return new AggregatedCampaign(
-                    campaign,
-                    getCampaignName(t, campaign),
+                return new CampaignItemDetails(
+                    campaignItemDetails,
+                    getCampaignName(t, campaignItemDetails),
                     getCampaignTargetValueName(
                         t,
-                        CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+                        CAMPAIGN_TARGET_TO_KIND[
+                            campaignItemDetails.target.type
+                        ],
                     ),
                     getCrossVmChainData(chainId, chainType),
                 );
@@ -67,6 +69,6 @@ export function useAggregatedCampaign({
 
     return {
         loading,
-        campaign: campaign || undefined,
+        campaignItemDetails: campaignItemDetails || undefined,
     };
 }

@@ -12,12 +12,14 @@ import {
 import type {
     BackendCampaign,
     BackendCampaignOrderBy,
-    BackendAggregatedCampaignResponse,
+    BackendAggregatedCampaignResponse as BackendCampaignDetailsResponse,
     BackendCampaignsResponse,
     BackendCampaignStatus,
     BackendCampaignType,
-    BackendAggregatedCampaignItem,
-    BackendAggregatedCampaignItemsResponse,
+    BackendCampaignItem,
+    BackendAggregatedCampaignItemsResponse as BackendCampaignItemsResponse,
+    BackendCampaignItemDetailsResponse,
+    BackendCampaignItemDetails,
 } from "./types/campaigns";
 import type { BackendResolvedPricedTokensRegistry } from "./types/commons";
 import type {
@@ -50,9 +52,10 @@ import {
     type NoDistributables,
     type YieldSeekerTarget,
     type OdysseyTarget,
-    AggregatedCampaign,
+    CampaignDetails,
     SpecificationDistributionType,
-    AggregatedCampaignItem,
+    CampaignItemDetails,
+    CampaignItem,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -177,9 +180,9 @@ export interface PaginatedCampaignsResponse {
     campaigns: Campaign[];
 }
 
-export interface PaginatedAggregatedCampaignItemsResponse {
+export interface PaginatedCampaignItemsResponse {
     totalItems: number;
-    items: AggregatedCampaignItem[];
+    items: CampaignItemDetails[];
 }
 
 export interface ChainParams {
@@ -187,14 +190,18 @@ export interface ChainParams {
     chainType: ChainType;
 }
 
-export interface FetchAggregatedCampaignParams extends ChainParams {
+export interface FetchCampaignDetailsParams extends ChainParams {
     id: Hex;
 }
 
-export interface FetchAggregatedCampaignItemsParams {
+export interface FetchCampaignItemDetailsParams extends ChainParams {
+    id: Hex;
+}
+
+export interface FetchCampaignItemsParams {
     page: number;
     pageSize: number;
-    aggregatedCampaign: AggregatedCampaign;
+    campaignDetails: CampaignDetails;
 }
 
 export interface FetchPoolsParams extends ChainParams {
@@ -226,7 +233,7 @@ export interface FetchWhitelistedRewardTokensParams {
 }
 
 export interface FetchKpiMeasurementsParams {
-    item: AggregatedCampaignItem;
+    item: CampaignItemDetails;
     from: number;
     to: number;
 }
@@ -332,33 +339,56 @@ export class MetromApiClient {
         };
     }
 
-    async fetchAggregatedCampaign(
-        params: FetchAggregatedCampaignParams,
-    ): Promise<AggregatedCampaign> {
+    async fetchCampaignDetails(
+        params: FetchCampaignDetailsParams,
+    ): Promise<CampaignDetails> {
+        const { chainType, chainId, id } = params;
+
+        const response = await fetch(
+            new URL(`v2/campaigns/${chainType}/${chainId}/${id}`, this.baseUrl),
+        );
+        if (!response.ok)
+            throw new Error(
+                `Response not ok while fetching campaign details with id ${id} on chain id ${chainId} and type ${chainType}: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendCampaignDetailsResponse;
+
+        return processCampaignDetailsResponse({
+            campaign: parsedResponse.campaign,
+        });
+    }
+
+    async fetchCampaignItemDetails(
+        params: FetchCampaignItemDetailsParams,
+    ): Promise<CampaignItemDetails> {
+        const { chainType, chainId, id } = params;
+
         const response = await fetch(
             new URL(
-                `v2/campaigns/${params.chainType}/${params.chainId}/${params.id}`,
+                `v2/campaigns/${chainType}/${chainId}/${id}?aggregated=false`,
                 this.baseUrl,
             ),
         );
         if (!response.ok)
             throw new Error(
-                `Response not ok while fetching aggregated campaign with id ${params.id} on chain id ${params.chainId} and type ${params.chainType}: ${await response.text()}`,
+                `Response not ok while fetching campaign item details with id ${id} on chain id ${chainId} and type ${chainType}: ${await response.text()}`,
             );
 
         const parsedResponse =
-            (await response.json()) as BackendAggregatedCampaignResponse;
+            (await response.json()) as BackendCampaignItemDetailsResponse;
 
-        return processAggregatedCampaignResponse({
+        return processCampaignItemDetailsResponse({
             campaign: parsedResponse.campaign,
         });
     }
 
-    async fetchAggregatedCampaignItems(
-        params: FetchAggregatedCampaignItemsParams,
-    ): Promise<PaginatedAggregatedCampaignItemsResponse> {
-        const { page, pageSize, aggregatedCampaign } = params;
-        const { chainType, chainId, id } = aggregatedCampaign;
+    async fetchCampaignItems(
+        params: FetchCampaignItemsParams,
+    ): Promise<PaginatedCampaignItemsResponse> {
+        const { page, pageSize, campaignDetails } = params;
+        const { chainType, chainId, id } = campaignDetails;
 
         const response = await fetch(
             new URL(
@@ -372,12 +402,12 @@ export class MetromApiClient {
             );
 
         const parsedResponse =
-            (await response.json()) as BackendAggregatedCampaignItemsResponse;
+            (await response.json()) as BackendCampaignItemsResponse;
 
         return {
             totalItems: parsedResponse.totalItems,
-            items: processAggregatedCampaignItemsResponse(
-                aggregatedCampaign,
+            items: processCampaignItemsResponse(
+                campaignDetails,
                 parsedResponse,
             ),
         };
@@ -1164,9 +1194,9 @@ function processCampaignsResponse(
     return campaigns;
 }
 
-function processAggregatedCampaignResponse(
-    response: BackendAggregatedCampaignResponse,
-): AggregatedCampaign {
+function processCampaignDetailsResponse(
+    response: BackendCampaignDetailsResponse,
+): CampaignDetails {
     const backendCampaign = response.campaign;
 
     const target = processCampaignTarget(backendCampaign);
@@ -1185,7 +1215,7 @@ function processAggregatedCampaignResponse(
         ? unix(new Date(backendCampaign.snapshottedAt))
         : undefined;
 
-    return new AggregatedCampaign(
+    return new CampaignDetails(
         backendCampaign.opportunitiesAmount,
         backendCampaign.hasKpi,
         backendCampaign.accountsIncentivized,
@@ -1203,14 +1233,14 @@ function processAggregatedCampaignResponse(
     );
 }
 
-function processAggregatedCampaignItemsResponse(
-    aggregatedCampaign: AggregatedCampaign,
-    response: BackendAggregatedCampaignItemsResponse,
-): AggregatedCampaignItem[] {
-    const items: AggregatedCampaignItem[] = [];
+function processCampaignItemsResponse(
+    campaignDetails: CampaignDetails,
+    response: BackendCampaignItemsResponse,
+): CampaignItem[] {
+    const campaignItems: CampaignItem[] = [];
 
-    // Single target from the aggregated campaign
-    const target = aggregatedCampaign.target;
+    // Single target from the campaign details parent
+    const target = campaignDetails.target;
     if (!target) throw new Error("Missing campaign target");
 
     for (const backendCampaign of response.campaigns) {
@@ -1228,31 +1258,72 @@ function processAggregatedCampaignItemsResponse(
 
         const restrictions = processCampaignRestrictions(backendCampaign);
 
-        items.push(
-            new AggregatedCampaignItem(
+        campaignItems.push(
+            new CampaignItem(
                 backendCampaign.specification,
                 restrictions,
                 backendCampaign.accountsIncentivized,
                 backendCampaign.id,
-                aggregatedCampaign.chainType,
-                aggregatedCampaign.chainId,
+                campaignDetails.chainType,
+                campaignDetails.chainId,
                 from,
                 to,
                 createdAt,
                 target,
                 distributables,
-                aggregatedCampaign.usdTvl,
+                campaignDetails.usdTvl,
                 snapshottedAt,
                 backendCampaign.apr,
             ),
         );
     }
 
-    return items;
+    return campaignItems;
+}
+
+function processCampaignItemDetailsResponse(
+    response: BackendCampaignItemDetailsResponse,
+): CampaignItemDetails {
+    const backendCampaign = response.campaign;
+
+    const target = processCampaignTarget(backendCampaign);
+    const distributables = processCampaignDistributables(backendCampaign);
+
+    if (!target)
+        throw new Error(
+            `Unsupported campaign target type ${backendCampaign.target.type}`,
+        );
+    if (!distributables) throw new Error("Unsupported campaign distributables");
+
+    const from = unix(new Date(backendCampaign.from));
+    const to = unix(new Date(backendCampaign.to));
+    const createdAt = unix(new Date(backendCampaign.createdAt));
+    const snapshottedAt = backendCampaign.snapshottedAt
+        ? unix(new Date(backendCampaign.snapshottedAt))
+        : undefined;
+
+    const restrictions = processCampaignRestrictions(backendCampaign);
+
+    return new CampaignItemDetails(
+        backendCampaign.specification,
+        restrictions,
+        backendCampaign.accountsIncentivized,
+        backendCampaign.id,
+        backendCampaign.chainType,
+        backendCampaign.chainId,
+        from,
+        to,
+        createdAt,
+        target,
+        distributables,
+        backendCampaign.usdTvl,
+        snapshottedAt,
+        backendCampaign.apr,
+    );
 }
 
 function processCampaignRestrictions(
-    campaign: BackendAggregatedCampaignItem,
+    campaign: BackendCampaignItem,
 ): Restrictions | undefined {
     let restrictions: Restrictions | undefined = undefined;
     if (campaign.specification?.blacklist) {
@@ -1271,7 +1342,9 @@ function processCampaignRestrictions(
     return restrictions;
 }
 
-function processCampaignTarget(campaign: BackendCampaign) {
+function processCampaignTarget(
+    campaign: BackendCampaign | BackendCampaignItemDetails,
+) {
     const { chainType, chainId } = campaign;
 
     let target;
@@ -1450,7 +1523,7 @@ function processCampaignTarget(campaign: BackendCampaign) {
 }
 
 function processCampaignDistributables(
-    campaign: BackendCampaign | BackendAggregatedCampaignItem,
+    campaign: BackendCampaign | BackendCampaignItem,
 ) {
     let distributables;
     if ("rewards" in campaign) {

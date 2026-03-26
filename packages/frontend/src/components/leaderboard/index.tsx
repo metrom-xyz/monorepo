@@ -1,8 +1,6 @@
 import {
-    ChainType,
-    // DistributablesType,
+    DistributablesType,
     RestrictionType,
-    type Restrictions,
     type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { shortenAddress } from "@/src/utils/address";
@@ -27,21 +25,17 @@ import { formatPercentage } from "@/src/utils/format";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getExplorerLink } from "@/src/utils/explorer";
 import { PointsBreakdown } from "./points-breakdown";
-import type { SupportedChain } from "@metrom-xyz/contracts";
-import type { Leaderboard } from "@/src/types/campaign";
+import type { CampaignItem, Leaderboard } from "@/src/types/campaign";
 import { useWindowSize } from "react-use";
 import { useAccount } from "@/src/hooks/useAccount";
 import classNames from "classnames";
 import { EmptyState } from "../empty-state";
-import {} from /* Link, usePathname */ "@/src/i18n/routing";
+import { Link, usePathname } from "@/src/i18n/routing";
 
 import styles from "./styles.module.css";
 
 interface LeaderboardProps {
-    chainId?: SupportedChain;
-    chainType?: ChainType;
-    restrictions?: Restrictions;
-    // distributablesType?: DistributablesType;
+    campaignItem: CampaignItem;
     leaderboard?: Leaderboard;
     noDistributionDate?: boolean;
     loading: boolean;
@@ -60,10 +54,7 @@ export interface PersonalRank {
 }
 
 export function Leaderboard({
-    chainId,
-    chainType,
-    restrictions,
-    // distributablesType,
+    campaignItem,
     leaderboard,
     noDistributionDate,
     loading,
@@ -73,8 +64,9 @@ export function Leaderboard({
 
     const { address: connectedAddress } = useAccount();
     const { width } = useWindowSize();
-    // const pathname = usePathname();
+    const pathname = usePathname();
 
+    const { chainId, chainType, restrictions, distributables } = campaignItem;
     const whitelist = restrictions?.type === RestrictionType.Whitelist;
 
     if (!loading && !leaderboard) {
@@ -126,10 +118,9 @@ export function Leaderboard({
                     </div>
                 )}
                 {/* TODO: do we need to enable distributions page for points campaigns as well?` */}
-                {/* TODO: reenable once single campaign fetching is working */}
-                {/* {distributablesType === DistributablesType.Tokens && (
+                {distributables.type === DistributablesType.Tokens && (
                     <Link
-                        href={`${pathname}/distributions`}
+                        href={`${pathname}/distributions/${campaignItem.id}`}
                         className={styles.distributionsLink}
                     >
                         <Typography size="sm" weight="medium">
@@ -137,7 +128,7 @@ export function Leaderboard({
                         </Typography>
                         <ArrowRightIcon />
                     </Link>
-                )} */}
+                )}
             </div>
             <div className={styles.cardsWrapper}>
                 <div className={styles.leaderboardWrapper}>

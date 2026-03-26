@@ -7,10 +7,10 @@ import {
     RestrictionType,
     CampaignKind,
     SupportedOdysseyStrategy,
-    BaseCampaign,
+    BaseCampaign as SdkBaseCampaign,
     type KpiDistributionSpecification,
-    AggregatedCampaign as SdkAggregatedCampaign,
-    AggregatedCampaignItem,
+    CampaignDetails as SdkCampaignDetails,
+    CampaignItem as SdkCampaignItem,
 } from "@metrom-xyz/sdk";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
@@ -19,7 +19,7 @@ import {
     type BaseCampaignPreviewPayload,
     AaveV3CampaignPreviewPayload,
     HoldFungibleAssetCampaignPreviewPayload,
-    AggregatedCampaign,
+    CampaignDetails,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
@@ -32,7 +32,7 @@ import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
     t: TranslationsType<never>,
-    campaign: BaseCampaign | AggregatedCampaignItem,
+    campaign: SdkBaseCampaign | SdkCampaignItem,
 ): string {
     switch (campaign.target.type) {
         case TargetType.AmmPoolLiquidity: {
@@ -249,7 +249,7 @@ export function getCampaignPreviewName(
 }
 
 export async function getSocialPreviewCampaignName(
-    campaign: AggregatedCampaign | SdkAggregatedCampaign,
+    campaign: CampaignDetails | SdkCampaignDetails,
 ): Promise<string> {
     const t = await getTranslations();
 

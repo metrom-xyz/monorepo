@@ -7,7 +7,7 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { type AmmPoolLiquidityTargetType } from "@metrom-xyz/sdk";
 import type {
-    AggregatedCampaign,
+    CampaignDetails,
     TargetedNamedCampaign,
 } from "@/src/types/campaign";
 import { useVelodromePoolTickSpacing } from "@/src/hooks/useVelodromePoolTickSpacing";
@@ -17,33 +17,38 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 
 interface AmmPoolLiquityHeaderProps {
-    campaign: TargetedNamedCampaign<
+    campaignDetails: TargetedNamedCampaign<
         AmmPoolLiquidityTargetType,
-        AggregatedCampaign
+        CampaignDetails
     >;
 }
 
-export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
+export function AmmPoolLiquityHeader({
+    campaignDetails,
+}: AmmPoolLiquityHeaderProps) {
     const t = useTranslations("campaignDetails.header");
+    const { chainId, name, target, chainData } = campaignDetails;
+
     const { tickSpacing, loading: loadingTickSpacing } =
         useVelodromePoolTickSpacing({
-            pool: campaign.target.pool,
-            enabled: campaign.target.pool.amm === "velodrome",
+            pool: target.pool,
+            enabled: target.pool.amm === "velodrome",
         });
 
     const velodromePoolParams =
-        campaign.target.pool.amm === "velodrome" && tickSpacing !== undefined
+        target.pool.amm === "velodrome" && tickSpacing !== undefined
             ? {
                   type: tickSpacing,
               }
             : undefined;
 
-    const ChainIcon = campaign.chainData?.icon;
-    const depositLink = campaign.getDepositLiquidityUrl(velodromePoolParams);
+    const ChainIcon = chainData?.icon;
+    const depositLink =
+        campaignDetails.getDepositLiquidityUrl(velodromePoolParams);
     const explorerLink = getExplorerLink(
-        campaign.target.pool.id,
-        campaign.target.chainId,
-        campaign.target.chainType,
+        target.pool.id,
+        target.chainId,
+        target.chainType,
     );
 
     function handleAddLiquidityOnClick() {
@@ -62,30 +67,28 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         <InfoTooltip
                             icon={<ChainIcon className={styles.chainLogo} />}
                         >
-                            <Typography size="sm">
-                                {campaign.chainData.name}
-                            </Typography>
+                            <Typography size="sm">{chainData.name}</Typography>
                         </InfoTooltip>
                     )}
                     <PoolRemoteLogo
-                        chain={campaign.chainId}
+                        chain={chainId}
                         size="lg"
-                        tokens={campaign.target.pool.tokens.map((token) => ({
+                        tokens={target.pool.tokens.map((token) => ({
                             address: token.address,
                             defaultText: token.symbol,
                         }))}
                     />
                     <Typography size="xl3" weight="medium">
-                        {campaign.name}
+                        {name}
                     </Typography>
-                    {campaign.target.pool.fee && (
+                    {target.pool.fee && (
                         <Typography
                             size="xl3"
                             weight="medium"
                             variant="tertiary"
                         >
                             {formatPercentage({
-                                percentage: campaign.target.pool.fee,
+                                percentage: target.pool.fee,
                                 keepDust: true,
                             })}
                         </Typography>
@@ -104,7 +107,7 @@ export function AmmPoolLiquityHeader({ campaign }: AmmPoolLiquityHeaderProps) {
                         />
                     </a>
                 </div>
-                <Tags campaign={campaign} />
+                <Tags campaignDetails={campaignDetails} />
             </div>
             <div className={styles.actions}>
                 <Button

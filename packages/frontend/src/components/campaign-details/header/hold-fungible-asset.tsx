@@ -7,25 +7,26 @@ import { getFungibleAssetExplorerLink } from "@/src/utils/explorer";
 import { Tags } from "./tags";
 import classNames from "classnames";
 import type {
-    AggregatedCampaign,
+    CampaignDetails,
     TargetedNamedCampaign,
 } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface HoldFungibleAssetProps {
-    campaign: TargetedNamedCampaign<
+    campaignDetails: TargetedNamedCampaign<
         TargetType.HoldFungibleAsset,
-        AggregatedCampaign
+        CampaignDetails
     >;
 }
 
-export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
-    const ChainIcon = campaign.chainData?.icon;
+export function HoldFungibleAsset({ campaignDetails }: HoldFungibleAssetProps) {
+    const { chainData, name, target } = campaignDetails;
+    const ChainIcon = chainData?.icon;
     const explorerLink = getFungibleAssetExplorerLink(
-        campaign.target.asset.address,
-        campaign.target.chainId,
-        campaign.target.chainType,
+        target.asset.address,
+        target.chainId,
+        target.chainType,
     );
 
     function handleExploreOnClick() {
@@ -40,18 +41,16 @@ export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
                         <InfoTooltip
                             icon={<ChainIcon className={styles.chainLogo} />}
                         >
-                            <Typography size="sm">
-                                {campaign.chainData.name}
-                            </Typography>
+                            <Typography size="sm">{chainData.name}</Typography>
                         </InfoTooltip>
                     )}
                     <RemoteLogo
                         size="lg"
-                        address={campaign.target.asset.address}
-                        chain={campaign.target.chainId}
+                        address={target.asset.address}
+                        chain={target.chainId}
                     />
                     <Typography size="xl3" weight="medium">
-                        {campaign.name}
+                        {name}
                     </Typography>
                     <a
                         href={explorerLink}
@@ -67,7 +66,7 @@ export function HoldFungibleAsset({ campaign }: HoldFungibleAssetProps) {
                         />
                     </a>
                 </div>
-                <Tags campaign={campaign} />
+                <Tags campaignDetails={campaignDetails} />
             </div>
         </>
     );

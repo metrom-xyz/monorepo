@@ -16,7 +16,7 @@ import { useClickAway } from "react-use";
 import { useDistributions } from "@/src/hooks/useDistributions";
 import type { ProcessedDistribution } from "@/src/types/distributions";
 import { Status } from "@metrom-xyz/sdk";
-import type { AggregatedCampaign } from "@/src/types/campaign";
+import type { CampaignItemDetails } from "@/src/types/campaign";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 import { getClosestAvailableTime } from "@/src/utils/date";
@@ -28,7 +28,7 @@ import classNames from "classnames";
 import styles from "./styles.module.css";
 
 interface FiltersProps {
-    campaign?: AggregatedCampaign;
+    campaignItemDetails?: CampaignItemDetails;
     loading?: boolean;
     onFetched: (distributions: ProcessedDistribution[]) => void;
     onLoading: (loading: boolean) => void;
@@ -59,7 +59,7 @@ const DURATION_PRESETS: DurationPreset[] = [
 ];
 
 export function Filters({
-    campaign,
+    campaignItemDetails,
     loading,
     onFetched,
     onLoading,
@@ -84,9 +84,9 @@ export function Filters({
         progress,
         fetchDistributions,
     } = useDistributions({
-        chainId: campaign?.chainId,
-        chainType: campaign?.chainType,
-        campaignId: campaign?.id,
+        chainId: campaignItemDetails?.chainId,
+        chainType: campaignItemDetails?.chainType,
+        campaignId: campaignItemDetails?.id,
         from: from?.unix(),
         to: to?.unix(),
     });
@@ -111,19 +111,24 @@ export function Filters({
     }, [from, to, t]);
 
     useEffect(() => {
-        if (loading || !campaign || campaign.status === Status.Upcoming) return;
+        if (
+            loading ||
+            !campaignItemDetails ||
+            campaignItemDetails.status === Status.Upcoming
+        )
+            return;
 
-        if (campaign.status === Status.Active) {
+        if (campaignItemDetails.status === Status.Active) {
             const now = dayjs();
             setFrom(getClosestAvailableTime(now.subtract(24, "hours")));
             setTo(getClosestAvailableTime(now));
         } else {
-            const endDate = dayjs.unix(campaign.to);
+            const endDate = dayjs.unix(campaignItemDetails.to);
 
             setFrom(getClosestAvailableTime(endDate.subtract(48, "hours")));
             setTo(getClosestAvailableTime(endDate));
         }
-    }, [loading, campaign]);
+    }, [loading, campaignItemDetails]);
 
     function getPopoverHandler(type: "from" | "to", open: boolean) {
         return () => {

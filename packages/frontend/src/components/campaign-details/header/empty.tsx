@@ -1,22 +1,22 @@
 import { Typography } from "@metrom-xyz/ui";
 import { TargetType } from "@metrom-xyz/sdk";
 import {
-    AggregatedCampaign,
+    CampaignDetails,
     type TargetedNamedCampaign,
 } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface EmptyHeaderProps {
-    campaign: TargetedNamedCampaign<TargetType.Empty, AggregatedCampaign>;
+    campaignDetails: TargetedNamedCampaign<TargetType.Empty, CampaignDetails>;
 }
 
-export function EmptyHeader({ campaign }: EmptyHeaderProps) {
+export function EmptyHeader({ campaignDetails }: EmptyHeaderProps) {
     return (
         <div className={styles.titleContainer}>
             <div className={styles.title}>
                 <Typography size="xl3" weight="medium">
-                    {campaign.name}
+                    {campaignDetails.name}
                 </Typography>
             </div>
         </div>

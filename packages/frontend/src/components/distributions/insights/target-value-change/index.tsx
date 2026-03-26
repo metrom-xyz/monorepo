@@ -15,18 +15,22 @@ import {
 } from "@/src/utils/format";
 import dayjs from "dayjs";
 import classNames from "classnames";
-import type { AggregatedCampaignItem } from "@/src/types/campaign";
+import type { CampaignItemDetails } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
 interface TargetValueChangeProps {
-    campaign: AggregatedCampaignItem;
+    campaignItemDetails: CampaignItemDetails;
 }
 
-export function TargetValueChange({ campaign }: TargetValueChangeProps) {
+export function TargetValueChange({
+    campaignItemDetails,
+}: TargetValueChangeProps) {
     const t = useTranslations("campaignDistributions.insights");
+
+    const { target, from, status, specification } = campaignItemDetails;
     const targetValueName = useCampaignTargetValueName({
-        kind: CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
+        kind: CAMPAIGN_TARGET_TO_KIND[target.type],
     });
 
     const [popover, setPopover] = useState(false);
@@ -47,12 +51,12 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
         kpiMeasurements: initialKpiMeasurements,
         loading: loadingFirstKpiMeasurements,
     } = useKpiMeasurements({
-        campaign,
-        from: dayjs.unix(campaign.from).utc().unix(),
-        to: dayjs.unix(campaign.from).utc().add(1, "hour").unix(),
+        campaign: campaignItemDetails,
+        from: dayjs.unix(from).utc().unix(),
+        to: dayjs.unix(from).utc().add(1, "hour").unix(),
         enabled:
-            campaign &&
-            campaign.specification?.distribution?.type ===
+            campaignItemDetails &&
+            specification?.distribution?.type ===
                 SpecificationDistributionType.Kpi,
     });
 
@@ -60,10 +64,10 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
         kpiMeasurements: lastKpiMeasurements,
         loading: loadingLastKpiMeasurements,
     } = useKpiMeasurements({
-        campaign,
+        campaign: campaignItemDetails,
         enabled:
-            campaign &&
-            campaign.specification?.distribution?.type ===
+            campaignItemDetails &&
+            specification?.distribution?.type ===
                 SpecificationDistributionType.Kpi,
     });
 
@@ -90,7 +94,7 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
 
         const initialSnapshotTimestamp = initialKpiMeasurements[0].from;
         const latestSnapshotTimestamp =
-            campaign.status === Status.Expired
+            status === Status.Expired
                 ? lastKpiMeasurements[lastKpiMeasurements.length - 1].to
                 : lastKpiMeasurements[lastKpiMeasurements.length - 1].from;
 
@@ -109,7 +113,7 @@ export function TargetValueChange({ campaign }: TargetValueChangeProps) {
                 100,
         };
     }, [
-        campaign.status,
+        status,
         initialKpiMeasurements,
         lastKpiMeasurements,
         loadingFirstKpiMeasurements,

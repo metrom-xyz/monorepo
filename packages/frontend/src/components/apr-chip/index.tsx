@@ -3,7 +3,7 @@ import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
 import { AprInfoTooltip } from "../apr-info-tooltip";
-import { AggregatedCampaignItem, type Campaign } from "@/src/types/campaign";
+import { CampaignItem, type Campaign } from "@/src/types/campaign";
 
 import styles from "./styles.module.css";
 
@@ -13,7 +13,7 @@ interface AprChipProps {
     prefix?: boolean;
     placeholder?: boolean;
     kpi?: boolean;
-    campaign?: Campaign | AggregatedCampaignItem;
+    campaign?: Campaign | CampaignItem;
     className?: string;
 }
 
@@ -44,7 +44,7 @@ export function AprChip({
             {apr !== undefined && (
                 <AprInfoTooltip
                     campaign={
-                        campaign && campaign instanceof AggregatedCampaignItem
+                        campaign && campaign instanceof CampaignItem
                             ? campaign
                             : undefined
                     }

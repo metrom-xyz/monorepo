@@ -1,6 +1,6 @@
 import { Skeleton } from "@metrom-xyz/ui";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
-import type { AggregatedCampaign } from "@/src/types/campaign";
+import type { CampaignDetails } from "@/src/types/campaign";
 import { AmmPoolLiquityHeader } from "./amm-pool-liquitidy";
 import { TargetType } from "@metrom-xyz/sdk";
 import { LiquityV2Header } from "./liquity-v2";
@@ -13,40 +13,46 @@ import { OdysseyHeader } from "./odyssey";
 import styles from "./styles.module.css";
 
 interface HeaderProps {
-    campaign: AggregatedCampaign;
+    campaignDetails: CampaignDetails;
 }
 
-export function Header({ campaign }: HeaderProps) {
+export function Header({ campaignDetails }: HeaderProps) {
     const ammPoolLiquidity =
-        campaign.isTargeting(TargetType.AmmPoolLiquidity) ||
-        campaign.isTargeting(TargetType.JumperWhitelistedAmmPoolLiquidity);
+        campaignDetails.isTargeting(TargetType.AmmPoolLiquidity) ||
+        campaignDetails.isTargeting(
+            TargetType.JumperWhitelistedAmmPoolLiquidity,
+        );
 
     const liquityV2 =
-        campaign.isTargeting(TargetType.LiquityV2Debt) ||
-        campaign.isTargeting(TargetType.LiquityV2StabilityPool);
+        campaignDetails.isTargeting(TargetType.LiquityV2Debt) ||
+        campaignDetails.isTargeting(TargetType.LiquityV2StabilityPool);
 
     const aaveV3 =
-        campaign.isTargeting(TargetType.AaveV3Borrow) ||
-        campaign.isTargeting(TargetType.AaveV3Supply) ||
-        campaign.isTargeting(TargetType.AaveV3NetSupply) ||
-        campaign.isTargeting(TargetType.AaveV3BridgeAndSupply);
+        campaignDetails.isTargeting(TargetType.AaveV3Borrow) ||
+        campaignDetails.isTargeting(TargetType.AaveV3Supply) ||
+        campaignDetails.isTargeting(TargetType.AaveV3NetSupply) ||
+        campaignDetails.isTargeting(TargetType.AaveV3BridgeAndSupply);
 
-    const holdFungibleAsset = campaign.isTargeting(
+    const holdFungibleAsset = campaignDetails.isTargeting(
         TargetType.HoldFungibleAsset,
     );
 
-    const odyssey = campaign.isTargeting(TargetType.Odyssey);
+    const odyssey = campaignDetails.isTargeting(TargetType.Odyssey);
 
-    const empty = campaign.isTargeting(TargetType.Empty);
+    const empty = campaignDetails.isTargeting(TargetType.Empty);
 
     return (
         <div className={styles.root}>
-            {empty && <EmptyHeader campaign={campaign} />}
-            {ammPoolLiquidity && <AmmPoolLiquityHeader campaign={campaign} />}
-            {liquityV2 && <LiquityV2Header campaign={campaign} />}
-            {aaveV3 && <AaveV3Header campaign={campaign} />}
-            {holdFungibleAsset && <HoldFungibleAsset campaign={campaign} />}
-            {odyssey && <OdysseyHeader campaign={campaign} />}
+            {empty && <EmptyHeader campaignDetails={campaignDetails} />}
+            {ammPoolLiquidity && (
+                <AmmPoolLiquityHeader campaignDetails={campaignDetails} />
+            )}
+            {liquityV2 && <LiquityV2Header campaignDetails={campaignDetails} />}
+            {aaveV3 && <AaveV3Header campaignDetails={campaignDetails} />}
+            {holdFungibleAsset && (
+                <HoldFungibleAsset campaignDetails={campaignDetails} />
+            )}
+            {odyssey && <OdysseyHeader campaignDetails={campaignDetails} />}
         </div>
     );
 }

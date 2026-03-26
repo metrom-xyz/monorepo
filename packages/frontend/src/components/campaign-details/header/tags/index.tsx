@@ -1,4 +1,4 @@
-import type { AggregatedCampaign } from "@/src/types/campaign";
+import type { CampaignDetails } from "@/src/types/campaign";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { formatDateTime } from "@/src/utils/format";
@@ -10,12 +10,12 @@ import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
 
 interface TagsProps {
-    campaign: AggregatedCampaign;
+    campaignDetails: CampaignDetails;
 }
 
-export function Tags({ campaign }: TagsProps) {
+export function Tags({ campaignDetails }: TagsProps) {
     const t = useTranslations("campaignDetails.header");
-    const { from, to, opportunitiesAmount } = campaign;
+    const { status, from, to, opportunitiesAmount } = campaignDetails;
 
     return (
         <div className={styles.root}>
@@ -47,12 +47,7 @@ export function Tags({ campaign }: TagsProps) {
                     }
                 />
             )}
-            <CampaignStatus
-                tag
-                from={campaign.from}
-                to={campaign.to}
-                status={campaign.status}
-            />
+            <CampaignStatus tag from={from} to={to} status={status} />
         </div>
     );
 }

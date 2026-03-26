@@ -5,8 +5,8 @@ import {
 } from "@metrom-xyz/sdk";
 import type { TranslationsKeys } from "../types/utils";
 import type {
-    AggregatedCampaign,
-    AggregatedCampaignItem,
+    CampaignDetails,
+    CampaignItem,
 } from "../types/campaign";
 
 const TICK_ACTIVE_PROXIMITY_THRESHOLD = 1;
@@ -123,7 +123,7 @@ export function getAggregatedKpiMeasurements(
 }
 
 export function getCampaignAprTargetText(
-    campaign?: AggregatedCampaign | AggregatedCampaignItem,
+    campaign?: CampaignDetails | CampaignItem,
 ): TranslationsKeys<"kpiAprSummary"> {
     if (!campaign) return "fallback";
 

@@ -1,4 +1,4 @@
-import type { AggregatedCampaign } from "@/src/types/campaign";
+import type { CampaignDetails } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { InfoTooltip, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
@@ -18,7 +18,7 @@ import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueNa
 import styles from "./styles.module.css";
 
 interface ContentHeaderProps {
-    campaign: AggregatedCampaign;
+    campaign: CampaignDetails;
 }
 
 export function ContentHeader({ campaign }: ContentHeaderProps) {
