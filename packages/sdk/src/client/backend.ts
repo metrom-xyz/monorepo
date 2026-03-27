@@ -367,7 +367,7 @@ export class MetromApiClient {
 
         const response = await fetch(
             new URL(
-                `v2/campaigns/${chainType}/${chainId}/${id}?aggregated=false`,
+                `v2/campaigns/${chainType}/${chainId}/${id}?aggregate=false`,
                 this.baseUrl,
             ),
         );
