@@ -1,5 +1,13 @@
 # @metrom-xyz/react
 
+## 0.6.1
+
+### Patch Changes
+
+- Update to support aggregated campaigns fetching
+- Updated dependencies
+  - @metrom-xyz/sdk@0.8.1
+
 ## 0.6.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @metrom-xyz/sdk
 
+## 0.8.1
+
+### Patch Changes
+
+- Update to support aggregated campaigns fetching
+
 ## 0.8.0
 
 ### Minor Changes
