@@ -51,7 +51,7 @@ export function AprChip({
                 >
                     <div
                         className={classNames(styles.chip, className, {
-                            [styles.witkKpi]: kpi,
+                            [styles.witKpi]: kpi,
                         })}
                     >
                         <div

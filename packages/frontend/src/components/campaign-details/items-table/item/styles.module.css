@@ -26,6 +26,10 @@
     @apply flex items-center gap-2;
 }
 
+.status {
+    @apply flex items-center gap-1;
+}
+
 .content {
     @apply flex flex-col gap-5 w-[calc(100vw-4rem)] sm:w-full my-4 rounded-2xl bg-gray-150 dark:bg-neutral-800;
 }

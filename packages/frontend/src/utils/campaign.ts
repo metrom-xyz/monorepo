@@ -8,7 +8,6 @@ import {
     CampaignKind,
     SupportedOdysseyStrategy,
     BaseCampaign as SdkBaseCampaign,
-    type KpiDistributionSpecification,
     CampaignDetails as SdkCampaignDetails,
     CampaignItem as SdkCampaignItem,
 } from "@metrom-xyz/sdk";
@@ -20,6 +19,7 @@ import {
     AaveV3CampaignPreviewPayload,
     HoldFungibleAssetCampaignPreviewPayload,
     CampaignDetails,
+    type CampaignPreviewKpiDistribution,
 } from "../types/campaign";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
@@ -332,7 +332,7 @@ export function getCampaignApr({
     usdRewards?: number;
     usdTvl?: number;
     liquidity?: bigint;
-    kpiDistribution?: KpiDistributionSpecification;
+    kpiDistribution?: CampaignPreviewKpiDistribution;
     range?: LiquidityInRange;
     liquidityByAddresses?: LiquidityByAddresses;
 }) {

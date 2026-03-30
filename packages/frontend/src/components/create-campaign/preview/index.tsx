@@ -196,6 +196,15 @@ export function CampaignPreview({
     const restrictions =
         !!payload.restrictions && payload.restrictions.list.length > 0;
 
+    const apr = payload.fixedDistribution
+        ? payload.fixedDistribution.apr
+        : getCampaignPreviewApr(
+              payload,
+              liquidityInRange,
+              liquidityByAddresses,
+              aaveV3CollateralUsdNetSupply,
+          );
+
     // TODO: add notification toast in case of errors
     if (!created) {
         return (
@@ -230,12 +239,7 @@ export function CampaignPreview({
                                 value={
                                     <AprChip
                                         size="lg"
-                                        apr={getCampaignPreviewApr(
-                                            payload,
-                                            liquidityInRange,
-                                            liquidityByAddresses,
-                                            aaveV3CollateralUsdNetSupply,
-                                        )}
+                                        apr={apr}
                                         kpi={!!payload.kpiDistribution}
                                     />
                                 }
@@ -272,7 +276,7 @@ export function CampaignPreview({
                             from={payload.startDate}
                             to={payload.endDate}
                             distributables={payload.distributables}
-                            distribution={payload.kpiDistribution}
+                            kpiDistribution={payload.kpiDistribution}
                         />
                     )}
                     {range && (

@@ -20,9 +20,9 @@ import { formatUsdAmount } from "@/src/utils/format";
 import { Points } from "./points";
 import { TURTLE_APP_EARN_URL, TURTLE_REFERRAL_CODE } from "@/src/commons";
 import { YieldSeeker } from "./yield-seeker";
+import { CampaignStatus } from "../../campaign-status";
 
 import styles from "./styles.module.css";
-import { CampaignStatus } from "../../campaign-status";
 
 interface CampaignProps {
     type: BackendCampaignType;
@@ -59,13 +59,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
             <Card className={styles.card}>
                 <Chain id={campaign.chainId} type={campaign.chainType} />
                 <Protocol campaign={campaign} />
-                <div className={styles.action}>
-                    <Action
-                        campaign={campaign}
-                        nameSize="base"
-                        feeSize="base"
-                    />
-                </div>
+                <Action campaign={campaign} nameSize="base" feeSize="base" />
                 <CampaignStatus
                     from={campaign.from}
                     to={campaign.to}

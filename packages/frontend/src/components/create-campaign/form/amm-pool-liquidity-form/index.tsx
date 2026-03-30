@@ -5,6 +5,8 @@ import {
     type AmmPoolLiquidityCampaignPayloadPart,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
+    type CampaignPreviewKpiDistribution,
+    type CampaignPreviewFixedDistribution,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -31,7 +33,10 @@ import {
 } from "@/src/commons";
 import { WeightingStep } from "../../steps/weighting";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import { validateDistributables } from "@/src/utils/creation-form";
+import {
+    validateDistributables,
+    validateDistributions,
+} from "@/src/utils/creation-form";
 
 import styles from "./styles.module.css";
 
@@ -50,7 +55,8 @@ function validatePayload(
         endDate,
         distributables,
         weighting,
-        distribution,
+        kpiDistribution,
+        fixedDistribution,
         priceRangeSpecification,
         restrictions,
     } = payload;
@@ -58,6 +64,7 @@ function validatePayload(
     if (!kind || !dex || !pool || !startDate || !endDate || !distributables)
         return null;
     if (!validateDistributables(distributables)) return null;
+    if (!validateDistributions(kpiDistribution, fixedDistribution)) return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
@@ -65,7 +72,8 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            distribution,
+            kpiDistribution as CampaignPreviewKpiDistribution,
+            fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
         );
     }
@@ -79,7 +87,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        distribution,
+        kpiDistribution as CampaignPreviewKpiDistribution,
+        fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
     );
 }
@@ -217,6 +226,8 @@ export function AmmPoolLiquidityForm({
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
@@ -241,7 +252,8 @@ export function AmmPoolLiquidityForm({
                     }
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    distribution={payload.distribution}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />

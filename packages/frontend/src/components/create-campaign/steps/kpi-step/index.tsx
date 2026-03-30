@@ -5,6 +5,8 @@ import {
     type CampaignPayloadErrors,
     type BaseCampaignPayloadPart,
     type CampaignPayloadTokenDistributables,
+    type CampaignPayloadKpiDistribution,
+    type CampaignPayloadFixedDistribution,
 } from "@/src/types/campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import {
@@ -17,12 +19,7 @@ import {
 import { useTranslations } from "next-intl";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { formatUsdAmount } from "@/src/utils/format";
-import {
-    CampaignKind,
-    KpiMetric,
-    SpecificationDistributionType,
-    type KpiDistributionSpecification,
-} from "@metrom-xyz/sdk";
+import { CampaignKind, KpiMetric } from "@metrom-xyz/sdk";
 import { usePrevious } from "react-use";
 import { KpiSimulationChart } from "../../../kpi-simulation-chart";
 import { GoalInputs } from "./goal-inputs";
@@ -41,14 +38,14 @@ interface KpiStepProps {
     distributables?: CampaignPayloadTokenDistributables;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    distribution?: KpiDistributionSpecification;
+    kpiDistribution?: CampaignPayloadKpiDistribution;
+    fixedDistribution?: CampaignPayloadFixedDistribution;
     onKpiChange: (value: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
 
 type ErrorMessage = LocalizedMessage<"newCampaign.form.base.kpi">;
 
-// TODO: make KPI step work with liquityv2 campaigns
 export function KpiStep({
     disabled,
     kind,
@@ -57,7 +54,8 @@ export function KpiStep({
     distributables,
     startDate,
     endDate,
-    distribution,
+    kpiDistribution,
+    fixedDistribution,
     onKpiChange,
     onError,
 }: KpiStepProps) {
@@ -70,15 +68,15 @@ export function KpiStep({
     const [warning, setWarning] = useState<ErrorMessage>("");
 
     const [minimumPayoutPercentage, setMinimumPayoutPercentage] =
-        useState<number>(distribution?.minimumPayoutPercentage || 0);
+        useState<number>(kpiDistribution?.minimumPayoutPercentage || 0);
     const [lowerUsdTargetRaw, setLowerUsdTargetRaw] = useState<
         number | undefined
-    >(distribution?.goal.lowerUsdTarget);
+    >(kpiDistribution?.goal?.lowerUsdTarget);
     const [upperUsdTargetRaw, setUpperUsdTargetRaw] = useState<
         number | undefined
-    >(distribution?.goal.upperUsdTarget);
+    >(kpiDistribution?.goal?.upperUsdTarget);
 
-    const prevDistribution = usePrevious(distribution);
+    const prevDistribution = usePrevious(kpiDistribution);
     const { id: chainId } = useChainWithType();
 
     const totalRewardsUsdAmount = useMemo(() => {
@@ -94,13 +92,11 @@ export function KpiStep({
     const unsavedChanges = useMemo(() => {
         if (!prevDistribution) return true;
 
-        const {
-            minimumPayoutPercentage: prevMinPayout = 0,
-            goal: {
-                lowerUsdTarget: prevLowerTarget,
-                upperUsdTarget: prevUpperTarget,
-            },
-        } = prevDistribution;
+        const { minimumPayoutPercentage: prevMinPayout = 0, goal } =
+            prevDistribution;
+
+        const prevLowerTarget = goal?.lowerUsdTarget;
+        const prevUpperTarget = goal?.upperUsdTarget;
 
         return (
             prevMinPayout !== minimumPayoutPercentage ||
@@ -114,10 +110,9 @@ export function KpiStep({
         upperUsdTargetRaw,
     ]);
 
-    const newKpiDistribution: KpiDistributionSpecification | undefined =
+    const newKpiDistribution: CampaignPayloadKpiDistribution | undefined =
         lowerUsdTargetRaw !== undefined && upperUsdTargetRaw !== undefined
             ? {
-                  type: SpecificationDistributionType.Kpi,
                   goal: {
                       metric: KpiMetric.RangePoolTvl,
                       lowerUsdTarget: lowerUsdTargetRaw,
@@ -134,18 +129,19 @@ export function KpiStep({
     // this hooks is used to disable and close the step when
     // the kpi specification gets disabled, after the campaign creation
     useEffect(() => {
-        if (enabled && !!prevDistribution && !distribution) setEnabled(false);
-    }, [enabled, distribution, prevDistribution]);
+        if (enabled && !!prevDistribution && !kpiDistribution)
+            setEnabled(false);
+    }, [enabled, kpiDistribution, prevDistribution]);
 
     useEffect(() => {
         if (enabled) return;
-        if (distribution) onKpiChange({ distribution: undefined });
+        if (kpiDistribution) onKpiChange({ kpiDistribution: undefined });
 
         setMinimumPayoutPercentage(0);
         setLowerUsdTargetRaw(undefined);
         setUpperUsdTargetRaw(undefined);
         setError("");
-    }, [enabled, distribution, onKpiChange]);
+    }, [enabled, kpiDistribution, onKpiChange]);
 
     useEffect(() => {
         if (
@@ -181,9 +177,9 @@ export function KpiStep({
 
     useEffect(() => {
         onError({
-            distribution: !!error || (enabled && !distribution),
+            distribution: !!error || (enabled && !kpiDistribution),
         });
-    }, [error, enabled, distribution, onError]);
+    }, [error, enabled, kpiDistribution, onError]);
 
     useEffect(() => {
         setOpen(enabled);
@@ -192,7 +188,7 @@ export function KpiStep({
     // TODO: avoid resetting when the KPI is enabled for points.
     // This hook is used to reset and disable the KPI when changing reward type.
     useEffect(() => {
-        onKpiChange({ distribution: undefined });
+        onKpiChange({ kpiDistribution: undefined });
         setMinimumPayoutPercentage(0);
         setLowerUsdTargetRaw(undefined);
         setUpperUsdTargetRaw(undefined);
@@ -201,6 +197,15 @@ export function KpiStep({
     }, [distributables?.type, onKpiChange]);
 
     function handleToggleOnClick(event: React.MouseEvent<HTMLDivElement>) {
+        if (enabled)
+            onKpiChange({
+                kpiDistribution: undefined,
+            });
+        else
+            onKpiChange({
+                kpiDistribution: {},
+            });
+
         event.stopPropagation();
         setEnabled((enabled) => !enabled);
     }
@@ -214,8 +219,7 @@ export function KpiStep({
         if (lowerUsdTargetRaw === undefined || upperUsdTargetRaw === undefined)
             return;
 
-        const distribution: KpiDistributionSpecification = {
-            type: SpecificationDistributionType.Kpi,
+        const kpiDistribution: CampaignPayloadKpiDistribution = {
             goal: {
                 metric: KpiMetric.RangePoolTvl,
                 lowerUsdTarget: lowerUsdTargetRaw,
@@ -224,10 +228,10 @@ export function KpiStep({
         };
 
         if (minimumPayoutPercentage)
-            distribution.minimumPayoutPercentage = minimumPayoutPercentage;
+            kpiDistribution.minimumPayoutPercentage = minimumPayoutPercentage;
 
         setOpen(false);
-        onKpiChange({ distribution });
+        onKpiChange({ kpiDistribution });
     }, [
         lowerUsdTargetRaw,
         minimumPayoutPercentage,
@@ -237,7 +241,7 @@ export function KpiStep({
 
     return (
         <Step
-            disabled={disabled}
+            disabled={disabled || !!fixedDistribution}
             completed={enabled}
             open={open}
             onPreviewClick={handleStepOnClick}

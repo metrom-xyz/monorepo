@@ -69,6 +69,7 @@ export function AprInfoTooltip({ campaign, children }: AprInfoTooltiProps) {
                     size="sm"
                     spaced
                     weight="regular"
+                    variant="primary"
                     text={t.rich("priceRangeAndWeighting", {
                         feeWeight,
                         token0Weight,
@@ -90,6 +91,7 @@ export function AprInfoTooltip({ campaign, children }: AprInfoTooltiProps) {
                     size="sm"
                     spaced
                     weight="regular"
+                    variant="primary"
                     text={t("priceRange")}
                     // TODO: add documentation link
                     // linkText={t("learnMore")}
@@ -102,6 +104,7 @@ export function AprInfoTooltip({ campaign, children }: AprInfoTooltiProps) {
                     size="sm"
                     spaced
                     weight="regular"
+                    variant="primary"
                     text={t.rich("weighting", {
                         feeWeight,
                         token0Weight,
@@ -122,6 +125,7 @@ export function AprInfoTooltip({ campaign, children }: AprInfoTooltiProps) {
                 <InfoMessage
                     size="sm"
                     spaced
+                    variant="primary"
                     text={t.rich("aaveV3NetSupply", {
                         collateral: aaveV3Collateral.symbol,
                         blacklisted:

@@ -6,6 +6,7 @@ import {
     SpecificationDistributionType,
     Status,
     type KpiDistributionSpecification,
+    type Specification,
 } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { KpiSimulationChart } from "../../../../kpi-simulation-chart";
@@ -24,7 +25,11 @@ import styles from "./styles.module.css";
 interface KpiProps {
     campaignItem?: DistributablesNamedCampaign<
         DistributablesType.Tokens,
-        CampaignItem
+        CampaignItem & {
+            specification: Specification & {
+                distribution: KpiDistributionSpecification;
+            };
+        }
     >;
 }
 

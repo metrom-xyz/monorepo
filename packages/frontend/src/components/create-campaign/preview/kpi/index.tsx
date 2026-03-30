@@ -5,6 +5,7 @@ import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import type {
     BaseCampaignPayload,
     CampaignPayloadTokenDistributables,
+    CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign";
 import { useMemo } from "react";
 import type { CampaignKind } from "@metrom-xyz/sdk";
@@ -18,7 +19,7 @@ interface KpiProps {
     from: BaseCampaignPayload["startDate"];
     to: BaseCampaignPayload["endDate"];
     distributables?: CampaignPayloadTokenDistributables;
-    distribution: BaseCampaignPayload["distribution"];
+    kpiDistribution: CampaignPreviewKpiDistribution;
 }
 
 export function Kpi({
@@ -27,7 +28,7 @@ export function Kpi({
     from,
     to,
     distributables,
-    distribution,
+    kpiDistribution,
 }: KpiProps) {
     const t = useTranslations("campaignPreview.kpi");
     const targetValueName = useCampaignTargetValueName({ kind });
@@ -42,12 +43,12 @@ export function Kpi({
         return total;
     }, [distributables]);
 
-    if (!distribution) return null;
+    if (!kpiDistribution) return null;
 
     const {
         goal: { lowerUsdTarget, upperUsdTarget },
         minimumPayoutPercentage,
-    } = distribution;
+    } = kpiDistribution;
 
     return (
         <div className={styles.root}>

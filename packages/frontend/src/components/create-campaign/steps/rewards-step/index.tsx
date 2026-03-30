@@ -8,6 +8,8 @@ import {
     type BaseCampaignPayload,
     type BaseCampaignPayloadPart,
     type CampaignPayloadErrors,
+    type CampaignPayloadFixedDistribution,
+    type CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign";
 import classNames from "classnames";
 import { RewardTokens } from "./tokens";
@@ -21,6 +23,8 @@ interface RewardsStepProps {
     distributables?: BaseCampaignPayload["distributables"];
     startDate?: BaseCampaignPayload["startDate"];
     endDate?: BaseCampaignPayload["endDate"];
+    kpiDistribution?: CampaignPayloadKpiDistribution;
+    fixedDistribution?: CampaignPayloadFixedDistribution;
     onDistributablesChange: (rewards: BaseCampaignPayloadPart) => void;
     onError: (errors: CampaignPayloadErrors) => void;
 }
@@ -30,6 +34,8 @@ export function RewardsStep({
     distributables,
     startDate,
     endDate,
+    kpiDistribution,
+    fixedDistribution,
     onDistributablesChange,
     onError,
 }: RewardsStepProps) {
@@ -127,9 +133,13 @@ export function RewardsStep({
                     {distributables?.type === DistributablesType.Tokens && (
                         <RewardTokens
                             campaignDuration={campaignDuration}
+                            startDate={startDate}
+                            endDate={endDate}
                             distributables={distributables}
+                            kpiDistribution={kpiDistribution}
+                            fixedDistribution={fixedDistribution}
                             onError={handleOnError}
-                            onTokensChange={onDistributablesChange}
+                            onRewardsTokensChange={onDistributablesChange}
                         />
                     )}
                 </div>

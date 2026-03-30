@@ -256,6 +256,17 @@
                             "wrongAmount": "Wrong points amount"
                         },
                         "noFeeTokens": "Points campaign not supported"
+                    },
+                    "fixedApr": {
+                        "title": "Fixed APR",
+                        "description": "This campaign gives fixed APR in USD value terms. This will automatically adjust the reward tokens to the USD price so that the APR remains fixed in USD terms for LPs.",
+                        "apr": "APR",
+                        "preview": "Campaign preview at $1M TVL",
+                        "duration": "Duration",
+                        "totalBudget": "Total budget",
+                        "dailyEmission": "Daily emission",
+                        "buffer": "Buffer",
+                        "bufferTooltip": "Extra buffer on top of the budget to account for reward token price fluctuation during the campaign."
                     }
                 },
                 "weighting": {
@@ -595,6 +606,7 @@
             },
             "noActiveCampaigns": "No active campaigns",
             "range": "Range",
+            "fixedAprStatusTooltip": "This campaign ends on the scheduled end date, or earlier if rewards run out while maintaining the target APR.",
             "campaignItem": {
                 "kpiTag": {
                     "label": "KPI",

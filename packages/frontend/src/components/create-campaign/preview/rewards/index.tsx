@@ -45,7 +45,7 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
         const hoursDuration = endDate.diff(startDate, "hours", false);
         const daysDuration = hoursDuration / 24;
 
-        return daysDuration >= 1 ? totalRewardsUsdAmount / daysDuration : 0;
+        return daysDuration > 0 ? totalRewardsUsdAmount / daysDuration : 0;
     }, [startDate, endDate, totalRewardsUsdAmount]);
 
     useEffect(() => {
@@ -62,10 +62,20 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
             </Typography>
             <Card className={styles.table}>
                 <div className={styles.header}>
-                    <Typography uppercase weight="medium" variant="tertiary"size="sm">
+                    <Typography
+                        uppercase
+                        weight="medium"
+                        variant="tertiary"
+                        size="sm"
+                    >
                         {t("token")}
                     </Typography>
-                    <Typography uppercase weight="medium" variant="tertiary"size="sm">
+                    <Typography
+                        uppercase
+                        weight="medium"
+                        variant="tertiary"
+                        size="sm"
+                    >
                         {t("amount")}
                     </Typography>
                 </div>
@@ -80,7 +90,11 @@ export function Rewards({ rewards, startDate, endDate }: RewardsProps) {
                                 {reward.token.symbol}
                             </Typography>
                         </div>
-                        <Typography weight="medium" variant="tertiary"size="lg">
+                        <Typography
+                            weight="medium"
+                            variant="tertiary"
+                            size="lg"
+                        >
                             {formatUsdAmount({
                                 amount: reward.amount.usdValue || 0,
                             })}

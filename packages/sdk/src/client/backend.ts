@@ -761,10 +761,18 @@ export class MetromApiClient {
                 };
             });
 
+            if (
+                campaign.specification?.distribution?.type !==
+                SpecificationDistributionType.Kpi
+            )
+                throw new Error(
+                    `Tried to fetch KPI measurements for campaign with id ${campaign.id} in chain with id ${campaign.chainId} with no attached KPI`,
+                );
+
             const goalLowerTarget =
-                campaign.specification!.distribution!.goal.lowerUsdTarget;
+                campaign.specification.distribution.goal.lowerUsdTarget;
             const goalUpperTarget =
-                campaign.specification!.distribution!.goal.upperUsdTarget;
+                campaign.specification.distribution.goal.upperUsdTarget;
             const goalRange = goalUpperTarget - goalLowerTarget;
 
             return {

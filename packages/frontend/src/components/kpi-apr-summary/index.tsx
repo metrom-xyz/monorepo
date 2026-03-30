@@ -5,6 +5,8 @@ import {
     DistributablesType,
     SpecificationDistributionType,
     TargetType,
+    type KpiDistributionSpecification,
+    type Specification,
 } from "@metrom-xyz/sdk";
 import type { CampaignItem } from "@/src/types/campaign";
 import { useMemo } from "react";
@@ -16,10 +18,13 @@ import { usePool } from "@/src/hooks/usePool";
 import styles from "./styles.module.css";
 
 interface KpiAprSummaryProps {
-    campaignItem?: CampaignItem;
+    campaignItem?: CampaignItem & {
+        specification: Specification & {
+            distribution: KpiDistributionSpecification;
+        };
+    };
 }
 
-// TODO: add support for non amm pool liquidity campaigns
 export function KpiAprSummary({ campaignItem }: KpiAprSummaryProps) {
     const t = useTranslations("kpiAprSummary");
 

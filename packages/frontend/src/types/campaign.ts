@@ -24,8 +24,10 @@ import {
     type DynamicPointDistributables,
     type AmmPool,
     type Specification,
-    type KpiDistributionSpecification,
     SpecificationDistributionType,
+    type RangePoolTvlKpiGoal,
+    type FixedDistributionSpecification,
+    type KpiDistributionSpecification,
 } from "@metrom-xyz/sdk";
 import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
@@ -73,12 +75,31 @@ export interface AugmentedPriceRangeSpecification {
     to: AugmentedPriceRangeBound;
 }
 
+export interface CampaignPayloadKpiDistribution {
+    minimumPayoutPercentage?: number;
+    goal?: RangePoolTvlKpiGoal;
+}
+
+export interface CampaignPayloadFixedDistribution {
+    apr?: number;
+}
+
+export interface CampaignPreviewKpiDistribution {
+    minimumPayoutPercentage?: number;
+    goal: RangePoolTvlKpiGoal;
+}
+
+export interface CampaignPreviewFixedDistribution {
+    apr: number;
+}
+
 export interface BaseCampaignPayload {
     kind?: CampaignKind;
     startDate?: Dayjs;
     endDate?: Dayjs;
     distributables?: CampaignPayloadDistributables;
-    distribution?: KpiDistributionSpecification;
+    kpiDistribution?: CampaignPayloadKpiDistribution;
+    fixedDistribution?: CampaignPayloadFixedDistribution;
     restrictions?: Restrictions;
 }
 
@@ -171,7 +192,8 @@ export abstract class BaseCampaignPreviewPayload {
         public readonly startDate: Dayjs,
         public readonly endDate: Dayjs,
         public readonly distributables: CampaignPreviewDistributables,
-        public readonly kpiDistribution?: KpiDistributionSpecification,
+        public readonly kpiDistribution?: CampaignPreviewKpiDistribution,
+        public readonly fixedDistribution?: CampaignPreviewFixedDistribution,
         public readonly restrictions?: Restrictions,
     ) {}
 
@@ -586,6 +608,17 @@ export class CampaignItem extends SdkCampaignItem {
             SpecificationDistributionType.Kpi
         );
     }
+
+    hasFixedDistribution(): this is this & {
+        specification: Specification & {
+            distribution: FixedDistributionSpecification;
+        };
+    } {
+        return (
+            this.specification?.distribution?.type ===
+            SpecificationDistributionType.Fixed
+        );
+    }
 }
 
 export class CampaignItemDetails extends SdkCampaignItemDetails {
@@ -636,6 +669,17 @@ export class CampaignItemDetails extends SdkCampaignItemDetails {
         return (
             this.specification?.distribution?.type ===
             SpecificationDistributionType.Kpi
+        );
+    }
+
+    hasFixedDistribution(): this is this & {
+        specification: Specification & {
+            distribution: FixedDistributionSpecification;
+        };
+    } {
+        return (
+            this.specification?.distribution?.type ===
+            SpecificationDistributionType.Fixed
         );
     }
 
