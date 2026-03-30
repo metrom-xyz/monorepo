@@ -1,4 +1,4 @@
-import { Accordion, Skeleton, Typography } from "@metrom-xyz/ui";
+import { Accordion, InfoTooltip, Skeleton, Typography } from "@metrom-xyz/ui";
 import { AprChip } from "../../../apr-chip";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import {
@@ -13,6 +13,7 @@ import { CampaignStatus } from "../../../campaign-status";
 import type { CampaignItem } from "@/src/types/campaign";
 import { KpiTagPopover } from "./kpi-tag-popover";
 import { Header } from "./header";
+import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
@@ -25,6 +26,7 @@ export function Item({ campaignItem }: ItemProps) {
     const { id, chainId, status, apr, from, to, specification } = campaignItem;
 
     const hasKpi = campaignItem.hasKpiDistribution();
+    const hasFixedApr = campaignItem.hasFixedDistribution();
     const rewards = campaignItem.isDistributing(DistributablesType.Tokens);
 
     return (
@@ -42,12 +44,25 @@ export function Item({ campaignItem }: ItemProps) {
                             <CampaignTag size="sm" text={t("range")} />
                         )}
                     </div>
-                    <CampaignStatus
-                        variant="short"
-                        from={from}
-                        to={to}
-                        status={status}
-                    />
+                    <div className={styles.status}>
+                        <CampaignStatus
+                            variant="short"
+                            from={from}
+                            to={to}
+                            status={status}
+                        />
+                        {hasFixedApr && (
+                            <InfoTooltip>
+                                <InfoMessage
+                                    size="sm"
+                                    spaced
+                                    weight="regular"
+                                    variant="primary"
+                                    text={t("fixedAprStatusTooltip")}
+                                />
+                            </InfoTooltip>
+                        )}
+                    </div>
                     <AprChip
                         apr={apr}
                         kpi={hasKpi}

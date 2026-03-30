@@ -62,7 +62,8 @@ export function ItemContent({ campaignItem }: ItemContentProps) {
             TABS.filter(({ type }) => {
                 const { specification } = campaignItem;
 
-                if (type === TabType.Kpi) return !!campaignItem.hasKpiDistribution();
+                if (type === TabType.Kpi)
+                    return campaignItem.hasKpiDistribution();
                 if (type === TabType.Range) return !!specification?.priceRange;
                 if (type === TabType.Restrictions)
                     return (
@@ -79,7 +80,9 @@ export function ItemContent({ campaignItem }: ItemContentProps) {
     }, [tabOptions, tab]);
 
     const tokensItem = campaignItem.isDistributing(DistributablesType.Tokens);
-    const ammPoolLiquidityItem = campaignItem.isTargeting(TargetType.AmmPoolLiquidity);
+    const ammPoolLiquidityItem = campaignItem.isTargeting(
+        TargetType.AmmPoolLiquidity,
+    );
 
     return (
         <div>
@@ -96,7 +99,11 @@ export function ItemContent({ campaignItem }: ItemContentProps) {
                 ))}
             </Tabs>
             <div className={styles.tabContentWrapper}>
-                {tab === TabType.Kpi && tokensItem && <Kpi campaignItem={campaignItem} />}
+                {tab === TabType.Kpi &&
+                    tokensItem &&
+                    campaignItem.hasKpiDistribution() && (
+                        <Kpi campaignItem={campaignItem} />
+                    )}
                 {tab === TabType.Range && ammPoolLiquidityItem && (
                     <PriceRange campaignItem={campaignItem} />
                 )}

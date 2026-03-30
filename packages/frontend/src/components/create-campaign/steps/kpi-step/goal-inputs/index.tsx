@@ -1,4 +1,3 @@
-import type { BaseCampaignPayload } from "@/src/types/campaign";
 import {
     NumberInput,
     SliderInput,
@@ -9,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useDebounce } from "react-use";
 import numeral from "numeral";
 import type { CampaignKind } from "@metrom-xyz/sdk";
+import type { CampaignPayloadKpiDistribution } from "@/src/types/campaign";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 
 import styles from "./styles.module.css";
@@ -17,7 +17,7 @@ interface GoalInputsProps {
     error?: boolean;
     enabled?: boolean;
     kind?: CampaignKind;
-    kpiDistribution?: BaseCampaignPayload["distribution"];
+    kpiDistribution?: CampaignPayloadKpiDistribution;
     onLowerUsdTargetChange: (value: number | undefined) => void;
     onUpperUsdTargetChange: (value: number | undefined) => void;
     onMinimumPayoutPercentageChange: (value: number) => void;
@@ -48,8 +48,8 @@ export function GoalInputs({
     >(() => {
         if (kpiDistribution) {
             return {
-                raw: kpiDistribution.goal.lowerUsdTarget,
-                formatted: kpiDistribution.goal.lowerUsdTarget.toString(),
+                raw: kpiDistribution?.goal?.lowerUsdTarget,
+                formatted: kpiDistribution?.goal?.lowerUsdTarget.toString(),
             };
         }
         return undefined;
@@ -59,8 +59,8 @@ export function GoalInputs({
     >(() => {
         if (kpiDistribution) {
             return {
-                raw: kpiDistribution.goal.upperUsdTarget,
-                formatted: kpiDistribution.goal.upperUsdTarget.toString(),
+                raw: kpiDistribution.goal?.upperUsdTarget,
+                formatted: kpiDistribution.goal?.upperUsdTarget.toString(),
             };
         }
         return undefined;

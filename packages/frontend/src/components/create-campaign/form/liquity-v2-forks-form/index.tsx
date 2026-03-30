@@ -5,6 +5,8 @@ import {
     type LiquityV2CampaignPayloadPart,
     type CampaignPreviewDistributables,
     EmptyTargetCampaignPreviewPayload,
+    type CampaignPreviewKpiDistribution,
+    type CampaignPreviewFixedDistribution,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -24,7 +26,10 @@ import {
     CampaignKindStep,
     type CampaignKindOption,
 } from "../../steps/campaign-kind-step";
-import { validateDistributables } from "@/src/utils/creation-form";
+import {
+    validateDistributables,
+    validateDistributions,
+} from "@/src/utils/creation-form";
 import type { TranslationsKeys } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
@@ -40,7 +45,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        distribution,
+        kpiDistribution,
+        fixedDistribution,
         restrictions,
     } = payload;
 
@@ -55,6 +61,7 @@ function validatePayload(
         return null;
 
     if (!validateDistributables(distributables)) return null;
+    if (!validateDistributions(kpiDistribution, fixedDistribution)) return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
@@ -62,7 +69,8 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            distribution,
+            kpiDistribution as CampaignPreviewKpiDistribution,
+            fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
         );
     }
@@ -74,7 +82,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        distribution,
+        kpiDistribution as CampaignPreviewKpiDistribution,
+        fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
     );
 }
@@ -222,6 +231,8 @@ export function LiquityV2ForksForm({
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
@@ -244,7 +255,8 @@ export function LiquityV2ForksForm({
                     }
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    distribution={payload.distribution}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />

@@ -262,6 +262,7 @@ export interface RangePoolTvlKpiGoal {
 
 export enum SpecificationDistributionType {
     Kpi = "kpi",
+    Fixed = "fixed",
 }
 
 export interface KpiDistributionSpecification {
@@ -271,7 +272,14 @@ export interface KpiDistributionSpecification {
     goal: RangePoolTvlKpiGoal;
 }
 
-export type DistributionSpecification = KpiDistributionSpecification;
+export interface FixedDistributionSpecification {
+    type?: SpecificationDistributionType.Fixed;
+    apr: number;
+}
+
+export type DistributionSpecification =
+    | KpiDistributionSpecification
+    | FixedDistributionSpecification;
 
 export interface PriceRangeSpecification {
     from: number;

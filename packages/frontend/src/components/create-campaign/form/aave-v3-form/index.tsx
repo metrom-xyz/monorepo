@@ -5,6 +5,8 @@ import {
     type AaveV3CampaignPayload,
     AaveV3CampaignPreviewPayload,
     type AaveV3CampaignPayloadPart,
+    type CampaignPreviewKpiDistribution,
+    type CampaignPreviewFixedDistribution,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -30,7 +32,10 @@ import {
     type CampaignKindOption,
 } from "../../steps/campaign-kind-step";
 import type { TranslationsKeys } from "@/src/types/utils";
-import { validateDistributables } from "@/src/utils/creation-form";
+import {
+    validateDistributables,
+    validateDistributions,
+} from "@/src/utils/creation-form";
 import { AaveV3BlacklistedCrossBorrowCollateralsStep } from "../../steps/aave-v3-blacklisted-cross-borrow-collaterals";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
@@ -50,7 +55,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        distribution,
+        kpiDistribution,
+        fixedDistribution,
         blacklistedCollaterals,
         restrictions,
     } = payload;
@@ -68,6 +74,7 @@ function validatePayload(
         return null;
 
     if (!validateDistributables(distributables)) return null;
+    if (!validateDistributions(kpiDistribution, fixedDistribution)) return null;
     if (
         kind !== CampaignKind.AaveV3NetSupply &&
         blacklistedCollaterals &&
@@ -81,7 +88,8 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            distribution,
+            kpiDistribution as CampaignPreviewKpiDistribution,
+            fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
         );
     }
@@ -97,7 +105,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        distribution,
+        kpiDistribution as CampaignPreviewKpiDistribution,
+        fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
     );
 }
@@ -275,6 +284,8 @@ export function AaveV3Form({
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
@@ -292,7 +303,8 @@ export function AaveV3Form({
                         }
                         startDate={payload.startDate}
                         endDate={payload.endDate}
-                        distribution={payload.distribution}
+                        kpiDistribution={payload.kpiDistribution}
+                        fixedDistribution={payload.fixedDistribution}
                         onKpiChange={handlePayloadOnChange}
                         onError={handlePayloadOnError}
                     />

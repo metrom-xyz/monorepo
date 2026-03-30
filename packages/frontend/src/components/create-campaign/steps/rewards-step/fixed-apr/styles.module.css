@@ -1,0 +1,33 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply mx-3 mb-3 rounded-lg border stroke-divider;
+}
+
+.header {
+    @apply flex justify-between gap-3 p-3;
+}
+
+.headerText {
+    @apply w-full flex flex-col;
+}
+
+.content {
+    @apply flex flex-col gap-3 p-3 border-t stroke-divider;
+}
+
+.field {
+    @apply flex items-center justify-between;
+}
+
+.token {
+    @apply flex items-center gap-1;
+}
+
+.summary {
+    @apply flex flex-col gap-1.5;
+}
+
+.buffer {
+    @apply flex items-center gap-1;
+}

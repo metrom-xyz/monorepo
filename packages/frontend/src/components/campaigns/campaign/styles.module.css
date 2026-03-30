@@ -36,9 +36,7 @@
     @apply w-full pointer-events-none;
 }
 
-.action {
-    @apply flex justify-start items-center gap-2 col-span-1;
-}
+
 
 .card:hover .externalLink {
     @apply opacity-100 scale-100;

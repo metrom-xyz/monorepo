@@ -22,6 +22,8 @@ import type {
     CampaignPayloadErrors,
     BaseCampaignPayloadPart,
     CampaignPayloadTokenDistributables,
+    CampaignPayloadKpiDistribution,
+    CampaignPayloadFixedDistribution,
 } from "@/src/types/campaign";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import type { LocalizedMessage } from "@/src/types/utils";
@@ -29,14 +31,20 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { WhitelistedTokensList } from "../whitelisted-tokens-list";
 import { useRewardTokens } from "@/src/hooks/useRewardTokens";
+import { RewardsFixedApr } from "../fixed-apr";
+import type { Dayjs } from "dayjs";
 
 import styles from "./styles.module.css";
 
 interface RewardTokensProps {
     distributables: CampaignPayloadTokenDistributables;
     campaignDuration?: number;
+    startDate?: Dayjs;
+    endDate?: Dayjs;
+    kpiDistribution?: CampaignPayloadKpiDistribution;
+    fixedDistribution?: CampaignPayloadFixedDistribution;
     onError: (errors: CampaignPayloadErrors, error?: string) => void;
-    onTokensChange: (tokens: BaseCampaignPayloadPart) => void;
+    onRewardsTokensChange: (tokens: BaseCampaignPayloadPart) => void;
 }
 
 export type TokensErrorMessage =
@@ -45,8 +53,12 @@ export type TokensErrorMessage =
 export function RewardTokens({
     distributables,
     campaignDuration,
+    startDate,
+    endDate,
+    kpiDistribution,
+    fixedDistribution,
     onError,
-    onTokensChange,
+    onRewardsTokensChange,
 }: RewardTokensProps) {
     const t = useTranslations("newCampaign.form.base.rewards.tokens");
     const [open, setOpen] = useState(false);
@@ -137,7 +149,7 @@ export function RewardTokens({
 
         setOpen(false);
 
-        onTokensChange({
+        onRewardsTokensChange({
             distributables: {
                 type: DistributablesType.Tokens,
                 tokens: newRewards,
@@ -151,13 +163,13 @@ export function RewardTokens({
         setToken(undefined);
 
         trackFathomEvent("PICK_REWARD");
-    }, [amount, token, distributables.tokens, onTokensChange]);
+    }, [amount, token, distributables.tokens, onRewardsTokensChange]);
 
     const handleRewardTokenOnRemove = useCallback(
         (reward: Erc20Token) => {
             if (!distributables.tokens) return;
 
-            onTokensChange({
+            onRewardsTokensChange({
                 distributables: {
                     type: DistributablesType.Tokens,
                     tokens: distributables.tokens.filter(
@@ -166,14 +178,14 @@ export function RewardTokens({
                 },
             });
         },
-        [onTokensChange, distributables.tokens],
+        [onRewardsTokensChange, distributables.tokens],
     );
 
     const handleRewardTokenOnUpdate = useCallback(
         (updatedReward: WhitelistedErc20TokenAmount) => {
             if (!distributables.tokens) return;
 
-            onTokensChange({
+            onRewardsTokensChange({
                 distributables: {
                     type: DistributablesType.Tokens,
                     tokens: distributables.tokens.map((reward) => {
@@ -186,7 +198,7 @@ export function RewardTokens({
                 },
             });
         },
-        [onTokensChange, distributables.tokens],
+        [onRewardsTokensChange, distributables.tokens],
     );
 
     const handleExistingTokensValidation = useCallback(
@@ -228,10 +240,20 @@ export function RewardTokens({
                     onError={handleExistingTokensValidation}
                 />
                 <div className={styles.totalValueWrapper}>
-                    <Typography uppercase size="xs" weight="medium" variant="tertiary">
+                    <Typography
+                        uppercase
+                        size="xs"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         {formatUsdAmount({ amount: totalRewardsUsdAmount })}
                     </Typography>
-                    <Typography uppercase size="xs" weight="medium" variant="tertiary">
+                    <Typography
+                        uppercase
+                        size="xs"
+                        weight="medium"
+                        variant="tertiary"
+                    >
                         {t("totalUsd")}
                     </Typography>
                 </div>
@@ -291,6 +313,13 @@ export function RewardTokens({
                 values={rewardTokens}
                 unavailable={distributables.tokens}
                 onClick={handleRewardTokenChange}
+            />
+            <RewardsFixedApr
+                startDate={startDate}
+                endDate={endDate}
+                kpiDistribution={kpiDistribution}
+                fixedDistribution={fixedDistribution}
+                onFixedAprChange={onRewardsTokensChange}
             />
         </div>
     );

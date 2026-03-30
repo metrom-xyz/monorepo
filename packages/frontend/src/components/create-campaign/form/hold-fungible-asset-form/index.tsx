@@ -5,6 +5,8 @@ import {
     type HoldFungibleAssetCampaignPayload,
     HoldFungibleAssetCampaignPreviewPayload,
     type HoldFungibleAssetCampaignPayloadPart,
+    type CampaignPreviewKpiDistribution,
+    type CampaignPreviewFixedDistribution,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -17,7 +19,10 @@ import { RestrictionsStep } from "../../steps/restrictions-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import { validateDistributables } from "@/src/utils/creation-form";
+import {
+    validateDistributables,
+    validateDistributions,
+} from "@/src/utils/creation-form";
 import { HoldFungibleAssetPickerStep } from "../../steps/hold-token-picker-step";
 
 import styles from "./styles.module.css";
@@ -36,7 +41,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        distribution,
+        kpiDistribution,
+        fixedDistribution,
         restrictions,
     } = payload;
 
@@ -44,6 +50,7 @@ function validatePayload(
         return null;
 
     if (!validateDistributables(distributables)) return null;
+    if (!validateDistributions(kpiDistribution, fixedDistribution)) return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
@@ -51,7 +58,8 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            distribution,
+            kpiDistribution as CampaignPreviewKpiDistribution,
+            fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
         );
     }
@@ -62,7 +70,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        distribution,
+        kpiDistribution as CampaignPreviewKpiDistribution,
+        fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
     );
 }
@@ -158,6 +167,8 @@ export function HoldFungibleAssetForm({
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />

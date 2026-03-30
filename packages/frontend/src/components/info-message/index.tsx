@@ -14,6 +14,7 @@ interface InfoMessageProps {
     linkText?: string;
     size?: TypographySize;
     weight?: TypographyProps["weight"];
+    variant?: TypographyProps["variant"];
     spaced?: boolean;
     className?: string;
 }
@@ -24,6 +25,7 @@ export function InfoMessage({
     linkText,
     size = "xs",
     weight = "medium",
+    variant = "tertiary",
     spaced,
     className,
 }: InfoMessageProps) {
@@ -31,7 +33,7 @@ export function InfoMessage({
         <div className={className}>
             <Typography
                 weight={weight}
-                variant="tertiary"
+                variant={variant}
                 size={size}
                 className={classNames({ [styles.text]: spaced })}
             >

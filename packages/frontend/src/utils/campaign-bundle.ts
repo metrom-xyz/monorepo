@@ -17,6 +17,7 @@ import {
 } from "../types/campaign";
 import {
     CampaignKind,
+    SpecificationDistributionType,
     SupportedBridge,
     type Specification,
 } from "@metrom-xyz/sdk";
@@ -138,7 +139,17 @@ export function buildSpecificationBundle(
 ): Specification {
     const specification: Specification = {};
 
-    if (payload.kpiDistribution) specification.distribution = payload.kpiDistribution;
+    if (payload.kpiDistribution)
+        specification.distribution = {
+            type: SpecificationDistributionType.Kpi,
+            ...payload.kpiDistribution,
+        };
+
+    if (payload.fixedDistribution)
+        specification.distribution = {
+            type: SpecificationDistributionType.Fixed,
+            ...payload.fixedDistribution,
+        };
 
     if (payload.restrictions)
         specification[payload.restrictions.type] = payload.restrictions.list;

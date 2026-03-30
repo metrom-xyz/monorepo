@@ -4,6 +4,8 @@ import {
     AaveV3CampaignPreviewPayload,
     type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
+    type CampaignPreviewFixedDistribution,
+    type CampaignPreviewKpiDistribution,
     EmptyTargetCampaignPreviewPayload,
 } from "@/src/types/campaign";
 import { useTranslations } from "next-intl";
@@ -22,7 +24,10 @@ import { KpiStep } from "../../steps/kpi-step";
 import { AaveV3BridgeAndSupplyBoostStep } from "../../steps/aave-v3-bridge-supply-boost";
 import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
 import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
-import { validateDistributables } from "@/src/utils/creation-form";
+import {
+    validateDistributables,
+    validateDistributions,
+} from "@/src/utils/creation-form";
 
 import styles from "./styles.module.css";
 
@@ -39,7 +44,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables,
-        distribution,
+        kpiDistribution,
+        fixedDistribution,
         restrictions,
     } = payload;
 
@@ -56,6 +62,7 @@ function validatePayload(
         return null;
 
     if (!validateDistributables(distributables)) return null;
+    if (!validateDistributions(kpiDistribution, fixedDistribution)) return null;
     if (boostingFactor > 0.05) return null;
 
     // TODO: handle chain type for same chain ids?
@@ -64,7 +71,8 @@ function validatePayload(
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
-            distribution,
+            kpiDistribution as CampaignPreviewKpiDistribution,
+            fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
         );
     }
@@ -80,7 +88,8 @@ function validatePayload(
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
-        distribution,
+        kpiDistribution as CampaignPreviewKpiDistribution,
+        fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
     );
 }
@@ -199,6 +208,8 @@ export function AaveV3BridgeAndSupplyForm({
                     distributables={payload.distributables}
                     startDate={payload.startDate}
                     endDate={payload.endDate}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
@@ -214,7 +225,8 @@ export function AaveV3BridgeAndSupplyForm({
                     }
                     startDate={payload.startDate}
                     endDate={payload.endDate}
-                    distribution={payload.distribution}
+                    kpiDistribution={payload.kpiDistribution}
+                    fixedDistribution={payload.fixedDistribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />

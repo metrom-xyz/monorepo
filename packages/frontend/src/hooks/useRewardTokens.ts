@@ -9,6 +9,8 @@ type UseRewardTokensParams = HookBaseParams;
 
 type QueryKey = [string, SupportedChain];
 
+const collator = new Intl.Collator();
+
 export function useRewardTokens({
     enabled = true,
 }: UseRewardTokensParams = {}): {
@@ -22,10 +24,17 @@ export function useRewardTokens({
         queryFn: async ({ queryKey }) => {
             const [, chainId] = queryKey as QueryKey;
             try {
-                return await METROM_API_CLIENT.fetchRewardTokens({
+                const rewardTokens = await METROM_API_CLIENT.fetchRewardTokens({
                     chainId,
                     chainType: CHAIN_TYPE,
                 });
+
+                return rewardTokens.sort((a, b) =>
+                    collator.compare(
+                        a.symbol.toLowerCase(),
+                        b.symbol.toLowerCase(),
+                    ),
+                );
             } catch (error) {
                 console.error(`Could not fetch reward tokens: ${error}`);
                 throw error;
