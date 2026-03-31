@@ -25,7 +25,11 @@ import { formatPercentage } from "@/src/utils/format";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getExplorerLink } from "@/src/utils/explorer";
 import { PointsBreakdown } from "./points-breakdown";
-import type { CampaignItem, Leaderboard } from "@/src/types/campaign";
+import {
+    type CampaignDetails,
+    type Leaderboard,
+    CampaignItem,
+} from "@/src/types/campaign";
 import { useWindowSize } from "react-use";
 import { useAccount } from "@/src/hooks/useAccount";
 import classNames from "classnames";
@@ -35,7 +39,7 @@ import { Link, usePathname } from "@/src/i18n/routing";
 import styles from "./styles.module.css";
 
 interface LeaderboardProps {
-    campaignItem: CampaignItem;
+    campaignItem: CampaignItem | CampaignDetails;
     leaderboard?: Leaderboard;
     noDistributionDate?: boolean;
     loading: boolean;
@@ -66,7 +70,11 @@ export function Leaderboard({
     const { width } = useWindowSize();
     const pathname = usePathname();
 
-    const { chainId, chainType, restrictions, distributables } = campaignItem;
+    const { chainId, chainType, distributables } = campaignItem;
+    const restrictions =
+        campaignItem instanceof CampaignItem
+            ? campaignItem.restrictions
+            : undefined;
     const whitelist = restrictions?.type === RestrictionType.Whitelist;
 
     if (!loading && !leaderboard) {

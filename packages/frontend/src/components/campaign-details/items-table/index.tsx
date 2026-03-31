@@ -68,7 +68,6 @@ export function ItemsTable({
           ? BackendCampaignType.Rewards
           : BackendCampaignType.Points;
 
-    // TODO: table for points campaigns?
     return (
         <div
             className={classNames(styles.root, {

@@ -3,7 +3,7 @@
 import { usePrevious } from "react-use";
 import { useTranslations } from "next-intl";
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { ChainType } from "@metrom-xyz/sdk";
+import { ChainType, DistributablesType } from "@metrom-xyz/sdk";
 import { useCampaignDetails } from "@/src/hooks/useCampaignDetails";
 import type { Hex } from "viem";
 import { Header, SkeletonHeader } from "./header";
@@ -11,6 +11,8 @@ import { PageNotFound } from "../page-not-found";
 import { ContentHeader, SkeletonContentHeader } from "./content-header";
 import { BackButton } from "../back-button";
 import { ItemsTable } from "./items-table";
+import { Leaderboard } from "../leaderboard";
+import { useLeaderboard } from "@/src/hooks/useLeaderboard";
 
 import styles from "./styles.module.css";
 
@@ -31,6 +33,21 @@ export function CampaignDetails({
         id: campaignId,
         chainId: chain,
         chainType,
+    });
+
+    const rewards = campaignDetails?.isDistributing(DistributablesType.Tokens);
+    const fixedPoints = campaignDetails?.isDistributing(
+        DistributablesType.FixedPoints,
+    );
+    const dynamicPoints = campaignDetails?.isDistributing(
+        DistributablesType.DynamicPoints,
+    );
+
+    const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
+        campaignId: campaignDetails?.id,
+        chainId: campaignDetails?.chainId,
+        chainType: campaignDetails?.chainType,
+        enabled: fixedPoints || dynamicPoints,
     });
 
     const prevLoadingCampaign = usePrevious(loading);
@@ -54,10 +71,24 @@ export function CampaignDetails({
                     <ContentHeader campaign={campaignDetails} />
                 )}
 
-                <ItemsTable
-                    campaignDetails={campaignDetails}
-                    loadingCampaignDetails={loading}
-                />
+                {rewards && (
+                    <ItemsTable
+                        campaignDetails={campaignDetails}
+                        loadingCampaignDetails={loading}
+                    />
+                )}
+
+                {(fixedPoints || dynamicPoints) && (
+                    <div className={styles.pointsContentWrapper}>
+                        <div className={styles.pointsLeaderboardWrapper}>
+                            <Leaderboard
+                                campaignItem={campaignDetails}
+                                leaderboard={leaderboard}
+                                loading={loadingLeaderboard}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
