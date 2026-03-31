@@ -1,6 +1,6 @@
 import { Accordion, InfoTooltip, Skeleton, Typography } from "@metrom-xyz/ui";
 import { AprChip } from "../../../apr-chip";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { DistributablesType, Status } from "@metrom-xyz/sdk";
 import {
     CampaignRewardsPopover,
     SkeletonCampaignRewards,
@@ -51,7 +51,7 @@ export function Item({ campaignItem }: ItemProps) {
                             to={to}
                             status={status}
                         />
-                        {hasFixedApr && (
+                        {hasFixedApr && status !== Status.Expired && (
                             <InfoTooltip>
                                 <InfoMessage
                                     size="sm"
