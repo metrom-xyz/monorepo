@@ -176,11 +176,6 @@ export const aptosProductionData: ChainData = {
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
         },
-        {
-            active: true,
-            partner: false,
-            type: BaseCampaignType.AmmPoolLiquidity,
-        },
     ],
     protocols: [
         {

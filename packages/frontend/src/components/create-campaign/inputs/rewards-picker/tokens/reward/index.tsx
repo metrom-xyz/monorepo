@@ -19,6 +19,7 @@ import { useAccount } from "@/src/hooks/useAccount";
 import classNames from "classnames";
 import { MAX_U256 } from "@/src/commons";
 import { useTranslations } from "next-intl";
+import { useNumericFormat } from "react-number-format";
 
 import styles from "./styles.module.css";
 
@@ -58,6 +59,7 @@ export function Reward({
 
     const amountPopoverRef = useRef<HTMLDivElement>(null);
     const removeAssetPopoverRef = useRef<HTMLDivElement>(null);
+    const hiddenSpanRef = useRef<HTMLSpanElement>(null);
 
     const { token, amount } = value;
 
@@ -67,6 +69,18 @@ export function Reward({
         address,
         token: token.address,
     });
+    const { format } = useNumericFormat({
+        type: "text",
+        thousandSeparator: " ",
+        decimalSeparator: ".",
+        value: inputAmount.value,
+        allowNegative: false,
+    });
+
+    useEffect(() => {
+        if (!format || !hiddenSpanRef.current) return;
+        hiddenSpanRef.current.textContent = format(inputAmount.formattedValue);
+    }, [inputAmount.formattedValue, format]);
 
     useEffect(() => {
         if (!campaignDuration) return;
@@ -93,6 +107,16 @@ export function Reward({
     function handleInputOnClick() {
         setEditingAmount(true);
     }
+
+    const handleInputOnChange = useCallback(
+        (value: NumberFormatValues) => {
+            if (!hiddenSpanRef.current || !format) return;
+
+            setInputAmount(value);
+            hiddenSpanRef.current.textContent = format(value.formattedValue);
+        },
+        [format],
+    );
 
     const handleAmountOnBlur = useCallback(() => {
         setEditingAmount(false);
@@ -174,15 +198,21 @@ export function Reward({
                         error={!!error}
                         allowNegative={false}
                         readOnly={!editingAmount}
-                        onValueChange={setInputAmount}
+                        onValueChange={handleInputOnChange}
                         onClick={handleInputOnClick}
                         onBlur={handleAmountOnBlur}
                         onMouseEnter={handleAmountPopoverOpen}
                         onMouseLeave={handleAmountPopoverClose}
+                        style={{
+                            width: `${hiddenSpanRef?.current?.offsetWidth}px`,
+                        }}
                         className={classNames(styles.input, {
                             [styles.editing]: editingAmount,
                         })}
                     />
+                    <span ref={hiddenSpanRef} className={styles.hiddenSpan}>
+                        {format && format(inputAmount.formattedValue)}
+                    </span>
                 </div>
                 <Typography size="xs" variant="tertiary">
                     {`(${formatUsdAmount({ amount: amount.usdValue })})`}

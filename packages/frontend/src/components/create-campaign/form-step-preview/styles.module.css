@@ -17,7 +17,7 @@
 }
 
 .dash {
-    @apply h-full mx-2 w-px border border-dashed border-gray-400 dark:border-neutral-600;
+    @apply mx-2 w-px border border-dashed border-gray-400 dark:border-neutral-600;
 }
 
 .greenDot {

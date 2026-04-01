@@ -216,26 +216,23 @@ export function RewardsPickerTokens({
                     className={styles.input}
                 />
             </div>
-            {value &&
-                value.tokens &&
-                value.tokens.length > 0 &&
-                value.tokens.map((token) => {
-                    const error = errors.find(
-                        ({ address }) => address === token.token.address,
-                    );
-                    return (
-                        <Reward
-                            key={token.token.address}
-                            chainId={chainId}
-                            campaignDuration={campaignDuration}
-                            value={token}
-                            error={error?.error}
-                            onError={handleOnError}
-                            onRemove={handleOnRemove}
-                            onUpdate={handleOnUpdate}
-                        />
-                    );
-                })}
+            {value?.tokens?.map((token) => {
+                const error = errors.find(
+                    ({ address }) => address === token.token.address,
+                );
+                return (
+                    <Reward
+                        key={token.token.address}
+                        chainId={chainId}
+                        campaignDuration={campaignDuration}
+                        value={token}
+                        error={error?.error}
+                        onError={handleOnError}
+                        onRemove={handleOnRemove}
+                        onUpdate={handleOnUpdate}
+                    />
+                );
+            })}
         </div>
     );
 }

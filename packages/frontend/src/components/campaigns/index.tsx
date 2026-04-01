@@ -171,7 +171,12 @@ export function Campaigns({
                 <Tabs value={type} onChange={setType}>
                     {activeTabOptions.map(({ type, label, icon }) => {
                         return (
-                            <Tab key={type} icon={icon} value={type}>
+                            <Tab
+                                key={type}
+                                icon={icon}
+                                value={type}
+                                className={styles.tabIcon}
+                            >
                                 {t(`tabs.${label}`)}
                             </Tab>
                         );

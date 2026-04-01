@@ -29,8 +29,12 @@
     @apply flex items-center gap-1;
 }
 
+.inputWrapper {
+    @apply relative;
+}
+
 .input :global(.input) {
-    @apply field-sizing-content h-10;
+    @apply h-10;
 }
 
 .input:not(.editing) :global(.input) {
@@ -47,6 +51,10 @@
 
 .input.editing :global(.input) {
     @apply cursor-default;
+}
+
+.hiddenSpan {
+    @apply font-sans text-lg px-3 absolute invisible whitespace-nowrap;
 }
 
 .removeButton {

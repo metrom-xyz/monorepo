@@ -137,6 +137,7 @@ export function BaseInputWrapper<V>({
                         [styles[size]]: true,
                     }),
                     style: {
+                        ...children.props.style,
                         ...(inputLeftPadding
                             ? { paddingLeft: `${inputLeftPadding}px` }
                             : {}),
