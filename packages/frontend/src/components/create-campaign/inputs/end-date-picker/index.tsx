@@ -166,7 +166,6 @@ export function EndDatePicker({
             </div>
             <Popover
                 ref={popoverRef}
-                contained
                 anchor={anchor}
                 open={popover}
                 onOpenChange={setPopover}
