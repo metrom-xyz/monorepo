@@ -2,6 +2,7 @@ import {
     DistributablesType,
     type Erc20Token,
     type RewardToken,
+    type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { type Address, parseUnits, formatUnits } from "viem";
 import { RewardsPreview } from "./preview";
@@ -229,6 +230,60 @@ export function RewardTokens({
         setOpen(false);
     }, []);
 
+    const handleFixedAprOnToggle = useCallback(() => {
+        onRewardsTokensChange({
+            distributables: {
+                type: DistributablesType.Tokens,
+                tokens: [],
+            },
+        });
+    }, [onRewardsTokensChange]);
+
+    const handleFixedAprOnChange = useCallback(
+        (
+            fixedApr: BaseCampaignPayloadPart,
+            budgetToken?: UsdPricedErc20TokenAmount,
+        ) => {
+            if (!budgetToken) {
+                setToken(undefined);
+                setAmount({
+                    floatValue: undefined,
+                    formattedValue: "",
+                    value: "",
+                });
+                return;
+            }
+
+            const token = rewardTokens?.find(
+                ({ address }) => address === budgetToken.token.address,
+            );
+
+            if (!token) return;
+
+            const existingRewardToken = distributables.tokens?.find(
+                ({ token }) => token.address === budgetToken.token.address,
+            );
+            if (existingRewardToken)
+                onRewardsTokensChange({
+                    distributables: {
+                        type: DistributablesType.Tokens,
+                        tokens: [],
+                    },
+                });
+
+            setToken(token);
+            if (budgetToken.amount.formatted !== 0)
+                setAmount({
+                    floatValue: budgetToken.amount.formatted,
+                    formattedValue: budgetToken.amount.formatted.toFixed(2),
+                    value: budgetToken.amount.formatted.toString(),
+                });
+
+            onRewardsTokensChange(fixedApr);
+        },
+        [rewardTokens, distributables.tokens, onRewardsTokensChange],
+    );
+
     return (
         <div className={styles.root}>
             <div className={styles.wrapper}>
@@ -319,7 +374,8 @@ export function RewardTokens({
                 endDate={endDate}
                 kpiDistribution={kpiDistribution}
                 fixedDistribution={fixedDistribution}
-                onFixedAprChange={onRewardsTokensChange}
+                onFixedAprChange={handleFixedAprOnChange}
+                onToggle={handleFixedAprOnToggle}
             />
         </div>
     );
