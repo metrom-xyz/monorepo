@@ -49,6 +49,7 @@
 .rewardTokenSelect {
     @apply w-fit
         max-w-40
+        h-8
         flex
         gap-1
         items-center

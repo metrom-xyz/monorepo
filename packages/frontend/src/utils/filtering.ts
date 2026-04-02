@@ -1,3 +1,4 @@
+import { isHex } from "viem";
 import { isAddress } from "./address";
 import {
     type AmmPool,
@@ -24,7 +25,7 @@ export function getCampaignTargetField(target: CampaignTarget) {
 export const filterPools = (pools: AmmPool[], searchQuery: string) => {
     if (pools.length === 0) return [];
     if (!searchQuery) return pools;
-    if (isAddress(searchQuery)) {
+    if (isAddress(searchQuery) || isHex(searchQuery)) {
         const lowercaseSearchQuery = searchQuery.toLowerCase();
         const poolByAddress = pools.find(
             (pool) => pool.id.toLowerCase() === lowercaseSearchQuery,

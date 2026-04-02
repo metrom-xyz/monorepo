@@ -119,8 +119,8 @@ export const sepoliaData: ChainData = {
         {
             address: "0xA80A089DE4720F8cffA34DAC70f6B648832A0DDb",
             decimals: 18,
-            symbol: "DAI",
-            name: "DAI",
+            symbol: "tDAI",
+            name: "tDAI",
         },
         {
             address: "0x8116d0a0e8d4f0197b428c520953f302adca0b50",
@@ -145,18 +145,6 @@ export const sepoliaData: ChainData = {
             decimals: 18,
             symbol: "WETH",
             name: "Wrapped Ether",
-        },
-        {
-            address: "0x874207c9693d301f74e92de3a5a045f4ecb582d2",
-            decimals: 18,
-            symbol: "ezETH",
-            name: "Renzo Restaked Ether",
-        },
-        {
-            address: "0x874207c9693d301f74e92de3a5a045f4ecb582d2",
-            decimals: 18,
-            symbol: "LINK",
-            name: "Chainlink token",
         },
     ],
 };

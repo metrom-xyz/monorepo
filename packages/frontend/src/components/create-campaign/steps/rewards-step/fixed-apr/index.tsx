@@ -11,7 +11,7 @@ import type {
     CampaignPayloadFixedDistribution,
     CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import type { NumberInputValues } from "../points";
 import {
@@ -30,6 +30,8 @@ import { useWatchBalances } from "@/src/hooks/use-watch-balances";
 import { formatUnits, parseUnits } from "viem";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
+import { useProtocolFees } from "@/src/hooks/useProtocolFees";
+import { FEE_UNIT } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -38,7 +40,11 @@ interface RewardsFixedAprProps {
     fixedDistribution?: CampaignPayloadFixedDistribution;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    onFixedAprChange: (tokens: BaseCampaignPayloadPart) => void;
+    onToggle: () => void;
+    onFixedAprChange: (
+        fixedApr: BaseCampaignPayloadPart,
+        budgetToken?: UsdPricedErc20TokenAmount,
+    ) => void;
 }
 
 const REFERENCE_TVL = 1_000_000;
@@ -50,6 +56,7 @@ export function RewardsFixedApr({
     startDate,
     endDate,
     onFixedAprChange,
+    onToggle,
 }: RewardsFixedAprProps) {
     const [apr, setApr] = useState<NumberInputValues | undefined>(() => {
         if (fixedDistribution) {
@@ -61,8 +68,10 @@ export function RewardsFixedApr({
         return undefined;
     });
     const [enabled, setEnabled] = useState<boolean>(false);
+    const [resolvedFee, setResolvedFee] = useState<number>();
 
     const t = useTranslations("newCampaign.form.base.rewards.fixedApr");
+    const { fee, feeRebate } = useProtocolFees();
     const { id: chainId } = useChainWithType();
     const { address } = useAccount();
     const { tokens: rewardTokens, loading: loadingRewardTokens } =
@@ -76,6 +85,13 @@ export function RewardsFixedApr({
         enabled,
     });
 
+    useEffect(() => {
+        if (fee !== undefined && feeRebate !== undefined) {
+            const resolvedFeeRebate = feeRebate / FEE_UNIT;
+            setResolvedFee(fee - fee * resolvedFeeRebate);
+        }
+    }, [feeRebate, fee]);
+
     const {
         tokenBudget,
         dailyEmission,
@@ -84,6 +100,7 @@ export function RewardsFixedApr({
         dailyEmission: UsdPricedErc20TokenAmount | null;
     } = useMemo(() => {
         if (
+            resolvedFee === undefined ||
             !endDate ||
             !startDate ||
             !rewardTokens ||
@@ -104,6 +121,12 @@ export function RewardsFixedApr({
             daysDuration,
             apr?.raw,
         );
+        const usdBudgetWithoutBuffer = getUsdBudgetForFixedApr(
+            REFERENCE_TVL,
+            0,
+            daysDuration,
+            apr?.raw,
+        );
 
         let rewardToken: WhitelistedErc20Token | null = null;
         if (!address) rewardToken = rewardTokens[0];
@@ -115,13 +138,23 @@ export function RewardsFixedApr({
                 })?.token || rewardTokens[0];
         }
 
-        const formattedBudget = usdBudget / rewardToken.usdPrice;
+        const formattedBudget =
+            (usdBudget * FEE_UNIT) /
+            (FEE_UNIT - resolvedFee) /
+            rewardToken.usdPrice;
         const rawBudget = parseUnits(
             formattedBudget.toFixed(),
             rewardToken.decimals,
         );
 
-        const rawHourlyEmission = rawBudget / BigInt(Math.ceil(hoursDuration));
+        const formattedBudgetWithoutBuffer =
+            usdBudgetWithoutBuffer / rewardToken.usdPrice;
+        const rawBudgetWithoutBuffer = parseUnits(
+            formattedBudgetWithoutBuffer.toFixed(),
+            rewardToken.decimals,
+        );
+        const rawHourlyEmission =
+            rawBudgetWithoutBuffer / BigInt(Math.ceil(hoursDuration));
         const rawDailyEmission = rawHourlyEmission * 24n;
         const formattedDailyEmission = Number(
             formatUnits(rawDailyEmission, rewardToken.decimals),
@@ -146,6 +179,7 @@ export function RewardsFixedApr({
             },
         };
     }, [
+        resolvedFee,
         rewardTokens,
         rewardTokensWithBalance,
         loadingRewardTokens,
@@ -163,15 +197,14 @@ export function RewardsFixedApr({
                 onFixedAprChange({
                     fixedDistribution: undefined,
                 });
-            } else
-                onFixedAprChange({
-                    fixedDistribution: {},
-                });
+            } else if (tokenBudget)
+                onFixedAprChange({ fixedDistribution: {} }, tokenBudget);
 
             event.stopPropagation();
             setEnabled((enabled) => !enabled);
+            onToggle();
         },
-        [enabled, onFixedAprChange],
+        [enabled, tokenBudget, onFixedAprChange, onToggle],
     );
 
     function handleAprOnChange(value: NumberFormatValues) {
@@ -182,8 +215,10 @@ export function RewardsFixedApr({
     }
 
     const handleAprOnBlur = useCallback(() => {
-        onFixedAprChange({ fixedDistribution: { apr: apr?.raw } });
-    }, [apr, onFixedAprChange]);
+        if (!tokenBudget) return;
+
+        onFixedAprChange({ fixedDistribution: { apr: apr?.raw } }, tokenBudget);
+    }, [tokenBudget, apr, onFixedAprChange]);
 
     return (
         <div className={styles.root}>
