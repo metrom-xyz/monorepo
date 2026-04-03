@@ -9,7 +9,7 @@
 }
 
 .horizontalDivider {
-    @apply h-[1px] border stroke-divider;
+    @apply h-px border stroke-divider;
 }
 
 .totalValueWrapper {

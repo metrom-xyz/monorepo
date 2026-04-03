@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import {
     InfoTooltip,
     NumberInput,
+    Popover,
     Toggle,
     Typography,
     type NumberFormatValues,
@@ -11,7 +12,7 @@ import type {
     CampaignPayloadFixedDistribution,
     CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import type { NumberInputValues } from "../points";
 import {
@@ -32,6 +33,8 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useProtocolFees } from "@/src/hooks/useProtocolFees";
 import { FEE_UNIT } from "@/src/commons";
+import classNames from "classnames";
+import { PencilIcon } from "@/src/assets/pencil-icon";
 
 import styles from "./styles.module.css";
 
@@ -67,8 +70,18 @@ export function RewardsFixedApr({
         }
         return undefined;
     });
+    const [tvl, setTvl] = useState<NumberInputValues>({
+        raw: REFERENCE_TVL,
+        formatted: REFERENCE_TVL.toString(),
+    });
     const [enabled, setEnabled] = useState<boolean>(false);
     const [resolvedFee, setResolvedFee] = useState<number>();
+    const [editingTvl, setEditingTvl] = useState(false);
+    const [tvlPopover, setTvlPopover] = useState(false);
+    const [tvlPopoverAnchor, setTvlPopoverAnchor] =
+        useState<HTMLDivElement | null>(null);
+
+    const tvlPopoverRef = useRef<HTMLDivElement>(null);
 
     const t = useTranslations("newCampaign.form.base.rewards.fixedApr");
     const { fee, feeRebate } = useProtocolFees();
@@ -100,6 +113,7 @@ export function RewardsFixedApr({
         dailyEmission: UsdPricedErc20TokenAmount | null;
     } = useMemo(() => {
         if (
+            tvl.raw === undefined ||
             resolvedFee === undefined ||
             !endDate ||
             !startDate ||
@@ -116,13 +130,13 @@ export function RewardsFixedApr({
         const hoursDuration = endDate.diff(startDate, "hours", false);
         const daysDuration = hoursDuration / 24;
         const usdBudget = getUsdBudgetForFixedApr(
-            REFERENCE_TVL,
+            tvl.raw,
             BUFFER_PERCENTAGE,
             daysDuration,
             apr?.raw,
         );
         const usdBudgetWithoutBuffer = getUsdBudgetForFixedApr(
-            REFERENCE_TVL,
+            tvl.raw,
             0,
             daysDuration,
             apr?.raw,
@@ -179,6 +193,7 @@ export function RewardsFixedApr({
             },
         };
     }, [
+        tvl,
         resolvedFee,
         rewardTokens,
         rewardTokensWithBalance,
@@ -194,6 +209,10 @@ export function RewardsFixedApr({
         (event: React.MouseEvent<HTMLDivElement>) => {
             if (enabled) {
                 setApr(undefined);
+                setTvl({
+                    formatted: REFERENCE_TVL.toString(),
+                    raw: REFERENCE_TVL,
+                });
                 onFixedAprChange({
                     fixedDistribution: undefined,
                 });
@@ -214,9 +233,28 @@ export function RewardsFixedApr({
         });
     }
 
-    const handleAprOnBlur = useCallback(() => {
-        if (!tokenBudget) return;
+    function handleTvlPopoverOpen() {
+        setTvlPopover(true);
+    }
 
+    function handleTvlPopoverClose() {
+        setTvlPopover(false);
+    }
+
+    function handleTvlOnClicK() {
+        setEditingTvl(true);
+    }
+
+    function handleTvlOnChange(value: NumberFormatValues) {
+        setTvl({
+            raw: value.floatValue,
+            formatted: value.formattedValue,
+        });
+    }
+
+    const updateFixedAprDistribution = useCallback(() => {
+        setEditingTvl(false);
+        if (!tokenBudget) return;
         onFixedAprChange({ fixedDistribution: { apr: apr?.raw } }, tokenBudget);
     }, [tokenBudget, apr, onFixedAprChange]);
 
@@ -227,7 +265,7 @@ export function RewardsFixedApr({
                     <Typography size="sm" weight="medium">
                         {t("title")}
                     </Typography>
-                    <Typography size="xs" variant="secondary">
+                    <Typography size="xs" variant="tertiary">
                         {t("description")}
                     </Typography>
                 </div>
@@ -246,24 +284,47 @@ export function RewardsFixedApr({
                         value={apr?.formatted}
                         allowNegative={false}
                         onValueChange={handleAprOnChange}
-                        onBlur={handleAprOnBlur}
+                        onBlur={updateFixedAprDistribution}
                     />
                     <div className={styles.summary}>
-                        <Typography size="sm" weight="medium" uppercase>
-                            {t("preview")}
-                        </Typography>
-                        <div className={styles.field}>
-                            <Typography size="xs" variant="secondary">
-                                {t("duration")}
+                        <div className={styles.titleContainer}>
+                            <Typography size="sm" weight="medium" uppercase>
+                                {t("preview")}
                             </Typography>
-                            <Typography size="xs" weight="medium">
-                                {startDate
-                                    ? dayjs(startDate).to(endDate, true)
-                                    : "-"}
-                            </Typography>
+                            <Popover
+                                ref={tvlPopoverRef}
+                                open={tvlPopover && !editingTvl}
+                                anchor={tvlPopoverAnchor}
+                                placement="top"
+                                onOpenChange={setTvlPopover}
+                                margin={6}
+                                className={styles.popover}
+                            >
+                                <Typography size="xs">
+                                    {t("editTvl")}
+                                </Typography>
+                            </Popover>
+                            <NumberInput
+                                ref={setTvlPopoverAnchor}
+                                size="xs"
+                                suffix="$"
+                                readOnly={!editingTvl}
+                                value={tvl?.formatted}
+                                allowNegative={false}
+                                icon={editingTvl ? undefined : PencilIcon}
+                                prefixElement="TVL "
+                                onClick={handleTvlOnClicK}
+                                onValueChange={handleTvlOnChange}
+                                onBlur={updateFixedAprDistribution}
+                                onMouseEnter={handleTvlPopoverOpen}
+                                onMouseLeave={handleTvlPopoverClose}
+                                className={classNames(styles.tvlInput, {
+                                    [styles.editing]: editingTvl,
+                                })}
+                            />
                         </div>
                         <div className={styles.field}>
-                            <Typography size="xs" variant="secondary">
+                            <Typography size="xs" weight="medium">
                                 {t("totalBudget")}
                             </Typography>
                             <div className={styles.token}>
@@ -283,7 +344,7 @@ export function RewardsFixedApr({
                                 <Typography
                                     size="xs"
                                     weight="medium"
-                                    variant="secondary"
+                                    variant="tertiary"
                                 >
                                     {formatUsdAmount({
                                         amount: tokenBudget?.amount.usdValue,
@@ -292,7 +353,17 @@ export function RewardsFixedApr({
                             </div>
                         </div>
                         <div className={styles.field}>
-                            <Typography size="xs" variant="secondary">
+                            <Typography size="xs" variant="tertiary">
+                                {t("duration")}
+                            </Typography>
+                            <Typography size="xs" weight="medium">
+                                {startDate
+                                    ? dayjs(startDate).to(endDate, true)
+                                    : "-"}
+                            </Typography>
+                        </div>
+                        <div className={styles.field}>
+                            <Typography size="xs" variant="tertiary">
                                 {t("dailyEmission")}
                             </Typography>
                             <div className={styles.token}>
@@ -312,7 +383,7 @@ export function RewardsFixedApr({
                                 <Typography
                                     size="xs"
                                     weight="medium"
-                                    variant="secondary"
+                                    variant="tertiary"
                                 >
                                     {formatUsdAmount({
                                         amount: dailyEmission?.amount.usdValue,
@@ -321,7 +392,7 @@ export function RewardsFixedApr({
                             </div>
                         </div>
                         <div className={styles.field}>
-                            <Typography size="xs" variant="secondary">
+                            <Typography size="xs" variant="tertiary">
                                 {t("buffer")}
                             </Typography>
                             <div className={styles.buffer}>

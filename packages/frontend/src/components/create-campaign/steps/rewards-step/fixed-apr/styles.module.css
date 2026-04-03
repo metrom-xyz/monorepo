@@ -16,16 +16,49 @@
     @apply flex flex-col gap-3 p-3 border-t stroke-divider;
 }
 
+.summary {
+    @apply flex flex-col gap-1.5;
+}
+
+.titleContainer {
+    @apply flex items-center flex-wrap gap-1 mb-2;
+}
+
+.popover {
+    @apply p-1.5;
+}
+
+.tvlInput :global(.input),
+.tvlInput :global(.inputWrapper) {
+    @apply flex-1 text-right font-medium text-sm;
+}
+
+.tvlInput :global(.input) {
+    @apply py-1;
+}
+
+.tvlInput:not(.editing) :global(.input) {
+    @apply cursor-pointer hover:bg-gray-150 dark:hover:bg-neutral-700;
+}
+
+.tvlInput :global(.fieldset) {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.tvlInput:not(.editing) :global(.fieldset) {
+    @apply border-transparent;
+}
+
+.tvlInput.editing :global(.input) {
+    @apply cursor-default;
+}
+
 .field {
-    @apply flex items-center justify-between;
+    @apply flex h-5 items-center justify-between;
 }
 
 .token {
     @apply flex items-center gap-1;
-}
-
-.summary {
-    @apply flex flex-col gap-1.5;
 }
 
 .buffer {
