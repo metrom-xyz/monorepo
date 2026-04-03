@@ -259,9 +259,11 @@
                     },
                     "fixedApr": {
                         "title": "Fixed APR",
-                        "description": "This campaign gives fixed APR in USD value terms. This will automatically adjust the reward tokens to the USD price so that the APR remains fixed in USD terms for LPs.",
+                        "description": "Auto adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs.",
                         "apr": "APR",
-                        "preview": "Campaign preview at $1M TVL",
+                        "tvl": "TVL",
+                        "preview": "Campaign preview at",
+                        "editTvl": "Click to edit TVL",
                         "duration": "Duration",
                         "totalBudget": "Total budget",
                         "dailyEmission": "Daily emission",
