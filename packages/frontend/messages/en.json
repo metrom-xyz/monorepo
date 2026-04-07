@@ -262,6 +262,7 @@
                         "description": "Auto adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs.",
                         "apr": "APR",
                         "tvl": "TVL",
+                        "tvlAmount": "{amount} TVL",
                         "preview": "Campaign preview at",
                         "editTvl": "Click to edit TVL",
                         "duration": "Duration",

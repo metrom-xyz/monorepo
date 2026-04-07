@@ -82,6 +82,7 @@ export function RewardsFixedApr({
         useState<HTMLDivElement | null>(null);
 
     const tvlPopoverRef = useRef<HTMLDivElement>(null);
+    const tvlInputRef = useRef<HTMLInputElement>(null);
 
     const t = useTranslations("newCampaign.form.base.rewards.fixedApr");
     const { fee, feeRebate } = useProtocolFees();
@@ -105,6 +106,11 @@ export function RewardsFixedApr({
         }
     }, [feeRebate, fee]);
 
+    useEffect(() => {
+        if (!editingTvl) return;
+        tvlInputRef.current?.focus();
+    }, [editingTvl]);
+
     const {
         tokenBudget,
         dailyEmission,
@@ -127,8 +133,8 @@ export function RewardsFixedApr({
                 dailyEmission: null,
             };
 
-        const hoursDuration = endDate.diff(startDate, "hours", false);
-        const daysDuration = hoursDuration / 24;
+        const minutesDuration = endDate.diff(startDate, "minutes", false);
+        const daysDuration = minutesDuration / (60 * 24);
         const usdBudget = getUsdBudgetForFixedApr(
             tvl.raw,
             BUFFER_PERCENTAGE,
@@ -167,9 +173,10 @@ export function RewardsFixedApr({
             formattedBudgetWithoutBuffer.toFixed(),
             rewardToken.decimals,
         );
-        const rawHourlyEmission =
-            rawBudgetWithoutBuffer / BigInt(Math.ceil(hoursDuration));
-        const rawDailyEmission = rawHourlyEmission * 24n;
+
+        const rawPerMinuteEmission =
+            rawBudgetWithoutBuffer / BigInt(Math.ceil(minutesDuration));
+        const rawDailyEmission = rawPerMinuteEmission * BigInt(60 * 24);
         const formattedDailyEmission = Number(
             formatUnits(rawDailyEmission, rewardToken.decimals),
         );
@@ -220,6 +227,8 @@ export function RewardsFixedApr({
                 onFixedAprChange({ fixedDistribution: {} }, tokenBudget);
 
             event.stopPropagation();
+            setEditingTvl(false);
+            setTvlPopover(false);
             setEnabled((enabled) => !enabled);
             onToggle();
         },
@@ -254,12 +263,13 @@ export function RewardsFixedApr({
 
     const updateFixedAprDistribution = useCallback(() => {
         setEditingTvl(false);
+        setTvlPopover(false);
         if (!tokenBudget) return;
         onFixedAprChange({ fixedDistribution: { apr: apr?.raw } }, tokenBudget);
     }, [tokenBudget, apr, onFixedAprChange]);
 
     return (
-        <div className={styles.root}>
+        <div className={classNames(styles.root, { [styles.enabled]: enabled })}>
             <div className={styles.header}>
                 <div className={styles.headerText}>
                     <Typography size="sm" weight="medium">
@@ -276,7 +286,11 @@ export function RewardsFixedApr({
                 />
             </div>
             {enabled && (
-                <div className={styles.content}>
+                <div
+                    className={classNames(styles.content, {
+                        [styles.enabled]: enabled,
+                    })}
+                >
                     <NumberInput
                         placeholder="0%"
                         suffix="%"
@@ -304,24 +318,44 @@ export function RewardsFixedApr({
                                     {t("editTvl")}
                                 </Typography>
                             </Popover>
-                            <NumberInput
-                                ref={setTvlPopoverAnchor}
-                                size="xs"
-                                suffix="$"
-                                readOnly={!editingTvl}
-                                value={tvl?.formatted}
-                                allowNegative={false}
-                                icon={editingTvl ? undefined : PencilIcon}
-                                prefixElement="TVL "
-                                onClick={handleTvlOnClicK}
-                                onValueChange={handleTvlOnChange}
-                                onBlur={updateFixedAprDistribution}
-                                onMouseEnter={handleTvlPopoverOpen}
-                                onMouseLeave={handleTvlPopoverClose}
-                                className={classNames(styles.tvlInput, {
-                                    [styles.editing]: editingTvl,
-                                })}
-                            />
+                            {editingTvl ? (
+                                <>
+                                    <NumberInput
+                                        ref={tvlInputRef}
+                                        size="xs"
+                                        suffix="$"
+                                        value={tvl?.formatted}
+                                        allowNegative={false}
+                                        onValueChange={handleTvlOnChange}
+                                        onBlur={updateFixedAprDistribution}
+                                        className={styles.tvlInput}
+                                    />
+                                    <Typography size="sm" weight="medium">
+                                        {t("tvl")}
+                                    </Typography>
+                                </>
+                            ) : (
+                                <div
+                                    ref={setTvlPopoverAnchor}
+                                    onClick={handleTvlOnClicK}
+                                    onMouseEnter={handleTvlPopoverOpen}
+                                    onMouseLeave={handleTvlPopoverClose}
+                                    className={styles.tvlChip}
+                                >
+                                    <Typography
+                                        size="sm"
+                                        weight="medium"
+                                        uppercase
+                                    >
+                                        {t("tvlAmount", {
+                                            amount: formatUsdAmount({
+                                                amount: tvl?.raw,
+                                            }),
+                                        })}
+                                    </Typography>
+                                    <PencilIcon className={styles.editIcon} />
+                                </div>
+                            )}
                         </div>
                         <div className={styles.field}>
                             <Typography size="xs" weight="medium">
