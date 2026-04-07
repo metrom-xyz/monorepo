@@ -236,6 +236,7 @@ export function RewardTokens({
                 type: DistributablesType.Tokens,
                 tokens: [],
             },
+            fixedDistribution: undefined
         });
     }, [onRewardsTokensChange]);
 

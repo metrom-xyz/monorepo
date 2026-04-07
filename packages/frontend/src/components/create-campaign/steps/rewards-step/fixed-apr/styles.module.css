@@ -1,7 +1,11 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply mx-3 mb-3 rounded-lg border stroke-divider;
+    @apply mx-3 mb-3 rounded-lg border stroke-divider transition-colors duration-200 ease-in-out;
+}
+
+.root.enabled {
+    @apply border-gray-300 dark:border-neutral-700;
 }
 
 .header {
@@ -13,7 +17,11 @@
 }
 
 .content {
-    @apply flex flex-col gap-3 p-3 border-t stroke-divider;
+    @apply flex flex-col gap-3 p-3 border-t stroke-divider transition-colors duration-200 ease-in-out;
+}
+
+.content.enabled {
+    @apply border-gray-300 dark:border-neutral-700;
 }
 
 .summary {
@@ -28,9 +36,17 @@
     @apply p-1.5;
 }
 
+.tvlChip {
+    @apply flex items-center gap-1.5 px-2.5 py-1 rounded-sm surface-secondary cursor-pointer;
+}
+
+.editIcon {
+    @apply size-3;
+}
+
 .tvlInput :global(.input),
 .tvlInput :global(.inputWrapper) {
-    @apply flex-1 text-right font-medium text-sm;
+    @apply h-6 max-w-[7.5rem] font-medium text-sm rounded-sm;
 }
 
 .tvlInput :global(.input) {
@@ -38,7 +54,7 @@
 }
 
 .tvlInput:not(.editing) :global(.input) {
-    @apply cursor-pointer hover:bg-gray-150 dark:hover:bg-neutral-700;
+    @apply cursor-pointer;
 }
 
 .tvlInput :global(.fieldset) {
