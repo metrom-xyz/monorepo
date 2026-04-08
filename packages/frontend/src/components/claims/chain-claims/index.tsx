@@ -1,12 +1,17 @@
 import { useTranslations } from "next-intl";
-import { type Erc20Token, type UsdPricedErc20Token } from "@metrom-xyz/sdk";
+import {
+    ChainType,
+    type Erc20Token,
+    type UsdPricedErc20Token,
+} from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
-import { Card, Typography } from "@metrom-xyz/ui";
+import { Accordion, Card, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import type { ClaimWithRemaining } from "@/src/types/campaign";
 import type { ChainWithRewardsData } from "..";
+import { CampaignTitle } from "./campaign-title";
 
 import styles from "./token-claim/styles.module.css";
 
@@ -24,35 +29,60 @@ export interface TokenClaims {
     totalAmount: number;
 }
 
+interface CampaignClaims {
+    chainId: number;
+    chainType: ChainType;
+    tokensClaims: Record<Address, TokenClaims>;
+}
+
 export function ChainClaims({
     onClaim,
-    chainId,
     claims,
     claimingAll,
 }: ChainOverviewProps) {
     const t = useTranslations("rewards.claims");
 
-    const perToken = useMemo(() => {
+    const perCampaignPerToken = useMemo(() => {
         const reduced = claims.reduce(
             (acc, claim) => {
-                if (!acc[claim.token.address]) {
-                    acc[claim.token.address] = {
+                const { campaignId, chainId, chainType } = claim;
+
+                if (!acc[campaignId])
+                    acc[campaignId] = {
+                        chainId,
+                        chainType,
+                        tokensClaims: {},
+                    };
+
+                if (!acc[campaignId].tokensClaims[claim.token.address])
+                    acc[campaignId].tokensClaims[claim.token.address] = {
                         token: claim.token,
                         claims: [],
                         totalAmount: 0,
                     };
-                }
-                acc[claim.token.address].claims.push(claim);
-                acc[claim.token.address].totalAmount +=
+
+                acc[campaignId].tokensClaims[claim.token.address].claims.push(
+                    claim,
+                );
+                acc[campaignId].tokensClaims[claim.token.address].totalAmount +=
                     claim.remaining.formatted;
+
                 return acc;
             },
-            {} as Record<Address, TokenClaims>,
+            {} as Record<Address, CampaignClaims>,
         );
-        return Object.values(reduced);
+
+        return Object.entries(reduced).map(
+            ([campaignId, { chainId, chainType, tokensClaims }]) => ({
+                campaignId,
+                chainId,
+                chainType,
+                tokensClaims: Object.values(tokensClaims),
+            }),
+        );
     }, [claims]);
 
-    if (perToken.length === 0)
+    if (perCampaignPerToken.length === 0)
         return (
             <Card className={classNames(styles.root, styles.noClaimsCard)}>
                 <Typography weight="medium" uppercase>
@@ -61,17 +91,33 @@ export function ChainClaims({
             </Card>
         );
 
-    return perToken.map((tokenClaims) => {
-        return (
-            <TokenClaim
-                key={tokenClaims.token.address}
-                chainId={chainId}
-                tokenClaims={tokenClaims}
-                claimingAll={claimingAll}
-                onClaim={onClaim}
-            />
-        );
-    });
+    return perCampaignPerToken.map(
+        ({ campaignId, chainId, chainType, tokensClaims }) => {
+            return (
+                <div key={campaignId}>
+                    <Accordion
+                        title={
+                            <CampaignTitle
+                                campaignId={campaignId as Address}
+                                chainId={chainId}
+                                chainType={chainType}
+                            />
+                        }
+                    >
+                        {tokensClaims.map((tokenClaims) => (
+                            <TokenClaim
+                                key={tokenClaims.token.address}
+                                chainId={chainId}
+                                tokenClaims={tokenClaims}
+                                claimingAll={claimingAll}
+                                onClaim={onClaim}
+                            />
+                        ))}
+                    </Accordion>
+                </div>
+            );
+        },
+    );
 }
 
 export function SkeletonChainClaims() {
