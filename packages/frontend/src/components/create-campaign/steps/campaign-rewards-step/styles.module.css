@@ -13,5 +13,5 @@
 }
 
 .button {
-    @apply self-end;
+    @apply self-end w-full sm:w-fit;
 }
