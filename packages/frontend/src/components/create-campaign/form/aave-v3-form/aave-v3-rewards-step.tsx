@@ -50,10 +50,6 @@ export function AaveV3RewardsStep({
         enabled: payload.kind === CampaignKind.AaveV3NetSupply,
     });
 
-    function handlePayloadOnChange(part: AaveV3CampaignPayloadPart) {
-        setRewardsPayload((prev) => ({ ...prev, ...part }));
-    }
-
     const unsavedChanges = useMemo(() => {
         if (
             !distributablesCompleted(rewardsPayload) &&
@@ -90,6 +86,10 @@ export function AaveV3RewardsStep({
         !errors.rewards &&
         !unsavedChanges &&
         distributablesCompleted(rewardsPayload);
+
+    function handlePayloadOnChange(part: AaveV3CampaignPayloadPart) {
+        setRewardsPayload((prev) => ({ ...prev, ...part }));
+    }
 
     return (
         <CampaignRewardsStep

@@ -18,6 +18,7 @@ import { allFieldsFilled, arraysEqual } from "@/src/utils/form";
 import { AaveV3BlockCrossBorrowPicker } from "../../inputs/aave-v3-block-cross-borrow-picker";
 import type { CompletedRequiredSteps } from "..";
 import { useFormErrors } from "@/src/context/form-errors";
+import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
@@ -156,9 +157,13 @@ export function AaveV3BasicsSteps({
                             <StepSection
                                 optional
                                 title={t("form.aaveV3.blockCrossBorrow")}
-                                description={t(
-                                    "form.aaveV3.blockCrossBorrowDescription",
-                                )}
+                                description={
+                                    <Typography size="xs" variant="tertiary">
+                                        {t(
+                                            "form.aaveV3.blockCrossBorrowDescription",
+                                        )}
+                                    </Typography>
+                                }
                             >
                                 <AaveV3BlockCrossBorrowPicker
                                     chainId={basicsPayload.chainId}

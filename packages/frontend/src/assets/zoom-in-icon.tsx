@@ -2,32 +2,39 @@ import type { SVGIcon } from "../types/common";
 
 export function ZoomInIcon(props: SVGIcon) {
     return (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...props}>
+        <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            {...props}
+        >
             <path
-                d="M6.13379 7.80078H9.46712"
+                d="M4.59961 5.84961H7.09961"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="0.857143"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
-                d="M7.7998 9.46615V6.13281"
+                d="M5.84961 7.09961V4.59961"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="0.857143"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
-                d="M7.66634 14.0007C11.1641 14.0007 13.9997 11.1651 13.9997 7.66732C13.9997 4.16951 11.1641 1.33398 7.66634 1.33398C4.16854 1.33398 1.33301 4.16951 1.33301 7.66732C1.33301 11.1651 4.16854 14.0007 7.66634 14.0007Z"
+                d="M5.75 10.5C8.37335 10.5 10.5 8.37335 10.5 5.75C10.5 3.12665 8.37335 1 5.75 1C3.12665 1 1 3.12665 1 5.75C1 8.37335 3.12665 10.5 5.75 10.5Z"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="0.857143"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
-                d="M14.6663 14.6673L13.333 13.334"
+                d="M11 11L10 10"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="0.857143"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />

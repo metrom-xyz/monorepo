@@ -22,8 +22,12 @@
     @apply dark:bg-neutral-700;
 }
 
+.root :global(.preview) {
+    @apply gap-2 py-3.5 h-12;
+}
+
 .header {
-    @apply flex items-center gap-2.5;
+    @apply w-full flex items-center gap-1;
 }
 
 .iconWrapper {
@@ -44,6 +48,10 @@
 
 .checkIcon {
     @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.optionalTag {
+    @apply px-2 py-1 rounded-lg border border-gray-300 dark:border-neutral-600;
 }
 
 .errorText {

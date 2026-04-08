@@ -6,11 +6,16 @@ import {
 } from "@metrom-xyz/sdk";
 import type {
     BaseCampaignPayload,
+    CampaignPayloadDistributables,
+    CampaignPreviewDistributables,
     TargetValue,
 } from "../types/campaign/common";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { SECONDS_IN_YEAR } from "../commons";
-import type { AmmPoolLiquidityCampaignPayload } from "../types/campaign/amm-pool-liquidity-campaign";
+import type {
+    AmmPoolLiquidityCampaignPayload,
+    AugmentedPriceRangeSpecification,
+} from "../types/campaign/amm-pool-liquidity-campaign";
 
 export function allFieldsFilled<T extends object, K extends keyof T>(
     source: T,
@@ -40,6 +45,24 @@ export function distributablesCompleted(payload: BaseCampaignPayload): boolean {
             return false;
         }
     }
+}
+
+export function kpiSpecificationCompleted(
+    payload: BaseCampaignPayload,
+): boolean {
+    return false;
+}
+
+export function rangeSpecificationCompleted(
+    payload: AmmPoolLiquidityCampaignPayload,
+): boolean {
+    return (
+        payload.priceRangeSpecification?.token0To1 !== undefined &&
+        payload.priceRangeSpecification?.from?.price !== undefined &&
+        !!payload.priceRangeSpecification?.from.tick &&
+        payload.priceRangeSpecification?.to?.price !== undefined &&
+        !!payload.priceRangeSpecification?.to.tick
+    );
 }
 
 export function distributablesEqual(
@@ -97,6 +120,18 @@ export function weightingEqual(
         prev.weighting?.token0 === current.weighting?.token0 &&
         prev.weighting?.token1 === current.weighting?.token1 &&
         prev.weighting?.liquidity === current.weighting?.liquidity
+    );
+}
+
+export function rangesEqual(
+    prev: AmmPoolLiquidityCampaignPayload,
+    current: AmmPoolLiquidityCampaignPayload,
+) {
+    return (
+        prev.priceRangeSpecification?.from?.tick ===
+            current.priceRangeSpecification?.from?.tick &&
+        prev.priceRangeSpecification?.to?.tick ===
+            current.priceRangeSpecification?.to?.tick
     );
 }
 
@@ -176,4 +211,34 @@ export function getCampaignApr(
     const aprPercentage = rewardsRatio * yearMultiplier * 100;
 
     return aprPercentage;
+}
+
+export function validateDistributables(
+    distributables: CampaignPayloadDistributables,
+): distributables is CampaignPreviewDistributables {
+    if (
+        distributables.type === DistributablesType.FixedPoints &&
+        (!distributables.fee || !distributables.type)
+    )
+        return false;
+    if (
+        distributables.type === DistributablesType.Tokens &&
+        (!distributables.tokens || distributables.tokens.length === 0)
+    )
+        return false;
+
+    return true;
+}
+
+export function validatePriceRangeSpecification(
+    priceRangeSpecification: Partial<AugmentedPriceRangeSpecification>,
+): priceRangeSpecification is AugmentedPriceRangeSpecification {
+    if (
+        !priceRangeSpecification.from ||
+        !priceRangeSpecification.to ||
+        priceRangeSpecification.token0To1 === undefined
+    )
+        return false;
+
+    return true;
 }

@@ -22,9 +22,8 @@ export function RestrictedAddress({
     onRemove,
 }: RestrictedAddressProps) {
     const [popover, setPopover] = useState(false);
-    const [popoverAnchor, setPopoverAnchor] = useState<HTMLButtonElement | null>(
-        null,
-    );
+    const [popoverAnchor, setPopoverAnchor] =
+        useState<HTMLButtonElement | null>(null);
 
     const popoverRef = useRef<HTMLDivElement>(null);
     const t = useTranslations("newCampaign.inputs.restrictionsPicker");

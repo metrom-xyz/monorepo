@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 
@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 interface StepSectionProps {
     title: string;
     headerDecorator?: ReactNode;
-    description?: string;
+    description?: ReactNode;
     optional?: boolean;
     children: ReactNode;
 }
@@ -26,7 +26,6 @@ export function StepSection({
             <div className={styles.header}>
                 <div className={styles.title}>
                     <Typography weight="semibold">{title}</Typography>
-                    {headerDecorator}
                     {optional && (
                         <div className={styles.optionalTag}>
                             <Typography
@@ -38,12 +37,9 @@ export function StepSection({
                             </Typography>
                         </div>
                     )}
+                    {headerDecorator}
                 </div>
-                {description && (
-                    <Typography size="xs" variant="tertiary">
-                        {description}
-                    </Typography>
-                )}
+                {description}
             </div>
             {children}
         </div>

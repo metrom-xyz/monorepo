@@ -1,9 +1,4 @@
-import {
-    type CampaignPayloadErrors,
-    type CampaignPreviewDistributables,
-    type CampaignPreviewFixedDistribution,
-    type CampaignPreviewKpiDistribution,
-} from "@/src/types/campaign/common";
+import { type CampaignPayloadErrors, type CampaignPreviewDistributables, type CampaignPreviewFixedDistribution, type CampaignPreviewKpiDistribution } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -15,10 +10,6 @@ import { RestrictionsStep } from "../../steps/restrictions-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import {
-    validateDistributables,
-    validateDistributions,
-} from "@/src/utils/creation-form";
 import { HoldFungibleAssetPickerStep } from "../../steps/hold-token-picker-step";
 import {
     HoldFungibleAssetCampaignPreviewPayload,
@@ -26,8 +17,10 @@ import {
     type HoldFungibleAssetCampaignPayloadPart,
 } from "@/src/types/campaign/hold-fungible-asset-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import { validateDistributables } from "@/src/utils/form";
 
 import styles from "./styles.module.css";
+import { validateDistributions } from "@/src/utils/creation-form";
 
 function validatePayload(
     chainId: number,

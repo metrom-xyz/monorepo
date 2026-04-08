@@ -63,7 +63,7 @@
 }
 
 .avatarBorder {
-    @apply rounded-full border-2;
+    @apply rounded-sm border-2;
 }
 
 .avatarBorder.blacklist {
