@@ -35,6 +35,7 @@ export function Switch<T>({
 
     return (
         <div
+            id={resolvedId}
             tabIndex={tabIndex}
             className={classNames(styles.root, className, {
                 [styles.disabled]: disabled,
@@ -48,7 +49,6 @@ export function Switch<T>({
                 )
                     ? React.cloneElement(child, {
                           ...child.props,
-                          id: resolvedId,
                           active: value,
                           onClick: handleOnChange,
                       })

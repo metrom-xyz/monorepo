@@ -1,16 +1,12 @@
-import {
-    type CampaignPreviewDistributables,
-    type CampaignPreviewFixedDistribution,
-    type CampaignPreviewKpiDistribution,
-} from "@/src/types/campaign/common";
 import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
-import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import {
-    validateDistributables,
-    validateDistributions,
-} from "@/src/utils/creation-form";
+    AmmPoolLiquidityType,
+    CampaignKind,
+    DistributablesType,
+    SupportedAmm,
+} from "@metrom-xyz/sdk";
+import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import {
     AmmPoolLiquidityCampaignPreviewPayload,
     type AmmPoolLiquidityCampaignPayload,
@@ -21,8 +17,17 @@ import { AmmPoolLiquidityBasicsSteps } from "./amm-pool-liquidity-basics-step";
 import type { CompletedRequiredSteps } from "..";
 import { AmmPoolLiquidityRewardsStep } from "./amm-pool-liquidity-rewards-step";
 import { useFormErrors } from "@/src/context/form-errors";
+import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
+import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
+import { CampaignPoolRangeStep } from "../../steps/campaign-pool-range-step";
+import {
+    validateDistributables,
+    validatePriceRangeSpecification,
+} from "@/src/utils/form";
 
 import styles from "./styles.module.css";
+import { validateDistributions } from "@/src/utils/creation-form";
+import type { CampaignPreviewDistributables, CampaignPreviewFixedDistribution, CampaignPreviewKpiDistribution } from "@/src/types/campaign/common";
 
 function validatePayload(
     chainId: number,
@@ -49,6 +54,11 @@ function validatePayload(
         return null;
     if (!validateDistributables(distributables)) return null;
     if (!validateDistributions(kpiDistribution, fixedDistribution)) return null;
+    if (
+        priceRangeSpecification &&
+        !validatePriceRangeSpecification(priceRangeSpecification)
+    )
+        return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
@@ -159,13 +169,13 @@ export function AmmPoolLiquidityForm({
     //     );
     // }, [payload.pool]);
 
-    // const rangeSupported = useMemo(() => {
-    //     return (
-    //         !!payload.pool &&
-    //         AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm as SupportedAmm] &&
-    //         payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
-    //     );
-    // }, [payload.pool]);
+    const rangeSupported = useMemo(() => {
+        return (
+            !!payload.pool &&
+            AMM_SUPPORTS_RANGE_INCENTIVES[payload.pool.amm as SupportedAmm] &&
+            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+        );
+    }, [payload.pool]);
 
     // useEffect(() => {
     //     onChange({ ...initialPayload, kind });
@@ -209,26 +219,19 @@ export function AmmPoolLiquidityForm({
                     onComplete={handleOnCompletedRequiredStep}
                     onApply={handleOnApply}
                 />
-                {/* <RewardsStep
-                    disabled={!payload.endDate || unsupportedChain}
-                    distributables={payload.distributables}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onDistributablesChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                <CampaignKpiStep
+                    payload={payload}
+                    disabled={!completedRequiredSteps.rewards}
+                    onApply={handleOnApply}
                 />
-                {tokensRatioSupported && (
-                    <WeightingStep
-                        pool={payload.pool}
-                        disabled={noDistributables || unsupportedChain}
-                        weighting={payload.weighting}
-                        onWeightingChange={handlePayloadOnChange}
-                        onError={handlePayloadOnError}
+                {rangeSupported && (
+                    <CampaignPoolRangeStep
+                        payload={payload}
+                        disabled={!completedRequiredSteps.rewards}
+                        onApply={handleOnApply}
                     />
                 )}
-                <KpiStep
+                {/* <KpiStep
                     disabled={noDistributables || unsupportedChain}
                     kind={payload.kind}
                     usdTvl={payload.pool?.usdTvl}
@@ -243,24 +246,6 @@ export function AmmPoolLiquidityForm({
                     kpiDistribution={payload.kpiDistribution}
                     fixedDistribution={payload.fixedDistribution}
                     onKpiChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                {rangeSupported && (
-                    <RangeStep
-                        disabled={noDistributables || unsupportedChain}
-                        distributablesType={payload.distributables?.type}
-                        pool={payload.pool}
-                        priceRangeSpecification={
-                            payload.priceRangeSpecification
-                        }
-                        onRangeChange={handlePayloadOnChange}
-                        onError={handlePayloadOnError}
-                    />
-                )}
-                <RestrictionsStep
-                    disabled={missingDistributables || unsupportedChain}
-                    restrictions={payload.restrictions}
-                    onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 /> */}
             </div>

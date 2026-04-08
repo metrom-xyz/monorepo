@@ -1,9 +1,17 @@
 @reference "../../app.css";
 
 .link {
-    @apply text-brand-green-dark dark:text-brand-green font-medium;
+    @apply w-fit flex items-center text-primary font-medium text-xs;
 }
 
 .text {
+    @apply flex gap-0.5;
+}
+
+.spaced {
     @apply leading-5;
+}
+
+.arrowIcon {
+    @apply size-3 -rotate-45;
 }

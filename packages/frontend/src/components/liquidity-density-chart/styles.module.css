@@ -13,7 +13,7 @@
 .emptyContainer {
     @apply w-full
         h-full
-        min-h-[320px]
+        min-h-[15.875rem]
         flex
         flex-col
         gap-2
@@ -31,11 +31,7 @@
 }
 
 .skeletonBar {
-    @apply h-72 w-full max-w-4 rounded-t-md;
-}
-
-.errorText {
-    @apply flex-col;
+    @apply h-full min-h-50 w-full max-w-4 rounded-t-md;
 }
 
 .loading {
@@ -43,25 +39,26 @@
 }
 
 .container {
-    @apply h-full min-h-80;
+    @apply h-full min-h-50;
 }
 
 .header {
-    @apply flex items-center justify-end rounded-md;
+    @apply flex items-center justify-between rounded-md;
 }
 
 .zoomButtons {
-    @apply flex items-center gap-1;
+    @apply flex items-center;
 }
 
-.zoomButtons {
-    @apply flex items-center gap-1;
+.zoomButton,
+.zoomButton:disabled {
+    @apply border-gray-300 dark:border-neutral-700;
 }
 
-.zoomButtons > svg {
-    @apply size-5
-        cursor-pointer
-        transition-colors
-        duration-200
-        ease-in-out;
+.zoomButton:first-child {
+    @apply border-r-0 rounded-r-none;
+}
+
+.zoomButton:last-child {
+    @apply border-l-0 rounded-l-none;
 }

@@ -1,11 +1,9 @@
 import type { ReactNode } from "react";
 import classNames from "classnames";
-import { easeInOut, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
 export interface SwitchOptionProps<T> {
-    id?: string;
     value: T;
     active?: T;
     children?: ReactNode;
@@ -14,7 +12,6 @@ export interface SwitchOptionProps<T> {
 }
 
 export function SwitchOption<T>({
-    id,
     value,
     active,
     children,
@@ -30,14 +27,6 @@ export function SwitchOption<T>({
             onClick={handleOnClick}
             className={classNames("root", styles.root, className)}
         >
-            {active === value ? (
-                <motion.div
-                    layoutId={`${id}_background`}
-                    transition={{ ease: easeInOut, duration: 0.2 }}
-                    className={classNames("background", styles.background)}
-                />
-            ) : null}
-
             <div
                 className={classNames("option", styles.optionWrapper, {
                     [styles.active]: active === value,

@@ -93,6 +93,7 @@ export function CampaignBasicsStep({
             <Button
                 onClick={handleOnApply}
                 icon={ArrowRightIcon}
+                iconPlacement="right"
                 disabled={applyDisabled}
                 className={{ root: styles.button }}
             >

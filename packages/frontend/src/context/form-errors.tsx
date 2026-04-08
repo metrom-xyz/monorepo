@@ -10,6 +10,7 @@ export interface FormErrors {
     basics?: string;
     rewards?: string;
     restrictions?: string;
+    range?: string;
 }
 
 interface FormErrorsContextValue {

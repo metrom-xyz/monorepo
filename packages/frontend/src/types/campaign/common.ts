@@ -69,17 +69,6 @@ export interface Leaderboard {
     sortedRanks: Rank[];
 }
 
-export interface AugmentedPriceRangeBound {
-    tick: number;
-    price: number;
-}
-
-export interface AugmentedPriceRangeSpecification {
-    token0To1: boolean;
-    from: AugmentedPriceRangeBound;
-    to: AugmentedPriceRangeBound;
-}
-
 export interface CampaignPayloadKpiDistribution {
     minimumPayoutPercentage?: number;
     goal?: RangePoolTvlKpiGoal;

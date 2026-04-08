@@ -213,7 +213,11 @@
             "blockedAddresses": "{count, plural, =1 {# blocked address} other {# blocked addresses}}",
             "allowedAddresses": "{count, plural, =1 {# allowed address} other {# allowed addresses}}",
             "showMore": "Show more",
-            "showLess": "Show less"
+            "showLess": "Show less",
+            "rangeToReward": "Range to reward",
+            "price": "{price} {token1} PER {token0}",
+            "minPrice": "Min. price",
+            "maxPrice": "Max. price"
         },
         "pickDistributablesType": {
             "navigation": {
@@ -251,6 +255,61 @@
                 "defineRestrictions": "Define who can earn rewards",
                 "defineRestrictionDescription": "You can block unwanted addresses or allow only eligible ones. Zero and dead addresses are excluded by default.",
                 "saveRewards": "Save rewards"
+            },
+            "kpi": {
+                "title": "Set KPI",
+                "notSaved": "Not saved",
+                "defineStrategy": "Define your strategy",
+                "infoMessage": "Structure incentives with a <bold>{targetValueName} KPI</bold> - distributed in proportion to performance, aligning incentives when targets are partially met.",
+                "readMore": "Read more 🡥",
+                "defineParameters": "Define KPI parameters",
+                "currentTarget": "Current {targetValueName}:",
+                "defaultValues": "Default values are based on the current TVL. You can adjust them at any time.",
+                "rangedTarget": {
+                    "lowerBound": "Lower {targetValueName} bound",
+                    "upperBound": "Upper {targetValueName} bound"
+                },
+                "errors": {
+                    "missing": "Bound missing",
+                    "malformed": "Wrong bound values"
+                },
+                "warnings": {
+                    "notApplied": "Not applied"
+                },
+                "simulation": {
+                    "title": "KPI simulation",
+                    "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different {targetValueName} scenarios. Please review the values you entered carefully before submitting."
+                },
+                "minimumPayout": "Minimum payout",
+                "saveKpi": "Save KPI",
+                "skipKpi": "Skip KPI",
+                "presets": {
+                    "traditionalReward": {
+                        "title": "Traditional reward",
+                        "description": "Setup where the APR starts high and decreases as {targetValueName} grows."
+                    },
+                    "cappedRewardRate": {
+                        "title": "Capped reward rate",
+                        "description": "APR stays flat up to a specified goal {targetValueName} and then APR drops."
+                    },
+                    "increasingApr": {
+                        "title": "Increasing APR",
+                        "description": "APR rises with {targetValueName} and stops incentives below a set {targetValueName}."
+                    },
+                    "customReward": {
+                        "title": "Custom reward rate",
+                        "description": "Use your own strategy to distribute incentives."
+                    }
+                }
+            },
+            "range": {
+                "title": "Set range to reward",
+                "setRange": "Set range to reward ({token0} per {token1})",
+                "price": "1 {token0} = {price} {token1}",
+                "saveRange": "Save reward range",
+                "skipRange": "Skip reward range",
+                "chart": "Range visualizer",
+                "notSaved": "Not saved"
             },
             "base": {
                 "kind": {
@@ -379,29 +438,6 @@
                     "add": "Add",
                     "list": "List",
                     "apply": "Apply"
-                },
-                "kpi": {
-                    "title": "Set KPI",
-                    "currentTarget": "Current {targetValueName}",
-                    "infoMessage": "Structure incentives with a <bold>{targetValueName} KPI</bold> - distributed in proportion to performance, aligning incentives when targets are partially met.",
-                    "readMore": "Read more 🡥",
-                    "rangedTarget": {
-                        "lowerBound": "Lower {targetValueName} bound",
-                        "upperBound": "Upper {targetValueName} bound"
-                    },
-                    "errors": {
-                        "missing": "Bound missing",
-                        "malformed": "Wrong bound values"
-                    },
-                    "warnings": {
-                        "notApplied": "Not applied"
-                    },
-                    "simulation": {
-                        "title": "KPI simulation",
-                        "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different {targetValueName} scenarios. Please review the values you entered carefully before submitting."
-                    },
-                    "minimumPayout": "Minimum payout",
-                    "apply": "Apply"
                 }
             },
             "liquityV2": {
@@ -497,27 +533,6 @@
                     "description": "Rewards are based on {token0}-{token1} position size, liquidity depth, and price range concentration.",
                     "readMore": "Read more 🡥",
                     "fees": "Fees"
-                },
-                "range": {
-                    "title": "Set range to reward",
-                    "currentPrice": "Current price",
-                    "range": {
-                        "label": "Range",
-                        "value": "{lowerPrice} - {upperPrice} {token1} PER {token0}"
-                    },
-                    "price": "1 {token0} = {price} {token1}",
-                    "minPrice": "Min price ({token1} per {token0})",
-                    "maxPrice": "Max price ({token1} per {token0})",
-                    "apply": "Apply",
-                    "chart": "Range visualizer",
-                    "errors": {
-                        "missing": "Bound missing",
-                        "malformed": "Wrong bound values",
-                        "rangeTooWide": "Range too wide"
-                    },
-                    "warnings": {
-                        "notApplied": "Not applied"
-                    }
                 }
             },
             "holdFungibleAsset": {
@@ -617,7 +632,7 @@
                 "token": "Token",
                 "balance": "Balance",
                 "noToken": "Don't see your token?",
-                "requestIt": "Request it here🡥",
+                "requestIt": "Request it here",
                 "editAmount": "Click to edit amount",
                 "removeAsset": "Remove asset",
                 "errors": {
@@ -637,6 +652,17 @@
                 "errors": {
                     "notAnAddress": "Not a valid address",
                     "alreadyRestricted": "Already restricted"
+                }
+            },
+            "rangePicker": {
+                "minPrice": "Min. price",
+                "maxPrice": "Max. price",
+                "errors": {
+                    "minPriceMissing": "Min. price missing",
+                    "maxPriceMissing": "Max. price missing",
+                    "minPriceMalformed": "Min. price can't be higher than max. price",
+                    "maxPriceMalformed": "Max. price can't be lower than min. price",
+                    "rangeTooWide": "Range too wide"
                 }
             }
         }
@@ -1069,6 +1095,7 @@
         "duration": "Duration"
     },
     "liquidityDensityChart": {
+        "rangeVisualizer": "Range visualizer",
         "tooltip": {
             "price": "1 {token0} = {price} {token1}"
         },
@@ -1076,8 +1103,8 @@
         "upperPrice": "Upper price",
         "emptyData": "Missing price range data",
         "errors": {
-            "wrongData": "Wrong data",
-            "missingData": "Fill both min and max price values"
+            "unableToRender": "Unable to render range",
+            "adjustBounds": "Adjust the bounds prices to display the chart"
         }
     },
     "notifications": {
@@ -1119,5 +1146,6 @@
             "upcoming": "in {time}",
             "expired": "{time} ago"
         }
-    }
+    },
+    "readMore": "Read more"
 }

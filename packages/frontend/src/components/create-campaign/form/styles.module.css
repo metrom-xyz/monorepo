@@ -11,9 +11,9 @@
 }
 
 .content {
-    @apply flex gap-10;
+    @apply flex gap-8;
 }
 
 .form {
-    @apply w-full flex flex-col gap-8 flex-[71%];
+    @apply w-full flex flex-col gap-8 flex-[73%];
 }

@@ -1,0 +1,9 @@
+@reference "../../../../app.css";
+
+.range {
+    @apply flex flex-col gap-1;
+}
+
+.price {
+    @apply flex items-center gap-1;
+}

@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { InfoIcon } from "@/src/assets/info-icon";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
@@ -19,8 +20,8 @@ export function ListFooter() {
                     className={styles.link}
                 >
                     {t("requestIt")}
+                    <ArrowRightIcon className={styles.arrowIcon} />
                 </a>
-                .
             </Typography>
         </div>
     );

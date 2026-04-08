@@ -3,12 +3,14 @@ import { CheckIcon } from "@/src/assets/check-icon";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { type ReactNode } from "react";
 import classNames from "classnames";
+import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
 interface FormStepProps {
     title: string;
     open: boolean;
+    optional?: boolean;
     disabled?: boolean;
     completed?: boolean;
     error?: string;
@@ -21,6 +23,7 @@ interface FormStepProps {
 export function FormStep({
     title,
     open,
+    optional,
     disabled,
     completed,
     error,
@@ -29,6 +32,8 @@ export function FormStep({
     className,
     onToggle,
 }: FormStepProps) {
+    const t = useTranslations("newCampaign");
+
     return (
         <Accordion
             title={
@@ -40,13 +45,26 @@ export function FormStep({
                             <ErrorIcon className={styles.warningIcon} />
                         ) : completed ? (
                             <CheckIcon className={styles.checkIcon} />
+                        ) : optional ? (
+                            <Typography size="sm" weight="medium">
+                                -
+                            </Typography>
                         ) : (
                             <div className={styles.greenDot} />
                         )}
                     </div>
-                    <Typography weight="semibold" className={styles.title}>
-                        {title}
-                    </Typography>
+                    <Typography weight="semibold">{title}</Typography>
+                    {optional && (
+                        <div className={styles.optionalTag}>
+                            <Typography
+                                size="xs"
+                                weight="medium"
+                                variant="tertiary"
+                            >
+                                {t("optional")}
+                            </Typography>
+                        </div>
+                    )}
                     {error && (
                         <Typography
                             weight="medium"
@@ -65,6 +83,7 @@ export function FormStep({
                     )}
                 </div>
             }
+            iconPlacement="right"
             open={open}
             disabled={disabled}
             noUnmount

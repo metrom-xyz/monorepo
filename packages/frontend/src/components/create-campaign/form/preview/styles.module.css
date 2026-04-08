@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply hidden sm:flex flex-col gap-7 flex-[29%];
+    @apply hidden sm:flex flex-col gap-7 flex-[27%];
 }
 
 .header {

@@ -8,16 +8,45 @@
     @apply flex flex-col gap-1 items-end;
 }
 
+.importCsvInput.desktop {
+    @apply hidden sm:flex;
+}
+
+.importCsvInput:not(.desktop) {
+    @apply flex sm:hidden;
+}
+
 .switchAndInput {
-    @apply w-full flex;
+    @apply w-full flex flex-col sm:flex-row;
+}
+
+.switchAndCsvImport {
+    @apply flex justify-between;
 }
 
 .switch {
-    @apply max-h-11 p-0 rounded-r-none min-w-56 border border-gray-300 dark:border-neutral-700;
+    @apply h-11
+        p-0
+        justify-start
+        rounded-r-none
+        rounded-bl-none
+        sm:rounded-bl-lg
+        sm:min-w-56
+        rounded-tr-lg
+        sm:rounded-tr-none
+        border
+        border-b-0
+        sm:border-b
+        border-gray-300
+        dark:border-neutral-700;
 }
 
 .switchOption {
-    @apply w-full h-full flex;
+    @apply w-20 sm:w-full h-11 flex;
+}
+
+.switchOption :global(.optionWrapper) {
+    @apply w-20 sm:w-full;
 }
 
 .switchOption :global(.option) {
@@ -28,12 +57,12 @@
     @apply border-r border-gray-300 dark:border-neutral-700;
 }
 
-.switchOption:first-child :global(.background) {
-    @apply rounded-r-none;
+.switchOption:first-child :global(.option) {
+    @apply rounded-bl-none rounded-r-none sm:rounded-bl-lg;
 }
 
-.switchOption:last-child :global(.background) {
-    @apply rounded-l-none rounded-r-none;
+.switchOption:last-child :global(.option) {
+    @apply rounded-tr-lg rounded-br-none rounded-l-none sm:rounded-r-none;
 }
 
 .dot {
@@ -65,7 +94,7 @@
 }
 
 .list {
-    @apply flex flex-wrap gap-1;
+    @apply max-h-96 overflow-x-auto flex flex-wrap gap-1;
 }
 
 .removeButton {

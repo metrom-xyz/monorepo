@@ -12,13 +12,20 @@ import {
     type AmmPoolLiquidityCampaignPayload,
     type AmmPoolLiquidityCampaignPayloadPart,
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import { DistributablesType, RestrictionType } from "@metrom-xyz/sdk";
+import {
+    AmmPoolLiquidityType,
+    DistributablesType,
+    RestrictionType,
+    SupportedAmm,
+} from "@metrom-xyz/sdk";
 import type { CompletedRequiredSteps } from "..";
 import { StepSection } from "../step-section";
 import { useTranslations } from "next-intl";
 import { WeightingInputs } from "../../inputs/weighting-inputs";
 import { useFormErrors } from "@/src/context/form-errors";
 import type { Address } from "viem";
+import { InfoMessage } from "@/src/components/info-message";
+import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
 
 interface AmmPoolLiquidityRewardsStepProps {
     payload: AmmPoolLiquidityCampaignPayload;
@@ -45,10 +52,6 @@ export function AmmPoolLiquidityRewardsStep({
     const t = useTranslations("newCampaign.form.ammPoolLiquidity");
     const { errors } = useFormErrors();
 
-    function handlePayloadOnChange(part: AmmPoolLiquidityCampaignPayloadPart) {
-        setRewardsPayload((prev) => ({ ...prev, ...part }));
-    }
-
     const unsavedChanges = useMemo(() => {
         if (
             !distributablesCompleted(rewardsPayload) &&
@@ -64,6 +67,14 @@ export function AmmPoolLiquidityRewardsStep({
             !restrictionsEqual(payload, rewardsPayload)
         );
     }, [payload, rewardsPayload]);
+
+    const tokensRatioSupported = useMemo(() => {
+        return (
+            !!payload.pool &&
+            AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
+            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
+        );
+    }, [payload.pool]);
 
     const payloadForApr = {
         ...payload,
@@ -89,6 +100,10 @@ export function AmmPoolLiquidityRewardsStep({
         !unsavedChanges &&
         distributablesCompleted(rewardsPayload);
 
+    function handlePayloadOnChange(part: AmmPoolLiquidityCampaignPayloadPart) {
+        setRewardsPayload((prev) => ({ ...prev, ...part }));
+    }
+
     return (
         <CampaignRewardsStep
             chainId={payload.chainId}
@@ -104,19 +119,29 @@ export function AmmPoolLiquidityRewardsStep({
             onComplete={onComplete}
             onApply={onApply}
             additionalSection={
-                <StepSection
-                    title={t("weighting.title")}
-                    description={t("weighting.description", {
-                        token0: payload.pool?.tokens[0].symbol || "",
-                        token1: payload.pool?.tokens[1].symbol || "",
-                    })}
-                >
-                    <WeightingInputs
-                        pool={payload.pool}
-                        value={rewardsPayload.weighting}
-                        onChange={handlePayloadOnChange}
-                    />
-                </StepSection>
+                tokensRatioSupported && (
+                    <StepSection
+                        title={t("weighting.title")}
+                        description={
+                            <InfoMessage
+                                weight="regular"
+                                text={t("weighting.description", {
+                                    token0:
+                                        payload.pool?.tokens[0].symbol || "",
+                                    token1:
+                                        payload.pool?.tokens[1].symbol || "",
+                                })}
+                                link="https://docs.metrom.xyz/creating-a-campaign/reward-ratio"
+                            />
+                        }
+                    >
+                        <WeightingInputs
+                            pool={payload.pool}
+                            value={rewardsPayload.weighting}
+                            onChange={handlePayloadOnChange}
+                        />
+                    </StepSection>
+                )
             }
         />
     );

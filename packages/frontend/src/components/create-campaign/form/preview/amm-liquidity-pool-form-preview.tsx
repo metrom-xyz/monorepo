@@ -7,8 +7,13 @@ import {
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { AmmLiquidityPoolTarget } from "../../previews/amm-liquidity-pool-target";
 import type { FormErrors } from "@/src/context/form-errors";
-import { distributablesCompleted, getCampaignApr } from "@/src/utils/form";
+import {
+    distributablesCompleted,
+    getCampaignApr,
+    rangeSpecificationCompleted,
+} from "@/src/utils/form";
 import { Rewards } from "../../previews/rewards";
+import { PoolRange } from "../../previews/pool-range";
 
 interface AmmLiquidityPoolFormPreviewProps {
     payload: AmmPoolLiquidityCampaignPayload;
@@ -30,6 +35,7 @@ export function AmmLiquidityPoolFormPreview({
         !!payload.endDate;
 
     const rewardsCompleted = distributablesCompleted(payload);
+    const poolRangeCompleted = rangeSpecificationCompleted(payload);
     const apr = getCampaignApr(
         payload,
         getAmmPoolLiquidityTargetValue(payload),
@@ -59,6 +65,12 @@ export function AmmLiquidityPoolFormPreview({
                     pool={payload.pool}
                     weighting={payload.weighting}
                     restrictions={payload.restrictions}
+                />
+            )}
+            {poolRangeCompleted && (
+                <PoolRange
+                    pool={payload.pool}
+                    priceRangeSpecification={payload.priceRangeSpecification}
                 />
             )}
         </>
