@@ -1,6 +1,7 @@
 @reference "../../../../app.css";
 
-.root {
+.root :global(.content) {
+    @apply flex flex-col gap-3;
 }
 
 .priceChip {
@@ -48,4 +49,8 @@
 
 .buttons {
     @apply w-full flex flex-col sm:flex-row items-center justify-end gap-2;
+}
+
+.button {
+    @apply w-full sm:w-fit;
 }

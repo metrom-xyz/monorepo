@@ -1,0 +1,13 @@
+@reference "../../../../app.css";
+
+.root :global(.content) {
+    @apply flex flex-col gap-3;
+}
+
+.targetChip {
+    @apply flex items-center gap-0.5 px-2 py-1 rounded-sm bg-gray-300 dark:bg-neutral-700 transition-opacity duration-200 ease-in-out;
+}
+
+.button {
+    @apply self-end w-full sm:w-fit;
+}

@@ -3,8 +3,6 @@ import { useTranslations } from "next-intl";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { CampaignType } from "@metrom-xyz/sdk";
 
-import styles from "./styles.module.css";
-
 interface FormHeaderProps {
     type: CampaignType;
 }
@@ -27,12 +25,10 @@ export function FormHeader({ type }: FormHeaderProps) {
     const t = useTranslations("newCampaign.formHeader");
 
     return (
-        <div className={styles.root}>
-            <Typography weight="semibold" size="xl2">
-                {t("createYourCampaign", {
-                    campaignType: t(`type.${CAMPAIGN_TYPE_TITLE[type]}`),
-                })}
-            </Typography>
-        </div>
+        <Typography weight="semibold" size="xl2">
+            {t("createYourCampaign", {
+                campaignType: t(`type.${CAMPAIGN_TYPE_TITLE[type]}`),
+            })}
+        </Typography>
     );
 }
