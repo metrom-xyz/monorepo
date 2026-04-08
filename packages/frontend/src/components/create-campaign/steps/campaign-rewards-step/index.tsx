@@ -21,6 +21,7 @@ import type { Dayjs } from "dayjs";
 import type { CompletedRequiredSteps } from "../../form";
 import { useFormErrors, type FormErrors } from "@/src/context/form-errors";
 import { RestrictionsPicker } from "../../inputs/restrictions-picker";
+import { InfoMessage } from "@/src/components/info-message";
 
 import styles from "./styles.module.css";
 
@@ -28,7 +29,7 @@ interface CampaignRewardsStepProps {
     chainId?: number;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    payload: BaseCampaignPayload;
+    payload: Pick<BaseCampaignPayload, "distributables" | "restrictions">;
     apr?: number;
     initialOpen?: boolean;
     additionalSection?: ReactNode;
@@ -130,9 +131,15 @@ export function CampaignRewardsStep({
             </StepSection>
             {additionalSection}
             <StepSection
-                title={t("defineRestrictions")}
-                description={t("defineRestrictionDescription")}
                 optional
+                title={t("defineRestrictions")}
+                description={
+                    <InfoMessage
+                        weight="regular"
+                        text={t("defineRestrictionDescription")}
+                        link="https://docs.metrom.xyz/creating-a-campaign/address-restrictions"
+                    />
+                }
             >
                 <RestrictionsPicker
                     value={payload.restrictions}
@@ -142,6 +149,7 @@ export function CampaignRewardsStep({
             <Button
                 onClick={handleOnApply}
                 icon={ArrowRightIcon}
+                iconPlacement="right"
                 disabled={disabled || applyDisabled}
                 className={{ root: styles.button }}
             >

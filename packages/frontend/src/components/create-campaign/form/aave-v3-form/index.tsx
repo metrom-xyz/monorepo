@@ -1,9 +1,4 @@
 import {
-    type CampaignPreviewDistributables,
-    type CampaignPreviewFixedDistribution,
-    type CampaignPreviewKpiDistribution,
-} from "@/src/types/campaign/common";
-import {
     CampaignKind,
     DistributablesType,
     SupportedAaveV3,
@@ -11,10 +6,6 @@ import {
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import { type CampaignKindOption } from "../../steps/campaign-kind-step";
 import type { TranslationsKeys } from "@/src/types/utils";
-import {
-    validateDistributables,
-    validateDistributions,
-} from "@/src/utils/creation-form";
 import {
     AaveV3CampaignPreviewPayload,
     type AaveV3CampaignPayload,
@@ -28,6 +19,13 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { AaveV3RewardsStep } from "./aave-v3-rewards-step";
 import type { CompletedRequiredSteps } from "..";
 import { useFormErrors } from "@/src/context/form-errors";
+import { validateDistributables } from "@/src/utils/form";
+import { validateDistributions } from "@/src/utils/creation-form";
+import type {
+    CampaignPreviewDistributables,
+    CampaignPreviewFixedDistribution,
+    CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 

@@ -22,10 +22,6 @@ import {
     CampaignKindStep,
     type CampaignKindOption,
 } from "../../steps/campaign-kind-step";
-import {
-    validateDistributables,
-    validateDistributions,
-} from "@/src/utils/creation-form";
 import type { TranslationsKeys } from "@/src/types/utils";
 import {
     LiquityV2CampaignPreviewPayload,
@@ -33,8 +29,10 @@ import {
     type LiquityV2CampaignPayloadPart,
 } from "@/src/types/campaign/liquity-v2-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import { validateDistributables } from "@/src/utils/form";
 
 import styles from "./styles.module.css";
+import { validateDistributions } from "@/src/utils/creation-form";
 
 function validatePayload(
     chainId: number,

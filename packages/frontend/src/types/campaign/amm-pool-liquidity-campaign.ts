@@ -47,7 +47,7 @@ export interface AmmPoolLiquidityCampaignPayload extends BaseCampaignPayload {
     dex?: DexProtocol;
     pool?: AmmPool;
     weighting?: Weighting;
-    priceRangeSpecification?: AugmentedPriceRangeSpecification;
+    priceRangeSpecification?: Partial<AugmentedPriceRangeSpecification>;
 }
 
 export type AmmPoolLiquidityCampaignPayloadPart =

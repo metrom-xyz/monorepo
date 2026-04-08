@@ -167,8 +167,9 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                 {error && errorText && (
                     <ErrorText
                         size="xs"
+                        uppercase={false}
                         weight="medium"
-                        className={styles.errorText}
+                        className={commonStyles.errorText}
                     >
                         {errorText}
                     </ErrorText>

@@ -18,6 +18,7 @@ import { useFormErrors } from "@/src/context/form-errors";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { RestrictedAddress } from "./restricted-address";
 import { TrashIcon } from "@/src/assets/trash-icon";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
@@ -125,33 +126,42 @@ export function RestrictionsPicker({
             <div className={styles.inputsWrapper}>
                 <CsvAddressesImport
                     onImport={handleOnImport}
-                    className={styles.importCsvInput}
+                    className={classNames(
+                        styles.importCsvInput,
+                        styles.desktop,
+                    )}
                 />
                 <div className={styles.switchAndInput}>
-                    <Switch
-                        value={value?.type}
-                        onChange={onTypeChange}
-                        className={styles.switch}
-                    >
-                        <SwitchOption
-                            value={RestrictionType.Blacklist}
-                            className={styles.switchOption}
+                    <div className={styles.switchAndCsvImport}>
+                        <Switch
+                            value={value?.type}
+                            onChange={onTypeChange}
+                            className={styles.switch}
                         >
-                            <Dot color="red" />
-                            <Typography size="sm" weight="medium">
-                                {t("block")}
-                            </Typography>
-                        </SwitchOption>
-                        <SwitchOption
-                            value={RestrictionType.Whitelist}
-                            className={styles.switchOption}
-                        >
-                            <Dot color="green" />
-                            <Typography size="sm" weight="medium">
-                                {t("allow")}
-                            </Typography>
-                        </SwitchOption>
-                    </Switch>
+                            <SwitchOption
+                                value={RestrictionType.Blacklist}
+                                className={styles.switchOption}
+                            >
+                                <Dot color="red" />
+                                <Typography size="sm" weight="medium">
+                                    {t("block")}
+                                </Typography>
+                            </SwitchOption>
+                            <SwitchOption
+                                value={RestrictionType.Whitelist}
+                                className={styles.switchOption}
+                            >
+                                <Dot color="green" />
+                                <Typography size="sm" weight="medium">
+                                    {t("allow")}
+                                </Typography>
+                            </SwitchOption>
+                        </Switch>
+                        <CsvAddressesImport
+                            onImport={handleOnImport}
+                            className={styles.importCsvInput}
+                        />
+                    </div>
                     <TextInput
                         size="lg"
                         placeholder={
@@ -184,35 +194,33 @@ export function RestrictionsPicker({
                     />
                 </div>
             </div>
-            <div className={styles.listWrapper}>
-                {value?.list && value.list.length > 0 && (
-                    <div className={styles.list}>
-                        {value.list.map((address) => (
-                            <RestrictedAddress
-                                key={address}
-                                type={value.type}
-                                address={address}
-                                onRemove={handleOnRemove}
-                            />
-                        ))}
-                        {value.list.length > 10 && (
-                            <Button
-                                size="sm"
-                                variant="secondary"
-                                border={false}
-                                icon={TrashIcon}
-                                iconPlacement="right"
-                                onClick={handleOnRemoveAll}
-                                className={{
-                                    root: styles.removeButton,
-                                }}
-                            >
-                                {t("removeAll")}
-                            </Button>
-                        )}
-                    </div>
-                )}
-            </div>
+            {value?.list && value.list.length > 0 && (
+                <div className={styles.list}>
+                    {value.list.map((address) => (
+                        <RestrictedAddress
+                            key={address}
+                            type={value.type}
+                            address={address}
+                            onRemove={handleOnRemove}
+                        />
+                    ))}
+                    {value.list.length > 10 && (
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            border={false}
+                            icon={TrashIcon}
+                            iconPlacement="right"
+                            onClick={handleOnRemoveAll}
+                            className={{
+                                root: styles.removeButton,
+                            }}
+                        >
+                            {t("removeAll")}
+                        </Button>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

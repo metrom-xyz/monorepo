@@ -21,15 +21,13 @@ import { AaveV3BridgeAndSupplyBoostStep } from "../../steps/aave-v3-bridge-suppl
 import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
 import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
 import {
-    validateDistributables,
-    validateDistributions,
-} from "@/src/utils/creation-form";
-import {
     AaveV3CampaignPreviewPayload,
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import { validateDistributables } from "@/src/utils/form";
+import { validateDistributions } from "@/src/utils/creation-form";
 
 import styles from "./styles.module.css";
 

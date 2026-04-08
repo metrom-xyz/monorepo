@@ -1,9 +1,4 @@
-import {
-    Button,
-    ErrorText,
-    Typography,
-    type TypographySize,
-} from "@metrom-xyz/ui";
+import { Button, Typography, type TypographySize } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     Bar,
@@ -29,6 +24,8 @@ import { ZoomInIcon } from "@/src/assets/zoom-in-icon";
 import { formatUnits } from "viem";
 import { LiquidityChartIcon } from "@/src/assets/liquidity-chart-icon";
 import type { AxisDomain } from "recharts/types/util/types";
+import { EmptyState } from "../empty-state";
+import { ChartOffIcon } from "@/src/assets/chart-off-icon";
 
 import styles from "./styles.module.css";
 
@@ -179,13 +176,11 @@ export function LiquidityDensityChart({
                     )}
                 >
                     {error ? (
-                        <ErrorText
-                            size="xs"
-                            weight="medium"
-                            className={styles.errorText}
-                        >
-                            {t("errors.missingData")}
-                        </ErrorText>
+                        <EmptyState
+                            title={t("errors.unableToRender")}
+                            subtitle={t("errors.adjustBounds")}
+                            icon={ChartOffIcon}
+                        />
                     ) : (
                         <>
                             <LiquidityChartIcon />
@@ -207,13 +202,11 @@ export function LiquidityDensityChart({
                         styles.emptyContainer,
                     )}
                 >
-                    <ErrorText
-                        size="xs"
-                        weight="medium"
-                        className={styles.errorText}
-                    >
-                        {t("errors.wrongData")}
-                    </ErrorText>
+                    <EmptyState
+                        title={t("errors.unableToRender")}
+                        subtitle={t("errors.adjustBounds")}
+                        icon={ChartOffIcon}
+                    />
                 </div>
             </div>
         );
@@ -223,6 +216,14 @@ export function LiquidityDensityChart({
         <div className={classNames("root", styles.root, className)}>
             {header && (
                 <div className={styles.header}>
+                    <Typography
+                        size="sm"
+                        weight="medium"
+                        variant="tertiary"
+                        uppercase
+                    >
+                        {t("rangeVisualizer")}
+                    </Typography>
                     <div className={styles.zoomButtons}>
                         <Button
                             variant="secondary"

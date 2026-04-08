@@ -59,10 +59,6 @@ export function AmmPoolLiquidityBasicsSteps({
         );
     }, [payload, basicsPayload]);
 
-    function handlePayloadOnChange(part: AmmPoolLiquidityCampaignPayloadPart) {
-        setBasicsPayload((prev) => ({ ...prev, ...part }));
-    }
-
     const applyDisabled =
         !!errors.basics ||
         !unsavedChanges ||
@@ -72,6 +68,10 @@ export function AmmPoolLiquidityBasicsSteps({
         !errors.basics &&
         !unsavedChanges &&
         allFieldsFilled(basicsPayload, BASIC_PAYLOAD_KEYS);
+
+    function handlePayloadOnChange(part: AmmPoolLiquidityCampaignPayloadPart) {
+        setBasicsPayload((prev) => ({ ...prev, ...part }));
+    }
 
     return (
         <CampaignBasicsStep
