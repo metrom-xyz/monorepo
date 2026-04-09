@@ -67,9 +67,8 @@ export function CampaignPoolRangeStep({
             !rangePayload.priceRangeSpecification &&
             rangeSpecificationCompleted(payload) &&
             !!payload.priceRangeSpecification
-        ) 
+        )
             return true;
-        
 
         return !rangesEqual(payload, rangePayload);
     }, [payload, rangePayload]);
@@ -168,9 +167,9 @@ export function CampaignPoolRangeStep({
             open={open}
             disabled={disabled}
             completed={completed}
-            error={errors.rewards}
+            error={errors.range}
             warning={
-                !errors.rewards && !open && unsavedChanges
+                !errors.range && !open && unsavedChanges
                     ? t("notSaved")
                     : undefined
             }
