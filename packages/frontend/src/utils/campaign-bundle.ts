@@ -148,7 +148,7 @@ export function buildSpecificationBundle(
     if (payload.fixedDistribution)
         specification.distribution = {
             type: SpecificationDistributionType.Fixed,
-            ...payload.fixedDistribution,
+            apr: payload.fixedDistribution.apr / 100,
         };
 
     if (payload.restrictions)
