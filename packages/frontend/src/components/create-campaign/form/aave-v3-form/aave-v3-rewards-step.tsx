@@ -9,11 +9,17 @@ import {
     distributablesCompleted,
     distributablesEqual,
     getCampaignApr,
+    restrictionsEqual,
 } from "@/src/utils/form";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
-import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
+import {
+    CampaignKind,
+    DistributablesType,
+    RestrictionType,
+} from "@metrom-xyz/sdk";
 import { useFormValidation } from "@/src/context/form-validation";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
+import type { Address } from "viem";
 
 interface AaveV3RewardsStepProps {
     stepNumber: number;
@@ -30,12 +36,16 @@ export function AaveV3RewardsStep({
 }: AaveV3RewardsStepProps) {
     const [rewardsPayload, setRewardsPayload] = useState({
         distributables: payload.distributables,
+        restrictions: {
+            type: RestrictionType.Blacklist,
+            list: [] as Address[],
+        },
     });
 
     const { errors } = useFormValidation();
     const { id: chainId, type: chainType } = useChainWithType();
     const {
-        // loading: loadingCollateralUsdNetSupply,
+        loading: loadingCollateralUsdNetSupply,
         usdNetSupply: collateralUsdNetSupply,
     } = useAaveV3CollateralUsdNetSupply({
         chainId: payload.chainId,
@@ -56,7 +66,10 @@ export function AaveV3RewardsStep({
         )
             return true;
 
-        return !distributablesEqual(payload, rewardsPayload);
+        return (
+            !distributablesEqual(payload, rewardsPayload) ||
+            !restrictionsEqual(payload, rewardsPayload)
+        );
     }, [payload, rewardsPayload]);
 
     const usdNetSupply =
@@ -79,7 +92,9 @@ export function AaveV3RewardsStep({
     );
 
     const applyDisabled =
-        !!errors.rewards || !unsavedChanges || !rewardsPayload.distributables;
+        !!errors.rewards ||
+        !unsavedChanges ||
+        !distributablesCompleted(rewardsPayload);
 
     const completed =
         !errors.rewards &&
@@ -98,6 +113,7 @@ export function AaveV3RewardsStep({
             endDate={payload.endDate}
             payload={rewardsPayload}
             apr={apr}
+            loadingApr={loadingCollateralUsdNetSupply}
             applyDisabled={applyDisabled}
             completed={!!completed}
             disabled={disabled}

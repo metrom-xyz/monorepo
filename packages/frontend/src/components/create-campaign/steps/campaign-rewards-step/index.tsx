@@ -12,13 +12,16 @@ import type {
     BaseCampaignPayloadPart,
 } from "@/src/types/campaign/common";
 import { StepSection } from "../../form/step-section";
-import { Button, Typography } from "@metrom-xyz/ui";
+import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { RewardsPicker } from "../../inputs/rewards-picker";
 import type { Dayjs } from "dayjs";
-import { useFormValidation, type FormSteps } from "@/src/context/form-validation";
+import {
+    useFormValidation,
+    type FormSteps,
+} from "@/src/context/form-validation";
 import { RestrictionsPicker } from "../../inputs/restrictions-picker";
 import { InfoMessage } from "@/src/components/info-message";
 import { useFormSteps } from "@/src/context/form-steps";
@@ -32,6 +35,7 @@ interface CampaignRewardsStepProps {
     endDate?: Dayjs;
     payload: Pick<BaseCampaignPayload, "distributables" | "restrictions">;
     apr?: number;
+    loadingApr?: boolean;
     additionalSection?: ReactNode;
     applyDisabled?: boolean;
     completed?: boolean;
@@ -48,6 +52,7 @@ export function CampaignRewardsStep({
     endDate,
     payload,
     apr,
+    loadingApr,
     additionalSection,
     applyDisabled,
     completed,
@@ -112,14 +117,20 @@ export function CampaignRewardsStep({
                             [styles.noApr]: apr === undefined,
                         })}
                     >
-                        <Typography size="xs" weight="medium">
-                            {t("apr", {
-                                apr:
-                                    apr !== undefined
-                                        ? formatPercentage({ percentage: apr })
-                                        : "-",
-                            })}
-                        </Typography>
+                        {loadingApr ? (
+                            <Skeleton size="xs" className={styles.loadingApr} />
+                        ) : (
+                            <Typography size="xs" weight="medium">
+                                {t("apr", {
+                                    apr:
+                                        apr !== undefined
+                                            ? formatPercentage({
+                                                  percentage: apr,
+                                              })
+                                            : "-",
+                                })}
+                            </Typography>
+                        )}
                     </div>
                 }
             >
