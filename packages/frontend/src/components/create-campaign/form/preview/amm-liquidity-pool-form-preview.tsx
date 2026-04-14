@@ -14,6 +14,11 @@ import {
 } from "@/src/utils/form";
 import { Rewards } from "../../previews/rewards";
 import { PoolRange } from "../../previews/pool-range";
+import { Typography } from "@metrom-xyz/ui";
+import { getCampaignTargetValueName } from "@/src/utils/campaign";
+import { formatUsdAmount } from "@/src/utils/format";
+
+import styles from "./styles.module.css";
 
 interface AmmLiquidityPoolFormPreviewProps {
     payload: AmmPoolLiquidityCampaignPayload;
@@ -24,6 +29,7 @@ export function AmmLiquidityPoolFormPreview({
     payload,
     errors,
 }: AmmLiquidityPoolFormPreviewProps) {
+    const globalT = useTranslations();
     const t = useTranslations("newCampaign.formPreview");
 
     const completed =
@@ -44,7 +50,27 @@ export function AmmLiquidityPoolFormPreview({
     return (
         <>
             <FormStepPreview
-                title={t("campaignBasics")}
+                title={
+                    <div className={styles.basicsHeader}>
+                        <Typography size="xs" weight="semibold" uppercase>
+                            {t("campaignBasics")}
+                        </Typography>
+                        {payload.kind && payload.pool && (
+                            <div className={styles.targetUsdChip}>
+                                <Typography size="xs" weight="medium" uppercase>
+                                    {getCampaignTargetValueName(
+                                        globalT,
+                                        payload.kind,
+                                    )}
+                                    :{" "}
+                                    {formatUsdAmount({
+                                        amount: payload.pool.usdTvl,
+                                    })}
+                                </Typography>
+                            </div>
+                        )}
+                    </div>
+                }
                 completed={completed}
                 error={!!errors.basics}
             >

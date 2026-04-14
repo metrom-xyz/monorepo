@@ -1,14 +1,9 @@
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import {
-    geAaveV3CampaignPreviewName,
-    getCampaignTargetValueName,
-} from "@/src/utils/campaign";
+import { geAaveV3CampaignPreviewName } from "@/src/utils/campaign";
 import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
-import { formatUsdAmount } from "@/src/utils/format";
 import { useChainData } from "@/src/hooks/useChainData";
-import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
 
@@ -56,15 +51,6 @@ export function AaveV3Target({ payload }: AaveV3TargetProps) {
                     )}
                 </Typography>
             </div>
-            <Typography size="xs" weight="medium" variant="tertiary" uppercase>
-                {getCampaignTargetValueName(globalT, payload.kind)}:{" "}
-                {formatUsdAmount({
-                    amount: getAaveV3UsdTarget({
-                        collateral: payload.collateral,
-                        kind: payload.kind,
-                    }),
-                })}
-            </Typography>
         </div>
     );
 }

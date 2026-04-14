@@ -12,6 +12,10 @@
     @apply opacity-50;
 }
 
+.loadingApr {
+    @apply w-16;
+}
+
 .button {
     @apply self-end w-full sm:w-fit;
 }

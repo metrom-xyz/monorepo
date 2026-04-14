@@ -12,6 +12,10 @@
     @apply opacity-50;
 }
 
+.loadingApr {
+    @apply w-16;
+}
+
 .distributables,
 .weighting,
 .restrictions {

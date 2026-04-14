@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { FormStepPreview } from "../../form-step-preview";
-import { Typography } from "@metrom-xyz/ui";
+import { Skeleton, Typography } from "@metrom-xyz/ui";
 import {
     formatAmount,
     formatPercentage,
@@ -25,6 +25,7 @@ import styles from "./styles.module.css";
 interface RewardsProps {
     chainId?: number;
     apr?: number;
+    loadingApr?: boolean;
     completed?: boolean;
     startDate?: Dayjs;
     endDate?: Dayjs;
@@ -37,6 +38,7 @@ interface RewardsProps {
 export function Rewards({
     chainId,
     apr,
+    loadingApr,
     completed,
     startDate,
     endDate,
@@ -86,16 +88,20 @@ export function Rewards({
                             [styles.noApr]: apr === undefined,
                         })}
                     >
-                        <Typography size="xs" weight="medium">
-                            {t("apr", {
-                                apr:
-                                    apr !== undefined
-                                        ? formatPercentage({
-                                              percentage: apr,
-                                          })
-                                        : "-",
-                            })}
-                        </Typography>
+                        {loadingApr ? (
+                            <Skeleton size="xs" className={styles.loadingApr} />
+                        ) : (
+                            <Typography size="xs" weight="medium">
+                                {t("apr", {
+                                    apr:
+                                        apr !== undefined
+                                            ? formatPercentage({
+                                                  percentage: apr,
+                                              })
+                                            : "-",
+                                })}
+                            </Typography>
+                        )}
                     </div>
                 </div>
             }
