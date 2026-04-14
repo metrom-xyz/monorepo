@@ -1,12 +1,9 @@
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import {
-    getAmmPoolLiquidityCampaignPreviewName,
-    getCampaignTargetValueName,
-} from "@/src/utils/campaign";
+import { getAmmPoolLiquidityCampaignPreviewName } from "@/src/utils/campaign";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
+import { formatPercentage } from "@/src/utils/format";
 import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
@@ -60,10 +57,6 @@ export function AmmLiquidityPoolTarget({
                     </Typography>
                 )}
             </div>
-            <Typography size="xs" weight="medium" variant="tertiary" uppercase>
-                {getCampaignTargetValueName(globalT, payload.kind)}:{" "}
-                {formatUsdAmount({ amount: payload.pool.usdTvl })}
-            </Typography>
         </div>
     );
 }

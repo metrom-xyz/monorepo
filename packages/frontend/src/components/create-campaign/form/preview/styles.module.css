@@ -8,6 +8,14 @@
     @apply flex items-start justify-between;
 }
 
+.basicsHeader {
+    @apply flex items-center gap-3;
+}
+
+.targetUsdChip {
+    @apply w-fit px-2 py-1 rounded-lg bg-gray-300 dark:bg-neutral-600;
+}
+
 .title {
     @apply leading-7 sm:leading-8;
 }

@@ -21,7 +21,12 @@ import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { AaveV3RewardsStep } from "./aave-v3-rewards-step";
 import { useFormValidation } from "@/src/context/form-validation";
-import { allFieldsFilled, validateDistributables } from "@/src/utils/form";
+import {
+    allFieldsFilled,
+    distributablesCompleted,
+    validateDistributables,
+} from "@/src/utils/form";
+import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
 
 import styles from "./styles.module.css";
 import { validateDistributions } from "@/src/utils/creation-form";
@@ -106,12 +111,7 @@ interface AaveV3FormProps {
     unsupportedChain: boolean;
     distributablesType: DistributablesType;
     onStepComplete: (payload: AaveV3CampaignPayloadPart) => void;
-    onPreviewClick: (
-        payload:
-            | AaveV3CampaignPreviewPayload
-            | EmptyTargetCampaignPreviewPayload
-            | null,
-    ) => void;
+    onLaunch: () => void;
 }
 
 export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
@@ -132,18 +132,16 @@ export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
 ] as const;
 
 export function AaveV3Form({
-    // errors,
     distributablesType,
     // unsupportedChain,
     onStepComplete,
-    // onError,
-    // onPreviewClick,
+    onLaunch,
 }: AaveV3FormProps) {
     const [payload, setPayload] = useState<AaveV3CampaignPayload>({
         distributables: { type: distributablesType },
     });
 
-    const { errors } = useFormValidation();
+    const { errors, unsaved } = useFormValidation();
     const { id: chainId, type: chainType } = useChainWithType();
 
     const { /*loading: loadingUsdNetSupply,*/ usdNetSupply } =
@@ -158,10 +156,11 @@ export function AaveV3Form({
             enabled: payload.kind === CampaignKind.AaveV3NetSupply,
         });
 
-    useMemo(() => {
-        if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload, usdNetSupply);
-    }, [chainId, usdNetSupply, payload, errors]);
+    const validatedPayload = useMemo(() => {
+        if (Object.values(errors).some((error) => !!error) || !payload.chainId)
+            return null;
+        return validatePayload(payload.chainId, payload, usdNetSupply);
+    }, [payload, errors, usdNetSupply]);
 
     // const noDistributables = useMemo(() => {
     //     if (!payload.distributables) return true;
@@ -180,10 +179,6 @@ export function AaveV3Form({
 
     //     return true;
     // }, [payload.distributables]);
-
-    // useEffect(() => {
-    //     setPayload(initialPayload);
-    // }, [chainId]);
 
     const handleOnApply = useCallback(
         (part: AaveV3CampaignPayloadPart) => {
@@ -205,6 +200,8 @@ export function AaveV3Form({
     //               kind: payload.kind,
     //           });
 
+    const unsavedSteps = Object.values(unsaved).some((item) => !!item);
+
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
@@ -217,6 +214,17 @@ export function AaveV3Form({
                         !allFieldsFilled(payload, REQUIRED_PAYLOAD_KEYS)
                     }
                     onApply={handleOnApply}
+                />
+                <CampaignApproveLaunchStep
+                    stepNumber={4}
+                    payload={validatedPayload}
+                    disabled={
+                        unsavedSteps ||
+                        !validatedPayload ||
+                        !!Object.values(errors).some((error) => !!error) ||
+                        !distributablesCompleted(payload)
+                    }
+                    onLaunch={onLaunch}
                 />
                 {/* <AaveV3BrandStep
                     disabled={unsupportedChain}
