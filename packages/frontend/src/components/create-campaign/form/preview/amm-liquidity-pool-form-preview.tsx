@@ -6,7 +6,7 @@ import {
     type AmmPoolLiquidityCampaignPayload,
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { AmmLiquidityPoolTarget } from "../../previews/amm-liquidity-pool-target";
-import type { FormErrors } from "@/src/context/form-errors";
+import type { FormSteps } from "@/src/context/form-validation";
 import {
     distributablesCompleted,
     getCampaignApr,
@@ -17,7 +17,7 @@ import { PoolRange } from "../../previews/pool-range";
 
 interface AmmLiquidityPoolFormPreviewProps {
     payload: AmmPoolLiquidityCampaignPayload;
-    errors: FormErrors;
+    errors: FormSteps<string>;
 }
 
 export function AmmLiquidityPoolFormPreview({

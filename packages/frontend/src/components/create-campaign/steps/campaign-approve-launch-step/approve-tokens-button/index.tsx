@@ -1,74 +1,60 @@
 import { useTranslations } from "next-intl";
-import { usePrevious } from "react-use";
 import { useChainId } from "wagmi";
 import { useAccount } from "@/src/hooks/useAccount";
 import { Button } from "@metrom-xyz/ui";
 import { WalletIcon } from "@/src/assets/wallet-icon";
-import { useCallback, useEffect, useState } from "react";
 import { ApproveTokens } from "./approve-tokens";
-import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
+import type { Erc20TokenAmountWithAllowance } from "@/src/types/campaign/common";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useChainData } from "@/src/hooks/useChainData";
 import { useAppKit } from "@reown/appkit/react";
+import type { Address } from "viem";
+import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface ApproveTokensButtonProps {
-    tokenAmounts: [UsdPricedErc20TokenAmount, ...UsdPricedErc20TokenAmount[]];
-    onApproved: () => void;
+    tokensToApprove: Erc20TokenAmountWithAllowance[];
+    onApproved: (token: UsdPricedErc20TokenAmount) => void;
+    onApproving: (address: Address | null) => void;
     onSafeTx: (tx: BaseTransaction) => void;
 }
 
 export function ApproveTokensButton({
-    tokenAmounts,
+    tokensToApprove,
     onApproved,
+    onApproving,
     onSafeTx,
 }: ApproveTokensButtonProps) {
     const t = useTranslations("campaignPreview");
-    const [approved, setApproved] = useState(false);
-
-    const previousRewards = usePrevious(tokenAmounts);
-
     const chainId = useChainId();
     const { open } = useAppKit();
     const chainData = useChainData({ chainId });
     const { address: connectedAddress } = useAccount();
 
-    useEffect(() => {
-        if (previousRewards && previousRewards.length !== tokenAmounts.length)
-            setApproved(false);
-    }, [tokenAmounts.length, previousRewards]);
-
     async function handleOnConnect() {
         await open();
     }
-
-    const handleOnApprove = useCallback(() => {
-        setApproved(true);
-        onApproved();
-    }, [onApproved]);
 
     if (!connectedAddress)
         return (
             <Button
                 icon={WalletIcon}
                 iconPlacement="right"
-                className={{ root: styles.button }}
                 onClick={handleOnConnect}
+                className={{ root: styles.button }}
             >
                 {t("connectWallet")}
             </Button>
         );
 
-    if (!approved)
-        return (
-            <ApproveTokens
-                tokenAmounts={tokenAmounts}
-                spender={chainData?.metromContract.address}
-                onApprove={handleOnApprove}
-                onSafeTx={onSafeTx}
-            />
-        );
-
-    return null;
+    return (
+        <ApproveTokens
+            tokensToApprove={tokensToApprove}
+            spender={chainData?.metromContract.address}
+            onApproved={onApproved}
+            onApproving={onApproving}
+            onSafeTx={onSafeTx}
+        />
+    );
 }

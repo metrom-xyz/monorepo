@@ -23,7 +23,7 @@ import { useLiquidityInRange } from "@/src/hooks/useLiquidityInRange";
 import { Weighting } from "./weighting";
 import { Restrictions } from "./restrictions";
 import { useLiquidityByAddresses } from "@/src/hooks/useLiquidityByAddresses";
-import { DeployButton } from "./deploy-button";
+import { ApproveAndLaunch } from "../steps/campaign-approve-launch-step/approve-and-launch";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 import {
     useAaveV3CollateralUsdNetSupply,
@@ -292,7 +292,7 @@ export function CampaignPreview({
                                 {t(error)}
                             </ErrorText>
                         )}
-                        <DeployButton
+                        <ApproveAndLaunch
                             payload={payload}
                             specificationHash={specificationHash}
                             uploadingSpecification={uploadingSpecification}

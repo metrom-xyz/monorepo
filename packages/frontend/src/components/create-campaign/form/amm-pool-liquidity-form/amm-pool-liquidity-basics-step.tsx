@@ -12,28 +12,21 @@ import { useTranslations } from "next-intl";
 import { BaseCampaignType } from "@metrom-xyz/sdk";
 import { useMemo, useState } from "react";
 import { allFieldsFilled } from "@/src/utils/form";
-import type { CompletedRequiredSteps } from "..";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 
 import styles from "./styles.module.css";
 
 interface AmmPoolLiquidityBasicsStepsProps {
     payload: AmmPoolLiquidityCampaignPayload;
-    onComplete: (steps: Partial<CompletedRequiredSteps>) => void;
     onApply: (payload: BaseCampaignPayloadPart) => void;
 }
 
-const BASIC_PAYLOAD_KEYS: Partial<keyof AmmPoolLiquidityCampaignPayload>[] = [
-    "chainId",
-    "dex",
-    "pool",
-    "startDate",
-    "endDate",
-];
+export const BASIC_PAYLOAD_KEYS: Partial<
+    keyof AmmPoolLiquidityCampaignPayload
+>[] = ["chainId", "dex", "pool", "startDate", "endDate"];
 
 export function AmmPoolLiquidityBasicsSteps({
     payload,
-    onComplete,
     onApply,
 }: AmmPoolLiquidityBasicsStepsProps) {
     const [basicsPayload, setBasicsPayload] = useState(
@@ -46,7 +39,7 @@ export function AmmPoolLiquidityBasicsSteps({
     );
 
     const t = useTranslations("newCampaign");
-    const { errors, updateErrors } = useFormErrors();
+    const { errors, updateErrors } = useFormValidation();
 
     const unsavedChanges = useMemo(() => {
         if (
@@ -80,7 +73,6 @@ export function AmmPoolLiquidityBasicsSteps({
             applyDisabled={applyDisabled}
             completed={!!completed}
             unsavedChanges={unsavedChanges}
-            onComplete={onComplete}
             onApply={onApply}
             onChange={handlePayloadOnChange}
             targetSection={

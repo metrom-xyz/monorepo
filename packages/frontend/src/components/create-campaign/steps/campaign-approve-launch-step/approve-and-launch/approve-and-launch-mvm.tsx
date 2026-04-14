@@ -3,7 +3,7 @@ import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useChainData } from "@/src/hooks/useChainData";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import type { DeployButtonProps } from ".";
+import type { ApproveAndLaunchProps } from ".";
 import { useCallback, useEffect, useState } from "react";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { type Address, zeroHash } from "viem";
@@ -17,26 +17,31 @@ import {
 import { useAccount } from "@/src/hooks/useAccount";
 import {
     Hex,
+    Network,
     U32,
     U64,
     type InputGenerateTransactionPayloadData,
 } from "@aptos-labs/ts-sdk";
 import { ConnectButtonMvm } from "@/src/components/connect-button/mvm";
 import { WalletIcon } from "@/src/assets/wallet-icon";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { chainIdToAptosNetwork } from "@/src/utils/chain";
 
 import styles from "./styles.module.css";
 
-export function DeployButtonMvm({
+export function ApproveAndDeployMvm({
     payload,
     specificationHash,
     uploadingSpecification,
     disabled,
-    onCreate,
-}: DeployButtonProps) {
-    const t = useTranslations("campaignPreview");
+    onLaunch,
+}: ApproveAndLaunchProps) {
+    const t = useTranslations("newCampaign.form.approveLaunch");
     const { id: chainId } = useChainWithType();
     const chainData = useChainData({ chainId });
-    const { address, connected } = useAccount();
+    const payloadChainData = useChainData({ chainId: payload.chainId });
+    const { address } = useAccount();
+    const { changeNetwork, connected } = useWallet();
     const { aptos } = useClients();
 
     const [deploying, setDeploying] = useState(false);
@@ -133,7 +138,7 @@ export function DeployButtonMvm({
                     return;
                 }
 
-                onCreate();
+                onLaunch();
                 trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
             } catch (error) {
                 console.warn("Could not create campaign", error);
@@ -149,40 +154,68 @@ export function DeployButtonMvm({
         simulateCreateErrored,
         txPayload,
         signAndSubmitTransactionAsync,
-        onCreate,
+        onLaunch,
     ]);
+
+    const handleNetworkOnSwitch = useCallback(async () => {
+        const network = chainIdToAptosNetwork(payload.chainId);
+        if (!network || !connected || payload.chainId === chainId) return;
+
+        try {
+            await changeNetwork(network as string as Network);
+        } catch (error) {
+            console.error("Error switching network", error);
+        }
+    }, [payload.chainId, connected, chainId, changeNetwork]);
+
+    if (payload.chainId !== chainId) {
+        return (
+            <div className={styles.buttonsWrapper}>
+                <Button
+                    onClick={handleNetworkOnSwitch}
+                    className={{ root: styles.button }}
+                >
+                    {t("switchChain", { chain: payloadChainData?.name || "" })}
+                </Button>
+            </div>
+        );
+    }
 
     if (!connected)
         return (
-            <ConnectButtonMvm
-                customComponent={
-                    <Button
-                        icon={WalletIcon}
-                        iconPlacement="right"
-                        className={{
-                            root: styles.button,
-                        }}
-                    >
-                        {t("connectWallet")}
-                    </Button>
-                }
-            />
+            <div className={styles.buttonsWrapper}>
+                <ConnectButtonMvm
+                    customComponent={
+                        <Button
+                            icon={WalletIcon}
+                            iconPlacement="right"
+                            className={{ root: styles.button }}
+                        >
+                            {t("connectWallet")}
+                        </Button>
+                    }
+                />
+            </div>
         );
 
     return (
-        <Button
-            icon={ArrowRightIcon}
-            iconPlacement="right"
-            disabled={
-                disabled ||
-                simulateCreateErrored ||
-                (!!simulatedCreate && !simulatedCreate.success)
-            }
-            loading={uploadingSpecification || simulatingCreate || deploying}
-            className={{ root: styles.button }}
-            onClick={handleOnStandardDeploy}
-        >
-            {t("deploy")}
-        </Button>
+        <div className={styles.buttonsWrapper}>
+            <Button
+                icon={ArrowRightIcon}
+                iconPlacement="right"
+                disabled={
+                    disabled ||
+                    simulateCreateErrored ||
+                    (!!simulatedCreate && !simulatedCreate.success)
+                }
+                loading={
+                    uploadingSpecification || simulatingCreate || deploying
+                }
+                onClick={handleOnStandardDeploy}
+                className={{ root: styles.button }}
+            >
+                {t("deploy")}
+            </Button>
+        </div>
     );
 }

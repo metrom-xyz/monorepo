@@ -18,7 +18,7 @@ import { Pool } from "../pool";
 import { useChainType } from "@/src/hooks/useChainType";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import type { FormErrors } from "@/src/context/form-errors";
+import type { FormSteps } from "@/src/context/form-validation";
 
 import styles from "./styles.module.css";
 
@@ -28,7 +28,7 @@ export interface PickerProps {
     dex?: DexProtocol;
     pool?: AmmPool;
     onChange: (pool?: AmmPool) => void;
-    onError: (errors: FormErrors) => void;
+    onError: (errors: FormSteps<string>) => void;
 }
 
 export function Picker({
@@ -71,17 +71,27 @@ export function Picker({
     }, [importedPool]);
 
     useEffect(() => {
-        onError({ basics: error });
-    }, [onError, error]);
+        let error = "";
 
-    useEffect(() => {
-        if (search && !addressOrId) setError(t("errors.invalidAddress"));
+        if (search && !addressOrId) error = t("errors.invalidAddress");
         else if (id && !loadingImportedPool && !importedPool)
-            setError(t("errors.invalidPool"));
+            error = t("errors.invalidPool");
         else if (dex && importedPool && importedPool.dex.slug !== dex.slug)
-            setError(t("errors.inconsistentDex", { dex: dex.name }));
-        else setError("");
-    }, [id, dex, addressOrId, loadingImportedPool, importedPool, search, t]);
+            error = t("errors.inconsistentDex", { dex: dex.name });
+        else error = "";
+
+        setError(error);
+        onError({ basics: error });
+    }, [
+        id,
+        dex,
+        addressOrId,
+        loadingImportedPool,
+        importedPool,
+        search,
+        t,
+        onError,
+    ]);
 
     const handlePoolOnPick = useCallback(() => {
         setPicked(true);

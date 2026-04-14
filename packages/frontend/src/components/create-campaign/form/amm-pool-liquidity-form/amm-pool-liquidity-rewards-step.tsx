@@ -18,26 +18,26 @@ import {
     RestrictionType,
     SupportedAmm,
 } from "@metrom-xyz/sdk";
-import type { CompletedRequiredSteps } from "..";
 import { StepSection } from "../step-section";
 import { useTranslations } from "next-intl";
 import { WeightingInputs } from "../../inputs/weighting-inputs";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 import type { Address } from "viem";
 import { InfoMessage } from "@/src/components/info-message";
 import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 interface AmmPoolLiquidityRewardsStepProps {
+    stepNumber: number;
     payload: AmmPoolLiquidityCampaignPayload;
     disabled?: boolean;
-    onComplete: (steps: Partial<CompletedRequiredSteps>) => void;
     onApply: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
 }
 
 export function AmmPoolLiquidityRewardsStep({
+    stepNumber,
     payload,
     disabled,
-    onComplete,
     onApply,
 }: AmmPoolLiquidityRewardsStepProps) {
     const [rewardsPayload, setRewardsPayload] = useState({
@@ -50,7 +50,8 @@ export function AmmPoolLiquidityRewardsStep({
     });
 
     const t = useTranslations("newCampaign.form.ammPoolLiquidity");
-    const { errors } = useFormErrors();
+    const { id: chainId } = useChainWithType();
+    const { errors } = useFormValidation();
 
     const unsavedChanges = useMemo(() => {
         if (
@@ -106,7 +107,8 @@ export function AmmPoolLiquidityRewardsStep({
 
     return (
         <CampaignRewardsStep
-            chainId={payload.chainId}
+            stepNumber={stepNumber}
+            chainId={chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
             payload={rewardsPayload}
@@ -116,7 +118,6 @@ export function AmmPoolLiquidityRewardsStep({
             disabled={disabled}
             unsavedChanges={!disabled && unsavedChanges}
             onChange={handlePayloadOnChange}
-            onComplete={onComplete}
             onApply={onApply}
             additionalSection={
                 tokensRatioSupported && (

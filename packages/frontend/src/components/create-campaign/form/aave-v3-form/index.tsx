@@ -12,22 +12,24 @@ import {
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import { AaveV3BasicsSteps } from "./aave-v3-basics-step";
+import {
+    AaveV3BasicsSteps,
+    REQUIRED_PAYLOAD_KEYS,
+} from "./aave-v3-basics-step";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { AaveV3RewardsStep } from "./aave-v3-rewards-step";
-import type { CompletedRequiredSteps } from "..";
-import { useFormErrors } from "@/src/context/form-errors";
-import { validateDistributables } from "@/src/utils/form";
+import { useFormValidation } from "@/src/context/form-validation";
+import { allFieldsFilled, validateDistributables } from "@/src/utils/form";
+
+import styles from "./styles.module.css";
 import { validateDistributions } from "@/src/utils/creation-form";
 import type {
     CampaignPreviewDistributables,
     CampaignPreviewFixedDistribution,
     CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
-
-import styles from "./styles.module.css";
 
 function validatePayload(
     chainId: number,
@@ -129,11 +131,6 @@ export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
     },
 ] as const;
 
-const INITIAL_COMPLETED_REQUIRED_STEPS: CompletedRequiredSteps = {
-    basics: false,
-    rewards: false,
-};
-
 export function AaveV3Form({
     // errors,
     distributablesType,
@@ -145,10 +142,8 @@ export function AaveV3Form({
     const [payload, setPayload] = useState<AaveV3CampaignPayload>({
         distributables: { type: distributablesType },
     });
-    const [completedRequiredSteps, setCompletedRequiredSteps] =
-        useState<CompletedRequiredSteps>(INITIAL_COMPLETED_REQUIRED_STEPS);
 
-    const { errors } = useFormErrors();
+    const { errors } = useFormValidation();
     const { id: chainId, type: chainType } = useChainWithType();
 
     const { /*loading: loadingUsdNetSupply,*/ usdNetSupply } =
@@ -198,13 +193,6 @@ export function AaveV3Form({
         [payload, onStepComplete],
     );
 
-    const handleOnCompletedRequiredStep = useCallback(
-        (part: Partial<CompletedRequiredSteps>) => {
-            setCompletedRequiredSteps((prev) => ({ ...prev, ...part }));
-        },
-        [],
-    );
-
     // function handlePreviewOnClick() {
     //     onPreviewClick(previewPayload);
     // }
@@ -220,15 +208,14 @@ export function AaveV3Form({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <AaveV3BasicsSteps
-                    payload={payload}
-                    onComplete={handleOnCompletedRequiredStep}
-                    onApply={handleOnApply}
-                />
+                <AaveV3BasicsSteps payload={payload} onApply={handleOnApply} />
                 <AaveV3RewardsStep
+                    stepNumber={1}
                     payload={payload}
-                    disabled={!completedRequiredSteps.basics}
-                    onComplete={handleOnCompletedRequiredStep}
+                    disabled={
+                        !!errors.basics ||
+                        !allFieldsFilled(payload, REQUIRED_PAYLOAD_KEYS)
+                    }
                     onApply={handleOnApply}
                 />
                 {/* <AaveV3BrandStep

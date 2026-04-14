@@ -12,7 +12,7 @@ import { ListHeader } from "./list-header";
 import { ListFooter } from "./list-footer";
 import { Pool } from "./pool";
 import { Picker } from "./picker";
-import type { FormErrors } from "@/src/context/form-errors";
+import type { FormSteps } from "@/src/context/form-validation";
 
 import styles from "./styles.module.css";
 
@@ -22,7 +22,7 @@ interface PoolSelectProps {
     pool?: AmmPool;
     resetTrigger?: unknown;
     onChange: (value: AmmPoolLiquidityCampaignPayloadPart) => void;
-    onError: (errors: FormErrors) => void;
+    onError: (errors: FormSteps<string>) => void;
 }
 
 interface OptionData {
