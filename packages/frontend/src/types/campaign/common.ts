@@ -55,6 +55,12 @@ export interface ReimbursementsWithRemaining extends Reimbursement {
     remaining: UsdPricedOnChainAmount;
 }
 
+export type Erc20TokenAmountWithAllowance = UsdPricedErc20TokenAmount & {
+    allowance: bigint;
+    approving: boolean;
+    approved: boolean;
+};
+
 export interface Rank {
     account: Address;
     weight: number;

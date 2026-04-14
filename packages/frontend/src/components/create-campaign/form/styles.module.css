@@ -18,3 +18,31 @@
 .form {
     @apply w-full flex flex-col gap-5 sm:gap-8 flex-[73%];
 }
+
+.launchFeedback {
+    @apply w-full flex flex-col items-center gap-5 max-w-[33.75rem] m-5 h-fit surface-primary rounded-lg px-5 sm:px-10 py-10 self-center;
+}
+
+.topContent {
+    @apply flex flex-col items-center gap-4;
+}
+
+.texts {
+    @apply flex flex-col items-center gap-1 text-center;
+}
+
+.bottomContent {
+    @apply w-full flex flex-col justify-center sm:flex-row items-center gap-3;
+}
+
+.greenCircle {
+    @apply flex items-center justify-center size-10 rounded-full bg-brand-green-dark dark:bg-brand-green;
+}
+
+.checkIcon {
+    @apply size-4 text-white dark:text-neutral-800;
+}
+
+.button {
+    @apply w-fit;
+}

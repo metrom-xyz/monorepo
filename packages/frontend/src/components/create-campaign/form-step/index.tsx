@@ -10,6 +10,7 @@ import styles from "./styles.module.css";
 interface FormStepProps {
     title: string;
     open: boolean;
+    titleDecorator?: ReactNode;
     optional?: boolean;
     disabled?: boolean;
     completed?: boolean;
@@ -23,6 +24,7 @@ interface FormStepProps {
 export function FormStep({
     title,
     open,
+    titleDecorator,
     optional,
     disabled,
     completed,
@@ -54,6 +56,7 @@ export function FormStep({
                         )}
                     </div>
                     <Typography weight="semibold">{title}</Typography>
+                    {titleDecorator}
                     {optional && (
                         <div className={styles.optionalTag}>
                             <Typography

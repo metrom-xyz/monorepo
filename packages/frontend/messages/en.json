@@ -311,6 +311,22 @@
                 "chart": "Range visualizer",
                 "notSaved": "Not saved"
             },
+            "approveLaunch": {
+                "title": "Approve assets and launch",
+                "protocolFee": "Protocol fee: {feeUsd}",
+                "approveDescription": "To launch the campaign, approve each reward token and confirm",
+                "noApproveNeeded": "No additional approvals are required",
+                "switchChain": "Switch to {chain} to launch the campaign",
+                "deploy": "Launch campaign",
+                "xOfY": "{current} of {total}",
+                "approveReward": "Approve {amount} {symbol} in wallet",
+                "approvedReward": "Approved {amount} {symbol}",
+                "connectWallet": "Connect wallet",
+                "connectYourWallet": "Connect your wallet to authorize token transfers and launch your campaign.",
+                "errors": {
+                    "specification": "An error occurred while processing the campaign specification"
+                }
+            },
             "base": {
                 "kind": {
                     "title": "Action"
@@ -566,8 +582,8 @@
         "submit": {
             "connectWallet": "Connect wallet",
             "approveRewards": {
-                "approving": "Approving {amount} {symbol} ({currentIndex}/{totalAmount})",
-                "approve": "Approve {amount} {symbol} ({currentIndex}/{totalAmount})"
+                "approving": "Approving {amount} {symbol}",
+                "approve": "Approve {amount} {symbol}"
             },
             "preview": "Campaign preview"
         },
@@ -636,6 +652,7 @@
                 "editAmount": "Click to edit amount",
                 "removeAsset": "Remove asset",
                 "errors": {
+                    "incompatibleChain": "Reward incompatible with the connected chain",
                     "insufficientBalance": "Insufficient balance",
                     "lowDistributionRate": "Low distribution rate"
                 }
@@ -665,6 +682,17 @@
                     "rangeTooWide": "Range too wide"
                 }
             }
+        },
+        "launchFeedback": {
+            "congratulations": "Congratulations!",
+            "standard": "Campaign successfully launched!",
+            "info": "You’ll be able to see your campaign live in about 10 minutes.",
+            "safe": {
+                "1": "The campaign creation transactions bundle is now ready to be signed.",
+                "2": "Please collect signatures and execute it before the campaign start date."
+            },
+            "discover": "Return to homepage",
+            "newCampaign": "Create new campaign"
         }
     },
     "campaignPreview": {
@@ -727,21 +755,8 @@
             "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
             "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}"
         },
-        "errors": {
-            "specification": "An error occurred while processing the campaign specification"
-        },
         "deploy": "Launch campaign",
-        "connectWallet": "Connect wallet",
-        "congratulations": "Congratulations!",
-        "launched": {
-            "standard": "Campaign successfully launched!",
-            "safe": {
-                "1": "The campaign creation transactions bundle is now ready to be signed.",
-                "2": "Please collect signatures and execute it before the campaign start date."
-            }
-        },
-        "discover": "Discover",
-        "newCampaign": "New campaign"
+        "connectWallet": "Connect wallet"
     },
     "projectIntro": {
         "relatedArticles": "Related articles"

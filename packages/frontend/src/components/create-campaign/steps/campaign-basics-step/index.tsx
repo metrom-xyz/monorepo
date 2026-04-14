@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { FormStep } from "../../form-step";
-import { useCallback, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import type {
     BaseCampaignPayload,
     BaseCampaignPayloadPart,
@@ -10,51 +10,59 @@ import { StepSection } from "../../form/step-section";
 import { EndDatePicker } from "../../inputs/end-date-picker";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import type { CompletedRequiredSteps } from "../../form";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
 
 import styles from "./styles.module.css";
 
 interface CampaignBasicsStepProps {
+    stepNumber?: number;
     payload: BaseCampaignPayload;
     targetSection: ReactNode;
     startDatePickerDisabled?: boolean;
     applyDisabled?: boolean;
     completed?: boolean;
     unsavedChanges?: boolean;
-    onComplete: (steps: Partial<CompletedRequiredSteps>) => void;
     onChange: (payload: BaseCampaignPayloadPart) => void;
     onApply: (payload: BaseCampaignPayloadPart) => void;
 }
 
 export function CampaignBasicsStep({
+    stepNumber = 0,
     payload,
     targetSection,
     startDatePickerDisabled,
     applyDisabled,
     completed,
     unsavedChanges,
-    onComplete,
     onChange,
     onApply,
 }: CampaignBasicsStepProps) {
     const [open, setOpen] = useState(true);
 
     const t = useTranslations("newCampaign.form.basics");
-    const { errors, updateErrors } = useFormErrors();
+    const { errors, updateErrors, updateUnsaved } = useFormValidation();
+    const { cursor, setCursor } = useFormSteps();
+
+    useEffect(() => {
+        setOpen(cursor === stepNumber);
+    }, [cursor, stepNumber]);
+
+    useEffect(() => {
+        updateUnsaved({ basics: unsavedChanges });
+    }, [unsavedChanges, updateUnsaved]);
 
     const handleOnApply = useCallback(() => {
         onApply(payload);
         setOpen(false);
-        onComplete({ basics: true });
-    }, [payload, onApply, onComplete]);
+        setCursor(stepNumber + 1);
+    }, [payload, stepNumber, onApply, setCursor]);
 
     const handleOnError = useCallback(
         (error?: string) => {
             updateErrors({ basics: error });
-            onComplete({ basics: false });
         },
-        [onComplete, updateErrors],
+        [updateErrors],
     );
 
     return (

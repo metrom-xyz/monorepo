@@ -11,30 +11,29 @@ import {
     getCampaignApr,
 } from "@/src/utils/form";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
-import { useChainType } from "@/src/hooks/useChainType";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
-import type { CompletedRequiredSteps } from "..";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
 
 interface AaveV3RewardsStepProps {
+    stepNumber: number;
     payload: AaveV3CampaignPayload;
     disabled?: boolean;
-    onComplete: (steps: Partial<CompletedRequiredSteps>) => void;
     onApply: (payload: AaveV3CampaignPayloadPart) => void;
 }
 
 export function AaveV3RewardsStep({
+    stepNumber,
     payload,
     disabled,
-    onComplete,
     onApply,
 }: AaveV3RewardsStepProps) {
     const [rewardsPayload, setRewardsPayload] = useState({
         distributables: payload.distributables,
     });
 
-    const { errors } = useFormErrors();
-    const chainType = useChainType();
+    const { errors } = useFormValidation();
+    const { id: chainId, type: chainType } = useChainWithType();
     const {
         // loading: loadingCollateralUsdNetSupply,
         usdNetSupply: collateralUsdNetSupply,
@@ -93,7 +92,8 @@ export function AaveV3RewardsStep({
 
     return (
         <CampaignRewardsStep
-            chainId={payload.chainId}
+            stepNumber={stepNumber}
+            chainId={chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
             payload={rewardsPayload}
@@ -102,7 +102,6 @@ export function AaveV3RewardsStep({
             completed={!!completed}
             disabled={disabled}
             unsavedChanges={!disabled && unsavedChanges}
-            onComplete={onComplete}
             onApply={onApply}
             onChange={handlePayloadOnChange}
         />

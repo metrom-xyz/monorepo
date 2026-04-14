@@ -8,7 +8,7 @@ import { isAaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
 import { AmmLiquidityPoolFormPreview } from "./amm-liquidity-pool-form-preview";
 import { AaveV3FormPreview } from "./aave-v3-form-preview";
 import { DocumentTextIcon } from "@/src/assets/document-text-icon";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 
 import styles from "./styles.module.css";
 
@@ -18,7 +18,7 @@ interface FormPreviewProps {
 
 export function FormPreview({ payload }: FormPreviewProps) {
     const t = useTranslations("newCampaign.formPreview");
-    const { errors } = useFormErrors();
+    const { errors } = useFormValidation();
 
     const ammPoolLiquidityCampaignPayload =
         payload && isAmmPoolLiquidityCampaignPayload(payload);

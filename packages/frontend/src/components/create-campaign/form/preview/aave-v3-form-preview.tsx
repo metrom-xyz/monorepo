@@ -4,11 +4,11 @@ import { Duration } from "../../previews/duration";
 import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
 import { AaveV3Target } from "../../previews/aave-v3-target";
 import { distributablesCompleted } from "@/src/utils/form";
-import type { FormErrors } from "@/src/context/form-errors";
+import type { FormSteps } from "@/src/context/form-validation";
 
 interface AaveV3FormPreviewProps {
     payload: AaveV3CampaignPayload;
-    errors: FormErrors;
+    errors: FormSteps<string>;
 }
 
 export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {

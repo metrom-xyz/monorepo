@@ -25,7 +25,7 @@ import { Reward } from "./reward";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { formatUnits, parseUnits } from "@/src/utils/format";
-import type { FormErrors } from "@/src/context/form-errors";
+import type { FormSteps } from "@/src/context/form-validation";
 
 import styles from "./styles.module.css";
 
@@ -34,7 +34,7 @@ interface RewardsPickerTokensProps {
     campaignDuration?: number;
     value?: CampaignPayloadTokenDistributables;
     onChange: (value: BaseCampaignPayloadPart) => void;
-    onError: (errors: FormErrors) => void;
+    onError: (errors: FormSteps<string>) => void;
 }
 
 export type RewardsPickerErrorMessage =
@@ -59,6 +59,7 @@ export function RewardsPickerTokens({
     const { tokens, loading } = useRewardTokens({ chainId });
     const { address } = useAccount();
     const { balance: rewardTokenBalance } = useWatchBalance({
+        chainId,
         address,
         token: token?.data?.token.address,
     });
@@ -165,13 +166,20 @@ export function RewardsPickerTokens({
     const handleOnError = useCallback(
         (address: Address, error?: RewardsPickerErrorMessage) => {
             if (error) {
-                setErrors((state) => [...state, { address, error }]);
+                setErrors((state) => {
+                    if (state.length === 0) return [{ address, error }];
+
+                    if (!state.some((item) => item.address === address))
+                        return [...state, { address, error }];
+
+                    return state.map((item) => {
+                        if (item.address !== address) return item;
+                        return { ...item, error };
+                    });
+                });
             } else {
                 setErrors((state) =>
-                    state.filter(
-                        (existingRewardError) =>
-                            existingRewardError.address !== address,
-                    ),
+                    state.filter((item) => item.address !== address),
                 );
             }
         },
@@ -225,6 +233,7 @@ export function RewardsPickerTokens({
                         key={token.token.address}
                         chainId={chainId}
                         campaignDuration={campaignDuration}
+                        tokens={tokens}
                         value={token}
                         error={error?.error}
                         onError={handleOnError}
