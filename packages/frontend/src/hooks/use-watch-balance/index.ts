@@ -7,6 +7,7 @@ import { APTOS } from "@/src/commons/env";
 export interface UseWatchBalanceParams extends HookBaseParams {
     address?: Address;
     token?: Address;
+    chainId?: number;
 }
 
 export interface UseWatchBalanceReturnValue {

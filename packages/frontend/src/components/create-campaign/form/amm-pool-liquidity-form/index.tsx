@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from "react";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import {
     AmmPoolLiquidityType,
     CampaignKind,
@@ -13,17 +12,22 @@ import {
     type AmmPoolLiquidityCampaignPayloadPart,
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import { AmmPoolLiquidityBasicsSteps } from "./amm-pool-liquidity-basics-step";
-import type { CompletedRequiredSteps } from "..";
+import {
+    AmmPoolLiquidityBasicsSteps,
+    BASIC_PAYLOAD_KEYS,
+} from "./amm-pool-liquidity-basics-step";
 import { AmmPoolLiquidityRewardsStep } from "./amm-pool-liquidity-rewards-step";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
 import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
 import { CampaignPoolRangeStep } from "../../steps/campaign-pool-range-step";
 import {
+    allFieldsFilled,
+    distributablesCompleted,
     validateDistributables,
     validatePriceRangeSpecification,
 } from "@/src/utils/form";
+import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
 
 import styles from "./styles.module.css";
 import { validateDistributions } from "@/src/utils/creation-form";
@@ -94,42 +98,29 @@ interface AmmPoolLiquidityFormProps {
     unsupportedChain: boolean;
     distributablesType: DistributablesType;
     onStepComplete: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
-    onPreviewClick: (
-        payload:
-            | AmmPoolLiquidityCampaignPreviewPayload
-            | EmptyTargetCampaignPreviewPayload
-            | null,
-    ) => void;
+    onLaunch: () => void;
 }
-
-const INITIAL_COMPLETED_REQUIRED_STEPS: CompletedRequiredSteps = {
-    basics: false,
-    rewards: false,
-};
 
 export function AmmPoolLiquidityForm({
     kind,
     // unsupportedChain,
-    // completedRequiredSteps,
     distributablesType,
     onStepComplete,
-    // onPreviewClick,
+    onLaunch,
 }: AmmPoolLiquidityFormProps) {
     const [payload, setPayload] = useState<AmmPoolLiquidityCampaignPayload>({
         kind,
         distributables: { type: distributablesType },
         weighting: { liquidity: 100, token0: 0, token1: 0 },
     });
-    const [completedRequiredSteps, setCompletedRequiredSteps] =
-        useState<CompletedRequiredSteps>(INITIAL_COMPLETED_REQUIRED_STEPS);
 
-    const { errors } = useFormErrors();
-    const { id: chainId } = useChainWithType();
+    const { errors, unsaved } = useFormValidation();
 
-    useMemo(() => {
-        if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload);
-    }, [chainId, payload, errors]);
+    const validatedPayload = useMemo(() => {
+        if (Object.values(errors).some((error) => !!error) || !payload.chainId)
+            return null;
+        return validatePayload(payload.chainId, payload);
+    }, [payload, errors]);
 
     // const noDistributables = useMemo(() => {
     //     return (
@@ -193,44 +184,56 @@ export function AmmPoolLiquidityForm({
         [payload, onStepComplete],
     );
 
-    const handleOnCompletedRequiredStep = useCallback(
-        (part: Partial<CompletedRequiredSteps>) => {
-            setCompletedRequiredSteps((prev) => ({ ...prev, ...part }));
-        },
-        [],
-    );
-
-    // TODO: should become on launch click
-    // function handlePreviewOnClick() {
-    //     onPreviewClick(previewPayload);
-    // }
+    const unsavedSteps = Object.values(unsaved).some((item) => !!item);
 
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
                 <AmmPoolLiquidityBasicsSteps
                     payload={payload}
-                    onComplete={handleOnCompletedRequiredStep}
                     onApply={handleOnApply}
                 />
                 <AmmPoolLiquidityRewardsStep
+                    stepNumber={1}
                     payload={payload}
-                    disabled={!completedRequiredSteps.basics}
-                    onComplete={handleOnCompletedRequiredStep}
+                    disabled={
+                        !!errors.basics ||
+                        !allFieldsFilled(payload, BASIC_PAYLOAD_KEYS)
+                    }
                     onApply={handleOnApply}
                 />
                 <CampaignKpiStep
+                    stepNumber={2}
+                    // TODO: better way?
+                    stepIncrement={rangeSupported ? 1 : 2}
                     payload={payload}
-                    disabled={!completedRequiredSteps.rewards}
+                    disabled={
+                        !!errors.rewards || !distributablesCompleted(payload)
+                    }
                     onApply={handleOnApply}
                 />
                 {rangeSupported && (
                     <CampaignPoolRangeStep
+                        stepNumber={3}
                         payload={payload}
-                        disabled={!completedRequiredSteps.rewards}
+                        disabled={
+                            !!errors.rewards ||
+                            !distributablesCompleted(payload)
+                        }
                         onApply={handleOnApply}
                     />
                 )}
+                <CampaignApproveLaunchStep
+                    stepNumber={4}
+                    payload={validatedPayload}
+                    disabled={
+                        unsavedSteps ||
+                        !validatedPayload ||
+                        !!Object.values(errors).some((error) => !!error) ||
+                        !distributablesCompleted(payload)
+                    }
+                    onLaunch={onLaunch}
+                />
                 {/* <KpiStep
                     disabled={noDistributables || unsupportedChain}
                     kind={payload.kind}

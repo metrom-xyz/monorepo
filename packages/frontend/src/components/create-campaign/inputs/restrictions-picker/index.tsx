@@ -14,7 +14,7 @@ import { type Address } from "viem";
 import { Dot } from "./dot";
 import { CsvAddressesImport } from "./csv-addresses-import";
 import { isAddress } from "@/src/utils/address";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { RestrictedAddress } from "./restricted-address";
 import { TrashIcon } from "@/src/assets/trash-icon";
@@ -39,7 +39,7 @@ export function RestrictionsPicker({
     const [address, setAddress] = useState("");
 
     const t = useTranslations("newCampaign.inputs.restrictionsPicker");
-    const { updateErrors } = useFormErrors();
+    const { updateErrors } = useFormValidation();
 
     useEffect(() => {
         if (!address) {

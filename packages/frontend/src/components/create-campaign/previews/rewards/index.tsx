@@ -6,7 +6,7 @@ import {
     formatPercentage,
     formatUsdAmount,
 } from "@/src/utils/format";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import {
@@ -46,7 +46,7 @@ export function Rewards({
     restrictions,
 }: RewardsProps) {
     const t = useTranslations("newCampaign.formPreview");
-    const { errors } = useFormErrors();
+    const { errors } = useFormValidation();
 
     const totalUsd = useMemo(() => {
         if (

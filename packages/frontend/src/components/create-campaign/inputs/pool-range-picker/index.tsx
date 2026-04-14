@@ -6,7 +6,7 @@ import {
     tickToScaledPrice,
 } from "@metrom-xyz/sdk";
 import { useCallback, useEffect, useState } from "react";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 import type { AugmentedPriceRangeBound } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 
@@ -40,7 +40,7 @@ export function PoolRangePicker({
     const [toError, setToError] = useState<ErrorMessage>("");
 
     const t = useTranslations("newCampaign.inputs.rangePicker");
-    const { updateErrors } = useFormErrors();
+    const { updateErrors } = useFormValidation();
 
     useEffect(() => {
         if (!from && !to) {
@@ -65,8 +65,9 @@ export function PoolRangePicker({
     }, [from, to]);
 
     useEffect(() => {
-        updateErrors({ range: fromError || toError });
-    }, [fromError, toError, updateErrors]);
+        const error = fromError || toError;
+        updateErrors({ range: error ? t(error) : "" });
+    }, [fromError, toError, updateErrors, t]);
 
     const getChangeHandler = useCallback(
         (type: "from" | "to") => {

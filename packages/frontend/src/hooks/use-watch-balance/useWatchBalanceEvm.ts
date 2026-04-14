@@ -5,6 +5,7 @@ import type { UseWatchBalanceParams, UseWatchBalanceReturnValue } from ".";
 import { useWatchBlockNumber } from "../use-watch-block-number";
 
 export function useWatchBalanceEvm({
+    chainId,
     address,
     token,
     enabled = true,
@@ -16,6 +17,7 @@ export function useWatchBalanceEvm({
         isLoading: loading,
         refetch,
     } = useReadContract({
+        chainId,
         address: token,
         abi: erc20Abi,
         functionName: "balanceOf",

@@ -16,19 +16,17 @@ import { AaveV3CollateralSelect } from "../../inputs/aave-v3-collateral-select";
 import { AaveV3MarketSelect } from "../../inputs/aave-v3-market-select";
 import { allFieldsFilled, arraysEqual } from "@/src/utils/form";
 import { AaveV3BlockCrossBorrowPicker } from "../../inputs/aave-v3-block-cross-borrow-picker";
-import type { CompletedRequiredSteps } from "..";
-import { useFormErrors } from "@/src/context/form-errors";
+import { useFormValidation } from "@/src/context/form-validation";
 import { Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
 interface AaveV3BasicsStepsProps {
     payload: AaveV3CampaignPayload;
-    onComplete: (steps: Partial<CompletedRequiredSteps>) => void;
     onApply: (payload: BaseCampaignPayloadPart) => void;
 }
 
-const REQUIRED_PAYLOAD_KEYS: Partial<keyof AaveV3CampaignPayload>[] = [
+export const REQUIRED_PAYLOAD_KEYS: Partial<keyof AaveV3CampaignPayload>[] = [
     "chainId",
     "brand",
     "market",
@@ -46,7 +44,6 @@ const PAYLOAD_KEYS = [...REQUIRED_PAYLOAD_KEYS, ...OPTIONAL_PAYLOAD_KEYS];
 
 export function AaveV3BasicsSteps({
     payload,
-    onComplete,
     onApply,
 }: AaveV3BasicsStepsProps) {
     const [basicsPayload, setBasicsPayload] = useState(
@@ -56,7 +53,7 @@ export function AaveV3BasicsSteps({
     );
 
     const t = useTranslations("newCampaign");
-    const { errors } = useFormErrors();
+    const { errors } = useFormValidation();
 
     const unsavedChanges = useMemo(() => {
         if (
@@ -105,7 +102,6 @@ export function AaveV3BasicsSteps({
             applyDisabled={applyDisabled}
             completed={!!completed}
             unsavedChanges={unsavedChanges}
-            onComplete={onComplete}
             onApply={onApply}
             onChange={handlePayloadOnChange}
             targetSection={

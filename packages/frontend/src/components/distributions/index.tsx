@@ -100,8 +100,6 @@ export function Distributions({
             id: campaignItemId,
         });
 
-    console.log({ campaignItemDetails });
-
     useEffect(() => {
         if (distros.length === 0) return;
         setActiveIndex(0);
