@@ -17,19 +17,18 @@ import {
     DistributablesType,
     RestrictionType,
 } from "@metrom-xyz/sdk";
-import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import type { Address } from "viem";
+import type { FormStepId } from "@/src/types/form";
 
 interface AaveV3RewardsStepProps {
-    stepNumber: number;
     payload: AaveV3CampaignPayload;
     disabled?: boolean;
-    onApply: (payload: AaveV3CampaignPayloadPart) => void;
+    onApply: (payload: AaveV3CampaignPayloadPart, stepId: FormStepId) => void;
 }
 
 export function AaveV3RewardsStep({
-    stepNumber,
     payload,
     disabled,
     onApply,
@@ -42,7 +41,7 @@ export function AaveV3RewardsStep({
         },
     });
 
-    const { errors } = useFormValidation();
+    const { errors } = useFormSteps();
     const { id: chainId, type: chainType } = useChainWithType();
     const {
         loading: loadingCollateralUsdNetSupply,
@@ -107,7 +106,6 @@ export function AaveV3RewardsStep({
 
     return (
         <CampaignRewardsStep
-            stepNumber={stepNumber}
             chainId={chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}

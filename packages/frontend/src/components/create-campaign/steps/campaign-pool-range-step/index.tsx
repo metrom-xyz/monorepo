@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
 import type {
     AmmPoolLiquidityCampaignPayload,
     AugmentedPriceRangeBound,
@@ -17,22 +17,23 @@ import { formatAmount } from "@/src/utils/format";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import classNames from "classnames";
-import { useFormSteps } from "@/src/context/form-steps";
 import { usePrevious } from "react-use";
+import { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 
 const COMPUTE_TICKS_AMOUNT = 3000;
 
 interface CampaignPoolRangeStepProps {
-    stepNumber: number;
     payload: AmmPoolLiquidityCampaignPayload;
     disabled?: boolean;
-    onApply: (payload: AmmPoolLiquidityCampaignPayload) => void;
+    onApply: (
+        payload: AmmPoolLiquidityCampaignPayload,
+        stepId: FormStepId,
+    ) => void;
 }
 
 export function CampaignPoolRangeStep({
-    stepNumber,
     payload,
     disabled,
     onApply,
@@ -49,8 +50,8 @@ export function CampaignPoolRangeStep({
     const token0To1 = rangePayload.priceRangeSpecification?.token0To1 ?? true;
 
     const t = useTranslations("newCampaign.form.range");
-    const { errors, updateErrors, updateUnsaved } = useFormValidation();
-    const { cursor, setCursor } = useFormSteps();
+    const { errors, activeStepId, updateErrors, updateUnsaved } =
+        useFormSteps();
     const prevPoolId = usePrevious(payload.pool?.id);
 
     const { liquidityDensity, loading: loadingLiquidityDensity } =
@@ -91,6 +92,10 @@ export function CampaignPoolRangeStep({
         rangeSpecificationCompleted(rangePayload);
 
     useEffect(() => {
+        setOpen(activeStepId === FormStepId.PoolRange);
+    }, [activeStepId]);
+
+    useEffect(() => {
         updateUnsaved({ basics: unsavedChanges });
     }, [unsavedChanges, updateUnsaved]);
 
@@ -100,8 +105,7 @@ export function CampaignPoolRangeStep({
             setOpen(true);
             return;
         }
-        setOpen(cursor === stepNumber);
-    }, [completed, disabled, cursor, unsavedChanges, errors.range, stepNumber]);
+    }, [completed, disabled, unsavedChanges, errors.range]);
 
     useEffect(() => {
         if (!prevPoolId || prevPoolId === payload.pool?.id) return;
@@ -114,12 +118,13 @@ export function CampaignPoolRangeStep({
                 to: undefined,
             },
         });
-        updateErrors({ range: "Pool changed, review range" });
+        updateErrors({ range: t("errors.poolChanged") });
     }, [
         payload.pool?.id,
         prevPoolId,
         rangePayload.priceRangeSpecification?.from,
         updateErrors,
+        t,
     ]);
 
     const token0 = payload.pool?.tokens[token0To1 ? 0 : 1];
@@ -183,7 +188,7 @@ export function CampaignPoolRangeStep({
     }, [payload.pool, rangePayload, token0To1]);
 
     const handleOnSkip = useCallback(() => {
-        onApply({ priceRangeSpecification: undefined });
+        onApply({ priceRangeSpecification: undefined }, FormStepId.PoolRange);
         setRangePayload({
             priceRangeSpecification: {
                 token0To1: true,
@@ -191,16 +196,14 @@ export function CampaignPoolRangeStep({
                 to: undefined,
             },
         });
-        setCursor(stepNumber + 1);
         setOpen(false);
         updateErrors({ range: "" });
-    }, [stepNumber, onApply, setCursor, updateErrors]);
+    }, [onApply, updateErrors]);
 
     const handleOnApply = useCallback(() => {
-        onApply(rangePayload);
-        setCursor(stepNumber + 1);
+        onApply(rangePayload, FormStepId.PoolRange);
         setOpen(false);
-    }, [stepNumber, rangePayload, onApply, setCursor]);
+    }, [rangePayload, onApply]);
 
     return (
         <FormStep

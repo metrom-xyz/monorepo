@@ -4,7 +4,7 @@ import type {
 } from "@/src/types/campaign/common";
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { RewardsPickerTokens } from "./tokens";
-import type { FormSteps } from "@/src/context/form-validation";
+import type { FormSteps } from "@/src/context/form-steps";
 
 interface RewardsPickerProps {
     chainId?: number;

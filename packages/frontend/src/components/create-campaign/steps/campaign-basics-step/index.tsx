@@ -10,13 +10,12 @@ import { StepSection } from "../../form/step-section";
 import { EndDatePicker } from "../../inputs/end-date-picker";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useFormValidation } from "@/src/context/form-validation";
 import { useFormSteps } from "@/src/context/form-steps";
+import { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 
 interface CampaignBasicsStepProps {
-    stepNumber?: number;
     payload: BaseCampaignPayload;
     targetSection: ReactNode;
     startDatePickerDisabled?: boolean;
@@ -24,11 +23,10 @@ interface CampaignBasicsStepProps {
     completed?: boolean;
     unsavedChanges?: boolean;
     onChange: (payload: BaseCampaignPayloadPart) => void;
-    onApply: (payload: BaseCampaignPayloadPart) => void;
+    onApply: (payload: BaseCampaignPayloadPart, stepId: FormStepId) => void;
 }
 
 export function CampaignBasicsStep({
-    stepNumber = 0,
     payload,
     targetSection,
     startDatePickerDisabled,
@@ -38,25 +36,24 @@ export function CampaignBasicsStep({
     onChange,
     onApply,
 }: CampaignBasicsStepProps) {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const t = useTranslations("newCampaign.form.basics");
-    const { errors, updateErrors, updateUnsaved } = useFormValidation();
-    const { cursor, setCursor } = useFormSteps();
+    const { errors, activeStepId, updateErrors, updateUnsaved } =
+        useFormSteps();
 
     useEffect(() => {
-        setOpen(cursor === stepNumber);
-    }, [cursor, stepNumber]);
+        setOpen(activeStepId === FormStepId.Basics);
+    }, [activeStepId]);
 
     useEffect(() => {
         updateUnsaved({ basics: unsavedChanges });
     }, [unsavedChanges, updateUnsaved]);
 
     const handleOnApply = useCallback(() => {
-        onApply(payload);
+        onApply(payload, FormStepId.Basics);
         setOpen(false);
-        setCursor(stepNumber + 1);
-    }, [payload, stepNumber, onApply, setCursor]);
+    }, [payload, onApply]);
 
     const handleOnError = useCallback(
         (error?: string) => {

@@ -25,7 +25,7 @@ import { Reward } from "./reward";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { formatUnits, parseUnits } from "@/src/utils/format";
-import type { FormSteps } from "@/src/context/form-validation";
+import type { FormSteps } from "@/src/context/form-steps";
 
 import styles from "./styles.module.css";
 

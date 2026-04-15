@@ -12,13 +12,14 @@ import { useTranslations } from "next-intl";
 import { BaseCampaignType } from "@metrom-xyz/sdk";
 import { useMemo, useState } from "react";
 import { allFieldsFilled } from "@/src/utils/form";
-import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
+import type { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 
 interface AmmPoolLiquidityBasicsStepsProps {
     payload: AmmPoolLiquidityCampaignPayload;
-    onApply: (payload: BaseCampaignPayloadPart) => void;
+    onApply: (payload: BaseCampaignPayloadPart, stepId: FormStepId) => void;
 }
 
 export const BASIC_PAYLOAD_KEYS: Partial<
@@ -39,7 +40,7 @@ export function AmmPoolLiquidityBasicsSteps({
     );
 
     const t = useTranslations("newCampaign");
-    const { errors, updateErrors } = useFormValidation();
+    const { errors, updateErrors } = useFormSteps();
 
     const unsavedChanges = useMemo(() => {
         if (

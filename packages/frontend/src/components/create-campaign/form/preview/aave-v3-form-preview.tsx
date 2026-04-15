@@ -7,7 +7,7 @@ import {
 } from "@/src/types/campaign/aave-v3-campaign";
 import { AaveV3Target } from "../../previews/aave-v3-target";
 import { distributablesCompleted, getCampaignApr } from "@/src/utils/form";
-import type { FormSteps } from "@/src/context/form-validation";
+import type { FormSteps } from "@/src/context/form-steps";
 import { Typography } from "@metrom-xyz/ui";
 import { getCampaignTargetValueName } from "@/src/utils/campaign";
 import { formatUsdAmount } from "@/src/utils/format";

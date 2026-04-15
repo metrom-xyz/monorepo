@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import type { AugmentedPriceRangeSpecification } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { FormStepPreview } from "../../form-step-preview";
-import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
 import type { AmmPool } from "@metrom-xyz/sdk";
 import { formatAmount } from "@/src/utils/format";
 
@@ -15,7 +15,7 @@ interface PoolRangeProps {
 
 export function PoolRange({ pool, priceRangeSpecification }: PoolRangeProps) {
     const t = useTranslations("newCampaign.formPreview");
-    const { errors } = useFormValidation();
+    const { errors } = useFormSteps();
 
     if (!pool || !priceRangeSpecification) return null;
 

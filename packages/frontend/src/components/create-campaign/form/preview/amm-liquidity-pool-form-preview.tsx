@@ -6,7 +6,7 @@ import {
     type AmmPoolLiquidityCampaignPayload,
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { AmmLiquidityPoolTarget } from "../../previews/amm-liquidity-pool-target";
-import type { FormSteps } from "@/src/context/form-validation";
+import type { FormSteps } from "@/src/context/form-steps";
 import {
     distributablesCompleted,
     getCampaignApr,
