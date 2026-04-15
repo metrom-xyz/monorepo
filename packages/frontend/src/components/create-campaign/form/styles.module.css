@@ -46,3 +46,23 @@
 .button {
     @apply w-fit;
 }
+
+.skeletonStepsWrapper {
+    @apply flex flex-col gap-2;
+}
+
+.skeletonStep {
+    @apply surface-primary w-full h-12 rounded-xl animate-pulse;
+}
+
+.skeletonPreview {
+    @apply hidden sm:flex flex-col gap-7 flex-[27%] surface-primary rounded-xl animate-pulse;
+}
+
+.skeletonText {
+    @apply surface-primary animate-pulse rounded-xl h-8 w-1/2;
+}
+
+.skeletonButton {
+    @apply surface-primary animate-pulse rounded-xl h-[2.875rem] w-20;
+}
