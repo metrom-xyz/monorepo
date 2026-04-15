@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import type { CampaignPreviewPayload } from "@/src/types/campaign/common";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { formatUsdAmount } from "@/src/utils/format";
-import { useFormValidation } from "@/src/context/form-validation";
-import { useCampaignFee } from "@/src/hooks/useCampaignFee";
 import { useFormSteps } from "@/src/context/form-steps";
+import { useCampaignFee } from "@/src/hooks/useCampaignFee";
 import { useChainType } from "@/src/hooks/useChainType";
 import { ChainType, SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
 import { InfoMessage } from "@/src/components/info-message";
@@ -15,11 +14,11 @@ import { buildSpecificationBundle } from "@/src/utils/campaign-bundle";
 import { ENVIRONMENT } from "@/src/commons/env";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { ApproveAndLaunch } from "./approve-and-launch";
+import { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 
 interface CampaignApproveLaunchStepProps {
-    stepNumber: number;
     payload: CampaignPreviewPayload | null;
     disabled?: boolean;
     onLaunch: () => void;
@@ -28,7 +27,6 @@ interface CampaignApproveLaunchStepProps {
 type ErrorMessage = LocalizedMessage<"newCampaign.form.approveLaunch">;
 
 export function CampaignApproveLaunchStep({
-    stepNumber,
     payload,
     disabled,
     onLaunch,
@@ -40,17 +38,15 @@ export function CampaignApproveLaunchStep({
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
 
     const t = useTranslations("newCampaign.form.approveLaunch");
-    const { errors } = useFormValidation();
-    const { cursor } = useFormSteps();
+    const chainType = useChainType();
+    const { errors, activeStepId } = useFormSteps();
     const { campaignFee, loading: loadingCampaignFee } = useCampaignFee({
         distributables: payload?.distributables,
     });
-    const chainType = useChainType();
 
     useEffect(() => {
-        if (disabled) return;
-        setOpen(cursor === stepNumber);
-    }, [disabled, cursor, stepNumber]);
+        setOpen(activeStepId === FormStepId.Launch);
+    }, [activeStepId]);
 
     useEffect(() => {
         if (tokensApproved) return;

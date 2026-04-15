@@ -12,7 +12,7 @@ import { ListHeader } from "./list-header";
 import { ListFooter } from "./list-footer";
 import { Pool } from "./pool";
 import { Picker } from "./picker";
-import type { FormSteps } from "@/src/context/form-validation";
+import type { FormSteps } from "@/src/context/form-steps";
 
 import styles from "./styles.module.css";
 

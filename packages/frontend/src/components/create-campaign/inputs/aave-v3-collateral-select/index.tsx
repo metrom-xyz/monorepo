@@ -119,6 +119,7 @@ export function AaveV3CollateralSelect({
             search
             disabled={!kind}
             options={options}
+            loading={loading}
             value={value?.address as string}
             onChange={handleOnChange}
             messages={{ noResults: t("noCollaterals") }}

@@ -17,7 +17,7 @@ import {
     BASIC_PAYLOAD_KEYS,
 } from "./amm-pool-liquidity-basics-step";
 import { AmmPoolLiquidityRewardsStep } from "./amm-pool-liquidity-rewards-step";
-import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
 import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
 import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
 import { CampaignPoolRangeStep } from "../../steps/campaign-pool-range-step";
@@ -28,6 +28,7 @@ import {
     validatePriceRangeSpecification,
 } from "@/src/utils/form";
 import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
+import { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 import { validateDistributions } from "@/src/utils/creation-form";
@@ -114,7 +115,7 @@ export function AmmPoolLiquidityForm({
         weighting: { liquidity: 100, token0: 0, token1: 0 },
     });
 
-    const { errors, unsaved } = useFormValidation();
+    const { errors, unsaved, updateActiveStepId } = useFormSteps();
 
     const validatedPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error) || !payload.chainId)
@@ -152,14 +153,6 @@ export function AmmPoolLiquidityForm({
     //     return true;
     // }, [payload.distributables]);
 
-    // const tokensRatioSupported = useMemo(() => {
-    //     return (
-    //         !!payload.pool &&
-    //         AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
-    //         payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
-    //     );
-    // }, [payload.pool]);
-
     const rangeSupported = useMemo(() => {
         return (
             !!payload.pool &&
@@ -168,20 +161,26 @@ export function AmmPoolLiquidityForm({
         );
     }, [payload.pool]);
 
-    // useEffect(() => {
-    //     onChange({ ...initialPayload, kind });
-    // }, [chainId, kind, onChange]);
-
-    // useEffect(() => {
-    //     onChange(payload);
-    // }, [payload, onChange]);
+    const steps: FormStepId[] = useMemo(
+        () => [
+            FormStepId.Basics,
+            FormStepId.Rewards,
+            FormStepId.Kpi,
+            ...(rangeSupported ? [FormStepId.PoolRange] : []),
+            FormStepId.Launch,
+        ],
+        [rangeSupported],
+    );
 
     const handleOnApply = useCallback(
-        (part: AmmPoolLiquidityCampaignPayloadPart) => {
+        (part: AmmPoolLiquidityCampaignPayloadPart, stepId: FormStepId) => {
             setPayload((prev) => ({ ...prev, ...part }));
             onStepComplete({ ...payload, ...part });
+
+            const currentIndex = steps.indexOf(stepId);
+            updateActiveStepId(steps[currentIndex + 1]);
         },
-        [payload, onStepComplete],
+        [payload, steps, onStepComplete, updateActiveStepId],
     );
 
     const unsavedSteps = Object.values(unsaved).some((item) => !!item);
@@ -194,7 +193,6 @@ export function AmmPoolLiquidityForm({
                     onApply={handleOnApply}
                 />
                 <AmmPoolLiquidityRewardsStep
-                    stepNumber={1}
                     payload={payload}
                     disabled={
                         !!errors.basics ||
@@ -203,9 +201,6 @@ export function AmmPoolLiquidityForm({
                     onApply={handleOnApply}
                 />
                 <CampaignKpiStep
-                    stepNumber={2}
-                    // TODO: better way?
-                    stepIncrement={rangeSupported ? 1 : 2}
                     payload={payload}
                     disabled={
                         !!errors.rewards || !distributablesCompleted(payload)
@@ -214,7 +209,6 @@ export function AmmPoolLiquidityForm({
                 />
                 {rangeSupported && (
                     <CampaignPoolRangeStep
-                        stepNumber={3}
                         payload={payload}
                         disabled={
                             !!errors.rewards ||
@@ -224,7 +218,6 @@ export function AmmPoolLiquidityForm({
                     />
                 )}
                 <CampaignApproveLaunchStep
-                    stepNumber={4}
                     payload={validatedPayload}
                     disabled={
                         unsavedSteps ||
@@ -252,15 +245,6 @@ export function AmmPoolLiquidityForm({
                     onError={handlePayloadOnError}
                 /> */}
             </div>
-            {/* <Button
-                icon={ArrowRightIcon}
-                iconPlacement="right"
-                disabled={!previewPayload}
-                onClick={handlePreviewOnClick}
-                className={{ root: styles.button }}
-            >
-                {t("submit.preview")}
-            </Button> */}
         </div>
     );
 }

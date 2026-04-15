@@ -18,7 +18,7 @@ import { Pool } from "../pool";
 import { useChainType } from "@/src/hooks/useChainType";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
-import type { FormSteps } from "@/src/context/form-validation";
+import type { FormSteps } from "@/src/context/form-steps";
 
 import styles from "./styles.module.css";
 

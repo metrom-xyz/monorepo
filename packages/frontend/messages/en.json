@@ -309,7 +309,10 @@
                 "saveRange": "Save reward range",
                 "skipRange": "Skip reward range",
                 "chart": "Range visualizer",
-                "notSaved": "Not saved"
+                "notSaved": "Not saved",
+                "errors": {
+                    "poolChanged": "Pool changed, review range"
+                }
             },
             "approveLaunch": {
                 "title": "Approve assets and launch",
