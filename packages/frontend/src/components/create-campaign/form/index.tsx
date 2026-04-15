@@ -25,7 +25,6 @@ import { HoldFungibleAssetForm } from "./hold-fungible-asset-form";
 import { FormPreview } from "./preview";
 import { ArrowLeftIcon } from "@/src/assets/arrow-left-icon";
 import { useTranslations } from "next-intl";
-import { FormValidationProvider } from "@/src/context/form-validation";
 import { FormStepsProvider } from "@/src/context/form-steps";
 import { CheckIcon } from "@/src/assets/check-icon";
 import { SAFE } from "@/src/commons/env";
@@ -176,68 +175,50 @@ export function CreateCampaignForm<T extends CampaignType>({
                         {t("back")}
                     </Button>
                     <FormStepsProvider>
-                        <FormValidationProvider>
-                            <div className={styles.content}>
-                                <div className={styles.form}>
-                                    <FormHeader type={campaignType} />
-                                    {campaignType ===
-                                        BaseCampaignType.AmmPoolLiquidity && (
-                                        <AmmPoolLiquidityForm
-                                            kind={CampaignKind.AmmPoolLiquidity}
-                                            distributablesType={
-                                                distributablesType
-                                            }
-                                            // TODO: remove this?
-                                            unsupportedChain={false}
-                                            onStepComplete={
-                                                handleOnStepComplete
-                                            }
-                                            onLaunch={handleOnLaunch}
-                                        />
-                                    )}
-                                    {campaignType ===
-                                        BaseCampaignType.LiquityV2 && (
-                                        <LiquityV2ForksForm
-                                            unsupportedChain={false}
-                                            onPreviewClick={
-                                                handlePreviewOnClick
-                                            }
-                                        />
-                                    )}
-                                    {campaignType ===
-                                        BaseCampaignType.AaveV3 && (
-                                        <AaveV3Form
-                                            unsupportedChain={false}
-                                            distributablesType={
-                                                distributablesType
-                                            }
-                                            onStepComplete={
-                                                handleOnStepComplete
-                                            }
-                                            onPreviewClick={
-                                                handlePreviewOnClick
-                                            }
-                                        />
-                                    )}
-                                    {campaignType ===
-                                        BaseCampaignType.HoldFungibleAsset && (
-                                        <HoldFungibleAssetForm
-                                            unsupportedChain={false}
-                                            onPreviewClick={
-                                                handlePreviewOnClick
-                                            }
-                                        />
-                                    )}
-                                    {campaignType ===
-                                        PartnerCampaignType.AaveV3BridgeAndSupply && (
-                                        <AaveV3BridgeAndSupplyForm
-                                            unsupportedChain={false}
-                                            onPreviewClick={
-                                                handlePreviewOnClick
-                                            }
-                                        />
-                                    )}
-                                    {/* {campaignType ===
+                        <div className={styles.content}>
+                            <div className={styles.form}>
+                                <FormHeader type={campaignType} />
+                                {campaignType ===
+                                    BaseCampaignType.AmmPoolLiquidity && (
+                                    <AmmPoolLiquidityForm
+                                        kind={CampaignKind.AmmPoolLiquidity}
+                                        distributablesType={distributablesType}
+                                        // TODO: remove this?
+                                        unsupportedChain={false}
+                                        onStepComplete={handleOnStepComplete}
+                                        onLaunch={handleOnLaunch}
+                                    />
+                                )}
+                                {campaignType ===
+                                    BaseCampaignType.LiquityV2 && (
+                                    <LiquityV2ForksForm
+                                        unsupportedChain={false}
+                                        onPreviewClick={handlePreviewOnClick}
+                                    />
+                                )}
+                                {campaignType === BaseCampaignType.AaveV3 && (
+                                    <AaveV3Form
+                                        unsupportedChain={false}
+                                        distributablesType={distributablesType}
+                                        onStepComplete={handleOnStepComplete}
+                                        onLaunch={handleOnLaunch}
+                                    />
+                                )}
+                                {campaignType ===
+                                    BaseCampaignType.HoldFungibleAsset && (
+                                    <HoldFungibleAssetForm
+                                        unsupportedChain={false}
+                                        onPreviewClick={handlePreviewOnClick}
+                                    />
+                                )}
+                                {campaignType ===
+                                    PartnerCampaignType.AaveV3BridgeAndSupply && (
+                                    <AaveV3BridgeAndSupplyForm
+                                        unsupportedChain={false}
+                                        onPreviewClick={handlePreviewOnClick}
+                                    />
+                                )}
+                                {/* {campaignType ===
                         PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity && (
                         <AmmPoolLiquidityForm
                             kind={
@@ -255,21 +236,18 @@ export function CreateCampaignForm<T extends CampaignType>({
                             onPreviewClick={handlePreviewOnClick}
                         />
                     )} */}
-                                    {!!previewPayload && (
-                                        <Modal open={view === View.Preview}>
-                                            <CampaignPreview
-                                                onBack={handleBackOnClick}
-                                                onCreateNew={
-                                                    handleCreateNewOnClick
-                                                }
-                                                payload={previewPayload}
-                                            />
-                                        </Modal>
-                                    )}
-                                </div>
-                                <FormPreview payload={payload} />
+                                {!!previewPayload && (
+                                    <Modal open={view === View.Preview}>
+                                        <CampaignPreview
+                                            onBack={handleBackOnClick}
+                                            onCreateNew={handleCreateNewOnClick}
+                                            payload={previewPayload}
+                                        />
+                                    </Modal>
+                                )}
                             </div>
-                        </FormValidationProvider>
+                            <FormPreview payload={payload} />
+                        </div>
                     </FormStepsProvider>
                 </motion.div>
             )}

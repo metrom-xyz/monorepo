@@ -16,14 +16,15 @@ import { AaveV3CollateralSelect } from "../../inputs/aave-v3-collateral-select";
 import { AaveV3MarketSelect } from "../../inputs/aave-v3-market-select";
 import { allFieldsFilled, arraysEqual } from "@/src/utils/form";
 import { AaveV3BlockCrossBorrowPicker } from "../../inputs/aave-v3-block-cross-borrow-picker";
-import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
 import { Typography } from "@metrom-xyz/ui";
+import type { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 
 interface AaveV3BasicsStepsProps {
     payload: AaveV3CampaignPayload;
-    onApply: (payload: BaseCampaignPayloadPart) => void;
+    onApply: (payload: BaseCampaignPayloadPart, stepId: FormStepId) => void;
 }
 
 export const REQUIRED_PAYLOAD_KEYS: Partial<keyof AaveV3CampaignPayload>[] = [
@@ -53,7 +54,7 @@ export function AaveV3BasicsSteps({
     );
 
     const t = useTranslations("newCampaign");
-    const { errors } = useFormValidation();
+    const { errors } = useFormSteps();
 
     const unsavedChanges = useMemo(() => {
         if (

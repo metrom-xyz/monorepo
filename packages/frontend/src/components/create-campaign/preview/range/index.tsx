@@ -7,7 +7,7 @@ import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-p
 import styles from "./styles.module.css";
 
 interface RangeProps {
-    pool: AmmPool;
+    pool?: AmmPool;
     specification: AmmPoolLiquidityCampaignPayload["priceRangeSpecification"];
 }
 

@@ -18,18 +18,14 @@ import { formatPercentage } from "@/src/utils/format";
 import classNames from "classnames";
 import { RewardsPicker } from "../../inputs/rewards-picker";
 import type { Dayjs } from "dayjs";
-import {
-    useFormValidation,
-    type FormSteps,
-} from "@/src/context/form-validation";
+import { useFormSteps, type FormSteps } from "@/src/context/form-steps";
 import { RestrictionsPicker } from "../../inputs/restrictions-picker";
 import { InfoMessage } from "@/src/components/info-message";
-import { useFormSteps } from "@/src/context/form-steps";
+import { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 
 interface CampaignRewardsStepProps {
-    stepNumber: number;
     chainId?: number;
     startDate?: Dayjs;
     endDate?: Dayjs;
@@ -42,11 +38,10 @@ interface CampaignRewardsStepProps {
     disabled?: boolean;
     unsavedChanges?: boolean;
     onChange: (payload: BaseCampaignPayloadPart) => void;
-    onApply: (payload: BaseCampaignPayloadPart) => void;
+    onApply: (payload: BaseCampaignPayloadPart, stepId: FormStepId) => void;
 }
 
 export function CampaignRewardsStep({
-    stepNumber,
     chainId,
     startDate,
     endDate,
@@ -64,13 +59,12 @@ export function CampaignRewardsStep({
     const [open, setOpen] = useState(false);
 
     const t = useTranslations("newCampaign.form.rewards");
-    const { errors, updateErrors, updateUnsaved } = useFormValidation();
-    const { cursor, setCursor } = useFormSteps();
+    const { errors, activeStepId, updateErrors, updateUnsaved } =
+        useFormSteps();
 
     useEffect(() => {
-        if (completed || disabled) return;
-        setOpen(cursor === stepNumber);
-    }, [completed, disabled, cursor, stepNumber]);
+        setOpen(activeStepId === FormStepId.Rewards);
+    }, [activeStepId]);
 
     useEffect(() => {
         updateUnsaved({ basics: unsavedChanges });
@@ -82,10 +76,9 @@ export function CampaignRewardsStep({
     }, [endDate, startDate]);
 
     const handleOnApply = useCallback(() => {
-        onApply(payload);
+        onApply(payload, FormStepId.Rewards);
         setOpen(false);
-        setCursor(stepNumber + 1);
-    }, [payload, stepNumber, onApply, setCursor]);
+    }, [payload, onApply]);
 
     const handleOnError = useCallback(
         (errors: FormSteps<string>) => {

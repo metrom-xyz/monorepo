@@ -21,21 +21,23 @@ import {
 import { StepSection } from "../step-section";
 import { useTranslations } from "next-intl";
 import { WeightingInputs } from "../../inputs/weighting-inputs";
-import { useFormValidation } from "@/src/context/form-validation";
+import { useFormSteps } from "@/src/context/form-steps";
 import type { Address } from "viem";
 import { InfoMessage } from "@/src/components/info-message";
 import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
+import type { FormStepId } from "@/src/types/form";
 
 interface AmmPoolLiquidityRewardsStepProps {
-    stepNumber: number;
     payload: AmmPoolLiquidityCampaignPayload;
     disabled?: boolean;
-    onApply: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
+    onApply: (
+        payload: AmmPoolLiquidityCampaignPayloadPart,
+        stepId: FormStepId,
+    ) => void;
 }
 
 export function AmmPoolLiquidityRewardsStep({
-    stepNumber,
     payload,
     disabled,
     onApply,
@@ -51,7 +53,7 @@ export function AmmPoolLiquidityRewardsStep({
 
     const t = useTranslations("newCampaign.form.ammPoolLiquidity");
     const { id: chainId } = useChainWithType();
-    const { errors } = useFormValidation();
+    const { errors } = useFormSteps();
 
     const unsavedChanges = useMemo(() => {
         if (
@@ -107,7 +109,6 @@ export function AmmPoolLiquidityRewardsStep({
 
     return (
         <CampaignRewardsStep
-            stepNumber={stepNumber}
             chainId={chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
