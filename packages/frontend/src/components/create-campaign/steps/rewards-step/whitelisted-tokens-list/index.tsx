@@ -128,7 +128,6 @@ export function WhitelistedTokensList({
                             text={t("infoMessage")}
                             link="https://github.com/metrom-xyz/monorepo/issues/new?template=whitelist_token.yaml"
                             linkText={t("contactUs")}
-                            className={styles.infoText}
                         />
                     </div>
                 </motion.div>

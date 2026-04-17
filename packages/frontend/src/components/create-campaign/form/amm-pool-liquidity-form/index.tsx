@@ -31,7 +31,6 @@ import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-s
 import { FormStepId } from "@/src/types/form";
 import { validateDistributions } from "@/src/utils/creation-form";
 import type {
-    CampaignPreviewDistributables,
     CampaignPreviewFixedDistribution,
     CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
@@ -75,7 +74,7 @@ function validatePayload(
             chainId,
             startDate,
             endDate,
-            distributables as CampaignPreviewDistributables,
+            distributables,
             kpiDistribution as CampaignPreviewKpiDistribution,
             fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
@@ -91,7 +90,7 @@ function validatePayload(
         chainId,
         startDate,
         endDate,
-        distributables as CampaignPreviewDistributables,
+        distributables,
         kpiDistribution as CampaignPreviewKpiDistribution,
         fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,

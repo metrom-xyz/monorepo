@@ -524,29 +524,6 @@
                 }
             },
             "ammPoolLiquidity": {
-                "dex": { "title": "Dex" },
-                "pool": {
-                    "title": "Pool",
-                    "list": {
-                        "label": "Search for pool",
-                        "pool": "Pool",
-                        "tvl": "Tvl",
-                        "empty": "Nothing here"
-                    },
-                    "label": "Enter pool address",
-                    "empty": "Enter a pool address to import a pool",
-                    "preview": {
-                        "pool": "Pool",
-                        "tvl": "TVL"
-                    },
-                    "errors": {
-                        "invalidAddress": "Invalid address",
-                        "enterValidAddress": "Enter a valid pool address",
-                        "invalidPool": "Invalid pool",
-                        "poolNotSupported": "Pool not supported",
-                        "inconsistentDex": "The pool doesn't belong to {dex}"
-                    }
-                },
                 "weighting": {
                     "title": "Reward ratio",
                     "description": "Rewards are based on {token0}-{token1} position size, liquidity depth, and price range concentration.",
@@ -712,69 +689,6 @@
             "discover": "Return to homepage",
             "newCampaign": "Create new campaign"
         }
-    },
-    "campaignPreview": {
-        "header": {
-            "back": "Close",
-            "action": "Action",
-            "startDate": "Start date",
-            "runTimeLabel": "Run time",
-            "endDate": "End date",
-            "liquityV2Actions": {
-                "list": {
-                    "borrow": "Borrow {debtToken} using {collateral}",
-                    "depositCollateral": "Deposit collateral",
-                    "depositToStabilityPool": "Deposit to {collateral} stability pool"
-                }
-            },
-            "aaveV3Actions": {
-                "list": {
-                    "borrow": "Borrow using {collateral}",
-                    "supply": "Supply {collateral}",
-                    "netSupply": "Net supply {collateral}",
-                    "bridgeAndSupply": "Bridge and supply {collateral}"
-                }
-            }
-        },
-        "apr": "APR",
-        "points": "Points",
-        "range": {
-            "title": "Price range",
-            "lowerPrice": {
-                "label": "Lower price",
-                "value": "{price} {token1} PER {token0}"
-            },
-            "upperPrice": {
-                "label": "Upper price",
-                "value": "{price} {token1} PER {token0}"
-            }
-        },
-        "weighting": {
-            "title": "Reward ratio",
-            "fees": "Fees"
-        },
-        "kpi": {
-            "title": "KPI",
-            "simulation": "KPI simulation",
-            "lowerBound": "Lower bound",
-            "upperBound": "Upper bound",
-            "minimumPayout": "Minimum payout"
-        },
-        "rewards": {
-            "title": "Rewards",
-            "daily": "Daily rewards",
-            "total": "Total rewards",
-            "token": "Reward token",
-            "amount": "Amount",
-            "fee": "Protocol fee"
-        },
-        "restrictions": {
-            "title": "Restrictions",
-            "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
-            "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}"
-        },
-        "deploy": "Launch campaign",
-        "connectWallet": "Connect wallet"
     },
     "projectIntro": {
         "relatedArticles": "Related articles"

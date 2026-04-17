@@ -26,7 +26,7 @@ export function ApproveTokensButton({
     onApproving,
     onSafeTx,
 }: ApproveTokensButtonProps) {
-    const t = useTranslations("campaignPreview");
+    const t = useTranslations("newCampaign.form.approveLaunch");
     const chainId = useChainId();
     const { open } = useAppKit();
     const chainData = useChainData({ chainId });

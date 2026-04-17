@@ -12,11 +12,9 @@ import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
 import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import { KpiStep } from "../../steps/kpi-step";
 import { AaveV3BridgeAndSupplyBoostStep } from "../../steps/aave-v3-bridge-supply-boost";
 import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
 import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
@@ -215,7 +213,7 @@ export function AaveV3BridgeAndSupplyForm({
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                <KpiStep
+                {/* <KpiStep
                     disabled={noDistributables || unsupportedChain}
                     kind={payload.kind}
                     usdTvl={payload.collateral?.usdSupply}
@@ -231,19 +229,19 @@ export function AaveV3BridgeAndSupplyForm({
                     fixedDistribution={payload.fixedDistribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
                 <AaveV3BridgeAndSupplyBoostStep
                     disabled={noDistributables || unsupportedChain}
                     boostingFactor={payload.boostingFactor}
                     onBoostingFactorChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                <RestrictionsStep
+                {/* <RestrictionsStep
                     disabled={noDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
             </div>
             <Button
                 size="lg"
