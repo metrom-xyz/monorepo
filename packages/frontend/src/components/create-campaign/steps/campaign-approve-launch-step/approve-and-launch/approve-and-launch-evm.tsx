@@ -42,6 +42,7 @@ export function ApproveAndDeployEvm({
     specificationHash,
     uploadingSpecification,
     disabled,
+    onAllTokensApproved,
     onLaunch,
 }: ApproveAndLaunchProps) {
     const [safeTxs, setSafeTxs] = useState<BaseTransaction[]>([]);
@@ -124,6 +125,10 @@ export function ApproveAndDeployEvm({
                 !!connectedChainData?.metromContract.address,
         },
     });
+
+    useEffect(() => {
+        onAllTokensApproved(allTokensApproved);
+    }, [allTokensApproved, onAllTokensApproved]);
 
     useEffect(() => {
         refetchAllowances();

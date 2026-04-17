@@ -9,6 +9,7 @@ export interface ApproveAndLaunchProps {
     specificationHash: Hex;
     uploadingSpecification: boolean;
     disabled?: boolean;
+    onAllTokensApproved: (approved: boolean) => void;
     onLaunch: () => void;
 }
 

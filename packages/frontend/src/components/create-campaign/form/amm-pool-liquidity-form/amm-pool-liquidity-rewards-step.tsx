@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import {
     distributablesCompleted,
     distributablesEqual,
-    getCampaignApr,
+    getCampaignFormApr,
     restrictionsEqual,
     weightingEqual,
 } from "@/src/utils/form";
@@ -88,7 +88,7 @@ export function AmmPoolLiquidityRewardsStep({
             ...rewardsPayload.distributables,
         },
     };
-    const apr = getCampaignApr(
+    const apr = getCampaignFormApr(
         payloadForApr,
         getAmmPoolLiquidityTargetValue(payload),
     );

@@ -36,7 +36,7 @@ export function InfoMessage({
             weight={weight}
             variant={variant}
             size={size}
-            className={classNames(styles.text, { [styles.spaced]: spaced })}
+            className={classNames({ [styles.spaced]: spaced })}
         >
             {text}
             {link && (

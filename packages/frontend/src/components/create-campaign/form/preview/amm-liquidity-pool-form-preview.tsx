@@ -9,7 +9,7 @@ import { AmmLiquidityPoolTarget } from "../../previews/amm-liquidity-pool-target
 import type { FormSteps } from "@/src/context/form-steps";
 import {
     distributablesCompleted,
-    getCampaignApr,
+    getCampaignFormApr,
     rangeSpecificationCompleted,
 } from "@/src/utils/form";
 import { Rewards } from "../../previews/rewards";
@@ -42,7 +42,7 @@ export function AmmLiquidityPoolFormPreview({
 
     const rewardsCompleted = distributablesCompleted(payload);
     const poolRangeCompleted = rangeSpecificationCompleted(payload);
-    const apr = getCampaignApr(
+    const apr = getCampaignFormApr(
         payload,
         getAmmPoolLiquidityTargetValue(payload),
     );

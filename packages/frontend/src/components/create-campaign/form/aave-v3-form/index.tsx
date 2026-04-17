@@ -29,14 +29,15 @@ import {
 import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
 import { FormStepId } from "@/src/types/form";
 import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
-
-import styles from "./styles.module.css";
 import { validateDistributions } from "@/src/utils/creation-form";
 import type {
     CampaignPreviewDistributables,
     CampaignPreviewFixedDistribution,
     CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
+import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
+
+import styles from "./styles.module.css";
 
 function validatePayload(
     chainId: number,
@@ -185,13 +186,13 @@ export function AaveV3Form({
         [payload, steps, onStepComplete, updateActiveStepId],
     );
 
-    // const usdTvl =
-    //     payload.kind === CampaignKind.AaveV3NetSupply
-    //         ? usdNetSupply
-    //         : getAaveV3UsdTarget({
-    //               collateral: payload.collateral,
-    //               kind: payload.kind,
-    //           });
+    const targetUsdValue =
+        payload.kind === CampaignKind.AaveV3NetSupply
+            ? usdNetSupply
+            : getAaveV3UsdTarget({
+                  collateral: payload.collateral,
+                  kind: payload.kind,
+              });
 
     const unsavedSteps = Object.values(unsaved).some((item) => !!item);
 
@@ -209,6 +210,7 @@ export function AaveV3Form({
                 />
                 <CampaignKpiStep
                     payload={payload}
+                    targetUsdValue={targetUsdValue}
                     disabled={
                         !!errors.rewards || !distributablesCompleted(payload)
                     }

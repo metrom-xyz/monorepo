@@ -34,7 +34,7 @@ export function CampaignApproveLaunchStep({
     const [open, setOpen] = useState(false);
     const [error, setError] = useState<ErrorMessage>("");
     const [uploadingSpecification, setUploadingSpecification] = useState(false);
-    const [tokensApproved, setTokensApproved] = useState(false);
+    const [allTokensApproved, setAllTokensApproved] = useState(false);
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
 
     const t = useTranslations("newCampaign.form.approveLaunch");
@@ -49,12 +49,7 @@ export function CampaignApproveLaunchStep({
     }, [activeStepId]);
 
     useEffect(() => {
-        if (tokensApproved) return;
-        setTokensApproved(true);
-    }, [tokensApproved]);
-
-    useEffect(() => {
-        if (!payload) return;
+        if (!payload || disabled) return;
         const specification = buildSpecificationBundle(payload);
 
         const uploadSpecification = async (bundle: Specification) => {
@@ -87,14 +82,9 @@ export function CampaignApproveLaunchStep({
             }
         };
 
-        if (Object.keys(specification).length > 0 && tokensApproved)
+        if (Object.keys(specification).length > 0 && allTokensApproved)
             uploadSpecification(specification);
-    }, [
-        payload,
-        payload?.kpiDistribution,
-        payload?.restrictions,
-        tokensApproved,
-    ]);
+    }, [payload, disabled, allTokensApproved]);
 
     return (
         <FormStep
@@ -135,6 +125,7 @@ export function CampaignApproveLaunchStep({
                     specificationHash={specificationHash}
                     uploadingSpecification={uploadingSpecification}
                     disabled={!!error}
+                    onAllTokensApproved={setAllTokensApproved}
                     onLaunch={onLaunch}
                 />
             )}

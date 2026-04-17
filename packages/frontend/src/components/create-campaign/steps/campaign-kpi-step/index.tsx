@@ -10,12 +10,13 @@ import {
 import type {
     BaseCampaignPayload,
     BaseCampaignPayloadPart,
+    CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign/common";
 import { StepSection } from "../../form/step-section";
 import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { formatUsdAmount } from "@/src/utils/format";
-import { useFormSteps, type FormSteps } from "@/src/context/form-steps";
+import { useFormSteps } from "@/src/context/form-steps";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
 import type { SVGIcon } from "@/src/types/common";
 import { KpiPresets, KpiPresetType } from "./presets";
@@ -25,8 +26,11 @@ import { CappedRewardRateIcon } from "@/src/assets/capped-reward-rate-icon";
 import { IncreasingAprIcon } from "@/src/assets/increasing-apr-icon";
 import { CustomRewardRateIcon } from "@/src/assets/custom-reward-rate-icon";
 import { BoldText } from "@/src/components/bold-text";
-import { GoalInputs } from "./goal-inputs";
+import { KpiGoalInputs } from "../../inputs/kpi-goal-inputs";
 import { FormStepId } from "@/src/types/form";
+import { DistributablesType, KpiMetric } from "@metrom-xyz/sdk";
+import { kpisEqual, kpiSpecificationCompleted } from "@/src/utils/form";
+import { KpiSimulationChart } from "@/src/components/kpi-simulation-chart";
 
 import styles from "./styles.module.css";
 
@@ -35,7 +39,6 @@ interface CampaignkPIStepProps {
     loadingTargetUsdValue?: boolean;
     targetUsdValue?: number;
     disabled?: boolean;
-    completed?: boolean;
     onApply: (payload: BaseCampaignPayloadPart, stepId: FormStepId) => void;
 }
 
@@ -71,7 +74,7 @@ export const KPI_PRESETS: Record<KpiPresetType, KpiPreset> = {
         description: "increasingApr.description",
         setLowerBound: (targetUsdValue) => targetUsdValue / 2,
         setUpperBound: (targetUsdValue) => targetUsdValue * 1.5,
-        minimumPayoutPercentage: 20,
+        minimumPayoutPercentage: 0,
     },
     [KpiPresetType.CustomRewardRate]: {
         icon: CustomRewardRateIcon,
@@ -83,66 +86,153 @@ export const KPI_PRESETS: Record<KpiPresetType, KpiPreset> = {
     },
 };
 
+interface KpiPayload {
+    kpiDistribution?: CampaignPayloadKpiDistribution;
+}
+
 export function CampaignKpiStep({
     payload,
     loadingTargetUsdValue,
     targetUsdValue,
     disabled,
-    completed,
     onApply,
 }: CampaignkPIStepProps) {
     const [open, setOpen] = useState(false);
-    const [preset, setPreset] = useState<KpiPresetType>(
-        KpiPresetType.TraditionalReward,
-    );
-    // FIXME: use new defined type once fixed APR PR is merged
-    const [specificationPayload, setSpecificationPayload] = useState({});
+    const [applied, setApplied] = useState(false);
+    const [preset, setPreset] = useState<KpiPresetType | undefined>();
+    const [kpiPayload, setKpiPayload] = useState<KpiPayload>({
+        kpiDistribution: payload.kpiDistribution || {
+            goal: {
+                metric: KpiMetric.RangePoolTvl,
+                upperUsdTarget: undefined,
+                lowerUsdTarget: undefined,
+            },
+            minimumPayoutPercentage: 0,
+        },
+    });
 
     const t = useTranslations("newCampaign.form.kpi");
-    const { errors, activeStepId, updateErrors } = useFormSteps();
+    const { errors, activeStepId, updateUnsaved } = useFormSteps();
     const targetValueName = useCampaignTargetValueName({ kind: payload.kind });
 
+    const totalRewardsUsdAmount = useMemo(() => {
+        if (
+            !payload.distributables ||
+            payload.distributables.type !== DistributablesType.Tokens ||
+            !payload.distributables.tokens
+        )
+            return 0;
+        let total = 0;
+        for (const reward of payload.distributables.tokens) {
+            if (!reward.amount.usdValue) return 0;
+            total += reward.amount.usdValue;
+        }
+        return total;
+    }, [payload.distributables]);
+
+    const campaignDurationSeconds =
+        payload.startDate && payload.endDate
+            ? payload.endDate.unix() - payload.startDate.unix()
+            : 1;
+
     const unsavedChanges = useMemo(() => {
-        // TODO: implement
-        return false;
-    }, []);
+        if (!payload.kpiDistribution)
+            return kpiSpecificationCompleted(kpiPayload);
+
+        return !kpisEqual(payload, kpiPayload);
+    }, [payload, kpiPayload]);
+
+    const applyDisabled =
+        !!errors.range ||
+        !unsavedChanges ||
+        !kpiSpecificationCompleted(kpiPayload);
+
+    const completed =
+        !errors.range &&
+        !unsavedChanges &&
+        kpiSpecificationCompleted(kpiPayload);
 
     useEffect(() => {
+        if (targetUsdValue === undefined || !preset) return;
+
+        const { setLowerBound, setUpperBound, minimumPayoutPercentage } =
+            KPI_PRESETS[preset];
+
+        setKpiPayload({
+            kpiDistribution: {
+                goal: {
+                    metric: KpiMetric.RangePoolTvl,
+                    lowerUsdTarget: setLowerBound(Math.floor(targetUsdValue)),
+                    upperUsdTarget: setUpperBound(Math.floor(targetUsdValue)),
+                },
+                minimumPayoutPercentage,
+            },
+        });
+    }, [targetUsdValue, preset]);
+
+    useEffect(() => {
+        if (applied || completed) return;
         setOpen(activeStepId === FormStepId.Kpi);
-    }, [activeStepId]);
+    }, [applied, completed, activeStepId]);
+
+    useEffect(() => {
+        updateUnsaved({ kpi: unsavedChanges });
+    }, [unsavedChanges, updateUnsaved]);
+
+    useEffect(() => {
+        if (completed || disabled) return;
+        if (errors.kpi || unsavedChanges) {
+            setOpen(true);
+            return;
+        }
+    }, [completed, disabled, unsavedChanges, errors.kpi]);
 
     const handleOnApply = useCallback(() => {
-        onApply(payload, FormStepId.Kpi);
+        onApply(kpiPayload, FormStepId.Kpi);
+        setApplied(true)
         setOpen(false);
-    }, [payload, onApply]);
+    }, [kpiPayload, onApply]);
 
     const handleOnSkip = useCallback(() => {
-        // TODO: implement
-        // onApply({ ... });
-        // setSpecificationPayload({...});
+        onApply({ kpiDistribution: undefined }, FormStepId.Kpi);
+        setApplied(true)
+        setPreset(undefined);
+        setKpiPayload({ kpiDistribution: undefined });
         setOpen(false);
-    }, []);
+    }, [onApply]);
 
-    const handleOnError = useCallback(
-        (errors: FormSteps<string>) => {
-            updateErrors(errors);
-        },
-        [updateErrors],
-    );
-
-    function handlePayloadOnChange(part: BaseCampaignPayloadPart) {
-        setSpecificationPayload((prev) => ({ ...prev, ...part }));
+    function handleUpperUsdTargetOnChange(value?: number) {
+        setKpiPayload((prev) => ({
+            kpiDistribution: {
+                ...prev.kpiDistribution,
+                goal: {
+                    ...prev.kpiDistribution?.goal,
+                    upperUsdTarget: value,
+                },
+            },
+        }));
     }
 
-    // const applyDisabled =
-    //     !!errors.rewards ||
-    //     !unsavedChanges ||
-    //     !distributablesCompleted(rewardsPayload);
+    function handleLowerUsdTargetOnChange(value?: number) {
+        setKpiPayload((prev) => ({
+            kpiDistribution: {
+                ...prev.kpiDistribution,
+                goal: {
+                    ...prev.kpiDistribution?.goal,
+                    lowerUsdTarget: value,
+                },
+            },
+        }));
+    }
 
-    // const completed =
-    //     !errors.rewards &&
-    //     !unsavedChanges &&
-    //     distributablesCompleted(rewardsPayload);
+    function handleMinumumPayoutPercentageOnChange(value?: number) {
+        setKpiPayload((prev) => ({
+            kpiDistribution: {
+                ...prev.kpiDistribution,
+                minimumPayoutPercentage: value,
+            },
+        }));
+    }
 
     return (
         <FormStep
@@ -150,7 +240,7 @@ export function CampaignKpiStep({
             open={open}
             optional
             disabled={disabled}
-            // completed={completed}
+            completed={completed}
             error={errors.kpi}
             warning={
                 !errors.kpi && !open && unsavedChanges
@@ -199,14 +289,40 @@ export function CampaignKpiStep({
                     </div>
                 }
             >
-                <GoalInputs onChange={handlePayloadOnChange} />
+                <KpiGoalInputs
+                    kpiDistribution={kpiPayload.kpiDistribution}
+                    targetValueName={targetValueName}
+                    onMinimumPayoutPercentageChange={
+                        handleMinumumPayoutPercentageOnChange
+                    }
+                    onUpperUsdTargetChange={handleUpperUsdTargetOnChange}
+                    onLowerUsdTargetChange={handleLowerUsdTargetOnChange}
+                />
+                <div>
+                    <KpiSimulationChart
+                        complex
+                        targetValueName={targetValueName}
+                        lowerUsdTarget={
+                            kpiPayload.kpiDistribution?.goal?.lowerUsdTarget
+                        }
+                        upperUsdTarget={
+                            kpiPayload.kpiDistribution?.goal?.upperUsdTarget
+                        }
+                        totalRewardsUsd={totalRewardsUsdAmount}
+                        campaignDurationSeconds={campaignDurationSeconds}
+                        minimumPayoutPercentage={
+                            kpiPayload.kpiDistribution?.minimumPayoutPercentage
+                        }
+                        targetUsdValue={targetUsdValue}
+                        error={!!errors.kpi}
+                    />
+                </div>
             </StepSection>
             <div className={styles.buttons}>
                 <Button
                     onClick={handleOnApply}
                     icon={ArrowRightIcon}
-                    disabled={disabled}
-                    // applyDisabled
+                    disabled={disabled || applyDisabled}
                     className={{ root: styles.button }}
                 >
                     {t("saveKpi")}

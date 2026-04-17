@@ -77,7 +77,7 @@ export interface Leaderboard {
 
 export interface CampaignPayloadKpiDistribution {
     minimumPayoutPercentage?: number;
-    goal?: RangePoolTvlKpiGoal;
+    goal?: Partial<RangePoolTvlKpiGoal>;
 }
 
 export interface CampaignPayloadFixedDistribution {

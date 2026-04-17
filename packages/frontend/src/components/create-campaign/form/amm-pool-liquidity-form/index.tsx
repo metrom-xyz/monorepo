@@ -29,10 +29,14 @@ import {
 } from "@/src/utils/form";
 import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
 import { FormStepId } from "@/src/types/form";
+import { validateDistributions } from "@/src/utils/creation-form";
+import type {
+    CampaignPreviewDistributables,
+    CampaignPreviewFixedDistribution,
+    CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
-import { validateDistributions } from "@/src/utils/creation-form";
-import type { CampaignPreviewDistributables, CampaignPreviewFixedDistribution, CampaignPreviewKpiDistribution } from "@/src/types/campaign/common";
 
 function validatePayload(
     chainId: number,
@@ -115,43 +119,14 @@ export function AmmPoolLiquidityForm({
         weighting: { liquidity: 100, token0: 0, token1: 0 },
     });
 
-    const { errors, unsaved, updateActiveStepId } = useFormSteps();
+    const { errors, unsaved, activeStepId, updateActiveStepId } =
+        useFormSteps();
 
     const validatedPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error) || !payload.chainId)
             return null;
         return validatePayload(payload.chainId, payload);
     }, [payload, errors]);
-
-    // const noDistributables = useMemo(() => {
-    //     return (
-    //         !payload.distributables ||
-    //         payload.distributables.type === DistributablesType.FixedPoints ||
-    //         payload.distributables.type === DistributablesType.DynamicPoints ||
-    //         payload.distributables.type ===
-    //             DistributablesType.NoDistributables ||
-    //         !payload.distributables.tokens ||
-    //         payload.distributables.tokens.length === 0
-    //     );
-    // }, [payload.distributables]);
-
-    // const missingDistributables = useMemo(() => {
-    //     if (!payload.distributables) return true;
-
-    //     const { type } = payload.distributables;
-
-    //     if (type === DistributablesType.FixedPoints)
-    //         return (
-    //             !payload.distributables.fee || !payload.distributables.points
-    //         );
-    //     if (type === DistributablesType.Tokens)
-    //         return (
-    //             !payload.distributables.tokens ||
-    //             payload.distributables.tokens.length === 0
-    //         );
-
-    //     return true;
-    // }, [payload.distributables]);
 
     const rangeSupported = useMemo(() => {
         return (
@@ -177,10 +152,19 @@ export function AmmPoolLiquidityForm({
             setPayload((prev) => ({ ...prev, ...part }));
             onStepComplete({ ...payload, ...part });
 
-            const currentIndex = steps.indexOf(stepId);
-            updateActiveStepId(steps[currentIndex + 1]);
+            const currentIndex = steps.indexOf(activeStepId);
+            const appliedStepIndex = steps.indexOf(stepId);
+
+            const nextStepIndex =
+                currentIndex > appliedStepIndex
+                    ? currentIndex
+                    : appliedStepIndex + 1;
+
+            const next = steps[nextStepIndex];
+            if (!next) return;
+            updateActiveStepId(next);
         },
-        [payload, steps, onStepComplete, updateActiveStepId],
+        [activeStepId, payload, steps, onStepComplete, updateActiveStepId],
     );
 
     const unsavedSteps = Object.values(unsaved).some((item) => !!item);
@@ -202,6 +186,7 @@ export function AmmPoolLiquidityForm({
                 />
                 <CampaignKpiStep
                     payload={payload}
+                    targetUsdValue={payload.pool?.usdTvl}
                     disabled={
                         !!errors.rewards || !distributablesCompleted(payload)
                     }
@@ -227,23 +212,6 @@ export function AmmPoolLiquidityForm({
                     }
                     onLaunch={onLaunch}
                 />
-                {/* <KpiStep
-                    disabled={noDistributables || unsupportedChain}
-                    kind={payload.kind}
-                    usdTvl={payload.pool?.usdTvl}
-                    distributables={
-                        payload.distributables?.type ===
-                        DistributablesType.Tokens
-                            ? payload.distributables
-                            : undefined
-                    }
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onKpiChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                /> */}
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ import { useMemo, useState } from "react";
 import {
     distributablesCompleted,
     distributablesEqual,
-    getCampaignApr,
+    getCampaignFormApr,
     restrictionsEqual,
 } from "@/src/utils/form";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
@@ -85,7 +85,7 @@ export function AaveV3RewardsStep({
             ...rewardsPayload.distributables,
         },
     };
-    const apr = getCampaignApr(
+    const apr = getCampaignFormApr(
         payloadForApr,
         getAaveV3TargetValue(payload, usdNetSupply),
     );

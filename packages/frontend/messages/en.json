@@ -217,7 +217,11 @@
             "rangeToReward": "Range to reward",
             "price": "{price} {token1} PER {token0}",
             "minPrice": "Min. price",
-            "maxPrice": "Max. price"
+            "maxPrice": "Max. price",
+            "kpiSetup": "Kpi set-up",
+            "parameters": "Parameters",
+            "bounds": "Bounds",
+            "minPayout": "Min. payout"
         },
         "pickDistributablesType": {
             "navigation": {
@@ -264,14 +268,10 @@
                 "readMore": "Read more 🡥",
                 "defineParameters": "Define KPI parameters",
                 "currentTarget": "Current {targetValueName}:",
-                "defaultValues": "Default values are based on the current TVL. You can adjust them at any time.",
+                "defaultValues": "Default values are based on the current TVL. They can be adjusted at any time.",
                 "rangedTarget": {
                     "lowerBound": "Lower {targetValueName} bound",
                     "upperBound": "Upper {targetValueName} bound"
-                },
-                "errors": {
-                    "missing": "Bound missing",
-                    "malformed": "Wrong bound values"
                 },
                 "warnings": {
                     "notApplied": "Not applied"
@@ -683,6 +683,21 @@
                     "minPriceMalformed": "Min. price can't be higher than max. price",
                     "maxPriceMalformed": "Max. price can't be lower than min. price",
                     "rangeTooWide": "Range too wide"
+                }
+            },
+            "kpiGoalInputs": {
+                "rangedTarget": {
+                    "lowerBound": "Lower {targetValueName} bound",
+                    "upperBound": "Upper {targetValueName} bound"
+                },
+                "minimumPayout": "Minimum payout",
+                "errors": {
+                    "missingLowerBound": "Lower bound missing",
+                    "missingUpperBound": "Upper bound missing",
+                    "lowerBoundMalformed": "Lower bound can't be higher than upper bound",
+                    "upperBoundMalformed": "Upper bound can't be lower than lower bound",
+                    "boundsEqual": "Bounds can't be equal",
+                    "malformed": "Wrong bound values"
                 }
             }
         },

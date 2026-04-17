@@ -9,7 +9,7 @@
 }
 
 .avatarBorder {
-    @apply rounded-sm border-2;
+    @apply rounded-lg border-2;
 }
 
 .avatarBorder.blacklist {
@@ -25,7 +25,7 @@
 }
 
 .removeButton {
-    @apply flex items-center justify-center rounded-sm p-1 cursor-pointer hover:bg-[#DC26261F] size-6 transition-colors duration-200 ease-in-out;
+    @apply flex items-center justify-center rounded-lg p-1 cursor-pointer hover:bg-[#DC26261F] size-6 transition-colors duration-200 ease-in-out;
 }
 
 .removeButton > svg {

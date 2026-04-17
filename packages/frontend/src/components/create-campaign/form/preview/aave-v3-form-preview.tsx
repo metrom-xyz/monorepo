@@ -6,7 +6,7 @@ import {
     type AaveV3CampaignPayload,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { AaveV3Target } from "../../previews/aave-v3-target";
-import { distributablesCompleted, getCampaignApr } from "@/src/utils/form";
+import { distributablesCompleted, getCampaignFormApr } from "@/src/utils/form";
 import type { FormSteps } from "@/src/context/form-steps";
 import { Typography } from "@metrom-xyz/ui";
 import { getCampaignTargetValueName } from "@/src/utils/campaign";
@@ -60,7 +60,7 @@ export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
             : undefined;
 
     const rewardsCompleted = distributablesCompleted(payload);
-    const apr = getCampaignApr(
+    const apr = getCampaignFormApr(
         payload,
         getAaveV3TargetValue(payload, usdNetSupply),
     );

@@ -9,6 +9,7 @@ import { AmmLiquidityPoolFormPreview } from "./amm-liquidity-pool-form-preview";
 import { AaveV3FormPreview } from "./aave-v3-form-preview";
 import { DocumentTextIcon } from "@/src/assets/document-text-icon";
 import { useFormSteps } from "@/src/context/form-steps";
+import { Kpi } from "../../previews/kpi";
 
 import styles from "./styles.module.css";
 
@@ -25,6 +26,7 @@ export function FormPreview({ payload }: FormPreviewProps) {
     const aaveV3CampaignPayload = payload && isAaveV3CampaignPayload(payload);
 
     const emptyPayload = !payload?.chainId;
+    const kpiSetup = payload?.kpiDistribution;
 
     return (
         <div className={styles.root}>
@@ -77,6 +79,9 @@ export function FormPreview({ payload }: FormPreviewProps) {
                     )}
                     {aaveV3CampaignPayload && (
                         <AaveV3FormPreview payload={payload} errors={errors} />
+                    )}
+                    {kpiSetup && (
+                        <Kpi kpiDistribution={payload.kpiDistribution} />
                     )}
                 </div>
             )}
