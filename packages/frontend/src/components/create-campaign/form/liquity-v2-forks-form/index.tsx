@@ -11,12 +11,10 @@ import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
 import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { LiquityV2BrandStep } from "../../steps/liquity-v2-brand-step";
 import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
-import { KpiStep } from "../../steps/kpi-step";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import {
     CampaignKindStep,
@@ -132,35 +130,35 @@ export function LiquityV2ForksForm({
         return validatePayload(chainId, payload);
     }, [chainId, payload, errors]);
 
-    const noDistributables = useMemo(() => {
-        return (
-            !payload.distributables ||
-            payload.distributables.type === DistributablesType.FixedPoints ||
-            payload.distributables.type === DistributablesType.DynamicPoints ||
-            payload.distributables.type ===
-                DistributablesType.NoDistributables ||
-            !payload.distributables.tokens ||
-            payload.distributables.tokens.length === 0
-        );
-    }, [payload.distributables]);
+    // const noDistributables = useMemo(() => {
+    //     return (
+    //         !payload.distributables ||
+    //         payload.distributables.type === DistributablesType.FixedPoints ||
+    //         payload.distributables.type === DistributablesType.DynamicPoints ||
+    //         payload.distributables.type ===
+    //             DistributablesType.NoDistributables ||
+    //         !payload.distributables.tokens ||
+    //         payload.distributables.tokens.length === 0
+    //     );
+    // }, [payload.distributables]);
 
-    const missingDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
+    // const missingDistributables = useMemo(() => {
+    //     if (!payload.distributables) return true;
 
-        const { type } = payload.distributables;
+    //     const { type } = payload.distributables;
 
-        if (type === DistributablesType.FixedPoints)
-            return (
-                !payload.distributables.fee || !payload.distributables.points
-            );
-        if (type === DistributablesType.Tokens)
-            return (
-                !payload.distributables.tokens ||
-                payload.distributables.tokens.length === 0
-            );
+    //     if (type === DistributablesType.FixedPoints)
+    //         return (
+    //             !payload.distributables.fee || !payload.distributables.points
+    //         );
+    //     if (type === DistributablesType.Tokens)
+    //         return (
+    //             !payload.distributables.tokens ||
+    //             payload.distributables.tokens.length === 0
+    //         );
 
-        return true;
-    }, [payload.distributables]);
+    //     return true;
+    // }, [payload.distributables]);
 
     const kindOptions = useMemo(() => {
         return LIQUITY_V2_CAMPAIGN_KIND_OPTIONS.map((option) => ({
@@ -238,7 +236,7 @@ export function LiquityV2ForksForm({
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                <KpiStep
+                {/* <KpiStep
                     disabled={noDistributables || unsupportedChain}
                     kind={payload.kind}
                     usdTvl={
@@ -261,13 +259,13 @@ export function LiquityV2ForksForm({
                     fixedDistribution={payload.fixedDistribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
-                <RestrictionsStep
+                /> */}
+                {/* <RestrictionsStep
                     disabled={missingDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
             </div>
             <Button
                 icon={ArrowRightIcon}

@@ -7,11 +7,6 @@ import {
     Typography,
     type NumberFormatValues,
 } from "@metrom-xyz/ui";
-import type {
-    BaseCampaignPayloadPart,
-    CampaignPayloadFixedDistribution,
-    CampaignPayloadKpiDistribution,
-} from "@/src/types/campaign";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import type { NumberInputValues } from "../points";
@@ -37,6 +32,11 @@ import classNames from "classnames";
 import { PencilIcon } from "@/src/assets/pencil-icon";
 
 import styles from "./styles.module.css";
+import type {
+    BaseCampaignPayloadPart,
+    CampaignPayloadFixedDistribution,
+    CampaignPayloadKpiDistribution,
+} from "@/src/types/campaign/common";
 
 interface RewardsFixedAprProps {
     kpiDistribution?: CampaignPayloadKpiDistribution;

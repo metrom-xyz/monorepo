@@ -1,9 +1,6 @@
 "use client";
 
-import {
-    type CampaignPayload,
-    type CampaignPreviewPayload,
-} from "@/src/types/campaign/common";
+import { type CampaignPayload } from "@/src/types/campaign/common";
 import {
     BaseCampaignType,
     CampaignKind,
@@ -13,8 +10,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { useCallback, useState } from "react";
 import { trackFathomEvent } from "@/src/utils/fathom";
-import { Button, Modal, Typography } from "@metrom-xyz/ui";
-import { CampaignPreview } from "../preview";
+import { Button, Typography } from "@metrom-xyz/ui";
 import { FormHeader } from "./header";
 import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
 import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
@@ -33,11 +29,6 @@ import { AnimatePresence, easeInOut, motion } from "motion/react";
 
 import styles from "./styles.module.css";
 
-enum View {
-    Form = "form",
-    Preview = "preview",
-}
-
 export interface CreateCampaignFormProps<T> {
     campaignType: T;
     distributablesType: DistributablesType;
@@ -47,27 +38,14 @@ export function CreateCampaignForm<T extends CampaignType>({
     campaignType,
     distributablesType,
 }: CreateCampaignFormProps<T>) {
-    const [view, setView] = useState(View.Form);
     const [launched, setLaunched] = useState(false);
-    // TODO: is this fine? The payload will become the finalized preview instance when confirming the campaign launch
     const [payload, setPayload] = useState<CampaignPayload | null>(null);
-    const [previewPayload, setPreviewPayload] =
-        useState<CampaignPreviewPayload | null>(null);
 
     const t = useTranslations("newCampaign");
 
-    // const { chainId: connectedChainId, connected } = useAccount();
-    // const { id: selectedChain } = useChainWithType();
-    // const activeChains = useActiveChains();
     const router = useRouter();
-    // const formsForType = useForms({
-    //     chainId: selectedChain,
-    //     type: campaignType,
-    // });
 
-    function handlePreviewOnClick(payload: CampaignPreviewPayload | null) {
-        setPreviewPayload(payload);
-        setView(View.Preview);
+    function handlePreviewOnClick() {
         trackFathomEvent("CLICK_CAMPAIGN_PREVIEW");
     }
 
@@ -236,15 +214,6 @@ export function CreateCampaignForm<T extends CampaignType>({
                             onPreviewClick={handlePreviewOnClick}
                         />
                     )} */}
-                                {!!previewPayload && (
-                                    <Modal open={view === View.Preview}>
-                                        <CampaignPreview
-                                            onBack={handleBackOnClick}
-                                            onCreateNew={handleCreateNewOnClick}
-                                            payload={previewPayload}
-                                        />
-                                    </Modal>
-                                )}
                             </div>
                             <FormPreview payload={payload} />
                         </div>

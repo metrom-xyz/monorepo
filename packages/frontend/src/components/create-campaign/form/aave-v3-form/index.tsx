@@ -31,7 +31,6 @@ import { FormStepId } from "@/src/types/form";
 import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
 import { validateDistributions } from "@/src/utils/creation-form";
 import type {
-    CampaignPreviewDistributables,
     CampaignPreviewFixedDistribution,
     CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
@@ -85,7 +84,7 @@ function validatePayload(
             chainId,
             startDate,
             endDate,
-            distributables as CampaignPreviewDistributables,
+            distributables,
             kpiDistribution as CampaignPreviewKpiDistribution,
             fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
@@ -103,7 +102,7 @@ function validatePayload(
         chainId,
         startDate,
         endDate,
-        distributables as CampaignPreviewDistributables,
+        distributables,
         kpiDistribution as CampaignPreviewKpiDistribution,
         fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
@@ -144,7 +143,8 @@ export function AaveV3Form({
         distributables: { type: distributablesType },
     });
 
-    const { errors, unsaved, updateActiveStepId } = useFormSteps();
+    const { errors, unsaved, activeStepId, updateActiveStepId } =
+        useFormSteps();
     const { id: chainId, type: chainType } = useChainWithType();
 
     const { /*loading: loadingUsdNetSupply,*/ usdNetSupply } =
@@ -180,10 +180,19 @@ export function AaveV3Form({
             setPayload((prev) => ({ ...prev, ...part }));
             onStepComplete({ ...payload, ...part });
 
-            const currentIndex = steps.indexOf(stepId);
-            updateActiveStepId(steps[currentIndex + 1]);
+            const currentIndex = steps.indexOf(activeStepId);
+            const appliedStepIndex = steps.indexOf(stepId);
+
+            const nextStepIndex =
+                currentIndex > appliedStepIndex
+                    ? currentIndex
+                    : appliedStepIndex + 1;
+
+            const next = steps[nextStepIndex];
+            if (!next) return;
+            updateActiveStepId(next);
         },
-        [payload, steps, onStepComplete, updateActiveStepId],
+        [payload, activeStepId, steps, onStepComplete, updateActiveStepId],
     );
 
     const targetUsdValue =
@@ -226,32 +235,6 @@ export function AaveV3Form({
                     }
                     onLaunch={onLaunch}
                 />
-                {/*{payload.kind && (
-                    <KpiStep
-                        disabled={noDistributables || unsupportedChain}
-                        kind={payload.kind}
-                        loadingUsdTvl={loadingUsdNetSupply}
-                        usdTvl={usdTvl}
-                        distributables={
-                            payload.distributables?.type ===
-                            DistributablesType.Tokens
-                                ? payload.distributables
-                                : undefined
-                        }
-                        startDate={payload.startDate}
-                        endDate={payload.endDate}
-                        kpiDistribution={payload.kpiDistribution}
-                        fixedDistribution={payload.fixedDistribution}
-                        onKpiChange={handlePayloadOnChange}
-                        onError={handlePayloadOnError}
-                    />
-                )}
-                <RestrictionsStep
-                    disabled={noDistributables || unsupportedChain}
-                    restrictions={payload.restrictions}
-                    onRestrictionsChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                /> */}
             </div>
         </div>
     );
