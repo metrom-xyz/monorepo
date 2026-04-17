@@ -3,7 +3,7 @@
 import { useRouter } from "@/src/i18n/routing";
 import { type Form } from "@metrom-xyz/chains";
 import { useEffect } from "react";
-import { SkeletonForm } from "./skeleton-form";
+import { SkeletonForm } from "./form/skeleton-form";
 
 interface RedirectProps {
     supported: Form[];

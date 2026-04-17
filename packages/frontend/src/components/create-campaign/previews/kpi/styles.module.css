@@ -1,0 +1,9 @@
+@reference "../../../../app.css";
+
+.parameters {
+    @apply flex flex-col gap-1;
+}
+
+.row {
+    @apply flex items-center gap-1;
+}

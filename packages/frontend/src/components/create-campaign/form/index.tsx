@@ -76,7 +76,7 @@ export function CreateCampaignForm<T extends CampaignType>({
     }, []);
 
     function handleCreateNewOnClick() {
-        router.push("/campaigns/create");
+        router.push(`/campaigns/create/${campaignType}`);
     }
 
     function handleBackOnClick() {
@@ -150,7 +150,7 @@ export function CreateCampaignForm<T extends CampaignType>({
                         <Button
                             icon={ArrowRightIcon}
                             iconPlacement="right"
-                            onClick={handleOnLaunch}
+                            onClick={handleCreateNewOnClick}
                             className={{ root: styles.button }}
                         >
                             {t("launchFeedback.newCampaign")}

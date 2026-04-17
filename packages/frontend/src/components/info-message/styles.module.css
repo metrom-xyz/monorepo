@@ -1,11 +1,7 @@
 @reference "../../app.css";
 
 .link {
-    @apply w-fit flex items-center text-primary font-medium text-xs;
-}
-
-.text {
-    @apply flex gap-0.5;
+    @apply flex items-center text-primary font-medium text-xs;
 }
 
 .spaced {

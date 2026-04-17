@@ -36,15 +36,17 @@ export function CampaignBasicsStep({
     onChange,
     onApply,
 }: CampaignBasicsStepProps) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
+    const [applied, setApplied] = useState(false);
 
     const t = useTranslations("newCampaign.form.basics");
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();
 
     useEffect(() => {
+        if (applied || completed) return;
         setOpen(activeStepId === FormStepId.Basics);
-    }, [activeStepId]);
+    }, [applied, completed, activeStepId]);
 
     useEffect(() => {
         updateUnsaved({ basics: unsavedChanges });
@@ -52,6 +54,7 @@ export function CampaignBasicsStep({
 
     const handleOnApply = useCallback(() => {
         onApply(payload, FormStepId.Basics);
+        setApplied(true);
         setOpen(false);
     }, [payload, onApply]);
 

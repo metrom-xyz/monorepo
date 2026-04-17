@@ -137,11 +137,18 @@ export function buildSpecificationBundle(
 ): Specification {
     const specification: Specification = {};
 
-    if (payload.kpiDistribution)
+    if (payload.kpiDistribution) {
+        const minimumPayoutPercentage = payload.kpiDistribution
+            .minimumPayoutPercentage
+            ? payload.kpiDistribution.minimumPayoutPercentage / 100
+            : undefined;
+
         specification.distribution = {
             type: SpecificationDistributionType.Kpi,
             ...payload.kpiDistribution,
+            minimumPayoutPercentage,
         };
+    }
 
     if (payload.fixedDistribution)
         specification.distribution = {
