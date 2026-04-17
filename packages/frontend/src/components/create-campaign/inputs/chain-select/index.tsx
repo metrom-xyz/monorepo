@@ -1,7 +1,7 @@
 import { getChainData } from "@/src/utils/chain";
 import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useCallback, useMemo, type FunctionComponent } from "react";
+import { useCallback, useEffect, useMemo, type FunctionComponent } from "react";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { useActiveChains } from "@/src/hooks/useActiveChains";
 import type { CampaignType } from "@metrom-xyz/sdk";
@@ -70,6 +70,11 @@ export function ChainSelect({
 
         return options;
     }, [activeChains, campaignType]);
+
+    useEffect(() => {
+        if (!!value || options.length > 1) return;
+        onChange({ chainId: options[0].value });
+    }, [options, value, onChange]);
 
     const handleOnChange = useCallback(
         (option: SelectOption<number>) => {
