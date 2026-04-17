@@ -205,6 +205,7 @@ export function Filters({
             <div className={styles.inputs}>
                 {statusOptions && (
                     <MultiSelect
+                        size="lg"
                         options={statusOptions}
                         values={filters.statuses}
                         onChange={handleStatusesChange}
@@ -221,6 +222,7 @@ export function Filters({
                 )}
                 {protocolOptions && (
                     <MultiSelect
+                        size="lg"
                         search
                         options={protocolOptions}
                         values={filters.protocols}
@@ -239,6 +241,7 @@ export function Filters({
                 <div className={styles.lastFilterWrapper}>
                     {chainOptions && (
                         <MultiSelect
+                            size="lg"
                             search
                             options={chainOptions}
                             values={filters.chains}

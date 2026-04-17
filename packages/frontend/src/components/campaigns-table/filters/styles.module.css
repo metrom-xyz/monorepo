@@ -26,11 +26,11 @@
 }
 
 .lastFilterWrapper {
-    @apply h-10 w-full flex justify-between items-end gap-3;
+    @apply h-11 w-full flex justify-between items-end gap-3;
 }
 
 .clearWrapper {
-    @apply h-10 w-full flex items-center justify-end gap-3;
+    @apply h-11 w-full flex items-center justify-end gap-3;
 }
 
 .totalCampaigns {
