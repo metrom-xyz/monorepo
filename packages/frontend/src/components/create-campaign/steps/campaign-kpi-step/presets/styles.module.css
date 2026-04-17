@@ -1,0 +1,36 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply flex items-center flex-col sm:flex-row gap-4;
+}
+
+.preset {
+    @apply flex
+        flex-1
+        flex-col
+        gap-3
+        w-full
+        sm:w-fit
+        p-3
+        rounded-lg
+        border
+        opacity-80
+        border-gray-300
+        dark:border-neutral-700
+        cursor-pointer
+        transition-[background-color,border-color,opacity]
+        duration-200
+        ease-in-out;
+}
+
+.preset:hover {
+    @apply opacity-100 border-brand-green-dark dark:border-brand-green bg-brand-green/4;
+}
+
+.preset.active {
+    @apply opacity-100 border-brand-green-dark dark:border-brand-green bg-brand-green/4;
+}
+
+.icon {
+    @apply size-4;
+}

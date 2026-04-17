@@ -39,6 +39,7 @@ export function CampaignPoolRangeStep({
     onApply,
 }: CampaignPoolRangeStepProps) {
     const [open, setOpen] = useState(false);
+    const [applied, setApplied] = useState(false);
     const [rangePayload, setRangePayload] = useState({
         priceRangeSpecification: payload.priceRangeSpecification || {
             token0To1: true,
@@ -92,11 +93,12 @@ export function CampaignPoolRangeStep({
         rangeSpecificationCompleted(rangePayload);
 
     useEffect(() => {
+        if (applied || completed) return;
         setOpen(activeStepId === FormStepId.PoolRange);
-    }, [activeStepId]);
+    }, [applied, completed, activeStepId]);
 
     useEffect(() => {
-        updateUnsaved({ basics: unsavedChanges });
+        updateUnsaved({ range: unsavedChanges });
     }, [unsavedChanges, updateUnsaved]);
 
     useEffect(() => {
@@ -189,6 +191,7 @@ export function CampaignPoolRangeStep({
 
     const handleOnSkip = useCallback(() => {
         onApply({ priceRangeSpecification: undefined }, FormStepId.PoolRange);
+        setApplied(true);
         setRangePayload({
             priceRangeSpecification: {
                 token0To1: true,
@@ -201,6 +204,7 @@ export function CampaignPoolRangeStep({
     }, [onApply, updateErrors]);
 
     const handleOnApply = useCallback(() => {
+        setApplied(true);
         onApply(rangePayload, FormStepId.PoolRange);
         setOpen(false);
     }, [rangePayload, onApply]);

@@ -57,14 +57,16 @@ export function CampaignRewardsStep({
     onApply,
 }: CampaignRewardsStepProps) {
     const [open, setOpen] = useState(false);
+    const [applied, setApplied] = useState(false);
 
     const t = useTranslations("newCampaign.form.rewards");
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();
 
     useEffect(() => {
+        if (applied || completed) return;
         setOpen(activeStepId === FormStepId.Rewards);
-    }, [activeStepId]);
+    }, [applied, completed, activeStepId]);
 
     useEffect(() => {
         updateUnsaved({ basics: unsavedChanges });
@@ -77,6 +79,7 @@ export function CampaignRewardsStep({
 
     const handleOnApply = useCallback(() => {
         onApply(payload, FormStepId.Rewards);
+        setApplied(true);
         setOpen(false);
     }, [payload, onApply]);
 

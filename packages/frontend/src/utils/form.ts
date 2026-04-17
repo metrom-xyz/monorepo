@@ -7,6 +7,8 @@ import {
 import type {
     BaseCampaignPayload,
     CampaignPayloadDistributables,
+    CampaignPayloadFixedDistribution,
+    CampaignPayloadKpiDistribution,
     CampaignPreviewDistributables,
     TargetValue,
 } from "../types/campaign/common";
@@ -50,18 +52,26 @@ export function distributablesCompleted(payload: BaseCampaignPayload): boolean {
 export function kpiSpecificationCompleted(
     payload: BaseCampaignPayload,
 ): boolean {
-    return false;
+    const { kpiDistribution } = payload;
+
+    return (
+        kpiDistribution?.goal?.metric !== undefined &&
+        kpiDistribution.goal.lowerUsdTarget !== undefined &&
+        kpiDistribution.goal.upperUsdTarget !== undefined
+    );
 }
 
 export function rangeSpecificationCompleted(
     payload: AmmPoolLiquidityCampaignPayload,
 ): boolean {
+    const { priceRangeSpecification } = payload;
+
     return (
-        payload.priceRangeSpecification?.token0To1 !== undefined &&
-        payload.priceRangeSpecification?.from?.price !== undefined &&
-        !!payload.priceRangeSpecification?.from.tick &&
-        payload.priceRangeSpecification?.to?.price !== undefined &&
-        !!payload.priceRangeSpecification?.to.tick
+        priceRangeSpecification?.token0To1 !== undefined &&
+        priceRangeSpecification?.from?.price !== undefined &&
+        !!priceRangeSpecification?.from.tick &&
+        priceRangeSpecification?.to?.price !== undefined &&
+        !!priceRangeSpecification?.to.tick
     );
 }
 
@@ -123,6 +133,22 @@ export function weightingEqual(
     );
 }
 
+export function kpisEqual(
+    prev: BaseCampaignPayload,
+    current: BaseCampaignPayload,
+) {
+    return (
+        prev.kpiDistribution?.goal?.metric ===
+            current.kpiDistribution?.goal?.metric &&
+        prev.kpiDistribution?.goal?.lowerUsdTarget ===
+            current.kpiDistribution?.goal?.lowerUsdTarget &&
+        prev.kpiDistribution?.goal?.upperUsdTarget ===
+            current.kpiDistribution?.goal?.upperUsdTarget &&
+        prev.kpiDistribution?.minimumPayoutPercentage ===
+            current.kpiDistribution?.minimumPayoutPercentage
+    );
+}
+
 export function rangesEqual(
     prev: AmmPoolLiquidityCampaignPayload,
     current: AmmPoolLiquidityCampaignPayload,
@@ -135,7 +161,48 @@ export function rangesEqual(
     );
 }
 
-export function getCampaignApr(
+export function validateDistributables(
+    distributables: CampaignPayloadDistributables,
+): distributables is CampaignPreviewDistributables {
+    if (
+        distributables.type === DistributablesType.FixedPoints &&
+        (!distributables.fee || !distributables.type)
+    )
+        return false;
+    if (
+        distributables.type === DistributablesType.Tokens &&
+        (!distributables.tokens || distributables.tokens.length === 0)
+    )
+        return false;
+
+    return true;
+}
+
+export function validatePriceRangeSpecification(
+    priceRangeSpecification: Partial<AugmentedPriceRangeSpecification>,
+): priceRangeSpecification is AugmentedPriceRangeSpecification {
+    if (
+        !priceRangeSpecification.from ||
+        !priceRangeSpecification.to ||
+        priceRangeSpecification.token0To1 === undefined
+    )
+        return false;
+
+    return true;
+}
+
+export function validateDistributions(
+    kpiDistribution?: CampaignPayloadKpiDistribution,
+    fixedDistribution?: CampaignPayloadFixedDistribution,
+) {
+    if (kpiDistribution && fixedDistribution) return false;
+    if (kpiDistribution && !kpiDistribution.goal) return false;
+    if (fixedDistribution && !fixedDistribution.apr) return false;
+
+    return true;
+}
+
+export function getCampaignFormApr(
     payload: BaseCampaignPayload,
     targetValue?: TargetValue,
     liquidityInRange?: LiquidityInRange,
@@ -154,7 +221,7 @@ export function getCampaignApr(
     )
         return undefined;
 
-    const { distributables, kpiSpecification } = payload;
+    const { distributables, kpiDistribution } = payload;
 
     let rewardsUsdValue = 0;
     for (const reward of distributables.tokens || []) {
@@ -163,12 +230,17 @@ export function getCampaignApr(
     }
 
     let distributableUsdRewards = rewardsUsdValue;
-    if (kpiSpecification) {
+    if (
+        kpiDistribution &&
+        kpiDistribution.goal &&
+        kpiDistribution.goal.lowerUsdTarget !== undefined &&
+        kpiDistribution.goal.upperUsdTarget !== undefined
+    ) {
         distributableUsdRewards *= getDistributableRewardsPercentage(
             targetValue.usd,
-            kpiSpecification.goal.lowerUsdTarget,
-            kpiSpecification.goal.upperUsdTarget,
-            kpiSpecification.minimumPayoutPercentage,
+            kpiDistribution.goal.lowerUsdTarget,
+            kpiDistribution.goal.upperUsdTarget,
+            kpiDistribution.minimumPayoutPercentage,
         );
     }
 
@@ -213,32 +285,17 @@ export function getCampaignApr(
     return aprPercentage;
 }
 
-export function validateDistributables(
-    distributables: CampaignPayloadDistributables,
-): distributables is CampaignPreviewDistributables {
-    if (
-        distributables.type === DistributablesType.FixedPoints &&
-        (!distributables.fee || !distributables.type)
-    )
-        return false;
-    if (
-        distributables.type === DistributablesType.Tokens &&
-        (!distributables.tokens || distributables.tokens.length === 0)
-    )
-        return false;
-
-    return true;
-}
-
-export function validatePriceRangeSpecification(
-    priceRangeSpecification: Partial<AugmentedPriceRangeSpecification>,
-): priceRangeSpecification is AugmentedPriceRangeSpecification {
-    if (
-        !priceRangeSpecification.from ||
-        !priceRangeSpecification.to ||
-        priceRangeSpecification.token0To1 === undefined
-    )
-        return false;
-
-    return true;
+export function getUsdBudgetForFixedApr(
+    referenceTvl: number,
+    bufferPercentage: number,
+    daysDuration: number,
+    apr?: number,
+) {
+    if (!apr) return 0;
+    return (
+        referenceTvl *
+        (apr / 100) *
+        (daysDuration / 365) *
+        (1 + bufferPercentage / 100)
+    );
 }

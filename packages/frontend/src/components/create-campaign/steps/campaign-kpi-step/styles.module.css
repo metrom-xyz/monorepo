@@ -5,9 +5,20 @@
 }
 
 .targetChip {
-    @apply flex items-center gap-0.5 px-2 py-1 rounded-sm bg-gray-300 dark:bg-neutral-700 transition-opacity duration-200 ease-in-out;
+    @apply flex
+        items-center
+        gap-0.5
+        px-2
+        py-1
+        rounded-lg
+        bg-gray-300
+        dark:bg-neutral-700;
+}
+
+.buttons {
+    @apply w-full flex flex-col sm:flex-row items-center justify-end gap-2;
 }
 
 .button {
-    @apply self-end w-full sm:w-fit;
+    @apply w-full sm:w-fit;
 }

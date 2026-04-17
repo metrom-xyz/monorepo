@@ -141,7 +141,6 @@ export function PickDistributablesType({
                     </div>
                 </div>
             </div>
-
             <div className={commonStyles.header}>
                 <Typography weight="semibold" size="xl2">
                     {t("title")}
