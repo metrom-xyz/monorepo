@@ -22,7 +22,3 @@
 .empty {
     @apply flex justify-center py-4;
 }
-
-.infoText {
-    @apply py-2 px-4 text-center;
-}

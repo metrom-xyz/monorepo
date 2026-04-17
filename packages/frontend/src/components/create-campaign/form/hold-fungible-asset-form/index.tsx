@@ -1,4 +1,9 @@
-import { type CampaignPayloadErrors, type CampaignPreviewDistributables, type CampaignPreviewFixedDistribution, type CampaignPreviewKpiDistribution } from "@/src/types/campaign/common";
+import {
+    type CampaignPayloadErrors,
+    type CampaignPreviewDistributables,
+    type CampaignPreviewFixedDistribution,
+    type CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -6,7 +11,6 @@ import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { StartDateStep } from "../../steps/start-date-step";
 import { EndDateStep } from "../../steps/end-date-step";
 import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
@@ -18,9 +22,9 @@ import {
 } from "@/src/types/campaign/hold-fungible-asset-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 import { validateDistributables } from "@/src/utils/form";
+import { validateDistributions } from "@/src/utils/creation-form";
 
 import styles from "./styles.module.css";
-import { validateDistributions } from "@/src/utils/creation-form";
 
 function validatePayload(
     chainId: number,
@@ -104,10 +108,10 @@ export function HoldFungibleAssetForm({
         return validatePayload(chainId, payload);
     }, [chainId, payload, errors]);
 
-    const noDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
-        return !validateDistributables(payload.distributables);
-    }, [payload.distributables]);
+    // const noDistributables = useMemo(() => {
+    //     if (!payload.distributables) return true;
+    //     return !validateDistributables(payload.distributables);
+    // }, [payload.distributables]);
 
     useEffect(() => {
         setPayload(initialPayload);
@@ -169,14 +173,14 @@ export function HoldFungibleAssetForm({
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                <RestrictionsStep
+                {/* <RestrictionsStep
                     disabled={
                         !payload.asset || noDistributables || unsupportedChain
                     }
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
             </div>
             <Button
                 icon={ArrowRightIcon}
