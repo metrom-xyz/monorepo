@@ -4,6 +4,7 @@ import { ErrorIcon } from "@/src/assets/error-icon";
 import { type ReactNode } from "react";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
+import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 
 import styles from "./styles.module.css";
 
@@ -20,6 +21,16 @@ interface FormStepProps {
     className?: string;
     onToggle: (open: boolean) => void;
 }
+
+const ICON_MOTION: HTMLMotionProps<"div"> = {
+    initial: { scale: 0, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    exit: { scale: 0, opacity: 0 },
+    transition: {
+        duration: 0.15,
+        ease: "easeOut",
+    },
+};
 
 export function FormStep({
     title,
@@ -41,19 +52,31 @@ export function FormStep({
             title={
                 <div className={styles.header}>
                     <div className={styles.iconWrapper}>
-                        {error ? (
-                            <ErrorIcon className={styles.errorIcon} />
-                        ) : warning ? (
-                            <ErrorIcon className={styles.warningIcon} />
-                        ) : completed ? (
-                            <CheckIcon className={styles.checkIcon} />
-                        ) : optional ? (
-                            <Typography size="sm" weight="medium">
-                                -
-                            </Typography>
-                        ) : (
-                            <div className={styles.greenDot} />
-                        )}
+                        <AnimatePresence mode="wait" initial={false}>
+                            {error ? (
+                                <motion.div key="error" {...ICON_MOTION}>
+                                    <ErrorIcon className={styles.errorIcon} />
+                                </motion.div>
+                            ) : warning ? (
+                                <motion.div key="warning" {...ICON_MOTION}>
+                                    <ErrorIcon className={styles.warningIcon} />
+                                </motion.div>
+                            ) : completed ? (
+                                <motion.div key="check" {...ICON_MOTION}>
+                                    <CheckIcon className={styles.checkIcon} />
+                                </motion.div>
+                            ) : optional ? (
+                                <motion.div key="optional" {...ICON_MOTION}>
+                                    <Typography size="sm" weight="medium">
+                                        -
+                                    </Typography>
+                                </motion.div>
+                            ) : (
+                                <motion.div key="dot" {...ICON_MOTION}>
+                                    <div className={styles.greenDot} />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                     <Typography weight="semibold">{title}</Typography>
                     {titleDecorator}
