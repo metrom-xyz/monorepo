@@ -2,7 +2,6 @@ import {
     DistributablesType,
     type Erc20Token,
     type RewardToken,
-    type UsdPricedErc20TokenAmount,
 } from "@metrom-xyz/sdk";
 import { type Address, parseUnits, formatUnits } from "viem";
 import { RewardsPreview } from "./preview";
@@ -32,7 +31,6 @@ import { trackFathomEvent } from "@/src/utils/fathom";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { WhitelistedTokensList } from "../whitelisted-tokens-list";
 import { useRewardTokens } from "@/src/hooks/useRewardTokens";
-import { RewardsFixedApr } from "../fixed-apr";
 import type { Dayjs } from "dayjs";
 
 import styles from "./styles.module.css";
@@ -54,10 +52,10 @@ export type TokensErrorMessage =
 export function RewardTokens({
     distributables,
     campaignDuration,
-    startDate,
-    endDate,
-    kpiDistribution,
-    fixedDistribution,
+    // startDate,
+    // endDate,
+    // kpiDistribution,
+    // fixedDistribution,
     onError,
     onRewardsTokensChange,
 }: RewardTokensProps) {
@@ -230,60 +228,60 @@ export function RewardTokens({
         setOpen(false);
     }, []);
 
-    const handleFixedAprOnToggle = useCallback(() => {
-        onRewardsTokensChange({
-            distributables: {
-                type: DistributablesType.Tokens,
-                tokens: [],
-            },
-            fixedDistribution: undefined
-        });
-    }, [onRewardsTokensChange]);
+    // const handleFixedAprOnToggle = useCallback(() => {
+    //     onRewardsTokensChange({
+    //         distributables: {
+    //             type: DistributablesType.Tokens,
+    //             tokens: [],
+    //         },
+    //         fixedDistribution: undefined
+    //     });
+    // }, [onRewardsTokensChange]);
 
-    const handleFixedAprOnChange = useCallback(
-        (
-            fixedApr: BaseCampaignPayloadPart,
-            budgetToken?: UsdPricedErc20TokenAmount,
-        ) => {
-            if (!budgetToken) {
-                setToken(undefined);
-                setAmount({
-                    floatValue: undefined,
-                    formattedValue: "",
-                    value: "",
-                });
-                return;
-            }
+    // const handleFixedAprOnChange = useCallback(
+    //     (
+    //         fixedApr: BaseCampaignPayloadPart,
+    //         budgetToken?: UsdPricedErc20TokenAmount,
+    //     ) => {
+    //         if (!budgetToken) {
+    //             setToken(undefined);
+    //             setAmount({
+    //                 floatValue: undefined,
+    //                 formattedValue: "",
+    //                 value: "",
+    //             });
+    //             return;
+    //         }
 
-            const token = rewardTokens?.find(
-                ({ address }) => address === budgetToken.token.address,
-            );
+    //         const token = rewardTokens?.find(
+    //             ({ address }) => address === budgetToken.token.address,
+    //         );
 
-            if (!token) return;
+    //         if (!token) return;
 
-            const existingRewardToken = distributables.tokens?.find(
-                ({ token }) => token.address === budgetToken.token.address,
-            );
-            if (existingRewardToken)
-                onRewardsTokensChange({
-                    distributables: {
-                        type: DistributablesType.Tokens,
-                        tokens: [],
-                    },
-                });
+    //         const existingRewardToken = distributables.tokens?.find(
+    //             ({ token }) => token.address === budgetToken.token.address,
+    //         );
+    //         if (existingRewardToken)
+    //             onRewardsTokensChange({
+    //                 distributables: {
+    //                     type: DistributablesType.Tokens,
+    //                     tokens: [],
+    //                 },
+    //             });
 
-            setToken(token);
-            if (budgetToken.amount.formatted !== 0)
-                setAmount({
-                    floatValue: budgetToken.amount.formatted,
-                    formattedValue: budgetToken.amount.formatted.toFixed(2),
-                    value: budgetToken.amount.formatted.toString(),
-                });
+    //         setToken(token);
+    //         if (budgetToken.amount.formatted !== 0)
+    //             setAmount({
+    //                 floatValue: budgetToken.amount.formatted,
+    //                 formattedValue: budgetToken.amount.formatted.toFixed(2),
+    //                 value: budgetToken.amount.formatted.toString(),
+    //             });
 
-            onRewardsTokensChange(fixedApr);
-        },
-        [rewardTokens, distributables.tokens, onRewardsTokensChange],
-    );
+    //         onRewardsTokensChange(fixedApr);
+    //     },
+    //     [rewardTokens, distributables.tokens, onRewardsTokensChange],
+    // );
 
     return (
         <div className={styles.root}>
@@ -370,14 +368,15 @@ export function RewardTokens({
                 unavailable={distributables.tokens}
                 onClick={handleRewardTokenChange}
             />
-            <RewardsFixedApr
+            {/* TODO: enable for testing */}
+            {/* <RewardsFixedApr
                 startDate={startDate}
                 endDate={endDate}
                 kpiDistribution={kpiDistribution}
                 fixedDistribution={fixedDistribution}
                 onFixedAprChange={handleFixedAprOnChange}
                 onToggle={handleFixedAprOnToggle}
-            />
+            /> */}
         </div>
     );
 }
