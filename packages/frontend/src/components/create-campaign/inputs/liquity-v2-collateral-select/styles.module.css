@@ -1,0 +1,17 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full;
+}
+
+.option {
+    @apply w-full flex justify-between gap-1.5 items-center cursor-pointer;
+}
+
+.token {
+    @apply flex items-center gap-1;
+}
+
+.header {
+    @apply flex justify-between items-center px-3 pt-3;
+}

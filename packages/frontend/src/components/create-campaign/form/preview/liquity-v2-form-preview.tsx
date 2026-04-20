@@ -2,48 +2,42 @@ import { useTranslations } from "next-intl";
 import { FormStepPreview } from "../../form-step-preview";
 import { Duration } from "../../previews/duration";
 import {
-    getAmmPoolLiquidityTargetValue,
-    type AmmPoolLiquidityCampaignPayload,
-} from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import { AmmLiquidityPoolTarget } from "../../previews/amm-liquidity-pool-target";
-import type { FormSteps } from "@/src/context/form-steps";
+    getLiquityV2TargetValue,
+    type LiquityV2CampaignPayload,
+} from "@/src/types/campaign/liquity-v2-campaign";
 import {
     allFieldsFilled,
     distributablesCompleted,
     getCampaignFormApr,
-    rangeSpecificationCompleted,
 } from "@/src/utils/form";
-import { Rewards } from "../../previews/rewards";
-import { PoolRange } from "../../previews/pool-range";
+import type { FormSteps } from "@/src/context/form-steps";
 import { Typography } from "@metrom-xyz/ui";
 import { getCampaignTargetValueName } from "@/src/utils/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
-import { AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS } from "../amm-pool-liquidity-form/amm-pool-liquidity-basics-step";
+import { Rewards } from "../../previews/rewards";
+import { LIQUITY_V2_BASIC_PAYLOAD_KEYS } from "../liquity-v2-forks-form/liquity-v2-basics-step";
+import { LiquityV2Target } from "../../previews/liquity-v2-target";
 
 import styles from "./styles.module.css";
 
-interface AmmLiquidityPoolFormPreviewProps {
-    payload: AmmPoolLiquidityCampaignPayload;
+interface LiquityV2FormPreviewProps {
+    payload: LiquityV2CampaignPayload;
     errors: FormSteps<string>;
 }
 
-export function AmmLiquidityPoolFormPreview({
+export function LiquityV2FormPreview({
     payload,
     errors,
-}: AmmLiquidityPoolFormPreviewProps) {
+}: LiquityV2FormPreviewProps) {
     const globalT = useTranslations();
     const t = useTranslations("newCampaign.formPreview");
 
-    const completed =
+    const basicsCompleted =
         !errors.basics &&
-        allFieldsFilled(payload, AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS);
+        allFieldsFilled(payload, LIQUITY_V2_BASIC_PAYLOAD_KEYS);
 
     const rewardsCompleted = distributablesCompleted(payload);
-    const poolRangeCompleted = rangeSpecificationCompleted(payload);
-    const apr = getCampaignFormApr(
-        payload,
-        getAmmPoolLiquidityTargetValue(payload),
-    );
+    const apr = getCampaignFormApr(payload, getLiquityV2TargetValue(payload));
 
     return (
         <>
@@ -53,7 +47,7 @@ export function AmmLiquidityPoolFormPreview({
                         <Typography size="xs" weight="semibold" uppercase>
                             {t("campaignBasics")}
                         </Typography>
-                        {payload.kind && payload.pool && (
+                        {payload.kind && payload.collateral && (
                             <div className={styles.targetUsdChip}>
                                 <Typography size="xs" weight="medium" uppercase>
                                     {getCampaignTargetValueName(
@@ -62,17 +56,18 @@ export function AmmLiquidityPoolFormPreview({
                                     )}
                                     :{" "}
                                     {formatUsdAmount({
-                                        amount: payload.pool.usdTvl,
+                                        amount: getLiquityV2TargetValue(payload)
+                                            ?.usd,
                                     })}
                                 </Typography>
                             </div>
                         )}
                     </div>
                 }
-                completed={completed}
+                completed={basicsCompleted}
                 error={!!errors.basics}
             >
-                <AmmLiquidityPoolTarget payload={payload} />
+                <LiquityV2Target payload={payload} />
                 <Duration
                     startDate={payload.startDate}
                     endDate={payload.endDate}
@@ -86,15 +81,7 @@ export function AmmLiquidityPoolFormPreview({
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     distributables={payload.distributables}
-                    pool={payload.pool}
-                    weighting={payload.weighting}
                     restrictions={payload.restrictions}
-                />
-            )}
-            {poolRangeCompleted && (
-                <PoolRange
-                    pool={payload.pool}
-                    priceRangeSpecification={payload.priceRangeSpecification}
                 />
             )}
         </>

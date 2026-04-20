@@ -17,22 +17,25 @@ import type { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
 
-interface AmmPoolLiquidityBasicsStepsProps {
+interface AmmPoolLiquidityBasicsStepProps {
     payload: AmmPoolLiquidityCampaignPayload;
     onApply: (payload: BaseCampaignPayloadPart, stepId: FormStepId) => void;
 }
 
-export const BASIC_PAYLOAD_KEYS: Partial<
+export const AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS: Partial<
     keyof AmmPoolLiquidityCampaignPayload
 >[] = ["chainId", "dex", "pool", "startDate", "endDate"];
 
-export function AmmPoolLiquidityBasicsSteps({
+export function AmmPoolLiquidityBasicsStep({
     payload,
     onApply,
-}: AmmPoolLiquidityBasicsStepsProps) {
+}: AmmPoolLiquidityBasicsStepProps) {
     const [basicsPayload, setBasicsPayload] = useState(
         Object.fromEntries(
-            BASIC_PAYLOAD_KEYS.map((key) => [key, payload[key]]),
+            AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS.map((key) => [
+                key,
+                payload[key],
+            ]),
         ) as Pick<
             typeof payload,
             Partial<keyof AmmPoolLiquidityCampaignPayload>
@@ -44,11 +47,14 @@ export function AmmPoolLiquidityBasicsSteps({
 
     const unsavedChanges = useMemo(() => {
         if (
-            !allFieldsFilled(basicsPayload, BASIC_PAYLOAD_KEYS) &&
-            allFieldsFilled(payload, BASIC_PAYLOAD_KEYS)
+            !allFieldsFilled(
+                basicsPayload,
+                AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS,
+            ) &&
+            allFieldsFilled(payload, AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS)
         )
             return true;
-        return BASIC_PAYLOAD_KEYS.some(
+        return AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS.some(
             (key) => basicsPayload[key] !== payload[key],
         );
     }, [payload, basicsPayload]);
@@ -56,12 +62,12 @@ export function AmmPoolLiquidityBasicsSteps({
     const applyDisabled =
         !!errors.basics ||
         !unsavedChanges ||
-        !allFieldsFilled(basicsPayload, BASIC_PAYLOAD_KEYS);
+        !allFieldsFilled(basicsPayload, AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS);
 
     const completed =
         !errors.basics &&
         !unsavedChanges &&
-        allFieldsFilled(basicsPayload, BASIC_PAYLOAD_KEYS);
+        allFieldsFilled(basicsPayload, AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS);
 
     function handlePayloadOnChange(part: AmmPoolLiquidityCampaignPayloadPart) {
         setBasicsPayload((prev) => ({ ...prev, ...part }));

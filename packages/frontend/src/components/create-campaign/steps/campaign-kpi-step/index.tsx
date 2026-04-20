@@ -107,7 +107,7 @@ export function CampaignKpiStep({
                 upperUsdTarget: undefined,
                 lowerUsdTarget: undefined,
             },
-            minimumPayoutPercentage: 0,
+            minimumPayoutPercentage: undefined,
         },
     });
 

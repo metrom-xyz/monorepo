@@ -185,8 +185,11 @@ export function CreateCampaignForm<T extends CampaignType>({
                                 {campaignType ===
                                     BaseCampaignType.LiquityV2 && (
                                     <LiquityV2ForksForm
+                                        distributablesType={distributablesType}
+                                        // TODO: remove this?
                                         unsupportedChain={false}
-                                        onPreviewClick={handlePreviewOnClick}
+                                        onStepComplete={handleOnStepComplete}
+                                        onLaunch={handleOnLaunch}
                                     />
                                 )}
                                 {campaignType === BaseCampaignType.AaveV3 && (

@@ -11,7 +11,7 @@ import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "./useProtocolsInChain";
 
 interface UseLiquityV2CollateralsParams extends HookBaseParams {
-    chainId: SupportedChain;
+    chainId?: SupportedChain;
     chainType: ChainType;
     brand?: SupportedLiquityV2;
 }
@@ -19,7 +19,7 @@ interface UseLiquityV2CollateralsParams extends HookBaseParams {
 type QueryKey = [
     string,
     SupportedLiquityV2 | undefined,
-    SupportedChain,
+    SupportedChain | undefined,
     ChainType,
 ];
 
@@ -42,7 +42,7 @@ export function useLiquityV2Collaterals({
         queryKey: ["liquity-v2-collaterals", brand, chainId, chainType],
         queryFn: async ({ queryKey }) => {
             const [, brand, chainId, chainType] = queryKey as QueryKey;
-            if (!brand) return null;
+            if (!brand || !chainId) return null;
 
             try {
                 const collaterals =
