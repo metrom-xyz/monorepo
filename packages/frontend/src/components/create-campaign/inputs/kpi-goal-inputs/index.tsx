@@ -1,9 +1,10 @@
 import type { CampaignPayloadKpiDistribution } from "@/src/types/campaign/common";
-import { NumberInput, type NumberFormatValues } from "@metrom-xyz/ui";
-import { useEffect, useState } from "react";
+import { Chip, NumberInput, type NumberFormatValues } from "@metrom-xyz/ui";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useFormSteps } from "@/src/context/form-steps";
 import type { LocalizedMessage } from "@/src/types/utils";
+import { formatPercentage } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +22,8 @@ export interface NumberInputValues {
 }
 
 type ErrorMessage = LocalizedMessage<"newCampaign.inputs.kpiGoalInputs">;
+
+const MIN_PAYOUT_PRESETS = [25, 50];
 
 export function KpiGoalInputs({
     targetValueName,
@@ -116,14 +119,24 @@ export function KpiGoalInputs({
         setMinimumPayoutPercentage(floatValue);
     }
 
-    function handleMinimumPayoutOnBlur() {
+    const handleMinimumPayoutOnBlur = useCallback(() => {
         const normalizedValue =
             minimumPayoutPercentage !== undefined
                 ? Math.min(minimumPayoutPercentage, 99)
                 : undefined;
         setMinimumPayoutPercentage(normalizedValue);
         onMinimumPayoutPercentageChange(normalizedValue);
-    }
+    }, [minimumPayoutPercentage, onMinimumPayoutPercentageChange]);
+
+    const getMinimumPayoutPresetHandler = useCallback(
+        (value: number) => {
+            return () => {
+                setMinimumPayoutPercentage(value);
+                onMinimumPayoutPercentageChange(value);
+            };
+        },
+        [onMinimumPayoutPercentageChange],
+    );
 
     return (
         <div className={styles.root}>
@@ -158,6 +171,20 @@ export function KpiGoalInputs({
                 allowNegative={false}
                 value={minimumPayoutPercentage ?? ""}
                 onValueChange={handleMinimumPayoutOnChange}
+                endAdornment={
+                    <div className={styles.minPayoutPresets}>
+                        {MIN_PAYOUT_PRESETS.map((value, index) => (
+                            <Chip
+                                key={index}
+                                size="xs"
+                                variant="secondary"
+                                onClick={getMinimumPayoutPresetHandler(value)}
+                            >
+                                {formatPercentage({ percentage: value })}
+                            </Chip>
+                        ))}
+                    </div>
+                }
                 onBlur={handleMinimumPayoutOnBlur}
                 className={styles.input}
             />

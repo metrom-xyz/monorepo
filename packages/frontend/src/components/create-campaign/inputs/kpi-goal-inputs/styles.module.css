@@ -7,3 +7,7 @@
 .input {
     @apply w-full;
 }
+
+.minPayoutPresets {
+    @apply flex gap-1;
+}
