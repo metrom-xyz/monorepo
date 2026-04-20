@@ -11,6 +11,7 @@
         gap-3
         w-full
         sm:w-fit
+        sm:min-h-[7.375rem]
         p-3
         rounded-lg
         border
