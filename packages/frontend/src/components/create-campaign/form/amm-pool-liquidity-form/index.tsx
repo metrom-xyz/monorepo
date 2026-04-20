@@ -13,8 +13,8 @@ import {
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 import {
-    AmmPoolLiquidityBasicsSteps,
-    BASIC_PAYLOAD_KEYS,
+    AmmPoolLiquidityBasicsStep,
+    AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS,
 } from "./amm-pool-liquidity-basics-step";
 import { AmmPoolLiquidityRewardsStep } from "./amm-pool-liquidity-rewards-step";
 import { useFormSteps } from "@/src/context/form-steps";
@@ -171,7 +171,7 @@ export function AmmPoolLiquidityForm({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <AmmPoolLiquidityBasicsSteps
+                <AmmPoolLiquidityBasicsStep
                     payload={payload}
                     onApply={handleOnApply}
                 />
@@ -179,7 +179,7 @@ export function AmmPoolLiquidityForm({
                     payload={payload}
                     disabled={
                         !!errors.basics ||
-                        !allFieldsFilled(payload, BASIC_PAYLOAD_KEYS)
+                        !allFieldsFilled(payload, AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS)
                     }
                     onApply={handleOnApply}
                 />

@@ -1,17 +1,17 @@
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { getAaveV3CampaignPreviewName } from "@/src/utils/campaign";
-import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
+import { getLiquityV2CampaignPreviewName } from "@/src/utils/campaign";
+import type { LiquityV2CampaignPayload } from "@/src/types/campaign/liquity-v2-campaign";
 import { useChainData } from "@/src/hooks/useChainData";
 
 import styles from "./styles.module.css";
 
-interface AaveV3TargetProps {
-    payload: AaveV3CampaignPayload | null;
+interface LiquityV2TargetProps {
+    payload: LiquityV2CampaignPayload | null;
 }
 
-export function AaveV3Target({ payload }: AaveV3TargetProps) {
+export function LiquityV2Target({ payload }: LiquityV2TargetProps) {
     const globalT = useTranslations();
     const t = useTranslations("newCampaign.formPreview");
     const chainData = useChainData({
@@ -22,7 +22,6 @@ export function AaveV3Target({ payload }: AaveV3TargetProps) {
     if (
         !payload ||
         !payload.brand ||
-        !payload.market ||
         !payload.collateral ||
         !payload.kind ||
         !chainData
@@ -44,7 +43,7 @@ export function AaveV3Target({ payload }: AaveV3TargetProps) {
                     address={payload.collateral.address}
                 />
                 <Typography size="sm" weight="medium" noWrap truncate>
-                    {getAaveV3CampaignPreviewName(
+                    {getLiquityV2CampaignPreviewName(
                         globalT,
                         payload.kind,
                         payload.brand,

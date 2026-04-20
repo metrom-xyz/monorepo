@@ -10,7 +10,6 @@ import type {
     AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { KindSelect } from "../../inputs/kind-select";
-import { AAVE_V3_CAMPAIGN_KIND_OPTIONS } from ".";
 import { AaveV3BrandSelect } from "../../inputs/aave-v3-brand-select";
 import { AaveV3CollateralSelect } from "../../inputs/aave-v3-collateral-select";
 import { AaveV3MarketSelect } from "../../inputs/aave-v3-market-select";
@@ -19,15 +18,34 @@ import { AaveV3BlockCrossBorrowPicker } from "../../inputs/aave-v3-block-cross-b
 import { useFormSteps } from "@/src/context/form-steps";
 import { Typography } from "@metrom-xyz/ui";
 import type { FormStepId } from "@/src/types/form";
+import type { CampaignKindOption } from "../../steps/campaign-kind-step";
+import type { TranslationsKeys } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
 
-interface AaveV3BasicsStepsProps {
+interface AaveV3BasicsStepProps {
     payload: AaveV3CampaignPayload;
     onApply: (payload: BaseCampaignPayloadPart, stepId: FormStepId) => void;
 }
 
-export const REQUIRED_PAYLOAD_KEYS: Partial<keyof AaveV3CampaignPayload>[] = [
+const KIND_OPTIONS: CampaignKindOption<TranslationsKeys<"newCampaign">>[] = [
+    {
+        label: "form.aaveV3.actions.borrow",
+        value: CampaignKind.AaveV3Borrow,
+    },
+    {
+        label: "form.aaveV3.actions.supply",
+        value: CampaignKind.AaveV3Supply,
+    },
+    {
+        label: "form.aaveV3.actions.netSupply",
+        value: CampaignKind.AaveV3NetSupply,
+    },
+] as const;
+
+export const AAVE_V3_REQUIRED_PAYLOAD_KEYS: Partial<
+    keyof AaveV3CampaignPayload
+>[] = [
     "chainId",
     "brand",
     "market",
@@ -41,12 +59,12 @@ const OPTIONAL_PAYLOAD_KEYS: Partial<keyof AaveV3CampaignPayload>[] = [
     "blacklistedCollaterals",
 ];
 
-const PAYLOAD_KEYS = [...REQUIRED_PAYLOAD_KEYS, ...OPTIONAL_PAYLOAD_KEYS];
+const PAYLOAD_KEYS = [
+    ...AAVE_V3_REQUIRED_PAYLOAD_KEYS,
+    ...OPTIONAL_PAYLOAD_KEYS,
+];
 
-export function AaveV3BasicsSteps({
-    payload,
-    onApply,
-}: AaveV3BasicsStepsProps) {
+export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
     const [basicsPayload, setBasicsPayload] = useState(
         Object.fromEntries(
             PAYLOAD_KEYS.map((key) => [key, payload[key]]),
@@ -58,8 +76,8 @@ export function AaveV3BasicsSteps({
 
     const unsavedChanges = useMemo(() => {
         if (
-            !allFieldsFilled(basicsPayload, REQUIRED_PAYLOAD_KEYS) &&
-            allFieldsFilled(payload, REQUIRED_PAYLOAD_KEYS)
+            !allFieldsFilled(basicsPayload, AAVE_V3_REQUIRED_PAYLOAD_KEYS) &&
+            allFieldsFilled(payload, AAVE_V3_REQUIRED_PAYLOAD_KEYS)
         )
             return true;
         return PAYLOAD_KEYS.some((key) => {
@@ -77,7 +95,7 @@ export function AaveV3BasicsSteps({
         });
     }, [payload, basicsPayload]);
 
-    const kindOptions = AAVE_V3_CAMPAIGN_KIND_OPTIONS.map((option) => ({
+    const kindOptions = KIND_OPTIONS.map((option) => ({
         ...option,
         label: t(option.label),
     }));
@@ -85,12 +103,12 @@ export function AaveV3BasicsSteps({
     const applyDisabled =
         !!errors.basics ||
         !unsavedChanges ||
-        !allFieldsFilled(basicsPayload, REQUIRED_PAYLOAD_KEYS);
+        !allFieldsFilled(basicsPayload, AAVE_V3_REQUIRED_PAYLOAD_KEYS);
 
     const completed =
         !errors.basics &&
         !unsavedChanges &&
-        allFieldsFilled(basicsPayload, REQUIRED_PAYLOAD_KEYS);
+        allFieldsFilled(basicsPayload, AAVE_V3_REQUIRED_PAYLOAD_KEYS);
 
     function handlePayloadOnChange(part: AaveV3CampaignPayloadPart) {
         setBasicsPayload((prev) => ({ ...prev, ...part }));

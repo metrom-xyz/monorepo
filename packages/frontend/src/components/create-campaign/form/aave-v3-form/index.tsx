@@ -4,18 +4,13 @@ import {
     SupportedAaveV3,
 } from "@metrom-xyz/sdk";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import { type CampaignKindOption } from "../../steps/campaign-kind-step";
-import type { TranslationsKeys } from "@/src/types/utils";
 import {
     AaveV3CampaignPreviewPayload,
     type AaveV3CampaignPayload,
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import {
-    AaveV3BasicsSteps,
-    REQUIRED_PAYLOAD_KEYS,
-} from "./aave-v3-basics-step";
+import { AaveV3BasicsStep, AAVE_V3_REQUIRED_PAYLOAD_KEYS } from "./aave-v3-basics-step";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -116,23 +111,6 @@ interface AaveV3FormProps {
     onLaunch: () => void;
 }
 
-export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
-    TranslationsKeys<"newCampaign">
->[] = [
-    {
-        label: "form.aaveV3.actions.borrow",
-        value: CampaignKind.AaveV3Borrow,
-    },
-    {
-        label: "form.aaveV3.actions.supply",
-        value: CampaignKind.AaveV3Supply,
-    },
-    {
-        label: "form.aaveV3.actions.netSupply",
-        value: CampaignKind.AaveV3NetSupply,
-    },
-] as const;
-
 export function AaveV3Form({
     distributablesType,
     // unsupportedChain,
@@ -208,12 +186,12 @@ export function AaveV3Form({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <AaveV3BasicsSteps payload={payload} onApply={handleOnApply} />
+                <AaveV3BasicsStep payload={payload} onApply={handleOnApply} />
                 <AaveV3RewardsStep
                     payload={payload}
                     disabled={
                         !!errors.basics ||
-                        !allFieldsFilled(payload, REQUIRED_PAYLOAD_KEYS)
+                        !allFieldsFilled(payload, AAVE_V3_REQUIRED_PAYLOAD_KEYS)
                     }
                     onApply={handleOnApply}
                 />
