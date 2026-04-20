@@ -47,7 +47,7 @@ export const seiDevelopmentData: ChainData = {
                 template:
                     "https://sei.carbondefi.xyz/trade/disposable?base={token_0}&quote={token_1}",
             },
-            supportsFetchAllPools: true,
+            supportsFetchAllPools: false,
         },
     ],
     baseTokens: [
