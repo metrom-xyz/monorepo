@@ -97,7 +97,7 @@
 }
 
 .lg {
-    @apply text-lg;
+    @apply text-base;
     --notch-size: var(--text-xs);
     --label-translate: calc(-100% + -2px);
 }
@@ -205,7 +205,7 @@
 }
 
 .input.lg {
-    @apply px-3 py-2;
+    @apply px-3 py-2.5;
 }
 
 .inputIcon {

@@ -48,3 +48,32 @@ export interface LiquityV2CampaignPayload extends BaseCampaignPayload {
 
 export type LiquityV2CampaignPayloadPart =
     PropertyUnion<LiquityV2CampaignPayload>;
+
+export function getLiquityV2TargetValue(
+    payload: LiquityV2CampaignPayload,
+): TargetValue | undefined {
+    const { kind, collateral } = payload;
+    if (!collateral) return undefined;
+
+    if (kind === CampaignKind.LiquityV2Debt)
+        return {
+            usd: collateral.usdMintedDebt,
+            raw: collateral.liquidity,
+        };
+    if (kind === CampaignKind.LiquityV2StabilityPool)
+        return {
+            usd: collateral.usdStabilityPoolDebt,
+            raw: collateral.liquidity,
+        };
+
+    return undefined;
+}
+
+export function isLiquityV2CampaignPayload(
+    payload: BaseCampaignPayload,
+): payload is LiquityV2CampaignPayload {
+    return (
+        payload.kind === CampaignKind.LiquityV2Debt ||
+        payload.kind === CampaignKind.LiquityV2StabilityPool
+    );
+}

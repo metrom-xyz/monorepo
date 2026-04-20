@@ -6,7 +6,11 @@ import {
     type AaveV3CampaignPayload,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { AaveV3Target } from "../../previews/aave-v3-target";
-import { distributablesCompleted, getCampaignFormApr } from "@/src/utils/form";
+import {
+    allFieldsFilled,
+    distributablesCompleted,
+    getCampaignFormApr,
+} from "@/src/utils/form";
 import type { FormSteps } from "@/src/context/form-steps";
 import { Typography } from "@metrom-xyz/ui";
 import { getCampaignTargetValueName } from "@/src/utils/campaign";
@@ -16,6 +20,7 @@ import { Rewards } from "../../previews/rewards";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { useChainType } from "@/src/hooks/useChainType";
 import { CampaignKind } from "@metrom-xyz/sdk";
+import { AAVE_V3_REQUIRED_PAYLOAD_KEYS } from "../aave-v3-form/aave-v3-basics-step";
 
 import styles from "./styles.module.css";
 
@@ -46,13 +51,7 @@ export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
 
     const basicsCompleted =
         !errors.basics &&
-        !!payload.chainId &&
-        !!payload.brand &&
-        !!payload.market &&
-        !!payload.kind &&
-        !!payload.collateral &&
-        !!payload.startDate &&
-        !!payload.endDate;
+        allFieldsFilled(payload, AAVE_V3_REQUIRED_PAYLOAD_KEYS);
 
     const usdNetSupply =
         payload.kind === CampaignKind.AaveV3NetSupply

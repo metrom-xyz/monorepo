@@ -12,6 +12,7 @@ import {
     CampaignItem as SdkCampaignItem,
     type AmmPool,
     type AaveV3Collateral,
+    type LiquityV2Collateral,
 } from "@metrom-xyz/sdk";
 import {
     CampaignDetails,
@@ -190,7 +191,7 @@ export function getAmmPoolLiquidityCampaignPreviewName(
     }
 }
 
-export function geAaveV3CampaignPreviewName(
+export function getAaveV3CampaignPreviewName(
     t: TranslationsType<never>,
     kind: CampaignKind,
     brand: AaveV3Protocol,
@@ -220,6 +221,35 @@ export function geAaveV3CampaignPreviewName(
         }
         case CampaignKind.AaveV3BridgeAndSupply: {
             return t("campaignActions.aaveV3BridgeAndSupply", {
+                brand: brandName,
+                token,
+            });
+        }
+        default: {
+            return "-";
+        }
+    }
+}
+
+export function getLiquityV2CampaignPreviewName(
+    t: TranslationsType<never>,
+    kind: CampaignKind,
+    brand: LiquityV2Protocol,
+    collateral: LiquityV2Collateral,
+) {
+    const brandName = brand.name;
+    const token = collateral.symbol;
+
+    switch (kind) {
+        case CampaignKind.LiquityV2Debt: {
+            return t("campaignActions.borrow", {
+                brand: brandName,
+                debtToken: brand.debtToken.symbol,
+                token,
+            });
+        }
+        case CampaignKind.LiquityV2StabilityPool: {
+            return t("campaignActions.depositStabilityPool", {
                 brand: brandName,
                 token,
             });
@@ -270,7 +300,7 @@ export function getCampaignPreviewName(
             }
         }
     } else if (payload instanceof AaveV3CampaignPreviewPayload) {
-        return geAaveV3CampaignPreviewName(
+        return getAaveV3CampaignPreviewName(
             t,
             payload.kind,
             payload.brand,

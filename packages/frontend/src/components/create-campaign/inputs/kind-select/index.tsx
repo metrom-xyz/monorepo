@@ -1,14 +1,13 @@
-import { useCallback, type ReactSVGElement } from "react";
+import { useCallback } from "react";
 import { type BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import type { CampaignKind } from "@metrom-xyz/sdk";
-import { Select } from "@metrom-xyz/ui";
+import { Select, Typography } from "@metrom-xyz/ui";
 
 import styles from "./styles.module.css";
 
 export interface KindOption<T extends string> {
     label: T;
     value: CampaignKind;
-    icon?: ReactSVGElement;
 }
 
 export interface KindSelectProps {
@@ -19,6 +18,11 @@ export interface KindSelectProps {
     messages: { noResults: string };
     onChange: (value: BaseCampaignPayloadPart) => void;
 }
+
+const option = (option: KindOption<string>) => {
+    const { label } = option;
+    return <Typography>{label}</Typography>;
+};
 
 export function KindSelect({
     disabled,
@@ -43,6 +47,7 @@ export function KindSelect({
             options={kinds}
             value={value}
             messages={messages}
+            renderOption={option}
             onChange={handleOnChange}
             className={styles.root}
         />

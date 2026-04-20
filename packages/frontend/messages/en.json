@@ -460,7 +460,8 @@
                 }
             },
             "liquityV2": {
-                "brand": { "title": "Protocol" },
+                "action": "Action",
+                "noActions": "No actions found",
                 "actions": {
                     "borrow": "Borrow {debtToken}",
                     "depositToStabilityPool": "Deposit to stability pool"
@@ -482,7 +483,6 @@
                 "blockCrossBorrowDescription": "Borrowing any of the selected collateral assets will reduce the position share of the rewards.",
                 "action": "Action",
                 "noActions": "No actions found",
-                "brand": { "title": "Platform" },
                 "actions": {
                     "borrow": "Borrow",
                     "supply": "Supply",

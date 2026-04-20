@@ -5,11 +5,13 @@ import { PlusCircleIcon } from "@/src/assets/plus-circle-icon";
 import type { CampaignPayload } from "@/src/types/campaign/common";
 import { isAmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { isAaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
+import { isLiquityV2CampaignPayload } from "@/src/types/campaign/liquity-v2-campaign";
 import { AmmLiquidityPoolFormPreview } from "./amm-liquidity-pool-form-preview";
 import { AaveV3FormPreview } from "./aave-v3-form-preview";
 import { DocumentTextIcon } from "@/src/assets/document-text-icon";
 import { useFormSteps } from "@/src/context/form-steps";
 import { Kpi } from "../../previews/kpi";
+import { LiquityV2FormPreview } from "./liquity-v2-form-preview";
 
 import styles from "./styles.module.css";
 
@@ -24,6 +26,8 @@ export function FormPreview({ payload }: FormPreviewProps) {
     const ammPoolLiquidityCampaignPayload =
         payload && isAmmPoolLiquidityCampaignPayload(payload);
     const aaveV3CampaignPayload = payload && isAaveV3CampaignPayload(payload);
+    const liquityV2CampaignPayload =
+        payload && isLiquityV2CampaignPayload(payload);
 
     const emptyPayload = !payload?.chainId;
     const kpiSetup = payload?.kpiDistribution;
@@ -79,6 +83,12 @@ export function FormPreview({ payload }: FormPreviewProps) {
                     )}
                     {aaveV3CampaignPayload && (
                         <AaveV3FormPreview payload={payload} errors={errors} />
+                    )}
+                    {liquityV2CampaignPayload && (
+                        <LiquityV2FormPreview
+                            payload={payload}
+                            errors={errors}
+                        />
                     )}
                     {kpiSetup && (
                         <Kpi kpiDistribution={payload.kpiDistribution} />
