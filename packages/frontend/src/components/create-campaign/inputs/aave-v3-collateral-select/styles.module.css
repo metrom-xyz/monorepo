@@ -1,7 +1,7 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply w-full sm:min-w-2/6;
+    @apply w-full;
 }
 
 .option {

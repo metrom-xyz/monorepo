@@ -127,44 +127,40 @@ export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
                 <div className={styles.target}>
                     <StepSection title={t("defineTarget")}>
                         <div className={styles.target}>
-                            <div className={styles.row}>
-                                <ChainSelect
-                                    campaignType={BaseCampaignType.AaveV3}
-                                    value={basicsPayload.chainId}
-                                    onChange={handlePayloadOnChange}
-                                />
-                                <AaveV3BrandSelect
-                                    chainId={basicsPayload.chainId}
-                                    value={basicsPayload.brand}
-                                    onChange={handlePayloadOnChange}
-                                />
-                                <AaveV3MarketSelect
-                                    chainId={basicsPayload.chainId}
-                                    brand={basicsPayload.brand}
-                                    value={basicsPayload.market}
-                                    onChange={handlePayloadOnChange}
-                                />
-                            </div>
-                            <div className={styles.row}>
-                                <KindSelect
-                                    label={t("form.aaveV3.action")}
-                                    kinds={kindOptions}
-                                    value={basicsPayload.kind}
-                                    disabled={!basicsPayload.brand}
-                                    messages={{
-                                        noResults: t("form.aaveV3.noActions"),
-                                    }}
-                                    onChange={handlePayloadOnChange}
-                                />
-                                <AaveV3CollateralSelect
-                                    chainId={basicsPayload.chainId}
-                                    brand={basicsPayload.brand}
-                                    market={basicsPayload.market}
-                                    kind={basicsPayload.kind}
-                                    value={basicsPayload.collateral}
-                                    onChange={handlePayloadOnChange}
-                                />
-                            </div>
+                            <ChainSelect
+                                campaignType={BaseCampaignType.AaveV3}
+                                value={basicsPayload.chainId}
+                                onChange={handlePayloadOnChange}
+                            />
+                            <AaveV3BrandSelect
+                                chainId={basicsPayload.chainId}
+                                value={basicsPayload.brand}
+                                onChange={handlePayloadOnChange}
+                            />
+                            <AaveV3MarketSelect
+                                chainId={basicsPayload.chainId}
+                                brand={basicsPayload.brand}
+                                value={basicsPayload.market}
+                                onChange={handlePayloadOnChange}
+                            />
+                            <KindSelect
+                                label={t("form.aaveV3.action")}
+                                kinds={kindOptions}
+                                value={basicsPayload.kind}
+                                disabled={!basicsPayload.brand}
+                                messages={{
+                                    noResults: t("form.aaveV3.noActions"),
+                                }}
+                                onChange={handlePayloadOnChange}
+                            />
+                            <AaveV3CollateralSelect
+                                chainId={basicsPayload.chainId}
+                                brand={basicsPayload.brand}
+                                market={basicsPayload.market}
+                                kind={basicsPayload.kind}
+                                value={basicsPayload.collateral}
+                                onChange={handlePayloadOnChange}
+                            />
                         </div>
                     </StepSection>
                     {basicsPayload.kind === CampaignKind.AaveV3NetSupply &&
