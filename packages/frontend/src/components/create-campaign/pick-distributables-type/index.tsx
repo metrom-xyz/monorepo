@@ -101,14 +101,14 @@ export function PickDistributablesType({
 
     const title = CAMPAIGN_TYPE_TITLE[campaignType];
 
-    // TODO: not all campaign types support points rewards; only show the one enabled (redirect if there's only one?)
-
     function handleBackOnClick() {
         router.push("/campaigns/create");
     }
 
     if (supportedByType.length === 0)
         return <FormNotSupported type={campaignType} chainId={chainId} />;
+
+    console.log({ feeTokens });
 
     return (
         <div className={styles.root}>
@@ -158,7 +158,7 @@ export function PickDistributablesType({
                           ({ type, title, description, icon }) => {
                               if (
                                   type === DistributablesType.FixedPoints &&
-                                  feeTokens?.length === 0
+                                  (!feeTokens || feeTokens.length === 0)
                               )
                                   return null;
 
