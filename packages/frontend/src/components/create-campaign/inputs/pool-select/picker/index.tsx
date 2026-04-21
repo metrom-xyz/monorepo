@@ -115,8 +115,6 @@ export function Picker({
         ? pool.tokens.map((token) => token.symbol).join(" / ")
         : "";
 
-    // 0xa42c17f94558430cd8f8ef3d924e761084fca6f0
-
     return (
         <div className={styles.root}>
             <div ref={setAnchor}>

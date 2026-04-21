@@ -8,6 +8,7 @@ import { METROM_API_CLIENT } from "../commons";
 
 interface UseFungibleAssetInfoParams extends HookBaseParams {
     address?: string;
+    chainId?: number;
 }
 
 interface UseFungibleAssetInfoReturnValue {
@@ -16,13 +17,14 @@ interface UseFungibleAssetInfoReturnValue {
     info?: FungibleAssetInfo | null;
 }
 
-type QueryKey = [string, ChainType, SupportedChain, Address];
+type QueryKey = [string, ChainType, SupportedChain | undefined, Address];
 
 export function useFungibleAssetInfo({
     address,
+    chainId,
     enabled,
 }: UseFungibleAssetInfoParams): UseFungibleAssetInfoReturnValue {
-    const { id: chainId, type: chainType } = useChainWithType();
+    const { type: chainType } = useChainWithType();
 
     const {
         data: info,
@@ -32,7 +34,7 @@ export function useFungibleAssetInfo({
         queryKey: ["fungible-asset-info", chainType, chainId, address],
         queryFn: async ({ queryKey }) => {
             const [, chainType, chainId, address] = queryKey as QueryKey;
-            if (!address) return null;
+            if (!address || !chainId) return null;
 
             try {
                 return await METROM_API_CLIENT.fetchFungibleAssetInfo({

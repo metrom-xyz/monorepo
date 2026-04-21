@@ -1,7 +1,11 @@
-@reference "../../../../../app.css";
+@reference "../../../../app.css";
 
 .root {
-    @apply w-full sm:min-w-2/4 flex flex-col gap-6;
+    @apply w-full;
+}
+
+.input {
+    @apply w-full;
 }
 
 .trashIcon {
@@ -13,10 +17,7 @@
 }
 
 .popover {
-    @apply flex
-        flex-col
-        gap-3
-        cursor-pointer
+    @apply cursor-pointer
         bg-gray-150
         dark:bg-neutral-900
         hover:bg-gray-100
@@ -26,6 +27,6 @@
         ease-in-out;
 }
 
-.header {
-    @apply flex justify-between items-center;
+.asset {
+    @apply flex items-center gap-1.5;
 }

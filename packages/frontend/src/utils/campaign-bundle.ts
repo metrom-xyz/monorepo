@@ -63,6 +63,11 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
                 blacklistedCollaterals,
             ],
         );
+    } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
+        return encodeAbiParameters(
+            [{ name: "asset", type: "address" }],
+            [payload.asset.address],
+        );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return "0x";
     } else return null;
@@ -112,13 +117,6 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
     } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
         serializableParts.push(
             AccountAddress.fromString(payload.asset.address),
-        );
-        serializableParts.push(
-            new MoveVector(
-                payload.stakingAssets.map(({ address }) =>
-                    AccountAddress.fromString(address),
-                ),
-            ),
         );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return [];

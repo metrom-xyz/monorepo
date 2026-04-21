@@ -1,30 +1,30 @@
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { getAaveV3CampaignPreviewName } from "@/src/utils/campaign";
-import type { AaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
+import { getHoldFungibleAssetCampaignPreviewName } from "@/src/utils/campaign";
 import { useChainData } from "@/src/hooks/useChainData";
+import type { HoldFungibleAssetCampaignPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
-interface AaveV3TargetProps {
-    payload: AaveV3CampaignPayload | null;
+interface HoldFungibleTargetProps {
+    payload: HoldFungibleAssetCampaignPayload | null;
 }
 
-export function AaveV3Target({ payload }: AaveV3TargetProps) {
+export function HoldFungibleAssetTarget({ payload }: HoldFungibleTargetProps) {
     const globalT = useTranslations();
     const t = useTranslations("newCampaign.formPreview");
+    const chainType = useChainType();
     const chainData = useChainData({
-        chainId: payload?.collateral?.chainId,
-        chainType: payload?.collateral?.chainType,
+        chainId: payload?.chainId,
+        chainType,
     });
 
     if (
         !payload ||
-        !payload.brand ||
         !payload.chainId ||
-        !payload.market ||
-        !payload.collateral ||
+        !payload.asset ||
         !payload.kind ||
         !chainData
     )
@@ -37,19 +37,17 @@ export function AaveV3Target({ payload }: AaveV3TargetProps) {
             <Typography size="xs" weight="medium" variant="tertiary">
                 {t("target")}
             </Typography>
-            <div className={styles.collateralIdentity}>
+            <div className={styles.asset}>
                 <ChainLogo className={styles.chainIcon} />
                 <RemoteLogo
                     size="xxs"
-                    chain={payload.collateral.chainId}
-                    address={payload.collateral.address}
+                    chain={payload.chainId}
+                    address={payload.asset.address}
                 />
                 <Typography size="sm" weight="medium" noWrap truncate>
-                    {getAaveV3CampaignPreviewName(
+                    {getHoldFungibleAssetCampaignPreviewName(
                         globalT,
-                        payload.kind,
-                        payload.brand,
-                        payload.collateral,
+                        payload.asset,
                     )}
                 </Typography>
             </div>
