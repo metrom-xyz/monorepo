@@ -79,14 +79,12 @@ function validatePayload(
 }
 
 interface HoldFungibleAssetFormProps {
-    unsupportedChain: boolean;
     distributablesType: DistributablesType;
     onStepComplete: (payload: LiquityV2CampaignPayloadPart) => void;
     onLaunch: () => void;
 }
 
 export function HoldFungibleAssetForm({
-    // unsupportedChain,
     distributablesType,
     onStepComplete,
     onLaunch,

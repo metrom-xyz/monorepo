@@ -87,7 +87,6 @@ function validatePayload(
 }
 
 interface LiquityV2ForksFormProps {
-    unsupportedChain: boolean;
     distributablesType: DistributablesType;
     onStepComplete: (payload: LiquityV2CampaignPayloadPart) => void;
     onLaunch: () => void;
@@ -95,7 +94,6 @@ interface LiquityV2ForksFormProps {
 
 export function LiquityV2ForksForm({
     distributablesType,
-    // unsupportedChain,
     onStepComplete,
     onLaunch,
 }: LiquityV2ForksFormProps) {
