@@ -334,28 +334,6 @@
                 "kind": {
                     "title": "Action"
                 },
-                "startDate": {
-                    "title": "Start date",
-                    "apply": "Apply",
-                    "errors": { "dateInThePast": "Date can't be in the past" }
-                },
-                "endDate": {
-                    "title": "End date",
-                    "apply": "Apply",
-                    "durations": {
-                        "1week": "1 week",
-                        "2weeks": "2 weeks",
-                        "1month": "1 month"
-                    },
-                    "campaignDuration": "Campaign duration",
-                    "days": "{count} days",
-                    "errors": {
-                        "endBeforeStart": "End date can't be before start date",
-                        "dateInThePast": "Date can't be in the past",
-                        "minimumDate": "Campaign must exceed {duration}",
-                        "maximumDate": "Campaign must be under {duration}"
-                    }
-                },
                 "rewards": {
                     "title": {
                         "rewards": "Rewards"
@@ -413,14 +391,6 @@
                         "bufferTooltip": "Extra buffer on top of the budget to account for reward token price fluctuation during the campaign."
                     }
                 },
-                "weighting": {
-                    "title": "Reward ratio",
-                    "fees": "Fees",
-                    "apply": "Apply",
-                    "notApplied": "Not applied",
-                    "infoMessage": "Structure incentives based on the size of position that holds <bold>{token0}</bold> and <bold>{token1}</bold>. Fees based structure will be based on concentration and liquidity depth.",
-                    "readMore": "Read more 🡥"
-                },
                 "restrictions": {
                     "title": "Filter addresses",
                     "infoMessage": "Block unwanted addresses or allow only those eligible for rewards. Zero address and dead address are excluded by default.",
@@ -465,17 +435,6 @@
                 "actions": {
                     "borrow": "Borrow {debtToken}",
                     "depositToStabilityPool": "Deposit to stability pool"
-                },
-                "collaterals": {
-                    "title": "Collateral",
-                    "filters": "Collateral",
-                    "list": {
-                        "token": "Token",
-                        "empty": "Nothing here",
-                        "debt": "Debt",
-                        "deposits": "Deposits"
-                    },
-                    "apply": "Apply"
                 }
             },
             "aaveV3": {
@@ -586,6 +545,14 @@
                 "label": "Start date",
                 "now": "Now",
                 "dateInThePast": "Date can't be in the past"
+            },
+            "weighting": {
+                "title": "Reward ratio",
+                "fees": "Fees",
+                "apply": "Apply",
+                "notApplied": "Not applied",
+                "infoMessage": "Structure incentives based on the size of position that holds <bold>{token0}</bold> and <bold>{token1}</bold>. Fees based structure will be based on concentration and liquidity depth.",
+                "readMore": "Read more 🡥"
             },
             "endDatePicker": {
                 "label": "End date",
