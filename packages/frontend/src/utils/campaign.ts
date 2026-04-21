@@ -13,6 +13,7 @@ import {
     type AmmPool,
     type AaveV3Collateral,
     type LiquityV2Collateral,
+    type FungibleAssetInfo,
 } from "@metrom-xyz/sdk";
 import {
     CampaignDetails,
@@ -258,6 +259,16 @@ export function getLiquityV2CampaignPreviewName(
             return "-";
         }
     }
+}
+
+export function getHoldFungibleAssetCampaignPreviewName(
+    t: TranslationsType<never>,
+    asset: FungibleAssetInfo,
+) {
+    return t("campaignActions.holdFungibleAsset", {
+        name: asset.name,
+        symbol: asset.symbol,
+    });
 }
 
 export function getCampaignPreviewName(

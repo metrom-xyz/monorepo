@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
@@ -27,7 +26,7 @@ export function AaveV3BrandStep({
     brand,
     onBrandChange,
 }: AaveV3StepProps) {
-    const t = useTranslations("newCampaign.form.aaveV3.brand");
+    // const t = useTranslations("newCampaign.form.aaveV3.brand");
     const [open, setOpen] = useState(true);
 
     const { id: chainId, type: chainType } = useChainWithType();
@@ -79,7 +78,7 @@ export function AaveV3BrandStep({
             completed={!!selected}
             onPreviewClick={handleStepOnClick}
         >
-            <StepPreview label={t("title")}>
+            <StepPreview label={""}>
                 {!!selected && (
                     <div className={styles.preview}>
                         <ProtocolLogo protocol={selected} />

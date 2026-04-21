@@ -82,7 +82,17 @@ export function CampaignApproveLaunchStep({
             }
         };
 
-        if (Object.keys(specification).length > 0 && allTokensApproved)
+        const { distribution, priceRange, weighting, blacklist, whitelist } =
+            specification;
+
+        if (
+            (distribution ||
+                priceRange ||
+                weighting ||
+                (blacklist && blacklist.length > 0) ||
+                (whitelist && whitelist.length > 0)) &&
+            allTokensApproved
+        )
             uploadSpecification(specification);
     }, [payload, disabled, allTokensApproved]);
 

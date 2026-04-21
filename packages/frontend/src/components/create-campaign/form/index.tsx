@@ -203,8 +203,11 @@ export function CreateCampaignForm<T extends CampaignType>({
                                 {campaignType ===
                                     BaseCampaignType.HoldFungibleAsset && (
                                     <HoldFungibleAssetForm
+                                        distributablesType={distributablesType}
+                                        // TODO: remove this?
                                         unsupportedChain={false}
-                                        onPreviewClick={handlePreviewOnClick}
+                                        onStepComplete={handleOnStepComplete}
+                                        onLaunch={handleOnLaunch}
                                     />
                                 )}
                                 {campaignType ===

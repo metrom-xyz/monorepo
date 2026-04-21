@@ -21,6 +21,7 @@ export function LiquityV2Target({ payload }: LiquityV2TargetProps) {
 
     if (
         !payload ||
+        !payload.chainId ||
         !payload.brand ||
         !payload.collateral ||
         !payload.kind ||

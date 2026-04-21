@@ -108,8 +108,6 @@ export function PickDistributablesType({
     if (supportedByType.length === 0)
         return <FormNotSupported type={campaignType} chainId={chainId} />;
 
-    console.log({ feeTokens });
-
     return (
         <div className={styles.root}>
             <div className={styles.navigation}>

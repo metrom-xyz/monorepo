@@ -64,8 +64,9 @@ export function StartDatePicker({
     }
 
     const handleDateNowOnClick = useCallback(() => {
+        if (disabled) return;
         onChange({ startDate: getClosestAvailableDateTime(dayjs()) });
-    }, [onChange]);
+    }, [disabled, onChange]);
 
     const handleDateOnChange = useCallback(
         (date: Dayjs) => {
