@@ -85,7 +85,7 @@ export function HoldFungibleAssetBasicsStep({
                 <StepSection title={t("defineTarget")}>
                     <div className={styles.target}>
                         <ChainSelect
-                            campaignType={BaseCampaignType.AmmPoolLiquidity}
+                            campaignType={BaseCampaignType.HoldFungibleAsset}
                             value={basicsPayload.chainId}
                             onChange={handlePayloadOnChange}
                         />
