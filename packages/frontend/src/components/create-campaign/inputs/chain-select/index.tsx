@@ -3,9 +3,9 @@ import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, type FunctionComponent } from "react";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
-import { useActiveChains } from "@/src/hooks/useActiveChains";
 import type { CampaignType } from "@metrom-xyz/sdk";
 import type { SVGIcon } from "@metrom-xyz/chains";
+import { useChainsForForm } from "@/src/hooks/useChainsForForm";
 
 import styles from "./styles.module.css";
 
@@ -46,7 +46,7 @@ export function ChainSelect({
     onChange,
 }: ChainSelectProps) {
     const t = useTranslations("newCampaign.inputs");
-    const activeChains = useActiveChains();
+    const activeChains = useChainsForForm({ type: campaignType });
 
     const options: SelectOption<number, OptionData>[] = useMemo(() => {
         const options: SelectOption<number, OptionData>[] = [];
