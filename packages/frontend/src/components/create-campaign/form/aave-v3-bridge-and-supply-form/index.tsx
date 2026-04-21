@@ -8,9 +8,6 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
-import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
 import { RewardsStep } from "../../steps/rewards-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -179,7 +176,7 @@ export function AaveV3BridgeAndSupplyForm({
                     brand={payload.brand}
                     onMarketChange={handlePayloadOnChange}
                 />
-                <AaveV3CollateralStep
+                {/* <AaveV3CollateralStep
                     disabled={
                         !payload.brand || !payload.market || unsupportedChain
                     }
@@ -188,21 +185,7 @@ export function AaveV3BridgeAndSupplyForm({
                     market={payload.market}
                     collateral={payload.collateral}
                     onCollateralChange={handlePayloadOnChange}
-                />
-                <StartDateStep
-                    disabled={!payload.collateral || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
+                /> */}
                 <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}
