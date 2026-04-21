@@ -98,6 +98,8 @@ export function EndDatePicker({
     const getDurationPresetHandler = useCallback(
         (newDurationPreset: DurationPreset) => {
             return () => {
+                if (disabled) return;
+
                 if (newDurationPreset.label === durationPreset?.label) {
                     onChange({
                         endDate: startDate?.subtract(
@@ -118,7 +120,7 @@ export function EndDatePicker({
                 setDurationPreset(newDurationPreset);
             };
         },
-        [durationPreset?.label, startDate, onChange],
+        [disabled, durationPreset?.label, startDate, onChange],
     );
 
     const handleDateOnChange = useCallback(

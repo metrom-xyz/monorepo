@@ -12,6 +12,8 @@ import { DocumentTextIcon } from "@/src/assets/document-text-icon";
 import { useFormSteps } from "@/src/context/form-steps";
 import { Kpi } from "../../previews/kpi";
 import { LiquityV2FormPreview } from "./liquity-v2-form-preview";
+import { isHoldFungibleAssetCampaignPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
+import { HoldFungibleAssetFormPreview } from "./hold-fungible-asset-form-preview";
 
 import styles from "./styles.module.css";
 
@@ -28,6 +30,8 @@ export function FormPreview({ payload }: FormPreviewProps) {
     const aaveV3CampaignPayload = payload && isAaveV3CampaignPayload(payload);
     const liquityV2CampaignPayload =
         payload && isLiquityV2CampaignPayload(payload);
+    const holdFungibleAssetCampaignPayload =
+        payload && isHoldFungibleAssetCampaignPayload(payload);
 
     const emptyPayload = !payload?.chainId;
     const kpiSetup = payload?.kpiDistribution;
@@ -86,6 +90,12 @@ export function FormPreview({ payload }: FormPreviewProps) {
                     )}
                     {liquityV2CampaignPayload && (
                         <LiquityV2FormPreview
+                            payload={payload}
+                            errors={errors}
+                        />
+                    )}
+                    {holdFungibleAssetCampaignPayload && (
+                        <HoldFungibleAssetFormPreview
                             payload={payload}
                             errors={errors}
                         />

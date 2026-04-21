@@ -22,7 +22,14 @@ export function AmmLiquidityPoolTarget({
         chainType: payload?.pool?.chainType,
     });
 
-    if (!payload || !payload.pool || !payload.kind || !chainData) return null;
+    if (
+        !payload ||
+        !payload.chainId ||
+        !payload.pool ||
+        !payload.kind ||
+        !chainData
+    )
+        return null;
 
     const ChainLogo = chainData.icon;
 
