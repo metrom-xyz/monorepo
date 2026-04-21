@@ -189,13 +189,13 @@ export function CampaignKpiStep({
 
     const handleOnApply = useCallback(() => {
         onApply(kpiPayload, FormStepId.Kpi);
-        setApplied(true)
+        setApplied(true);
         setOpen(false);
     }, [kpiPayload, onApply]);
 
     const handleOnSkip = useCallback(() => {
         onApply({ kpiDistribution: undefined }, FormStepId.Kpi);
-        setApplied(true)
+        setApplied(true);
         setPreset(undefined);
         setKpiPayload({ kpiDistribution: undefined });
         setOpen(false);
@@ -322,6 +322,7 @@ export function CampaignKpiStep({
                 <Button
                     onClick={handleOnApply}
                     icon={ArrowRightIcon}
+                    iconPlacement="right"
                     disabled={disabled || applyDisabled}
                     className={{ root: styles.button }}
                 >
