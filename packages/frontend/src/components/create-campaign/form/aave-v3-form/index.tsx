@@ -105,7 +105,6 @@ function validatePayload(
 }
 
 interface AaveV3FormProps {
-    unsupportedChain: boolean;
     distributablesType: DistributablesType;
     onStepComplete: (payload: AaveV3CampaignPayloadPart) => void;
     onLaunch: () => void;
@@ -113,7 +112,6 @@ interface AaveV3FormProps {
 
 export function AaveV3Form({
     distributablesType,
-    // unsupportedChain,
     onStepComplete,
     onLaunch,
 }: AaveV3FormProps) {

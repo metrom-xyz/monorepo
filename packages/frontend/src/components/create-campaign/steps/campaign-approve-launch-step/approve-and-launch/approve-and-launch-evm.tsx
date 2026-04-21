@@ -34,6 +34,7 @@ import { ApproveTokensButton } from "../approve-tokens-button";
 import { TokenToApproveEvm } from "./token-to-approve-evm";
 import classNames from "classnames";
 import type { Erc20TokenAmountWithAllowance } from "@/src/types/campaign/common";
+import { useIsChainSupported } from "@/src/hooks/useIsChainSupported";
 
 import styles from "./styles.module.css";
 
@@ -53,6 +54,7 @@ export function ApproveAndDeployEvm({
     const t = useTranslations("newCampaign.form.approveLaunch");
     const { id: chainId } = useChainWithType();
     const connectedChainData = useChainData({ chainId });
+    const deployChainSupported = useIsChainSupported({ chainId });
     const { address: connectedAddress } = useAccount();
     const payloadChainData = useChainData({ chainId: payload.chainId });
     const publicClient = usePublicClient();
@@ -358,7 +360,7 @@ export function ApproveAndDeployEvm({
         onLaunch,
     ]);
 
-    if (payload.chainId !== chainId) {
+    if (payload.chainId !== chainId || !deployChainSupported) {
         return (
             <div className={styles.buttonsWrapper}>
                 <Button

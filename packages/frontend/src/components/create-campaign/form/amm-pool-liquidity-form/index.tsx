@@ -99,7 +99,6 @@ function validatePayload(
 
 interface AmmPoolLiquidityFormProps {
     kind: CampaignKind;
-    unsupportedChain: boolean;
     distributablesType: DistributablesType;
     onStepComplete: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
     onLaunch: () => void;
@@ -107,7 +106,6 @@ interface AmmPoolLiquidityFormProps {
 
 export function AmmPoolLiquidityForm({
     kind,
-    // unsupportedChain,
     distributablesType,
     onStepComplete,
     onLaunch,

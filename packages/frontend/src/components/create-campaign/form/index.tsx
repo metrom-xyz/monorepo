@@ -82,14 +82,6 @@ export function CreateCampaignForm<T extends CampaignType>({
         router.push("/");
     }
 
-    // const unsupportedChain = useMemo(() => {
-    //     return (
-    //         connected &&
-    //         (!connectedChainId ||
-    //             !activeChains.some(({ id }) => id === selectedChain))
-    //     );
-    // }, [activeChains, connectedChainId, connected, selectedChain]);
-
     const supportedByType = [...formsByType, ...partnerFormsByType];
 
     if (supportedByType.length === 0)
@@ -176,8 +168,6 @@ export function CreateCampaignForm<T extends CampaignType>({
                                     <AmmPoolLiquidityForm
                                         kind={CampaignKind.AmmPoolLiquidity}
                                         distributablesType={distributablesType}
-                                        // TODO: remove this?
-                                        unsupportedChain={false}
                                         onStepComplete={handleOnStepComplete}
                                         onLaunch={handleOnLaunch}
                                     />
@@ -186,15 +176,12 @@ export function CreateCampaignForm<T extends CampaignType>({
                                     BaseCampaignType.LiquityV2 && (
                                     <LiquityV2ForksForm
                                         distributablesType={distributablesType}
-                                        // TODO: remove this?
-                                        unsupportedChain={false}
                                         onStepComplete={handleOnStepComplete}
                                         onLaunch={handleOnLaunch}
                                     />
                                 )}
                                 {campaignType === BaseCampaignType.AaveV3 && (
                                     <AaveV3Form
-                                        unsupportedChain={false}
                                         distributablesType={distributablesType}
                                         onStepComplete={handleOnStepComplete}
                                         onLaunch={handleOnLaunch}
@@ -204,8 +191,6 @@ export function CreateCampaignForm<T extends CampaignType>({
                                     BaseCampaignType.HoldFungibleAsset && (
                                     <HoldFungibleAssetForm
                                         distributablesType={distributablesType}
-                                        // TODO: remove this?
-                                        unsupportedChain={false}
                                         onStepComplete={handleOnStepComplete}
                                         onLaunch={handleOnLaunch}
                                     />
