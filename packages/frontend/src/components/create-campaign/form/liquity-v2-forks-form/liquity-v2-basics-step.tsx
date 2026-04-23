@@ -11,7 +11,7 @@ import type { CampaignKindOption } from "../../steps/campaign-kind-step";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { BaseCampaignType, CampaignKind } from "@metrom-xyz/sdk";
 import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
-import { StepSection } from "../step-section";
+import { FormStepSection } from "../../form-step-section";
 import { ChainSelect } from "../../inputs/chain-select";
 import { useTranslations } from "next-intl";
 import { KindSelect } from "../../inputs/kind-select";
@@ -103,7 +103,7 @@ export function LiquityV2BasicsStep({
             onChange={handlePayloadOnChange}
             targetSection={
                 <div className={styles.target}>
-                    <StepSection title={t("defineTarget")}>
+                    <FormStepSection title={t("defineTarget")}>
                         <div className={styles.target}>
                             <ChainSelect
                                 campaignType={BaseCampaignType.LiquityV2}
@@ -133,7 +133,7 @@ export function LiquityV2BasicsStep({
                                 onChange={handlePayloadOnChange}
                             />
                         </div>
-                    </StepSection>
+                    </FormStepSection>
                 </div>
             }
         />

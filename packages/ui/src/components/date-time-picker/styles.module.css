@@ -34,7 +34,7 @@
 }
 
 .cell {
-    @apply size-8
+    @apply size-9
         snap-start
         select-none
         cursor-pointer

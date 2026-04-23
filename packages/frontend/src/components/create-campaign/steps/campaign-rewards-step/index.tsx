@@ -11,7 +11,7 @@ import type {
     BaseCampaignPayload,
     BaseCampaignPayloadPart,
 } from "@/src/types/campaign/common";
-import { StepSection } from "../../form/step-section";
+import { FormStepSection } from "../../form-step-section";
 import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { formatPercentage } from "@/src/utils/format";
@@ -105,7 +105,7 @@ export function CampaignRewardsStep({
             onToggle={setOpen}
             className={styles.root}
         >
-            <StepSection
+            <FormStepSection
                 title={t("defineAssets")}
                 headerDecorator={
                     <div
@@ -137,9 +137,9 @@ export function CampaignRewardsStep({
                     onChange={onChange}
                     onError={handleOnError}
                 />
-            </StepSection>
+            </FormStepSection>
             {additionalSection}
-            <StepSection
+            <FormStepSection
                 optional
                 title={t("defineRestrictions")}
                 description={
@@ -154,7 +154,7 @@ export function CampaignRewardsStep({
                     value={payload.restrictions}
                     onChange={onChange}
                 />
-            </StepSection>
+            </FormStepSection>
             <Button
                 onClick={handleOnApply}
                 icon={ArrowRightIcon}

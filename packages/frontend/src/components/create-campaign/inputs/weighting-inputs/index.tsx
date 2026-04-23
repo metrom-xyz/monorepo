@@ -87,6 +87,7 @@ export function WeightingInputs({
                 <NumberInput
                     label={t("fees")}
                     size="lg"
+                    disabled
                     readOnly
                     suffix="%"
                     allowNegative={false}

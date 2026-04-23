@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import { useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { ErrorText, Skeleton, type TypographySize } from "@metrom-xyz/ui";
+import { Skeleton, type TypographySize } from "@metrom-xyz/ui";
 import { TvlTick } from "./axis-ticks/tvl";
 import { RewardTick } from "./axis-ticks/reward";
 import { TooltipContent, TooltipCursor } from "./tooltip";
@@ -25,7 +25,7 @@ import classNames from "classnames";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useMeasure } from "react-use";
 import { SECONDS_IN_YEAR } from "@/src/commons";
-import { ChartIcon } from "@/src/assets/chart-icon";
+import { DiagramIcon } from "@/src/assets/diagra-icon";
 import type { AxisDomain } from "recharts/types/util/types";
 import { EmptyState } from "../empty-state";
 
@@ -466,15 +466,12 @@ export function KpiSimulationChart({
                     )}
                 >
                     {error ? (
-                        <ErrorText
-                            size="xs"
-                            weight="medium"
-                            className={styles.errorText}
-                        >
-                            {t("errors.missingData")}
-                        </ErrorText>
+                        <EmptyState
+                            title={t("errors.missingData")}
+                            icon={DiagramIcon}
+                        />
                     ) : (
-                        <EmptyState title={t("emptyData")} icon={ChartIcon} />
+                        <EmptyState title={t("emptyData")} icon={DiagramIcon} />
                     )}
                 </div>
             </div>
@@ -490,13 +487,10 @@ export function KpiSimulationChart({
                         styles.emptyContainer,
                     )}
                 >
-                    <ErrorText
-                        size="xs"
-                        weight="medium"
-                        className={styles.errorText}
-                    >
-                        {t("errors.wrongData")}
-                    </ErrorText>
+                    <EmptyState
+                        title={t("errors.wrongData")}
+                        icon={DiagramIcon}
+                    />
                 </div>
             </div>
         );

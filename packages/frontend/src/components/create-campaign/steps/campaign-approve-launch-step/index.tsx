@@ -100,19 +100,24 @@ export function CampaignApproveLaunchStep({
         <FormStep
             title={t("title")}
             titleDecorator={
-                <div className={styles.feeChip}>
-                    {loadingCampaignFee ? (
-                        <Skeleton size="xs" className={styles.feeSkeleton} />
-                    ) : (
-                        <Typography size="xs" weight="medium" uppercase>
-                            {t("protocolFee", {
-                                feeUsd: formatUsdAmount({
-                                    amount: campaignFee,
-                                }),
-                            })}
-                        </Typography>
-                    )}
-                </div>
+                open && (
+                    <div className={styles.feeChip}>
+                        {loadingCampaignFee ? (
+                            <Skeleton
+                                size="xs"
+                                className={styles.feeSkeleton}
+                            />
+                        ) : (
+                            <Typography size="xs" weight="medium" uppercase>
+                                {t("protocolFee", {
+                                    feeUsd: formatUsdAmount({
+                                        amount: campaignFee,
+                                    }),
+                                })}
+                            </Typography>
+                        )}
+                    </div>
+                )
             }
             open={open}
             disabled={disabled}
