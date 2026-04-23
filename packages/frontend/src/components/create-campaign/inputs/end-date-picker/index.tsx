@@ -5,10 +5,17 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dayjs, { type Dayjs, type ManipulateType } from "dayjs";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import type { TranslationsKeys } from "@/src/types/utils";
-import { DateTimePicker, Chip, TextInput, Popover } from "@metrom-xyz/ui";
+import {
+    DateTimePicker,
+    Chip,
+    TextInput,
+    Popover,
+    Typography,
+} from "@metrom-xyz/ui";
 import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
 import { formatDateTime } from "@/src/utils/format";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
+import { BoldText } from "@/src/components/bold-text";
 
 import styles from "./styles.module.css";
 
@@ -182,6 +189,19 @@ export function EndDatePicker({
                     range={{ from: startDate, to: endDate }}
                     onChange={handleDateOnChange}
                 />
+                <Typography
+                    size="xs"
+                    weight="medium"
+                    variant="tertiary"
+                    uppercase
+                >
+                    {t.rich("campaignDuration", {
+                        duration: endDate
+                            ? dayjs(startDate).to(endDate, true)
+                            : "",
+                        bold: (chunks) => <BoldText>{chunks}</BoldText>,
+                    })}
+                </Typography>
             </Popover>
         </>
     );

@@ -17,5 +17,5 @@
 }
 
 .popover {
-    @apply flex justify-center;
+    @apply flex flex-col gap-3 items-center;
 }

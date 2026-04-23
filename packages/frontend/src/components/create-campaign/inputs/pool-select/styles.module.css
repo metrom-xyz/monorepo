@@ -3,3 +3,15 @@
 .root {
     @apply w-full sm:min-w-2/4;
 }
+
+.skeletonPool {
+    @apply w-full flex items-center justify-between;
+}
+
+.skeletonPool > div {
+    @apply w-full flex items-center gap-1;
+}
+
+.skeleton :global(.skeleton) {
+    @apply bg-gray-200 dark:bg-neutral-800;
+}

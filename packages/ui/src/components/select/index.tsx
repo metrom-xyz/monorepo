@@ -21,6 +21,7 @@ import classNames from "classnames";
 import { ChevronUp } from "../../assets/chevron-up";
 import { ChevronDown } from "../../assets/chevron-down";
 import { matchesSearch } from "../../utils/search";
+import { Skeleton } from "../skeleton";
 
 import styles from "./styles.module.css";
 
@@ -43,6 +44,7 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
     noContained?: boolean;
     listHeader?: ReactNode;
     listFooter?: ReactNode;
+    loadingItemCounts?: number;
     messages: {
         noResults: string;
     };
@@ -53,6 +55,7 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
     className?: string;
     onChange: (option: O) => void;
     renderOption?: (option: O) => ReactElement;
+    renderLoadingOption?: () => ReactElement;
     optionDisabled?: (option: O) => boolean;
     renderSelectedPrefix?: (selected: O | null | undefined) => ReactElement;
 } & Omit<BaseInputProps<unknown>, "onChange" | "value" | "id">;
@@ -63,7 +66,12 @@ type ItemData<
     D = unknown,
 > = Pick<
     SelectProps<V, O>,
-    "options" | "value" | "onChange" | "renderOption" | "optionDisabled"
+    | "options"
+    | "value"
+    | "onChange"
+    | "renderOption"
+    | "renderLoadingOption"
+    | "optionDisabled"
 > & {
     data?: D;
     size?: BaseInputSize;
@@ -99,11 +107,13 @@ function Component<
         noContained,
         listHeader,
         listFooter,
+        loadingItemCounts = 6,
         messages,
         dataTestIds,
         noPrefixPadding,
         onChange,
         renderOption,
+        renderLoadingOption,
         optionDisabled,
         renderSelectedPrefix,
         ...rest
@@ -150,9 +160,9 @@ function Component<
     );
 
     const handleClick = useCallback(() => {
-        if (disabled || loading) return;
+        if (disabled) return;
         if (!open) setOpen(true);
-    }, [disabled, loading, open]);
+    }, [disabled, open]);
 
     const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
@@ -177,6 +187,7 @@ function Component<
             size,
             onChange: handleInnerChange,
             renderOption,
+            renderLoadingOption,
             optionDisabled,
             className,
             dataTestIds: {
@@ -185,12 +196,13 @@ function Component<
         };
         return data;
     }, [
-        className,
-        handleInnerChange,
-        filteredOptions,
-        renderOption,
         value,
+        className,
         dataTestIds,
+        filteredOptions,
+        handleInnerChange,
+        renderOption,
+        renderLoadingOption,
     ]);
 
     const listHeight = useMemo(() => {
@@ -229,7 +241,6 @@ function Component<
                           : ""
                 }
                 disabled={disabled}
-                loading={loading}
                 size={size}
                 {...rest}
                 onChange={handleChange}
@@ -246,7 +257,17 @@ function Component<
                 className={styles.dropdownRoot}
             >
                 {listHeader}
-                {filteredOptions.length === 0 ? (
+                {loading ? (
+                    Array.from({ length: loadingItemCounts }).map(
+                        (_, index) => (
+                            <SkeletonOptionRow
+                                key={index}
+                                {...rowProps}
+                                height={LIST_ITEM_HEIGHT[size]}
+                            />
+                        ),
+                    )
+                ) : filteredOptions.length === 0 ? (
                     <div
                         style={{
                             width: anchorEl?.parentElement?.clientWidth,
@@ -320,6 +341,30 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
                 renderOption(item)
             ) : (
                 <Typography size={size}>{item.label}</Typography>
+            )}
+        </div>
+    );
+}
+
+export function SkeletonOptionRow<
+    V extends ValueType,
+    O extends SelectOption<V>,
+>({
+    size = "base",
+    height,
+    renderLoadingOption,
+}: ItemData<ValueType, O> & { height: number }) {
+    return (
+        <div
+            style={{ height }}
+            className={classNames(styles.option, styles.loading, {
+                [styles[size]]: true,
+            })}
+        >
+            {renderLoadingOption ? (
+                renderLoadingOption()
+            ) : (
+                <Skeleton size={size} width={120} className={styles.skeleton} />
             )}
         </div>
     );

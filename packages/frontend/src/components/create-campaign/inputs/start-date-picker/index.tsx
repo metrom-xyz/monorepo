@@ -111,6 +111,7 @@ export function StartDatePicker({
                 onOpenChange={setPopover}
                 placement="bottom-start"
                 margin={4}
+                className={styles.popover}
             >
                 <DateTimePicker
                     value={startDate}
