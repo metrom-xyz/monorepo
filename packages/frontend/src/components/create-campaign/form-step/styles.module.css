@@ -23,11 +23,15 @@
 }
 
 .root :global(.preview) {
-    @apply gap-2 py-3.5 sm:h-12;
+    @apply gap-2 py-3.5 sm:h-11;
+}
+
+.root.completed :global(.preview) {
+    @apply opacity-70;
 }
 
 .header {
-    @apply w-full flex flex-wrap sm:flex-row items-center gap-1;
+    @apply w-full flex flex-wrap sm:flex-row items-center gap-2;
 }
 
 .iconWrapper {

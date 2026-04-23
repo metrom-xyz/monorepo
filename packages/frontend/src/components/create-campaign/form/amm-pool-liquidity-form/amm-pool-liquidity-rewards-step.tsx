@@ -18,7 +18,7 @@ import {
     RestrictionType,
     SupportedAmm,
 } from "@metrom-xyz/sdk";
-import { StepSection } from "../step-section";
+import { FormStepSection } from "../../form-step-section";
 import { useTranslations } from "next-intl";
 import { WeightingInputs } from "../../inputs/weighting-inputs";
 import { useFormSteps } from "@/src/context/form-steps";
@@ -122,7 +122,7 @@ export function AmmPoolLiquidityRewardsStep({
             onApply={onApply}
             additionalSection={
                 tokensRatioSupported && (
-                    <StepSection
+                    <FormStepSection
                         title={t("weighting.title")}
                         description={
                             <InfoMessage
@@ -142,7 +142,7 @@ export function AmmPoolLiquidityRewardsStep({
                             value={rewardsPayload.weighting}
                             onChange={handlePayloadOnChange}
                         />
-                    </StepSection>
+                    </FormStepSection>
                 )
             }
         />

@@ -36,7 +36,7 @@
 }
 
 .weekDay {
-    @apply size-8
+    @apply size-9
         select-none
         flex
         justify-center
@@ -60,7 +60,7 @@
 }
 
 .cell {
-    @apply size-8
+    @apply size-9
         select-none
         cursor-pointer
         flex
