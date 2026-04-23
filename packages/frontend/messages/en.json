@@ -326,6 +326,7 @@
                 "approvedReward": "Approved {amount} {symbol}",
                 "connectWallet": "Connect wallet",
                 "connectYourWallet": "Connect your wallet to authorize token transfers and launch your campaign.",
+                "rewardsApproved": "Rewards approved, confirm and launch your campaign.",
                 "errors": {
                     "specification": "An error occurred while processing the campaign specification"
                 }
