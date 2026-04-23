@@ -3,7 +3,7 @@ import { usePools } from "@/src/hooks/usePools";
 import type { AmmPoolLiquidityCampaignPayloadPart } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import type { DexProtocol } from "@metrom-xyz/chains";
 import type { AmmPool, Erc20Token } from "@metrom-xyz/sdk";
-import { Select, type SelectOption } from "@metrom-xyz/ui";
+import { Select, Skeleton, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
@@ -37,6 +37,24 @@ const option = (option: SelectOption<string, OptionData>) => {
     if (!data) return <></>;
 
     return <Pool {...data} label={label} />;
+};
+
+const loadingOption = () => {
+    return (
+        <div className={styles.skeletonPool}>
+            <div>
+                <PoolRemoteLogo
+                    tokens={[{ address: "0x1" }, { address: "0x2" }]}
+                    loading
+                    size="xxs"
+                    className={{ root: styles.skeleton }}
+                />
+                <Skeleton width={90} className={styles.skeleton} />
+                <Skeleton size="xs" width={32} className={styles.skeleton} />
+            </div>
+            <Skeleton size="sm" width={64} className={styles.skeleton} />
+        </div>
+    );
 };
 
 const selectedPrefix = (
@@ -138,6 +156,7 @@ export function PoolSelect({
             messages={{ noResults: t("noPools") }}
             onChange={handleOnSelectChange}
             renderOption={option}
+            renderLoadingOption={loadingOption}
             renderSelectedPrefix={selectedPrefix}
             noPrefixPadding
             listHeader={

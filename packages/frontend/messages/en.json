@@ -561,7 +561,7 @@
                     "2w": "2w",
                     "1m": "1m"
                 },
-                "campaignDuration": "Campaign duration",
+                "campaignDuration": "Campaign duration <bold>{duration}</bold>",
                 "days": "{count} days",
                 "endBeforeStart": "End date can't be before start date",
                 "dateInThePast": "Date can't be in the past",

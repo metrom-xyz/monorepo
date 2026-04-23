@@ -54,6 +54,14 @@
     @apply px-3 py-2;
 }
 
+.option.loading {
+    @apply pointer-events-none;
+}
+
+.skeleton :global(.skeleton) {
+    @apply bg-gray-200 dark:bg-neutral-800;
+}
+
 .pickedOption {
     @apply bg-gray-100 dark:bg-neutral-700;
 }
