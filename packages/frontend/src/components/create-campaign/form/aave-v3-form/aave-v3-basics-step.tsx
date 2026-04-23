@@ -1,6 +1,6 @@
 import { ChainSelect } from "../../inputs/chain-select";
 import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
-import { StepSection } from "../step-section";
+import { FormStepSection } from "../../form-step-section";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { BaseCampaignType, CampaignKind } from "@metrom-xyz/sdk";
@@ -125,7 +125,7 @@ export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
             onChange={handlePayloadOnChange}
             targetSection={
                 <div className={styles.target}>
-                    <StepSection title={t("defineTarget")}>
+                    <FormStepSection title={t("defineTarget")}>
                         <div className={styles.target}>
                             <ChainSelect
                                 campaignType={BaseCampaignType.AaveV3}
@@ -162,10 +162,10 @@ export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
                                 onChange={handlePayloadOnChange}
                             />
                         </div>
-                    </StepSection>
+                    </FormStepSection>
                     {basicsPayload.kind === CampaignKind.AaveV3NetSupply &&
                         !!basicsPayload.collateral && (
-                            <StepSection
+                            <FormStepSection
                                 optional
                                 title={t("form.aaveV3.blockCrossBorrow")}
                                 description={
@@ -184,7 +184,7 @@ export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
                                     value={basicsPayload.blacklistedCollaterals}
                                     onChange={handlePayloadOnChange}
                                 />
-                            </StepSection>
+                            </FormStepSection>
                         )}
                 </div>
             }

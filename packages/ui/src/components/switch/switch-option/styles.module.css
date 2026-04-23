@@ -5,7 +5,7 @@
 }
 
 .optionWrapper {
-    @apply rounded-sm relative py-1 px-2 transition-colors duration-200 ease-in-out;
+    @apply rounded-lg relative py-1 px-2 transition-colors duration-200 ease-in-out;
 }
 
 .optionWrapper.active {

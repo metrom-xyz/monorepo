@@ -1,7 +1,7 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply w-fit max-w-28;
+    @apply w-fit max-w-32;
 }
 
 .root :global(.input .fieldset) {

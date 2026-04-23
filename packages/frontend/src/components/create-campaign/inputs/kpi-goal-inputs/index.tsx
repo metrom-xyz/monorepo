@@ -1,6 +1,6 @@
 import type { CampaignPayloadKpiDistribution } from "@/src/types/campaign/common";
 import { Chip, NumberInput, type NumberFormatValues } from "@metrom-xyz/ui";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useFormSteps } from "@/src/context/form-steps";
 import type { LocalizedMessage } from "@/src/types/utils";
@@ -45,6 +45,7 @@ export function KpiGoalInputs({
     >(kpiDistribution?.minimumPayoutPercentage);
 
     const t = useTranslations("newCampaign.inputs.kpiGoalInputs");
+    const lastEdited = useRef<"lowerBound" | "upperBound" | null>(null);
     const { updateErrors } = useFormSteps();
 
     useEffect(() => {
@@ -66,7 +67,7 @@ export function KpiGoalInputs({
         }
 
         if (upperUsdTarget === undefined && lowerUsdTarget !== undefined) {
-            setLowerTargetError("errors.missingUpperBound");
+            setUpperTargetError("errors.missingUpperBound");
             return;
         }
 
@@ -75,8 +76,10 @@ export function KpiGoalInputs({
             upperUsdTarget !== undefined &&
             lowerUsdTarget >= upperUsdTarget
         ) {
-            setLowerTargetError("errors.lowerBoundMalformed");
-            setUpperTargetError("errors.upperBoundMalformed");
+            if (lastEdited.current === "lowerBound")
+                setLowerTargetError("errors.lowerBoundMalformed");
+            if (lastEdited.current === "upperBound")
+                setUpperTargetError("errors.upperBoundMalformed");
             return;
         }
 
@@ -100,6 +103,7 @@ export function KpiGoalInputs({
     }, [lowerTargetError, upperTargetError, updateErrors, t]);
 
     function handleUpperUsdTargetOnChange({ floatValue }: NumberFormatValues) {
+        lastEdited.current = "upperBound";
         setUpperUsdTarget(floatValue);
     }
 
@@ -108,6 +112,7 @@ export function KpiGoalInputs({
     }
 
     function handleLowerUsdTargetOnChange({ floatValue }: NumberFormatValues) {
+        lastEdited.current = "lowerBound";
         setLowerUsdTarget(floatValue);
     }
 

@@ -37,6 +37,7 @@
         border
         border-b-0
         sm:border-b
+        bg-transparent
         border-gray-300
         dark:border-neutral-700;
 }

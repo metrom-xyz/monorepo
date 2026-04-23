@@ -6,7 +6,7 @@ import { ChainSelect } from "../../inputs/chain-select";
 import { DexSelect } from "../../inputs/dex-select";
 import { PoolSelect } from "../../inputs/pool-select";
 import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
-import { StepSection } from "../step-section";
+import { FormStepSection } from "../../form-step-section";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { BaseCampaignType } from "@metrom-xyz/sdk";
@@ -83,7 +83,7 @@ export function AmmPoolLiquidityBasicsStep({
             onApply={onApply}
             onChange={handlePayloadOnChange}
             targetSection={
-                <StepSection title={t("defineTarget")}>
+                <FormStepSection title={t("defineTarget")}>
                     <div className={styles.target}>
                         <ChainSelect
                             campaignType={BaseCampaignType.AmmPoolLiquidity}
@@ -105,7 +105,7 @@ export function AmmPoolLiquidityBasicsStep({
                             onError={updateErrors}
                         />
                     </div>
-                </StepSection>
+                </FormStepSection>
             }
         />
     );

@@ -106,6 +106,7 @@ export function StartDatePicker({
             <Popover
                 ref={popoverRef}
                 anchor={anchor}
+                contained
                 open={popover}
                 onOpenChange={setPopover}
                 placement="bottom-start"

@@ -78,10 +78,14 @@ export function Picker({
             error = t("errors.invalidPool");
         else if (dex && importedPool && importedPool.dex.slug !== dex.slug)
             error = t("errors.inconsistentDex", { dex: dex.name });
-        else error = "";
 
         setError(error);
         onError({ basics: error });
+
+        return () => {
+            setError("");
+            onError({ basics: "" });
+        };
     }, [
         id,
         dex,

@@ -19,6 +19,7 @@
         p-0
         justify-start
         border
+        bg-transparent
         border-gray-300
         dark:border-neutral-700;
 }
@@ -40,7 +41,7 @@
 }
 
 .chartWrapper {
-    @apply p-3 rounded-lg bg-gray-200 dark:bg-neutral-800;
+    @apply p-3 rounded-lg bg-gray-150 dark:bg-neutral-900;
 }
 
 .chartWrapper.noPadding {

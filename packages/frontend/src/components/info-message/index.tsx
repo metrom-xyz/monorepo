@@ -32,13 +32,15 @@ export function InfoMessage({
     const t = useTranslations();
 
     return (
-        <Typography
-            weight={weight}
-            variant={variant}
-            size={size}
-            className={classNames({ [styles.spaced]: spaced })}
-        >
-            {text}
+        <div className={styles.root}>
+            <Typography
+                weight={weight}
+                variant={variant}
+                size={size}
+                className={classNames({ [styles.spaced]: spaced })}
+            >
+                {text}
+            </Typography>
             {link && (
                 <>
                     {" "}
@@ -53,6 +55,6 @@ export function InfoMessage({
                     </a>
                 </>
             )}
-        </Typography>
+        </div>
     );
 }

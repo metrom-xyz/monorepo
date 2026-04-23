@@ -12,7 +12,7 @@ import type {
     BaseCampaignPayloadPart,
     CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign/common";
-import { StepSection } from "../../form/step-section";
+import { FormStepSection } from "../../form-step-section";
 import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { formatUsdAmount } from "@/src/utils/format";
@@ -99,6 +99,7 @@ export function CampaignKpiStep({
 }: CampaignkPIStepProps) {
     const [open, setOpen] = useState(false);
     const [applied, setApplied] = useState(false);
+    const [skipped, setSkipped] = useState(false);
     const [preset, setPreset] = useState<KpiPresetType | undefined>();
     const [kpiPayload, setKpiPayload] = useState<KpiPayload>({
         kpiDistribution: payload.kpiDistribution || {
@@ -143,12 +144,12 @@ export function CampaignKpiStep({
     }, [payload, kpiPayload]);
 
     const applyDisabled =
-        !!errors.range ||
+        !!errors.kpi ||
         !unsavedChanges ||
         !kpiSpecificationCompleted(kpiPayload);
 
     const completed =
-        !errors.range &&
+        !errors.kpi &&
         !unsavedChanges &&
         kpiSpecificationCompleted(kpiPayload);
 
@@ -180,22 +181,24 @@ export function CampaignKpiStep({
     }, [unsavedChanges, updateUnsaved]);
 
     useEffect(() => {
-        if (completed || disabled) return;
+        if (completed || disabled || skipped) return;
         if (errors.kpi || unsavedChanges) {
             setOpen(true);
             return;
         }
-    }, [completed, disabled, unsavedChanges, errors.kpi]);
+    }, [skipped, completed, disabled, unsavedChanges, errors.kpi]);
 
     const handleOnApply = useCallback(() => {
         onApply(kpiPayload, FormStepId.Kpi);
         setApplied(true);
+        setSkipped(false);
         setOpen(false);
     }, [kpiPayload, onApply]);
 
     const handleOnSkip = useCallback(() => {
         onApply({ kpiDistribution: undefined }, FormStepId.Kpi);
         setApplied(true);
+        setSkipped(true);
         setPreset(undefined);
         setKpiPayload({ kpiDistribution: undefined });
         setOpen(false);
@@ -239,6 +242,7 @@ export function CampaignKpiStep({
             title={t("title")}
             open={open}
             optional
+            skipped={skipped}
             disabled={disabled}
             completed={completed}
             error={errors.kpi}
@@ -250,7 +254,7 @@ export function CampaignKpiStep({
             onToggle={setOpen}
             className={styles.root}
         >
-            <StepSection
+            <FormStepSection
                 title={t("defineStrategy")}
                 description={
                     <Typography size="xs" variant="tertiary">
@@ -266,8 +270,8 @@ export function CampaignKpiStep({
                     value={preset}
                     onChange={setPreset}
                 />
-            </StepSection>
-            <StepSection
+            </FormStepSection>
+            <FormStepSection
                 title={t("defineParameters")}
                 description={
                     <Typography size="xs" variant="tertiary">
@@ -298,26 +302,26 @@ export function CampaignKpiStep({
                     onUpperUsdTargetChange={handleUpperUsdTargetOnChange}
                     onLowerUsdTargetChange={handleLowerUsdTargetOnChange}
                 />
-                <div>
-                    <KpiSimulationChart
-                        complex
-                        targetValueName={targetValueName}
-                        lowerUsdTarget={
-                            kpiPayload.kpiDistribution?.goal?.lowerUsdTarget
-                        }
-                        upperUsdTarget={
-                            kpiPayload.kpiDistribution?.goal?.upperUsdTarget
-                        }
-                        totalRewardsUsd={totalRewardsUsdAmount}
-                        campaignDurationSeconds={campaignDurationSeconds}
-                        minimumPayoutPercentage={
-                            kpiPayload.kpiDistribution?.minimumPayoutPercentage
-                        }
-                        targetUsdValue={targetUsdValue}
-                        error={!!errors.kpi}
-                    />
-                </div>
-            </StepSection>
+            </FormStepSection>
+            <div className={styles.chartWrapper}>
+                <KpiSimulationChart
+                    complex
+                    targetValueName={targetValueName}
+                    lowerUsdTarget={
+                        kpiPayload.kpiDistribution?.goal?.lowerUsdTarget
+                    }
+                    upperUsdTarget={
+                        kpiPayload.kpiDistribution?.goal?.upperUsdTarget
+                    }
+                    totalRewardsUsd={totalRewardsUsdAmount}
+                    campaignDurationSeconds={campaignDurationSeconds}
+                    minimumPayoutPercentage={
+                        kpiPayload.kpiDistribution?.minimumPayoutPercentage
+                    }
+                    targetUsdValue={targetUsdValue}
+                    error={!!errors.kpi}
+                />
+            </div>
             <div className={styles.buttons}>
                 <Button
                     onClick={handleOnApply}

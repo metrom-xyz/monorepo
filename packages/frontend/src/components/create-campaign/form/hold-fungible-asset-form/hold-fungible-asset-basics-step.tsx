@@ -1,6 +1,6 @@
 import { ChainSelect } from "../../inputs/chain-select";
 import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
-import { StepSection } from "../step-section";
+import { FormStepSection } from "../../form-step-section";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { BaseCampaignType } from "@metrom-xyz/sdk";
@@ -82,7 +82,7 @@ export function HoldFungibleAssetBasicsStep({
             onApply={onApply}
             onChange={handlePayloadOnChange}
             targetSection={
-                <StepSection title={t("defineTarget")}>
+                <FormStepSection title={t("defineTarget")}>
                     <div className={styles.target}>
                         <ChainSelect
                             campaignType={BaseCampaignType.HoldFungibleAsset}
@@ -96,7 +96,7 @@ export function HoldFungibleAssetBasicsStep({
                             onChange={handlePayloadOnChange}
                         />
                     </div>
-                </StepSection>
+                </FormStepSection>
             }
         />
     );

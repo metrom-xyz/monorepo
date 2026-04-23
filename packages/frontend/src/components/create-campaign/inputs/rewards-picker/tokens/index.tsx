@@ -207,7 +207,6 @@ export function RewardsPickerTokens({
                     onValueChange={setAmount}
                     endAdornment={
                         <Button
-                            size="xs"
                             disabled={
                                 !token ||
                                 !amount?.formattedValue ||

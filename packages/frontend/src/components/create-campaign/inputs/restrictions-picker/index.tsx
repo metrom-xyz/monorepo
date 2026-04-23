@@ -143,7 +143,7 @@ export function RestrictionsPicker({
                                 className={styles.switchOption}
                             >
                                 <Dot color="red" />
-                                <Typography size="sm" weight="medium">
+                                <Typography weight="medium">
                                     {t("block")}
                                 </Typography>
                             </SwitchOption>
@@ -152,7 +152,7 @@ export function RestrictionsPicker({
                                 className={styles.switchOption}
                             >
                                 <Dot color="green" />
-                                <Typography size="sm" weight="medium">
+                                <Typography weight="medium">
                                     {t("allow")}
                                 </Typography>
                             </SwitchOption>

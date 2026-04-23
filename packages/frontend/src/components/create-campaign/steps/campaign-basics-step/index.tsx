@@ -6,7 +6,7 @@ import type {
     BaseCampaignPayloadPart,
 } from "@/src/types/campaign/common";
 import { StartDatePicker } from "../../inputs/start-date-picker";
-import { StepSection } from "../../form/step-section";
+import { FormStepSection } from "../../form-step-section";
 import { EndDatePicker } from "../../inputs/end-date-picker";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -80,7 +80,7 @@ export function CampaignBasicsStep({
             className={styles.root}
         >
             {targetSection}
-            <StepSection title={t("defineDuration")}>
+            <FormStepSection title={t("defineDuration")}>
                 <div className={styles.datePickers}>
                     <StartDatePicker
                         disabled={startDatePickerDisabled}
@@ -97,7 +97,7 @@ export function CampaignBasicsStep({
                         onError={handleOnError}
                     />
                 </div>
-            </StepSection>
+            </FormStepSection>
             <Button
                 onClick={handleOnApply}
                 icon={ArrowRightIcon}

@@ -8,7 +8,7 @@ import type {
 import { PoolRangePicker } from "../../inputs/pool-range-picker";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { tickToScaledPrice } from "@metrom-xyz/sdk";
-import { StepSection } from "../../form/step-section";
+import { FormStepSection } from "../../form-step-section";
 import { Button, Switch, SwitchOption, Typography } from "@metrom-xyz/ui";
 import { FormStep } from "../../form-step";
 import { rangesEqual, rangeSpecificationCompleted } from "@/src/utils/form";
@@ -40,6 +40,7 @@ export function CampaignPoolRangeStep({
 }: CampaignPoolRangeStepProps) {
     const [open, setOpen] = useState(false);
     const [applied, setApplied] = useState(false);
+    const [skipped, setSkipped] = useState(false);
     const [rangePayload, setRangePayload] = useState({
         priceRangeSpecification: payload.priceRangeSpecification || {
             token0To1: true,
@@ -192,6 +193,7 @@ export function CampaignPoolRangeStep({
     const handleOnSkip = useCallback(() => {
         onApply({ priceRangeSpecification: undefined }, FormStepId.PoolRange);
         setApplied(true);
+        setSkipped(true);
         setRangePayload({
             priceRangeSpecification: {
                 token0To1: true,
@@ -205,6 +207,7 @@ export function CampaignPoolRangeStep({
 
     const handleOnApply = useCallback(() => {
         setApplied(true);
+        setSkipped(false);
         onApply(rangePayload, FormStepId.PoolRange);
         setOpen(false);
     }, [rangePayload, onApply]);
@@ -213,6 +216,7 @@ export function CampaignPoolRangeStep({
         <FormStep
             title={t("title")}
             optional
+            skipped={skipped}
             open={open}
             disabled={disabled}
             completed={completed}
@@ -225,7 +229,7 @@ export function CampaignPoolRangeStep({
             onToggle={setOpen}
             className={styles.root}
         >
-            <StepSection
+            <FormStepSection
                 title={t("setRange", {
                     token0: token0?.symbol || "",
                     token1: token1?.symbol || "",
@@ -257,7 +261,7 @@ export function CampaignPoolRangeStep({
                                 chain={payload.pool?.chainId}
                                 address={payload.pool?.tokens[0]?.address}
                             />
-                            <Typography size="sm" weight="medium">
+                            <Typography weight="medium">
                                 {payload.pool?.tokens[0]?.symbol}
                             </Typography>
                         </SwitchOption>
@@ -270,7 +274,7 @@ export function CampaignPoolRangeStep({
                                 chain={payload.pool?.chainId}
                                 address={payload.pool?.tokens[1]?.address}
                             />
-                            <Typography size="sm" weight="medium">
+                            <Typography weight="medium">
                                 {payload.pool?.tokens[1]?.symbol}
                             </Typography>
                         </SwitchOption>
@@ -285,31 +289,29 @@ export function CampaignPoolRangeStep({
                         onToChange={handleToOnChange}
                     />
                 </div>
-                <div
-                    className={classNames(styles.chartWrapper, {
-                        [styles.noPadding]:
-                            !!errors.range || loadingLiquidityDensity,
-                    })}
-                >
-                    <LiquidityDensityChart
-                        tooltipSize="xs"
-                        header
-                        token0To1={token0To1}
-                        error={!!errors.range}
-                        loading={loadingLiquidityDensity}
-                        from={{
-                            tick: rangePayload.priceRangeSpecification?.from
-                                ?.tick,
-                        }}
-                        to={{
-                            tick: rangePayload.priceRangeSpecification?.to
-                                ?.tick,
-                        }}
-                        pool={payload.pool}
-                        density={liquidityDensity}
-                    />
-                </div>
-            </StepSection>
+            </FormStepSection>
+            <div
+                className={classNames(styles.chartWrapper, {
+                    [styles.noPadding]:
+                        !!errors.range || loadingLiquidityDensity,
+                })}
+            >
+                <LiquidityDensityChart
+                    tooltipSize="xs"
+                    header
+                    token0To1={token0To1}
+                    error={!!errors.range}
+                    loading={loadingLiquidityDensity}
+                    from={{
+                        tick: rangePayload.priceRangeSpecification?.from?.tick,
+                    }}
+                    to={{
+                        tick: rangePayload.priceRangeSpecification?.to?.tick,
+                    }}
+                    pool={payload.pool}
+                    density={liquidityDensity}
+                />
+            </div>
             <div className={styles.buttons}>
                 <Button
                     onClick={handleOnApply}
