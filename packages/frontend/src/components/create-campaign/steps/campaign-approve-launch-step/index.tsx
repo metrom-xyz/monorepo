@@ -15,6 +15,8 @@ import { ENVIRONMENT } from "@/src/commons/env";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { ApproveAndLaunch } from "./approve-and-launch";
 import { FormStepId } from "@/src/types/form";
+import { useAccount } from "@/src/hooks/useAccount";
+import { InfoIcon } from "@/src/assets/info-icon";
 
 import styles from "./styles.module.css";
 
@@ -39,6 +41,7 @@ export function CampaignApproveLaunchStep({
 
     const t = useTranslations("newCampaign.form.approveLaunch");
     const chainType = useChainType();
+    const { connected } = useAccount();
     const { errors, activeStepId } = useFormSteps();
     const { campaignFee, loading: loadingCampaignFee } = useCampaignFee({
         distributables: payload?.distributables,
@@ -125,15 +128,26 @@ export function CampaignApproveLaunchStep({
             onToggle={setOpen}
             className={styles.root}
         >
-            <InfoMessage
-                weight="regular"
-                size="sm"
-                text={
-                    chainType === ChainType.Aptos
-                        ? t("noApproveNeeded")
-                        : t("approveDescription")
-                }
-            />
+            {connected ? (
+                <InfoMessage
+                    weight="regular"
+                    size="sm"
+                    text={
+                        chainType === ChainType.Aptos
+                            ? t("noApproveNeeded")
+                            : !allTokensApproved
+                              ? t("approveDescription")
+                              : t("rewardsApproved")
+                    }
+                />
+            ) : (
+                <div className={styles.warning}>
+                    <InfoIcon className={styles.infoWarningIcon} />
+                    <Typography size="sm" className={styles.warningText}>
+                        {t("connectYourWallet")}
+                    </Typography>
+                </div>
+            )}
             {payload && (
                 <ApproveAndLaunch
                     payload={payload}

@@ -18,3 +18,15 @@
 .feeSkeleton {
     @apply w-[120px];
 }
+
+.warning {
+    @apply flex items-center gap-1;
+}
+
+.infoWarningIcon {
+    @apply size-4 text-warning;
+}
+
+.warningText {
+    @apply text-warning;
+}
