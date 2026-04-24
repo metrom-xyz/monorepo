@@ -21,6 +21,7 @@ import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3Collateral
 import { useChainType } from "@/src/hooks/useChainType";
 import { CampaignKind } from "@metrom-xyz/sdk";
 import { AAVE_V3_REQUIRED_PAYLOAD_KEYS } from "../aave-v3-form/aave-v3-basics-step";
+import { Kpi } from "../../previews/kpi";
 
 import styles from "./styles.module.css";
 
@@ -63,6 +64,7 @@ export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
         payload,
         getAaveV3TargetValue(payload, usdNetSupply),
     );
+    const kpiSetup = payload?.kpiDistribution;
 
     return (
         <>
@@ -112,6 +114,7 @@ export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
                     restrictions={payload.restrictions}
                 />
             )}
+            {kpiSetup && <Kpi kpiDistribution={payload.kpiDistribution} />}
         </>
     );
 }
