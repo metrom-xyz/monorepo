@@ -10,7 +10,6 @@ import { AmmLiquidityPoolFormPreview } from "./amm-liquidity-pool-form-preview";
 import { AaveV3FormPreview } from "./aave-v3-form-preview";
 import { DocumentTextIcon } from "@/src/assets/document-text-icon";
 import { useFormSteps } from "@/src/context/form-steps";
-import { Kpi } from "../../previews/kpi";
 import { LiquityV2FormPreview } from "./liquity-v2-form-preview";
 import { isHoldFungibleAssetCampaignPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
 import { HoldFungibleAssetFormPreview } from "./hold-fungible-asset-form-preview";
@@ -34,7 +33,6 @@ export function FormPreview({ payload }: FormPreviewProps) {
         payload && isHoldFungibleAssetCampaignPayload(payload);
 
     const emptyPayload = !payload?.chainId;
-    const kpiSetup = payload?.kpiDistribution;
 
     return (
         <div className={styles.root}>
@@ -99,9 +97,6 @@ export function FormPreview({ payload }: FormPreviewProps) {
                             payload={payload}
                             errors={errors}
                         />
-                    )}
-                    {kpiSetup && (
-                        <Kpi kpiDistribution={payload.kpiDistribution} />
                     )}
                 </div>
             )}

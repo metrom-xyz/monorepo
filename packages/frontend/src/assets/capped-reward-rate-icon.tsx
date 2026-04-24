@@ -18,6 +18,15 @@ export function CappedRewardRateIcon(props: SVGIcon) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+            <line
+                x1="3.7"
+                y1="6.3"
+                x2="14.3"
+                y2="6.3"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+            />
         </svg>
     );
 }
