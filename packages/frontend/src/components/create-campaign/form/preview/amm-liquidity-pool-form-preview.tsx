@@ -19,6 +19,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { getCampaignTargetValueName } from "@/src/utils/campaign";
 import { formatUsdAmount } from "@/src/utils/format";
 import { AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS } from "../amm-pool-liquidity-form/amm-pool-liquidity-basics-step";
+import { Kpi } from "../../previews/kpi";
 
 import styles from "./styles.module.css";
 
@@ -44,6 +45,7 @@ export function AmmLiquidityPoolFormPreview({
         payload,
         getAmmPoolLiquidityTargetValue(payload),
     );
+    const kpiSetup = payload?.kpiDistribution;
 
     return (
         <>
@@ -97,6 +99,7 @@ export function AmmLiquidityPoolFormPreview({
                     priceRangeSpecification={payload.priceRangeSpecification}
                 />
             )}
+            {kpiSetup && <Kpi kpiDistribution={payload.kpiDistribution} />}
         </>
     );
 }

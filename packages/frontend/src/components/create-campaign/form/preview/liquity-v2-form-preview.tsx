@@ -17,6 +17,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import { Rewards } from "../../previews/rewards";
 import { LIQUITY_V2_BASIC_PAYLOAD_KEYS } from "../liquity-v2-forks-form/liquity-v2-basics-step";
 import { LiquityV2Target } from "../../previews/liquity-v2-target";
+import { Kpi } from "../../previews/kpi";
 
 import styles from "./styles.module.css";
 
@@ -38,6 +39,7 @@ export function LiquityV2FormPreview({
 
     const rewardsCompleted = distributablesCompleted(payload);
     const apr = getCampaignFormApr(payload, getLiquityV2TargetValue(payload));
+    const kpiSetup = payload?.kpiDistribution;
 
     return (
         <>
@@ -84,6 +86,7 @@ export function LiquityV2FormPreview({
                     restrictions={payload.restrictions}
                 />
             )}
+            {kpiSetup && <Kpi kpiDistribution={payload.kpiDistribution} />}
         </>
     );
 }
