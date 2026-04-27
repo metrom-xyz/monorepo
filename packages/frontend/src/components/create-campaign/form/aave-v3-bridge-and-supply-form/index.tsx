@@ -8,7 +8,6 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
-import { RewardsStep } from "../../steps/rewards-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
@@ -188,7 +187,7 @@ export function AaveV3BridgeAndSupplyForm({
                     collateral={payload.collateral}
                     onCollateralChange={handlePayloadOnChange}
                 /> */}
-                <RewardsStep
+                {/* <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}
                     startDate={payload.startDate}
@@ -197,7 +196,7 @@ export function AaveV3BridgeAndSupplyForm({
                     fixedDistribution={payload.fixedDistribution}
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
                 {/* <KpiStep
                     disabled={noDistributables || unsupportedChain}
                     kind={payload.kind}
