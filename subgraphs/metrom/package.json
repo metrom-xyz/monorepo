@@ -18,7 +18,7 @@
         "deploy:gnosis": "npm run prepare:deploy gnosis && npm run codegen && graph deploy metrom-gnosis -l 0.0.2",
         "deploy:telos": "npm run prepare:deploy telos && npm run codegen && graph build && graph deploy metrom-telos/0.0.1",
         "deploy:lightlink-phoenix": "npm run prepare:deploy lightlink-phoenix && npm run codegen && graph create --node https://graph.phoenix.lightlink.io/rpc metrom-lightlink-phoenix && graph build && graph deploy --node https://graph.phoenix.lightlink.io/rpc metrom-lightlink-phoenix -l 0.0.1",
-        "deploy:sei": "npm run prepare:deploy sei-mainnet && npm run codegen && graph build && graph deploy metrom-sei -l 0.0.2",
+        "deploy:sei": "npm run prepare:deploy sei-mainnet && npm run codegen && graph build && graph deploy metrom-sei -l 0.0.3",
         "deploy:swell": "npm run prepare:deploy swellchain && npm run codegen && graph deploy metrom-swell -l 0.0.2",
         "deploy:hemi": "npm run prepare:deploy hemi && npm run codegen && graph deploy metrom-hemi -l 0.0.2",
         "deploy:lens": "npm run prepare:deploy lens && npm run codegen && graph deploy metrom-lens -l 0.0.2",
