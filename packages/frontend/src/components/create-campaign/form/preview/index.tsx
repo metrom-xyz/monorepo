@@ -1,7 +1,5 @@
 import { useTranslations } from "next-intl";
-import { Button, Typography } from "@metrom-xyz/ui";
-import { ShareIcon } from "@/src/assets/share-icon";
-import { PlusCircleIcon } from "@/src/assets/plus-circle-icon";
+import { Typography } from "@metrom-xyz/ui";
 import type { CampaignPayload } from "@/src/types/campaign/common";
 import { isAmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { isAaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
@@ -40,7 +38,7 @@ export function FormPreview({ payload }: FormPreviewProps) {
                 <Typography size="lg" weight="medium" className={styles.title}>
                     {t("preview")}
                 </Typography>
-                <div className={styles.buttons}>
+                {/* <div className={styles.buttons}>
                     <Button
                         size="sm"
                         disabled
@@ -57,7 +55,7 @@ export function FormPreview({ payload }: FormPreviewProps) {
                     >
                         {t("saveAsPreset")}
                     </Button>
-                </div>
+                </div> */}
             </div>
             {emptyPayload ? (
                 <div className={styles.empty}>
