@@ -74,7 +74,7 @@ export function useProtocolFees({
         if (APTOS && feeMvm.data && rebateFeeMvm.data)
             return {
                 fee: Number(feeMvm.data[0]),
-                feeRebate: Number(rebateFeeMvm.data[0]),
+                feeRebate: rebateFeeMvm.data ? Number(rebateFeeMvm.data[0]) : 0,
             };
         if (!APTOS && feesEvm.data)
             return {
