@@ -71,7 +71,7 @@ export function useProtocolFees({
     const fees: ProtocolFees | undefined = useMemo(() => {
         if (loading) return undefined;
 
-        if (APTOS && feeMvm.data && rebateFeeMvm.data)
+        if (APTOS && feeMvm.data)
             return {
                 fee: Number(feeMvm.data[0]),
                 feeRebate: rebateFeeMvm.data ? Number(rebateFeeMvm.data[0]) : 0,
