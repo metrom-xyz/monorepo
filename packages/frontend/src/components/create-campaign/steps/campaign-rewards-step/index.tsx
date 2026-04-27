@@ -10,6 +10,7 @@ import {
 import type {
     BaseCampaignPayload,
     BaseCampaignPayloadPart,
+    CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign/common";
 import { FormStepSection } from "../../form-step-section";
 import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
@@ -22,6 +23,9 @@ import { useFormSteps, type FormSteps } from "@/src/context/form-steps";
 import { RestrictionsPicker } from "../../inputs/restrictions-picker";
 import { InfoMessage } from "@/src/components/info-message";
 import { FormStepId } from "@/src/types/form";
+import { FixedAprPicker } from "../../inputs/fixed-apr-picker";
+import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import { DistributablesType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -29,7 +33,12 @@ interface CampaignRewardsStepProps {
     chainId?: number;
     startDate?: Dayjs;
     endDate?: Dayjs;
-    payload: Pick<BaseCampaignPayload, "distributables" | "restrictions">;
+    kpiDistribution?: CampaignPayloadKpiDistribution;
+    payload: Pick<
+        BaseCampaignPayload,
+        "distributables" | "restrictions" | "fixedDistribution"
+    > &
+        Pick<AmmPoolLiquidityCampaignPayload, "weighting">;
     apr?: number;
     loadingApr?: boolean;
     additionalSection?: ReactNode;
@@ -45,6 +54,7 @@ export function CampaignRewardsStep({
     chainId,
     startDate,
     endDate,
+    kpiDistribution,
     payload,
     apr,
     loadingApr,
@@ -90,6 +100,8 @@ export function CampaignRewardsStep({
         [updateErrors],
     );
 
+    const derivedApr = payload.fixedDistribution?.apr || apr;
+
     return (
         <FormStep
             title={t("title")}
@@ -110,7 +122,7 @@ export function CampaignRewardsStep({
                 headerDecorator={
                     <div
                         className={classNames(styles.aprChip, {
-                            [styles.noApr]: apr === undefined,
+                            [styles.noApr]: derivedApr === undefined,
                         })}
                     >
                         {loadingApr ? (
@@ -119,9 +131,9 @@ export function CampaignRewardsStep({
                             <Typography size="xs" weight="medium">
                                 {t("apr", {
                                     apr:
-                                        apr !== undefined
+                                        derivedApr !== undefined
                                             ? formatPercentage({
-                                                  percentage: apr,
+                                                  percentage: derivedApr,
                                               })
                                             : "-",
                                 })}
@@ -138,6 +150,27 @@ export function CampaignRewardsStep({
                     onError={handleOnError}
                 />
             </FormStepSection>
+            {!kpiDistribution &&
+                payload.distributables?.type === DistributablesType.Tokens && (
+                    <FormStepSection
+                        title={t("fixedApr")}
+                        description={
+                            <InfoMessage
+                                weight="regular"
+                                text={t("fixedAprDescription")}
+                            />
+                        }
+                        optional
+                    >
+                        <FixedAprPicker
+                            chainId={chainId}
+                            startDate={startDate}
+                            endDate={endDate}
+                            value={payload.fixedDistribution}
+                            onChange={onChange}
+                        />
+                    </FormStepSection>
+                )}
             {additionalSection}
             <FormStepSection
                 optional

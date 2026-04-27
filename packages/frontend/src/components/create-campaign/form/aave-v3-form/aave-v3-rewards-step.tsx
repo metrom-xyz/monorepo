@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import {
     distributablesCompleted,
     distributablesEqual,
+    fixedDistributionsEqual,
     getCampaignFormApr,
     restrictionsEqual,
 } from "@/src/utils/form";
@@ -35,6 +36,7 @@ export function AaveV3RewardsStep({
 }: AaveV3RewardsStepProps) {
     const [rewardsPayload, setRewardsPayload] = useState({
         distributables: payload.distributables,
+        fixedDistribition: payload.fixedDistribution,
         restrictions: {
             type: RestrictionType.Blacklist,
             list: [] as Address[],
@@ -67,6 +69,7 @@ export function AaveV3RewardsStep({
 
         return (
             !distributablesEqual(payload, rewardsPayload) ||
+            !fixedDistributionsEqual(payload, rewardsPayload) ||
             !restrictionsEqual(payload, rewardsPayload)
         );
     }, [payload, rewardsPayload]);
@@ -109,6 +112,7 @@ export function AaveV3RewardsStep({
             chainId={chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
+            kpiDistribution={payload.kpiDistribution}
             payload={rewardsPayload}
             apr={apr}
             loadingApr={loadingCollateralUsdNetSupply}

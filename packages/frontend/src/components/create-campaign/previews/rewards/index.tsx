@@ -15,7 +15,10 @@ import {
     type Restrictions,
     type Weighting,
 } from "@metrom-xyz/sdk";
-import type { CampaignPayloadDistributables } from "@/src/types/campaign/common";
+import type {
+    CampaignPayloadDistributables,
+    CampaignPayloadFixedDistribution,
+} from "@/src/types/campaign/common";
 import type { Dayjs } from "dayjs";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { AddressRestrictions } from "./address-restrictions";
@@ -31,6 +34,7 @@ interface RewardsProps {
     endDate?: Dayjs;
     distributables?: CampaignPayloadDistributables;
     pool?: AmmPool;
+    fixedDistribution?: CampaignPayloadFixedDistribution;
     weighting?: Weighting;
     restrictions?: Restrictions;
 }
@@ -44,6 +48,7 @@ export function Rewards({
     endDate,
     distributables,
     pool,
+    fixedDistribution,
     weighting,
     restrictions,
 }: RewardsProps) {
@@ -76,6 +81,8 @@ export function Rewards({
         return daysDuration >= 1 ? totalUsd / daysDuration : 0;
     }, [startDate, endDate, totalUsd]);
 
+    const derivedApr = fixedDistribution?.apr || apr;
+
     return (
         <FormStepPreview
             title={
@@ -85,7 +92,7 @@ export function Rewards({
                     </Typography>
                     <div
                         className={classNames(styles.aprChip, {
-                            [styles.noApr]: apr === undefined,
+                            [styles.noApr]: derivedApr === undefined,
                         })}
                     >
                         {loadingApr ? (
@@ -94,9 +101,9 @@ export function Rewards({
                             <Typography size="xs" weight="medium">
                                 {t("apr", {
                                     apr:
-                                        apr !== undefined
+                                        derivedApr !== undefined
                                             ? formatPercentage({
-                                                  percentage: apr,
+                                                  percentage: derivedApr,
                                               })
                                             : "-",
                                 })}

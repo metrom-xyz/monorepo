@@ -89,6 +89,7 @@ export function AmmLiquidityPoolFormPreview({
                     endDate={payload.endDate}
                     distributables={payload.distributables}
                     pool={payload.pool}
+                    fixedDistribution={payload.fixedDistribution}
                     weighting={payload.weighting}
                     restrictions={payload.restrictions}
                 />

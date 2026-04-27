@@ -26,6 +26,7 @@ export function useAccountName(params: UseEnsNameParameters) {
                 throw error;
             }
         },
+        retry: false,
     });
 
     return data;

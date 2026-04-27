@@ -4,6 +4,7 @@ import {
     useCallback,
     useEffect,
     useMemo,
+    useRef,
     useState,
     type FunctionComponent,
 } from "react";
@@ -13,7 +14,7 @@ import type {
     CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign/common";
 import { FormStepSection } from "../../form-step-section";
-import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
+import { Button, Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useFormSteps } from "@/src/context/form-steps";
@@ -101,6 +102,10 @@ export function CampaignKpiStep({
     const [applied, setApplied] = useState(false);
     const [skipped, setSkipped] = useState(false);
     const [preset, setPreset] = useState<KpiPresetType | undefined>();
+    const [popover, setPopover] = useState(false);
+    const [popoverAnchor, setPopoverAnchor] = useState<HTMLDivElement | null>(
+        null,
+    );
     const [kpiPayload, setKpiPayload] = useState<KpiPayload>({
         kpiDistribution: payload.kpiDistribution || {
             goal: {
@@ -113,6 +118,7 @@ export function CampaignKpiStep({
     });
 
     const t = useTranslations("newCampaign.form.kpi");
+    const popoverRef = useRef<HTMLDivElement>(null);
     const { errors, activeStepId, updateUnsaved } = useFormSteps();
     const targetValueName = useCampaignTargetValueName({ kind: payload.kind });
 
@@ -149,9 +155,9 @@ export function CampaignKpiStep({
         !kpiSpecificationCompleted(kpiPayload);
 
     const completed =
-        !errors.kpi &&
-        !unsavedChanges &&
-        kpiSpecificationCompleted(kpiPayload);
+        !errors.kpi && !unsavedChanges && kpiSpecificationCompleted(kpiPayload);
+
+    const internalDisabled = disabled || !!payload.fixedDistribution;
 
     useEffect(() => {
         if (targetUsdValue === undefined || !preset) return;
@@ -172,21 +178,29 @@ export function CampaignKpiStep({
     }, [targetUsdValue, preset]);
 
     useEffect(() => {
-        if (applied || completed) return;
+        if (applied || completed || internalDisabled) return;
         setOpen(activeStepId === FormStepId.Kpi);
-    }, [applied, completed, activeStepId]);
+    }, [applied, completed, internalDisabled, activeStepId]);
 
     useEffect(() => {
         updateUnsaved({ kpi: unsavedChanges });
     }, [unsavedChanges, updateUnsaved]);
 
     useEffect(() => {
-        if (completed || disabled || skipped) return;
+        if (completed || internalDisabled || skipped) return;
         if (errors.kpi || unsavedChanges) {
             setOpen(true);
             return;
         }
-    }, [skipped, completed, disabled, unsavedChanges, errors.kpi]);
+    }, [skipped, completed, internalDisabled, unsavedChanges, errors.kpi]);
+
+    function handlePopoverOpen() {
+        setPopover(true);
+    }
+
+    function handlePopoverClose() {
+        setPopover(false);
+    }
 
     const handleOnApply = useCallback(() => {
         onApply(kpiPayload, FormStepId.Kpi);
@@ -238,111 +252,146 @@ export function CampaignKpiStep({
     }
 
     return (
-        <FormStep
-            title={t("title")}
-            open={open}
-            optional
-            skipped={skipped}
-            disabled={disabled}
-            completed={completed}
-            error={errors.kpi}
-            warning={
-                !errors.kpi && !open && unsavedChanges
-                    ? t("notSaved")
-                    : undefined
-            }
-            onToggle={setOpen}
-            className={styles.root}
-        >
-            <FormStepSection
-                title={t("defineStrategy")}
-                description={
-                    <Typography size="xs" variant="tertiary">
-                        {t.rich("infoMessage", {
-                            targetValueName,
-                            bold: (chunks) => <BoldText>{chunks}</BoldText>,
-                        })}
+        <>
+            {!!payload.fixedDistribution && (
+                <Popover
+                    ref={popoverRef}
+                    open={popover}
+                    anchor={popoverAnchor}
+                    placement="top"
+                    onOpenChange={setPopover}
+                    margin={6}
+                >
+                    <Typography size="xs">
+                        {t("fixedDistributionActive")}
                     </Typography>
-                }
+                </Popover>
+            )}
+            <div
+                ref={setPopoverAnchor}
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
             >
-                <KpiPresets
-                    targetValueName={targetValueName}
-                    value={preset}
-                    onChange={setPreset}
-                />
-            </FormStepSection>
-            <FormStepSection
-                title={t("defineParameters")}
-                description={
-                    <Typography size="xs" variant="tertiary">
-                        {t("defaultValues")}
-                    </Typography>
-                }
-                headerDecorator={
-                    <div className={styles.targetChip}>
-                        <Typography size="xs" weight="medium" uppercase>
-                            {t("currentTarget", { targetValueName })}
-                        </Typography>
-                        {loadingTargetUsdValue ? (
-                            <Skeleton width={50} size="sm" />
-                        ) : (
-                            <Typography weight="medium" size="xs" uppercase>
-                                {formatUsdAmount({ amount: targetUsdValue })}
+                <FormStep
+                    title={t("title")}
+                    open={open}
+                    optional
+                    skipped={skipped}
+                    disabled={internalDisabled}
+                    completed={completed}
+                    error={errors.kpi}
+                    warning={
+                        !errors.kpi && !open && unsavedChanges
+                            ? t("notSaved")
+                            : undefined
+                    }
+                    onToggle={setOpen}
+                    className={styles.root}
+                >
+                    <FormStepSection
+                        title={t("defineStrategy")}
+                        description={
+                            <Typography size="xs" variant="tertiary">
+                                {t.rich("infoMessage", {
+                                    targetValueName,
+                                    bold: (chunks) => (
+                                        <BoldText>{chunks}</BoldText>
+                                    ),
+                                })}
                             </Typography>
-                        )}
+                        }
+                    >
+                        <KpiPresets
+                            targetValueName={targetValueName}
+                            value={preset}
+                            onChange={setPreset}
+                        />
+                    </FormStepSection>
+                    <FormStepSection
+                        title={t("defineParameters")}
+                        description={
+                            <Typography size="xs" variant="tertiary">
+                                {t("defaultValues")}
+                            </Typography>
+                        }
+                        headerDecorator={
+                            <div className={styles.targetChip}>
+                                <Typography size="xs" weight="medium" uppercase>
+                                    {t("currentTarget", { targetValueName })}
+                                </Typography>
+                                {loadingTargetUsdValue ? (
+                                    <Skeleton width={50} size="sm" />
+                                ) : (
+                                    <Typography
+                                        weight="medium"
+                                        size="xs"
+                                        uppercase
+                                    >
+                                        {formatUsdAmount({
+                                            amount: targetUsdValue,
+                                        })}
+                                    </Typography>
+                                )}
+                            </div>
+                        }
+                    >
+                        <KpiGoalInputs
+                            kpiDistribution={kpiPayload.kpiDistribution}
+                            targetValueName={targetValueName}
+                            onMinimumPayoutPercentageChange={
+                                handleMinumumPayoutPercentageOnChange
+                            }
+                            onUpperUsdTargetChange={
+                                handleUpperUsdTargetOnChange
+                            }
+                            onLowerUsdTargetChange={
+                                handleLowerUsdTargetOnChange
+                            }
+                        />
+                    </FormStepSection>
+                    <div className={styles.chartWrapper}>
+                        <KpiSimulationChart
+                            complex
+                            targetValueName={targetValueName}
+                            lowerUsdTarget={
+                                kpiPayload.kpiDistribution?.goal?.lowerUsdTarget
+                            }
+                            upperUsdTarget={
+                                kpiPayload.kpiDistribution?.goal?.upperUsdTarget
+                            }
+                            totalRewardsUsd={totalRewardsUsdAmount}
+                            campaignDurationSeconds={campaignDurationSeconds}
+                            minimumPayoutPercentage={
+                                kpiPayload.kpiDistribution
+                                    ?.minimumPayoutPercentage
+                            }
+                            targetUsdValue={targetUsdValue}
+                            error={!!errors.kpi}
+                        />
                     </div>
-                }
-            >
-                <KpiGoalInputs
-                    kpiDistribution={kpiPayload.kpiDistribution}
-                    targetValueName={targetValueName}
-                    onMinimumPayoutPercentageChange={
-                        handleMinumumPayoutPercentageOnChange
-                    }
-                    onUpperUsdTargetChange={handleUpperUsdTargetOnChange}
-                    onLowerUsdTargetChange={handleLowerUsdTargetOnChange}
-                />
-            </FormStepSection>
-            <div className={styles.chartWrapper}>
-                <KpiSimulationChart
-                    complex
-                    targetValueName={targetValueName}
-                    lowerUsdTarget={
-                        kpiPayload.kpiDistribution?.goal?.lowerUsdTarget
-                    }
-                    upperUsdTarget={
-                        kpiPayload.kpiDistribution?.goal?.upperUsdTarget
-                    }
-                    totalRewardsUsd={totalRewardsUsdAmount}
-                    campaignDurationSeconds={campaignDurationSeconds}
-                    minimumPayoutPercentage={
-                        kpiPayload.kpiDistribution?.minimumPayoutPercentage
-                    }
-                    targetUsdValue={targetUsdValue}
-                    error={!!errors.kpi}
-                />
+                    <div className={styles.buttons}>
+                        <Button
+                            onClick={handleOnApply}
+                            icon={ArrowRightIcon}
+                            iconPlacement="right"
+                            disabled={internalDisabled || applyDisabled}
+                            className={{ root: styles.button }}
+                        >
+                            {t("saveKpi")}
+                        </Button>
+                        <Button
+                            onClick={handleOnSkip}
+                            icon={ArrowRightIcon}
+                            iconPlacement="right"
+                            disabled={internalDisabled}
+                            variant="secondary"
+                            className={{ root: styles.button }}
+                        >
+                            {t("skipKpi")}
+                        </Button>
+                    </div>
+                </FormStep>
             </div>
-            <div className={styles.buttons}>
-                <Button
-                    onClick={handleOnApply}
-                    icon={ArrowRightIcon}
-                    iconPlacement="right"
-                    disabled={disabled || applyDisabled}
-                    className={{ root: styles.button }}
-                >
-                    {t("saveKpi")}
-                </Button>
-                <Button
-                    onClick={handleOnSkip}
-                    icon={ArrowRightIcon}
-                    iconPlacement="right"
-                    disabled={disabled}
-                    variant="secondary"
-                    className={{ root: styles.button }}
-                >
-                    {t("skipKpi")}
-                </Button>
-            </div>
-        </FormStep>
+        </>
     );
 }

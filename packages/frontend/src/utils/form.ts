@@ -133,6 +133,13 @@ export function weightingEqual(
     );
 }
 
+export function fixedDistributionsEqual(
+    prev: BaseCampaignPayload,
+    current: BaseCampaignPayload,
+) {
+    return prev.fixedDistribution?.apr === current.fixedDistribution?.apr;
+}
+
 export function kpisEqual(
     prev: BaseCampaignPayload,
     current: BaseCampaignPayload,

@@ -10,7 +10,10 @@ import {
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import { AaveV3BasicsStep, AAVE_V3_REQUIRED_PAYLOAD_KEYS } from "./aave-v3-basics-step";
+import {
+    AaveV3BasicsStep,
+    AAVE_V3_REQUIRED_PAYLOAD_KEYS,
+} from "./aave-v3-basics-step";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
 import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
@@ -20,11 +23,11 @@ import {
     allFieldsFilled,
     distributablesCompleted,
     validateDistributables,
+    validateDistributions,
 } from "@/src/utils/form";
 import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
 import { FormStepId } from "@/src/types/form";
 import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
-import { validateDistributions } from "@/src/utils/creation-form";
 import type {
     CampaignPreviewFixedDistribution,
     CampaignPreviewKpiDistribution,
