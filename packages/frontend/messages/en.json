@@ -257,7 +257,7 @@
                 "notSaved": "Not saved",
                 "defineAssets": "Define assets to distribute",
                 "fixedApr": "Fixed APR",
-                "fixedAprDescription": "Auto adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs.",
+                "fixedAprDescription": "Automatically adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs. Set the desired APR and add the previewed token amount as reward.",
                 "defineRestrictions": "Define who can earn rewards",
                 "defineRestrictionDescription": "You can block unwanted addresses or allow only eligible ones. Zero and dead addresses are excluded by default.",
                 "saveRewards": "Save rewards"
