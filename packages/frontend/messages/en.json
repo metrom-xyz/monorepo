@@ -256,6 +256,8 @@
                 "apr": "APR: {apr}",
                 "notSaved": "Not saved",
                 "defineAssets": "Define assets to distribute",
+                "fixedApr": "Fixed APR",
+                "fixedAprDescription": "Auto adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs.",
                 "defineRestrictions": "Define who can earn rewards",
                 "defineRestrictionDescription": "You can block unwanted addresses or allow only eligible ones. Zero and dead addresses are excluded by default.",
                 "saveRewards": "Save rewards"
@@ -300,7 +302,8 @@
                         "title": "Custom reward rate",
                         "description": "Use your own strategy to distribute incentives."
                     }
-                }
+                },
+                "fixedDistributionActive": "KPI can't be configured when fixed APR distribution is active"
             },
             "range": {
                 "title": "Set range to reward",
@@ -376,20 +379,6 @@
                             "wrongAmount": "Wrong points amount"
                         },
                         "noFeeTokens": "Points campaign not supported"
-                    },
-                    "fixedApr": {
-                        "title": "Fixed APR",
-                        "description": "Auto adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs.",
-                        "apr": "APR",
-                        "tvl": "TVL",
-                        "tvlAmount": "{amount} TVL",
-                        "preview": "Campaign preview at",
-                        "editTvl": "Click to edit TVL",
-                        "duration": "Duration",
-                        "totalBudget": "Total budget",
-                        "dailyEmission": "Daily emission",
-                        "buffer": "Buffer",
-                        "bufferTooltip": "Extra buffer on top of the budget to account for reward token price fluctuation during the campaign."
                     }
                 },
                 "restrictions": {
@@ -585,6 +574,22 @@
                     "lowDistributionRate": "Low distribution rate"
                 }
             },
+            "fixedAprPicker": {
+                "apr": "APR",
+                "aprInputDescription": "APR is fixed in USD. Emissions adjust automatically",
+                "reset": "Reset",
+                "preview": "Campaign preview: rewards at",
+                "editTvl": "Edit TVL",
+                "tvl": "TVL",
+                "tvlAmount": "{amount} TVL",
+                "noPreview": "No preview yet",
+                "noPreviewDescription": "Set an APR to see estimated rewards",
+                "duration": "Duration",
+                "totalBudget": "{usdBudget} <bold>total</bold> rewards to keep a {apr} fixed APR",
+                "dailyEmission": "Daily emission",
+                "buffer": "Buffer",
+                "bufferTooltip": "Extra buffer on top of the budget to account for reward token price fluctuation during the campaign."
+            },
             "restrictionsPicker": {
                 "block": "Block",
                 "allow": "Allow",
@@ -637,7 +642,7 @@
         "launchFeedback": {
             "congratulations": "Congratulations!",
             "standard": "Campaign successfully launched!",
-            "info": "You’ll be able to see your campaign live in about 10 minutes.",
+            "info": "You'll be able to see your campaign live in about 10 minutes.",
             "safe": {
                 "1": "The campaign creation transactions bundle is now ready to be signed.",
                 "2": "Please collect signatures and execute it before the campaign start date."

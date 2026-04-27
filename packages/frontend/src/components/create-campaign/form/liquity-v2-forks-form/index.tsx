@@ -16,8 +16,8 @@ import {
     allFieldsFilled,
     distributablesCompleted,
     validateDistributables,
+    validateDistributions,
 } from "@/src/utils/form";
-import { validateDistributions } from "@/src/utils/creation-form";
 import {
     LIQUITY_V2_BASIC_PAYLOAD_KEYS,
     LiquityV2BasicsStep,
