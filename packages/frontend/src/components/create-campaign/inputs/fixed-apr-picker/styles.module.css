@@ -77,11 +77,11 @@
 }
 
 .previewContent {
-    @apply flex items-center gap-2;
+    @apply w-full flex flex-col sm:flex-row items-center gap-2;
 }
 
 .budget {
-    @apply h-16 w-[54%] flex flex-col justify-between rounded-lg px-3 py-2 bg-gray-150/90 dark:bg-neutral-900/60;
+    @apply h-full sm:h-16 w-full sm:w-[54%] flex flex-col justify-between rounded-lg px-3 py-2 bg-gray-150/90 dark:bg-neutral-900/60;
 }
 
 .token {
@@ -89,7 +89,7 @@
 }
 
 .emissions {
-    @apply w-[46%] flex flex-col gap-2;
+    @apply w-full sm:w-[46%] flex flex-col gap-2;
 }
 
 .emissions > div:nth-child(2) {
