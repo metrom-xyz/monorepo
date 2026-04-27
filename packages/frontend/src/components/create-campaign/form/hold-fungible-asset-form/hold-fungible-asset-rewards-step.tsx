@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import {
     distributablesCompleted,
     distributablesEqual,
+    fixedDistributionsEqual,
     getCampaignFormApr,
     restrictionsEqual,
 } from "@/src/utils/form";
@@ -33,6 +34,7 @@ export function HoldFungibleAssetRewardsStep({
 }: HoldFungibleAssetRewardsStepProps) {
     const [rewardsPayload, setRewardsPayload] = useState({
         distributables: payload.distributables,
+        fixedDistribition: payload.fixedDistribution,
         restrictions: {
             type: RestrictionType.Blacklist,
             list: [] as Address[],
@@ -51,6 +53,7 @@ export function HoldFungibleAssetRewardsStep({
 
         return (
             !distributablesEqual(payload, rewardsPayload) ||
+            !fixedDistributionsEqual(payload, rewardsPayload) ||
             !restrictionsEqual(payload, rewardsPayload)
         );
     }, [payload, rewardsPayload]);
@@ -89,6 +92,7 @@ export function HoldFungibleAssetRewardsStep({
             chainId={chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
+            kpiDistribution={payload.kpiDistribution}
             payload={rewardsPayload}
             apr={apr}
             applyDisabled={applyDisabled}

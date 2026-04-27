@@ -135,6 +135,15 @@ export function buildSpecificationBundle(
 ): Specification {
     const specification: Specification = {};
 
+    if (payload.kpiDistribution && payload.fixedDistribution) {
+        console.error(
+            "Both KPI distribution and fixed distribution are set in the payload",
+        );
+        throw new Error(
+            "Invalid campaign payload: both distribution types set",
+        );
+    }
+
     if (payload.kpiDistribution) {
         const minimumPayoutPercentage = payload.kpiDistribution
             .minimumPayoutPercentage

@@ -15,7 +15,6 @@ import {
     formatPercentage,
     formatUsdAmount,
 } from "@/src/utils/format";
-import { getUsdBudgetForFixedApr } from "@/src/utils/creation-form";
 import type {
     UsdPricedErc20TokenAmount,
     WhitelistedErc20Token,
@@ -30,13 +29,14 @@ import { useProtocolFees } from "@/src/hooks/useProtocolFees";
 import { FEE_UNIT } from "@/src/commons";
 import classNames from "classnames";
 import { PencilIcon } from "@/src/assets/pencil-icon";
-
-import styles from "./styles.module.css";
 import type {
     BaseCampaignPayloadPart,
     CampaignPayloadFixedDistribution,
     CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign/common";
+import { getUsdBudgetForFixedApr } from "@/src/utils/form";
+
+import styles from "./styles.module.css";
 
 interface RewardsFixedAprProps {
     kpiDistribution?: CampaignPayloadKpiDistribution;

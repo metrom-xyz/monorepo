@@ -1,0 +1,113 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col sm:flex-row gap-4;
+}
+
+.aprInputWrapper {
+    @apply flex
+        flex-col
+        justify-between
+        gap-3
+        p-3
+        rounded-lg
+        border
+        border-gray-300
+        dark:border-neutral-700
+        transition-colors
+        duration-200;
+}
+
+.aprInputWrapper > div {
+    @apply flex gap-1 justify-between items-end;
+}
+
+.aprInput {
+    @apply w-2/3;
+}
+
+.reset {
+    @apply flex items-center gap-1 cursor-pointer;
+}
+
+.previewWrapper {
+    @apply flex flex-col gap-3 w-full p-3 rounded-lg bg-gray-100 dark:bg-neutral-800;
+}
+
+.titleContainer {
+    @apply flex flex-col sm:flex-row sm:items-center gap-1;
+}
+
+.popover {
+    @apply p-1.5;
+}
+
+.tvlChip {
+    @apply flex
+        items-center
+        w-fit
+        gap-1.5
+        px-2
+        py-1
+        rounded-lg
+        cursor-pointer
+        bg-gray-300
+        dark:bg-neutral-600;
+}
+
+.editIcon {
+    @apply size-3;
+}
+
+.tvlInput :global(.input),
+.tvlInput :global(.inputWrapper) {
+    @apply h-6 max-w-[7.5rem] font-medium text-sm rounded-lg;
+}
+
+.tvlInput :global(.input) {
+    @apply py-1 bg-gray-300 dark:bg-neutral-600;
+}
+
+.tvlInput :global(.fieldset) {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.tvlInput.editing :global(.input) {
+    @apply cursor-default;
+}
+
+.previewContent {
+    @apply flex items-center gap-2;
+}
+
+.budget {
+    @apply h-16 w-[54%] flex flex-col justify-between rounded-lg px-3 py-2 bg-gray-150/90 dark:bg-neutral-900/60;
+}
+
+.token {
+    @apply flex items-center gap-1.5;
+}
+
+.emissions {
+    @apply w-[46%] flex flex-col gap-2;
+}
+
+.emissions > div:nth-child(2) {
+    @apply w-full flex items-center gap-2;
+}
+
+.transparentBox {
+    @apply h-7 w-full flex justify-center items-center gap-2 px-2 py-1 rounded-lg border border-gray-300 dark:border-neutral-700;
+}
+
+.dailyEmissionToken {
+    @apply flex items-center gap-1;
+}
+
+.buffer {
+    @apply flex items-center gap-0.5;
+}
+
+.empty {
+    @apply h-16;
+}

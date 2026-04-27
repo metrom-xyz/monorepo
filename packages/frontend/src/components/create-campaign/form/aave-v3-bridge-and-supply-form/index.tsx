@@ -21,8 +21,10 @@ import {
     type AaveV3CampaignPayloadPart,
 } from "@/src/types/campaign/aave-v3-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
-import { validateDistributables } from "@/src/utils/form";
-import { validateDistributions } from "@/src/utils/creation-form";
+import {
+    validateDistributables,
+    validateDistributions,
+} from "@/src/utils/form";
 
 import styles from "./styles.module.css";
 

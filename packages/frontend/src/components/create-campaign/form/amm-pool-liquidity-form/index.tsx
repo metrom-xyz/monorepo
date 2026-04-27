@@ -25,11 +25,11 @@ import {
     allFieldsFilled,
     distributablesCompleted,
     validateDistributables,
+    validateDistributions,
     validatePriceRangeSpecification,
 } from "@/src/utils/form";
 import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
 import { FormStepId } from "@/src/types/form";
-import { validateDistributions } from "@/src/utils/creation-form";
 import type {
     CampaignPreviewFixedDistribution,
     CampaignPreviewKpiDistribution,
@@ -177,7 +177,10 @@ export function AmmPoolLiquidityForm({
                     payload={payload}
                     disabled={
                         !!errors.basics ||
-                        !allFieldsFilled(payload, AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS)
+                        !allFieldsFilled(
+                            payload,
+                            AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS,
+                        )
                     }
                     onApply={handleOnApply}
                 />

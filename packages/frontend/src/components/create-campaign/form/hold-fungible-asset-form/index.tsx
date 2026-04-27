@@ -15,8 +15,8 @@ import {
     allFieldsFilled,
     distributablesCompleted,
     validateDistributables,
+    validateDistributions,
 } from "@/src/utils/form";
-import { validateDistributions } from "@/src/utils/creation-form";
 import type { LiquityV2CampaignPayloadPart } from "@/src/types/campaign/liquity-v2-campaign";
 import { useFormSteps } from "@/src/context/form-steps";
 import { FormStepId } from "@/src/types/form";

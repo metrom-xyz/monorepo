@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import {
     distributablesCompleted,
     distributablesEqual,
+    fixedDistributionsEqual,
     getCampaignFormApr,
     restrictionsEqual,
     weightingEqual,
@@ -45,6 +46,7 @@ export function AmmPoolLiquidityRewardsStep({
     const [rewardsPayload, setRewardsPayload] = useState({
         distributables: payload.distributables,
         weighting: payload.weighting,
+        fixedDistribution: payload.fixedDistribution,
         restrictions: {
             type: RestrictionType.Blacklist,
             list: [] as Address[],
@@ -67,6 +69,7 @@ export function AmmPoolLiquidityRewardsStep({
         return (
             !distributablesEqual(payload, rewardsPayload) ||
             !weightingEqual(payload, rewardsPayload) ||
+            !fixedDistributionsEqual(payload, rewardsPayload) ||
             !restrictionsEqual(payload, rewardsPayload)
         );
     }, [payload, rewardsPayload]);
@@ -112,6 +115,7 @@ export function AmmPoolLiquidityRewardsStep({
             chainId={chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
+            kpiDistribution={payload.kpiDistribution}
             payload={rewardsPayload}
             apr={apr}
             applyDisabled={applyDisabled}
