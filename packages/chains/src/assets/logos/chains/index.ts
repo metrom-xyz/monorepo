@@ -10,6 +10,7 @@ export * from "./linea";
 export * from "./lens";
 export * from "./lens-dark";
 export * from "./mantle";
+export * from "./megaeth";
 export * from "./mode";
 export * from "./plasma";
 export * from "./saga";
