@@ -124,7 +124,7 @@ export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
             onApply={onApply}
             onChange={handlePayloadOnChange}
             targetSection={
-                <div className={styles.target}>
+                <div className={styles.basics}>
                     <FormStepSection title={t("defineTarget")}>
                         <div className={styles.target}>
                             <ChainSelect
