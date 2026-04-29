@@ -1,5 +1,4 @@
 import {
-    type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
     type CampaignPreviewFixedDistribution,
     type CampaignPreviewKpiDistribution,
@@ -118,7 +117,7 @@ export function AaveV3BridgeAndSupplyForm({
     const { id: chainId } = useChainWithType();
 
     const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
+    const [errors, setErrors] = useState({});
 
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
@@ -154,12 +153,10 @@ export function AaveV3BridgeAndSupplyForm({
         [],
     );
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handlePayloadOnError = useCallback((errors: any) => {
+        setErrors((state) => ({ ...state, ...errors }));
+    }, []);
 
     function handlePreviewOnClick() {
         onPreviewClick(previewPayload);
