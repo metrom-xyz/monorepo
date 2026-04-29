@@ -7,7 +7,7 @@ import type {
 } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { PoolRangePicker } from "../../inputs/pool-range-picker";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
-import { tickToScaledPrice } from "@metrom-xyz/sdk";
+import { DistributablesType, tickToScaledPrice } from "@metrom-xyz/sdk";
 import { FormStepSection } from "../../form-step-section";
 import { Button, Switch, SwitchOption, Typography } from "@metrom-xyz/ui";
 import { FormStep } from "../../form-step";
@@ -211,6 +211,8 @@ export function CampaignPoolRangeStep({
         onApply(rangePayload, FormStepId.PoolRange);
         setOpen(false);
     }, [rangePayload, onApply]);
+
+    if (payload.distributables?.type !== DistributablesType.Tokens) return null;
 
     return (
         <FormStep

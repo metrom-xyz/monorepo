@@ -8,15 +8,18 @@ import { useAccount } from "@/src/hooks/useAccount";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
 import { ListFooter } from "./list-footer";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
 interface RewardsPickerTokensSelectProps {
+    label?: string;
     chainId?: number;
     tokens?: WhitelistedErc20Token[];
     unavailables?: WhitelistedErc20TokenAmount[];
     value?: SelectOption<string, RewardsPickerSelectOptionData>;
     loading?: boolean;
+    className?: string;
     onChange: (
         value: SelectOption<string, RewardsPickerSelectOptionData>,
     ) => void;
@@ -83,11 +86,13 @@ const selectedPrefix = (
 };
 
 export function RewardsPickerTokensSelect({
+    label,
     chainId,
     tokens,
     unavailables,
     value,
     loading,
+    className,
     onChange,
 }: RewardsPickerTokensSelectProps) {
     const t = useTranslations("newCampaign.inputs.rewardsPicker");
@@ -127,7 +132,7 @@ export function RewardsPickerTokensSelect({
 
     return (
         <Select
-            label={t("label")}
+            label={label || t("label")}
             size="lg"
             loading={loading || loadingBalances}
             disabled={!tokens}
@@ -161,7 +166,7 @@ export function RewardsPickerTokensSelect({
                 </div>
             }
             listFooter={<ListFooter />}
-            className={styles.root}
+            className={classNames(styles.root, className)}
         />
     );
 }

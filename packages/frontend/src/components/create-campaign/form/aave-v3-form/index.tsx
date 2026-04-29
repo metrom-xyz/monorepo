@@ -148,10 +148,12 @@ export function AaveV3Form({
         () => [
             FormStepId.Basics,
             FormStepId.Rewards,
-            FormStepId.Kpi,
+            ...(distributablesType === DistributablesType.Tokens
+                ? [FormStepId.Kpi]
+                : []),
             FormStepId.Launch,
         ],
-        [],
+        [distributablesType],
     );
 
     const handleOnApply = useCallback(

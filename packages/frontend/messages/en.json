@@ -207,6 +207,7 @@
             "duration": "Duration",
             "apr": "APR: {apr}",
             "dailyAndTot": "Daily {dailyUsd} | Tot. {totalUsd}",
+            "points": "{pointsAmount} points",
             "rewardRatio": "Reward ratio",
             "fees": "Fees",
             "addressRestrictions": "Address restrictions",
@@ -370,13 +371,13 @@
                     },
                     "points": {
                         "amount": "Points amount",
-                        "pickFeeToken": "Pick fee token",
+                        "feeToken": "Fee token",
                         "select": "Select",
-                        "usdCost": "{usd} total USD cost",
+                        "usdCost": "<bold>{usd}</bold> total USD cost",
                         "apply": "Apply",
                         "errors": {
                             "costChanged": "Cost changed, apply to confirm",
-                            "wrongAmount": "Wrong points amount"
+                            "wrongAmount": "Points amount can't be 0"
                         },
                         "noFeeTokens": "Points campaign not supported"
                     }

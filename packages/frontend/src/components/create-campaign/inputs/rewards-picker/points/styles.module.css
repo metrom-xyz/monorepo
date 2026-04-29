@@ -1,0 +1,25 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-fit flex flex-col gap-2;
+}
+
+.header {
+    @apply flex items-center gap-2;
+}
+
+.errorText {
+    @apply text-error;
+}
+
+.inputs {
+    @apply flex gap-2;
+}
+
+.tokenSelect :global(.input .fieldset) {
+    @apply rounded-r-lg;
+}
+
+.button {
+    @apply h-11;
+}
