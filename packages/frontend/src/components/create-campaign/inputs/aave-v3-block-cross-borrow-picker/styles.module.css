@@ -4,6 +4,10 @@
     @apply flex gap-2 w-full;
 }
 
+.skeletonChip :global(.skeleton) {
+    @apply rounded-[6.25rem];
+}
+
 .collateral {
     @apply flex items-center gap-1;
 }
