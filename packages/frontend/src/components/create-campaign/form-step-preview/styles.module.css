@@ -1,0 +1,37 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex flex-col gap-2;
+}
+
+.top {
+    @apply flex items-center gap-2;
+}
+
+.iconWrapper {
+    @apply flex items-center justify-center min-w-4 min-h-4;
+}
+
+.bottom {
+    @apply flex gap-2;
+}
+
+.dash {
+    @apply mx-2 w-px border border-dashed border-gray-400 dark:border-neutral-600;
+}
+
+.greenDot {
+    @apply size-1.5 rounded-full bg-brand-green-dark dark:bg-brand-green;
+}
+
+.errorIcon {
+    @apply text-error size-4;
+}
+
+.checkIcon {
+    @apply text-brand-green-dark dark:text-brand-green;
+}
+
+.content {
+    @apply w-full flex flex-col gap-3;
+}

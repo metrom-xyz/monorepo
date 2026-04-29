@@ -1,0 +1,29 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-fit flex flex-wrap gap-2;
+}
+
+.root.disabled {
+    @apply pointer-events-none;
+}
+
+.inputs {
+    @apply flex;
+}
+
+.input {
+    @apply mr-2;
+}
+
+.input :global(.fieldset) {
+    @apply rounded-l-none;
+}
+
+.input :global(.adornment) {
+    @apply px-1 py-1;
+}
+
+.button {
+    @apply h-9 rounded-md;
+}

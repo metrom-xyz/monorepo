@@ -1,0 +1,106 @@
+import { useTranslations } from "next-intl";
+import { FormStepPreview } from "../../form-step-preview";
+import { Duration } from "../../previews/duration";
+import {
+    getAmmPoolLiquidityTargetValue,
+    type AmmPoolLiquidityCampaignPayload,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import { AmmLiquidityPoolTarget } from "../../previews/amm-liquidity-pool-target";
+import type { FormSteps } from "@/src/context/form-steps";
+import {
+    allFieldsFilled,
+    distributablesCompleted,
+    getCampaignFormApr,
+    rangeSpecificationCompleted,
+} from "@/src/utils/form";
+import { Rewards } from "../../previews/rewards";
+import { PoolRange } from "../../previews/pool-range";
+import { Typography } from "@metrom-xyz/ui";
+import { getCampaignTargetValueName } from "@/src/utils/campaign";
+import { formatUsdAmount } from "@/src/utils/format";
+import { AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS } from "../amm-pool-liquidity-form/amm-pool-liquidity-basics-step";
+import { Kpi } from "../../previews/kpi";
+
+import styles from "./styles.module.css";
+
+interface AmmLiquidityPoolFormPreviewProps {
+    payload: AmmPoolLiquidityCampaignPayload;
+    errors: FormSteps<string>;
+}
+
+export function AmmLiquidityPoolFormPreview({
+    payload,
+    errors,
+}: AmmLiquidityPoolFormPreviewProps) {
+    const globalT = useTranslations();
+    const t = useTranslations("newCampaign.formPreview");
+
+    const completed =
+        !errors.basics &&
+        allFieldsFilled(payload, AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS);
+
+    const rewardsCompleted = distributablesCompleted(payload);
+    const poolRangeCompleted = rangeSpecificationCompleted(payload);
+    const apr = getCampaignFormApr(
+        payload,
+        getAmmPoolLiquidityTargetValue(payload),
+    );
+    const kpiSetup = payload?.kpiDistribution;
+
+    return (
+        <>
+            <FormStepPreview
+                title={
+                    <div className={styles.basicsHeader}>
+                        <Typography size="xs" weight="semibold" uppercase>
+                            {t("campaignBasics")}
+                        </Typography>
+                        {payload.kind && payload.pool && (
+                            <div className={styles.targetUsdChip}>
+                                <Typography size="xs" weight="medium" uppercase>
+                                    {getCampaignTargetValueName(
+                                        globalT,
+                                        payload.kind,
+                                    )}
+                                    :{" "}
+                                    {formatUsdAmount({
+                                        amount: payload.pool.usdTvl,
+                                    })}
+                                </Typography>
+                            </div>
+                        )}
+                    </div>
+                }
+                completed={completed}
+                error={!!errors.basics}
+            >
+                <AmmLiquidityPoolTarget payload={payload} />
+                <Duration
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                />
+            </FormStepPreview>
+            {rewardsCompleted && (
+                <Rewards
+                    chainId={payload.chainId}
+                    apr={apr}
+                    completed={rewardsCompleted}
+                    startDate={payload.startDate}
+                    endDate={payload.endDate}
+                    distributables={payload.distributables}
+                    pool={payload.pool}
+                    fixedDistribution={payload.fixedDistribution}
+                    weighting={payload.weighting}
+                    restrictions={payload.restrictions}
+                />
+            )}
+            {poolRangeCompleted && (
+                <PoolRange
+                    pool={payload.pool}
+                    priceRangeSpecification={payload.priceRangeSpecification}
+                />
+            )}
+            {kpiSetup && <Kpi kpiDistribution={payload.kpiDistribution} />}
+        </>
+    );
+}

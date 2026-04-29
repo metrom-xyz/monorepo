@@ -1,0 +1,79 @@
+@reference "../../../../app.css";
+
+.header {
+    @apply flex items-center gap-3;
+}
+
+.aprChip {
+    @apply w-fit px-2 py-1 rounded-lg bg-gray-300 dark:bg-neutral-600 transition-opacity duration-200 ease-in-out;
+}
+
+.aprChip.noApr {
+    @apply opacity-50;
+}
+
+.loadingApr {
+    @apply w-16;
+}
+
+.distributables,
+.weighting,
+.restrictions {
+    @apply flex flex-col gap-1;
+}
+
+.tokens {
+    @apply flex flex-col gap-1.5;
+}
+
+.token {
+    @apply flex items-center gap-3;
+}
+
+.tokenName {
+    @apply flex items-center gap-2;
+}
+
+.amount {
+    @apply flex items-center gap-1;
+}
+
+.weights {
+    @apply flex items-center gap-2;
+}
+
+.weight {
+    @apply flex items-center gap-1;
+}
+
+.restrictionsHeader {
+    @apply w-full flex items-center justify-between;
+}
+
+.restrictionsTitle {
+    @apply flex items-center gap-1;
+}
+
+.showText {
+    @apply underline cursor-pointer;
+}
+
+.restrictedAddresses {
+    @apply max-h-40 overflow-y-auto flex flex-col gap-0.5;
+}
+
+.restrictedAddress {
+    @apply flex items-center gap-1;
+}
+
+.avatarBorder {
+    @apply rounded-sm border-2;
+}
+
+.avatarBorder.blacklist {
+    @apply border-error;
+}
+
+.avatarBorder.whitelist {
+    @apply border-brand-green-dark dark:border-brand-green;
+}

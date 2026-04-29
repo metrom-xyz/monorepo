@@ -1,0 +1,115 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col gap-4;
+}
+
+.inputsWrapper {
+    @apply flex flex-col gap-1 items-end;
+}
+
+.importCsvInput.desktop {
+    @apply hidden sm:flex;
+}
+
+.importCsvInput:not(.desktop) {
+    @apply flex sm:hidden;
+}
+
+.switchAndInput {
+    @apply w-full flex flex-col sm:flex-row;
+}
+
+.switchAndCsvImport {
+    @apply flex justify-between;
+}
+
+.switch {
+    @apply h-11
+        p-0
+        justify-start
+        rounded-r-none
+        rounded-bl-none
+        sm:rounded-bl-lg
+        sm:min-w-56
+        rounded-tr-lg
+        sm:rounded-tr-none
+        border
+        border-b-0
+        sm:border-b
+        bg-transparent
+        border-gray-300
+        dark:border-neutral-700;
+}
+
+.switchOption {
+    @apply w-20 sm:w-full h-11 flex;
+}
+
+.switchOption :global(.optionWrapper) {
+    @apply w-20 sm:w-full;
+}
+
+.switchOption :global(.option) {
+    @apply w-full flex items-center justify-center gap-2;
+}
+
+.switchOption:first-child :global(.option) {
+    @apply border-r border-gray-300 dark:border-neutral-700;
+}
+
+.switchOption:first-child :global(.option) {
+    @apply rounded-bl-none rounded-r-none sm:rounded-bl-lg;
+}
+
+.switchOption:last-child :global(.option) {
+    @apply rounded-tr-lg rounded-br-none rounded-l-none sm:rounded-r-none;
+}
+
+.dot {
+    @apply size-2.5 rounded-full;
+}
+
+.dot.green {
+    @apply bg-brand-green-dark dark:bg-brand-green;
+}
+
+.dot.red {
+    @apply bg-error;
+}
+
+.input {
+    @apply w-full;
+}
+
+.input :global(.fieldset) {
+    @apply rounded-l-none;
+}
+
+.input :global(.adornment) {
+    @apply px-1 py-1;
+}
+
+.addButton {
+    @apply h-9;
+}
+
+.list {
+    @apply max-h-96 overflow-x-auto flex flex-wrap gap-1;
+}
+
+.removeButton {
+    @apply h-8 cursor-pointer hover:bg-[#DC26261F];
+}
+
+.removeButton > * {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.removeButton:hover > * {
+    @apply text-error;
+}
+
+.popover {
+    @apply p-1.5;
+}

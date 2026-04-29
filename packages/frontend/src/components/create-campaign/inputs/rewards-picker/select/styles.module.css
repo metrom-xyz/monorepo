@@ -1,0 +1,25 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-fit max-w-32;
+}
+
+.root :global(.input .fieldset) {
+    @apply rounded-r-none;
+}
+
+.header {
+    @apply flex justify-between items-center px-3 pt-3;
+}
+
+.option {
+    @apply w-full flex justify-between items-center;
+}
+
+.name {
+    @apply w-full flex items-center gap-1.5;
+}
+
+.balance {
+    @apply flex flex-col items-end gap-1;
+}

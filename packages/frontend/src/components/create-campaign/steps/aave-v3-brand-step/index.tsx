@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
-import {
-    type AaveV3CampaignPayload,
-    type AaveV3CampaignPayloadPart,
-} from "@/src/types/campaign";
+import type {
+    AaveV3CampaignPayload,
+    AaveV3CampaignPayloadPart,
+} from "@/src/types/campaign/aave-v3-campaign";
 import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
@@ -27,7 +26,7 @@ export function AaveV3BrandStep({
     brand,
     onBrandChange,
 }: AaveV3StepProps) {
-    const t = useTranslations("newCampaign.form.aaveV3.brand");
+    // const t = useTranslations("newCampaign.form.aaveV3.brand");
     const [open, setOpen] = useState(true);
 
     const { id: chainId, type: chainType } = useChainWithType();
@@ -79,7 +78,7 @@ export function AaveV3BrandStep({
             completed={!!selected}
             onPreviewClick={handleStepOnClick}
         >
-            <StepPreview label={t("title")}>
+            <StepPreview label={""}>
                 {!!selected && (
                     <div className={styles.preview}>
                         <ProtocolLogo protocol={selected} />

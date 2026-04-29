@@ -17,7 +17,7 @@ import { KpiAprSummary } from "../../../../kpi-apr-summary";
 import type {
     CampaignItem,
     DistributablesNamedCampaign,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useWindowSize } from "react-use";
 
 import styles from "./styles.module.css";

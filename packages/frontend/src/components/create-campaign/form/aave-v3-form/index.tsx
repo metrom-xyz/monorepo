@@ -1,43 +1,37 @@
 import {
-    type CampaignPayloadErrors,
-    type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-    type AaveV3CampaignPayload,
-    AaveV3CampaignPreviewPayload,
-    type AaveV3CampaignPayloadPart,
-    type CampaignPreviewKpiDistribution,
-    type CampaignPreviewFixedDistribution,
-} from "@/src/types/campaign";
-import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
-import {
     CampaignKind,
     DistributablesType,
     SupportedAaveV3,
 } from "@metrom-xyz/sdk";
-import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
-import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
-import { Button } from "@metrom-xyz/ui";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
-import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
-import { KpiStep } from "../../steps/kpi-step";
 import {
-    CampaignKindStep,
-    type CampaignKindOption,
-} from "../../steps/campaign-kind-step";
-import type { TranslationsKeys } from "@/src/types/utils";
+    AaveV3CampaignPreviewPayload,
+    type AaveV3CampaignPayload,
+    type AaveV3CampaignPayloadPart,
+} from "@/src/types/campaign/aave-v3-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 import {
+    AaveV3BasicsStep,
+    AAVE_V3_REQUIRED_PAYLOAD_KEYS,
+} from "./aave-v3-basics-step";
+import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
+import { useCallback, useMemo, useState } from "react";
+import { useChainWithType } from "@/src/hooks/useChainWithType";
+import { AaveV3RewardsStep } from "./aave-v3-rewards-step";
+import { useFormSteps } from "@/src/context/form-steps";
+import {
+    allFieldsFilled,
+    distributablesCompleted,
     validateDistributables,
     validateDistributions,
-} from "@/src/utils/creation-form";
-import { AaveV3BlacklistedCrossBorrowCollateralsStep } from "../../steps/aave-v3-blacklisted-cross-borrow-collaterals";
-import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
+} from "@/src/utils/form";
+import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
+import { FormStepId } from "@/src/types/form";
+import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
+import type {
+    CampaignPreviewFixedDistribution,
+    CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
 import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 
 import styles from "./styles.module.css";
@@ -85,9 +79,10 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
-            distributables as CampaignPreviewDistributables,
+            distributables,
             kpiDistribution as CampaignPreviewKpiDistribution,
             fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
@@ -102,9 +97,10 @@ function validatePayload(
         usdNetSupply,
         undefined,
         blacklistedCollaterals,
+        chainId,
         startDate,
         endDate,
-        distributables as CampaignPreviewDistributables,
+        distributables,
         kpiDistribution as CampaignPreviewKpiDistribution,
         fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
@@ -112,47 +108,25 @@ function validatePayload(
 }
 
 interface AaveV3FormProps {
-    unsupportedChain: boolean;
-    onPreviewClick: (
-        payload:
-            | AaveV3CampaignPreviewPayload
-            | EmptyTargetCampaignPreviewPayload
-            | null,
-    ) => void;
+    distributablesType: DistributablesType;
+    onStepComplete: (payload: AaveV3CampaignPayloadPart) => void;
+    onLaunch: () => void;
 }
 
-export const AAVE_V3_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
-    TranslationsKeys<"newCampaign">
->[] = [
-    {
-        label: "form.aaveV3.actions.borrow",
-        value: CampaignKind.AaveV3Borrow,
-    },
-    {
-        label: "form.aaveV3.actions.supply",
-        value: CampaignKind.AaveV3Supply,
-    },
-    {
-        label: "form.aaveV3.actions.netSupply",
-        value: CampaignKind.AaveV3NetSupply,
-    },
-] as const;
-
-const initialPayload: AaveV3CampaignPayload = {
-    distributables: { type: DistributablesType.Tokens },
-};
-
 export function AaveV3Form({
-    unsupportedChain,
-    onPreviewClick,
+    distributablesType,
+    onStepComplete,
+    onLaunch,
 }: AaveV3FormProps) {
-    const t = useTranslations("newCampaign");
+    const [payload, setPayload] = useState<AaveV3CampaignPayload>({
+        distributables: { type: distributablesType },
+    });
+
+    const { errors, unsaved, activeStepId, updateActiveStepId } =
+        useFormSteps();
     const { id: chainId, type: chainType } = useChainWithType();
 
-    const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
-
-    const { loading: loadingUsdNetSupply, usdNetSupply } =
+    const { /*loading: loadingUsdNetSupply,*/ usdNetSupply } =
         useAaveV3CollateralUsdNetSupply({
             chainId,
             chainType,
@@ -164,57 +138,45 @@ export function AaveV3Form({
             enabled: payload.kind === CampaignKind.AaveV3NetSupply,
         });
 
-    const previewPayload = useMemo(() => {
-        if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload, usdNetSupply);
-    }, [chainId, usdNetSupply, payload, errors]);
+    const validatedPayload = useMemo(() => {
+        if (Object.values(errors).some((error) => !!error) || !payload.chainId)
+            return null;
+        return validatePayload(payload.chainId, payload, usdNetSupply);
+    }, [payload, errors, usdNetSupply]);
 
-    const noDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
+    const steps: FormStepId[] = useMemo(
+        () => [
+            FormStepId.Basics,
+            FormStepId.Rewards,
+            ...(distributablesType === DistributablesType.Tokens
+                ? [FormStepId.Kpi]
+                : []),
+            FormStepId.Launch,
+        ],
+        [distributablesType],
+    );
 
-        const { type } = payload.distributables;
-
-        if (type === DistributablesType.FixedPoints)
-            return (
-                !payload.distributables.fee || !payload.distributables.points
-            );
-        if (type === DistributablesType.Tokens)
-            return (
-                !payload.distributables.tokens ||
-                payload.distributables.tokens.length === 0
-            );
-
-        return true;
-    }, [payload.distributables]);
-
-    const kindOptions = AAVE_V3_CAMPAIGN_KIND_OPTIONS.map((option) => ({
-        ...option,
-        label: t(option.label),
-    }));
-
-    useEffect(() => {
-        setPayload(initialPayload);
-    }, [chainId]);
-
-    const handlePayloadOnChange = useCallback(
-        (part: AaveV3CampaignPayloadPart) => {
+    const handleOnApply = useCallback(
+        (part: AaveV3CampaignPayloadPart, stepId: FormStepId) => {
             setPayload((prev) => ({ ...prev, ...part }));
+            onStepComplete({ ...payload, ...part });
+
+            const currentIndex = steps.indexOf(activeStepId);
+            const appliedStepIndex = steps.indexOf(stepId);
+
+            const nextStepIndex =
+                currentIndex > appliedStepIndex
+                    ? currentIndex
+                    : appliedStepIndex + 1;
+
+            const next = steps[nextStepIndex];
+            if (!next) return;
+            updateActiveStepId(next);
         },
-        [],
+        [payload, activeStepId, steps, onStepComplete, updateActiveStepId],
     );
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
-
-    function handlePreviewOnClick() {
-        onPreviewClick(previewPayload);
-    }
-
-    const usdTvl =
+    const targetUsdValue =
         payload.kind === CampaignKind.AaveV3NetSupply
             ? usdNetSupply
             : getAaveV3UsdTarget({
@@ -222,109 +184,39 @@ export function AaveV3Form({
                   kind: payload.kind,
               });
 
+    const unsavedSteps = Object.values(unsaved).some((item) => !!item);
+
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <AaveV3BrandStep
-                    disabled={unsupportedChain}
-                    brand={payload.brand}
-                    onBrandChange={handlePayloadOnChange}
+                <AaveV3BasicsStep payload={payload} onApply={handleOnApply} />
+                <AaveV3RewardsStep
+                    payload={payload}
+                    disabled={
+                        !!errors.basics ||
+                        !allFieldsFilled(payload, AAVE_V3_REQUIRED_PAYLOAD_KEYS)
+                    }
+                    onApply={handleOnApply}
                 />
-                <AaveV3MarketStep
-                    brand={payload.brand}
-                    onMarketChange={handlePayloadOnChange}
+                <CampaignKpiStep
+                    payload={payload}
+                    targetUsdValue={targetUsdValue}
+                    disabled={
+                        !!errors.rewards || !distributablesCompleted(payload)
+                    }
+                    onApply={handleOnApply}
                 />
-                <CampaignKindStep
-                    disabled={!payload.brand || unsupportedChain}
-                    kinds={kindOptions}
-                    kind={payload.kind}
-                    onKindChange={handlePayloadOnChange}
-                />
-                <AaveV3CollateralStep
-                    disabled={!payload.kind || unsupportedChain}
-                    brand={payload.brand}
-                    kind={payload.kind}
-                    market={payload.market}
-                    collateral={payload.collateral}
-                    onCollateralChange={handlePayloadOnChange}
-                />
-                {payload.kind === CampaignKind.AaveV3NetSupply && (
-                    <AaveV3BlacklistedCrossBorrowCollateralsStep
-                        disabled={
-                            !payload.kind ||
-                            !payload.collateral ||
-                            unsupportedChain
-                        }
-                        brand={payload.brand}
-                        market={payload.market}
-                        collateral={payload.collateral}
-                        blacklistedCollaterals={payload.blacklistedCollaterals}
-                        onBlacklistedCrossBorrowCollateralsChange={
-                            handlePayloadOnChange
-                        }
-                        onError={handlePayloadOnError}
-                    />
-                )}
-                <StartDateStep
-                    disabled={!payload.collateral || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <RewardsStep
-                    disabled={!payload.endDate || unsupportedChain}
-                    distributables={payload.distributables}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onDistributablesChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                {payload.kind && (
-                    <KpiStep
-                        disabled={noDistributables || unsupportedChain}
-                        kind={payload.kind}
-                        loadingUsdTvl={loadingUsdNetSupply}
-                        usdTvl={usdTvl}
-                        distributables={
-                            payload.distributables?.type ===
-                            DistributablesType.Tokens
-                                ? payload.distributables
-                                : undefined
-                        }
-                        startDate={payload.startDate}
-                        endDate={payload.endDate}
-                        kpiDistribution={payload.kpiDistribution}
-                        fixedDistribution={payload.fixedDistribution}
-                        onKpiChange={handlePayloadOnChange}
-                        onError={handlePayloadOnError}
-                    />
-                )}
-                <RestrictionsStep
-                    disabled={noDistributables || unsupportedChain}
-                    restrictions={payload.restrictions}
-                    onRestrictionsChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                <CampaignApproveLaunchStep
+                    payload={validatedPayload}
+                    disabled={
+                        unsavedSteps ||
+                        !validatedPayload ||
+                        !!Object.values(errors).some((error) => !!error) ||
+                        !distributablesCompleted(payload)
+                    }
+                    onLaunch={onLaunch}
                 />
             </div>
-            <Button
-                icon={ArrowRightIcon}
-                iconPlacement="right"
-                disabled={!previewPayload}
-                onClick={handlePreviewOnClick}
-                className={{ root: styles.button }}
-            >
-                {t("submit.preview")}
-            </Button>
         </div>
     );
 }

@@ -5,6 +5,8 @@ import {
 } from "@metrom-xyz/ui";
 import type { ReactNode } from "react";
 import classNames from "classnames";
+import { useTranslations } from "next-intl";
+import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
 import styles from "./styles.module.css";
 
@@ -16,7 +18,6 @@ interface InfoMessageProps {
     weight?: TypographyProps["weight"];
     variant?: TypographyProps["variant"];
     spaced?: boolean;
-    className?: string;
 }
 
 export function InfoMessage({
@@ -27,32 +28,33 @@ export function InfoMessage({
     weight = "medium",
     variant = "tertiary",
     spaced,
-    className,
 }: InfoMessageProps) {
+    const t = useTranslations();
+
     return (
-        <div className={className}>
+        <div className={styles.root}>
             <Typography
                 weight={weight}
                 variant={variant}
                 size={size}
-                className={classNames({ [styles.text]: spaced })}
+                className={classNames({ [styles.spaced]: spaced })}
             >
                 {text}
-                {link && linkText && (
-                    <>
-                        {" "}
-                        <a
-                            href={link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.link}
-                        >
-                            {linkText}
-                        </a>
-                        .
-                    </>
-                )}
             </Typography>
+            {link && (
+                <>
+                    {" "}
+                    <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.link}
+                    >
+                        {linkText || t("readMore")}
+                        <ArrowRightIcon className={styles.arrowIcon} />
+                    </a>
+                </>
+            )}
         </div>
     );
 }

@@ -23,8 +23,10 @@ export function useAccountName(params: UseEnsNameParameters) {
                 });
             } catch (error) {
                 console.error(`Could not get account name`, error);
+                throw error;
             }
         },
+        retry: false,
     });
 
     return data;

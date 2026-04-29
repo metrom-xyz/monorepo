@@ -9,6 +9,7 @@ import React, {
     type ChangeEvent,
     useEffect,
     useMemo,
+    type ReactNode,
 } from "react";
 import type { BaseInputProps, BaseInputSize } from "../commons/input";
 import { Popover } from "../popover";
@@ -19,15 +20,18 @@ import { Typography } from "../typography";
 import classNames from "classnames";
 import { ChevronUp } from "../../assets/chevron-up";
 import { ChevronDown } from "../../assets/chevron-down";
+import { matchesSearch } from "../../utils/search";
+import { Skeleton } from "../skeleton";
 
 import styles from "./styles.module.css";
 
-export type ValueType = string | number | null;
+export type ValueType = string | number | null | undefined;
 
-export interface SelectOption<V extends ValueType> {
+export interface SelectOption<V extends ValueType, D = unknown> {
     label: string;
     color?: string;
     value: V;
+    data?: D;
     disabled?: boolean;
 }
 
@@ -36,9 +40,11 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
     options: O[];
     value: V;
     search?: boolean;
-    onChange: (option: O) => void;
-    renderOption?: (option: O) => ReactElement;
     loading?: boolean;
+    noContained?: boolean;
+    listHeader?: ReactNode;
+    listFooter?: ReactNode;
+    loadingItemCounts?: number;
     messages: {
         noResults: string;
     };
@@ -47,12 +53,27 @@ export type SelectProps<V extends ValueType, O extends SelectOption<V>> = {
         option?: string;
     };
     className?: string;
+    onChange: (option: O) => void;
+    renderOption?: (option: O) => ReactElement;
+    renderLoadingOption?: () => ReactElement;
+    optionDisabled?: (option: O) => boolean;
+    renderSelectedPrefix?: (selected: O | null | undefined) => ReactElement;
 } & Omit<BaseInputProps<unknown>, "onChange" | "value" | "id">;
 
-type ItemData<V extends ValueType, O extends SelectOption<V>> = Pick<
+type ItemData<
+    V extends ValueType,
+    O extends SelectOption<V, D>,
+    D = unknown,
+> = Pick<
     SelectProps<V, O>,
-    "options" | "value" | "onChange" | "renderOption"
+    | "options"
+    | "value"
+    | "onChange"
+    | "renderOption"
+    | "renderLoadingOption"
+    | "optionDisabled"
 > & {
+    data?: D;
     size?: BaseInputSize;
     dataTestIds?: {
         option?: string;
@@ -69,20 +90,32 @@ export const LIST_ITEM_HEIGHT: Record<BaseInputSize, number> = {
 
 export const MAX_VISIBLE_ITEMS = 6;
 
-function Component<V extends ValueType, O extends SelectOption<V>>(
+function Component<
+    V extends ValueType,
+    O extends SelectOption<V, D>,
+    D = unknown,
+>(
     {
         id,
         options,
         value,
         size = "base",
         search,
-        onChange,
         className,
-        renderOption,
         disabled,
         loading,
+        noContained,
+        listHeader,
+        listFooter,
+        loadingItemCounts = 6,
         messages,
         dataTestIds,
+        noPrefixPadding,
+        onChange,
+        renderOption,
+        renderLoadingOption,
+        optionDisabled,
+        renderSelectedPrefix,
         ...rest
     }: SelectProps<V, O>,
     ref: ForwardedRef<HTMLInputElement>,
@@ -99,7 +132,6 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     const resolvedId = id || generatedId;
 
     useClickAway(dropdownRef, () => {
-        setOpen(false);
         setQuery("");
     });
 
@@ -108,11 +140,13 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     }, [debouncedQuery, options, value]);
 
     useEffect(() => {
+        const searchParts = debouncedQuery.toLowerCase().split(" ");
+
         setFilteredOptions(
-            options.filter((option) =>
-                option.label
-                    .toLowerCase()
-                    .includes(debouncedQuery.toLowerCase()),
+            options.filter(
+                (option) =>
+                    matchesSearch(option.label, searchParts) ||
+                    matchesSearch(option.value?.toString() || "", searchParts),
             ),
         );
     }, [debouncedQuery, options]);
@@ -126,9 +160,9 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     );
 
     const handleClick = useCallback(() => {
-        if (!open && (disabled || loading)) return;
-        setOpen(!open);
-    }, [disabled, loading, open]);
+        if (disabled) return;
+        if (!open) setOpen(true);
+    }, [disabled, open]);
 
     const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
@@ -136,19 +170,25 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
 
     const handleInnerChange = useCallback(
         (item: O) => {
-            setOpen(false);
             onChange(item);
+            // Add small timeout before closing the popover to avoid floating label issue
+            setTimeout(() => {
+                setQuery("");
+                setOpen(false);
+            }, 10);
         },
         [onChange],
     );
 
     const rowProps = useMemo(() => {
-        const data: ItemData<V, O> = {
+        const data: ItemData<V, O, D> = {
             options: filteredOptions,
             value,
             size,
             onChange: handleInnerChange,
             renderOption,
+            renderLoadingOption,
+            optionDisabled,
             className,
             dataTestIds: {
                 option: dataTestIds?.option,
@@ -156,12 +196,13 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         };
         return data;
     }, [
-        className,
-        handleInnerChange,
-        filteredOptions,
-        renderOption,
         value,
+        className,
         dataTestIds,
+        filteredOptions,
+        handleInnerChange,
+        renderOption,
+        renderLoadingOption,
     ]);
 
     const listHeight = useMemo(() => {
@@ -170,7 +211,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     }, [filteredOptions.length, size]);
 
     return (
-        <div className={className} ref={dropdownRef}>
+        <div className={classNames("root", className)} ref={dropdownRef}>
             <TextInput
                 data-testid={dataTestIds?.textInput}
                 ref={(element) => {
@@ -181,8 +222,17 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                     setAnchorEl(element);
                 }}
                 id={resolvedId}
+                focused={open}
                 readOnly={!search}
                 icon={open ? ChevronUp : ChevronDown}
+                prefixElement={
+                    open && search
+                        ? null
+                        : renderSelectedPrefix
+                          ? renderSelectedPrefix(selectedOption)
+                          : null
+                }
+                noPrefixPadding={noPrefixPadding}
                 value={
                     open && search
                         ? query
@@ -191,23 +241,33 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                           : ""
                 }
                 disabled={disabled}
-                loading={loading}
                 size={size}
                 {...rest}
-                className={styles.input}
                 onChange={handleChange}
                 onClick={handleClick}
+                className={classNames("input", styles.input)}
             />
             <Popover
                 anchor={anchorEl}
-                contained
+                contained={!noContained}
                 open={open}
                 margin={4}
                 onOpenChange={setOpen}
                 placement="bottom-start"
                 className={styles.dropdownRoot}
             >
-                {filteredOptions.length === 0 ? (
+                {listHeader}
+                {loading ? (
+                    Array.from({ length: loadingItemCounts }).map(
+                        (_, index) => (
+                            <SkeletonOptionRow
+                                key={index}
+                                {...rowProps}
+                                height={LIST_ITEM_HEIGHT[size]}
+                            />
+                        ),
+                    )
+                ) : filteredOptions.length === 0 ? (
                     <div
                         style={{
                             width: anchorEl?.parentElement?.clientWidth,
@@ -230,13 +290,14 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                             rowComponent={OptionRow}
                             style={{
                                 height: `${listHeight}px`,
-                                width:
-                                    anchorEl?.parentElement?.clientWidth ||
-                                    "auto",
+                                width: !noContained
+                                    ? anchorEl?.parentElement?.clientWidth
+                                    : "auto",
                             }}
                         />
                     </div>
                 )}
+                {listFooter}
             </Popover>
         </div>
     );
@@ -251,13 +312,16 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
     size = "base",
     onChange,
     renderOption,
+    optionDisabled,
     dataTestIds,
 }: RowComponentProps<ItemData<ValueType, O>>) {
     const item = options[index];
+    const disabled = !!optionDisabled && optionDisabled(item);
 
     const handleClick = useCallback(() => {
+        if (disabled) return;
         onChange(item);
-    }, [item, onChange]);
+    }, [disabled, item, onChange]);
 
     return (
         <div
@@ -267,15 +331,40 @@ function OptionRow<V extends ValueType, O extends SelectOption<V>>({
             style={style}
             onClick={handleClick}
             className={classNames(styles.option, {
+                [styles.disabled]: disabled,
                 [styles.pickedOption]: value === item.value,
                 [styles[size]]: true,
             })}
             {...ariaAttributes}
         >
             {renderOption ? (
-                <div>{renderOption(item)}</div>
+                renderOption(item)
             ) : (
                 <Typography size={size}>{item.label}</Typography>
+            )}
+        </div>
+    );
+}
+
+export function SkeletonOptionRow<
+    V extends ValueType,
+    O extends SelectOption<V>,
+>({
+    size = "base",
+    height,
+    renderLoadingOption,
+}: ItemData<ValueType, O> & { height: number }) {
+    return (
+        <div
+            style={{ height }}
+            className={classNames(styles.option, styles.loading, {
+                [styles[size]]: true,
+            })}
+        >
+            {renderLoadingOption ? (
+                renderLoadingOption()
+            ) : (
+                <Skeleton size={size} width={120} className={styles.skeleton} />
             )}
         </div>
     );

@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "storybook/preview-api";
 import { Select, type SelectOption } from "../components/select/index";
 import { Typography } from "../components/typography";
+import { Button } from "../components/button";
+import { Skeleton } from "../components/skeleton";
 
 const meta: Meta = {
     title: "Input/Select",
@@ -70,9 +72,85 @@ export const CustomOption: Story = {
     },
 };
 
+export const WithListHeader: Story = {
+    render: (args) => {
+        const [value, setValue] = useState<number>(0);
+
+        function handleSelectOnChange(option: SelectOption<number>) {
+            setValue(option.value);
+        }
+
+        return (
+            <Select
+                {...args}
+                options={args.options as SelectOption<number>[]}
+                listHeader={
+                    <div className="flex items-center justify-between p-3">
+                        <Typography>Custom header</Typography>
+                        <Button size="xs">Button</Button>
+                    </div>
+                }
+                value={value}
+                onChange={handleSelectOnChange}
+            />
+        );
+    },
+};
+
+export const WithListFooter: Story = {
+    render: (args) => {
+        const [value, setValue] = useState<number>(0);
+
+        function handleSelectOnChange(option: SelectOption<number>) {
+            setValue(option.value);
+        }
+
+        return (
+            <Select
+                {...args}
+                options={args.options as SelectOption<number>[]}
+                listFooter={
+                    <div className="flex items-center justify-between p-3">
+                        <Typography>Custom footer</Typography>
+                        <Button size="xs">Button</Button>
+                    </div>
+                }
+                value={value}
+                onChange={handleSelectOnChange}
+            />
+        );
+    },
+};
+
 export const Loading: Story = {
     args: {
         loading: true,
+    },
+};
+
+export const CustomLoadingOption: Story = {
+    render: (args) => {
+        const [value, setValue] = useState<number>(0);
+
+        function handleSelectOnChange(option: SelectOption<number>) {
+            setValue(option.value);
+        }
+
+        return (
+            <Select
+                {...args}
+                options={args.options as SelectOption<number>[]}
+                loading
+                renderLoadingOption={() => (
+                    <div className="w-full flex items-center gap-1">
+                        <Skeleton width={16} circular />
+                        <Skeleton size="sm" width={128} />
+                    </div>
+                )}
+                value={value}
+                onChange={handleSelectOnChange}
+            />
+        );
     },
 };
 

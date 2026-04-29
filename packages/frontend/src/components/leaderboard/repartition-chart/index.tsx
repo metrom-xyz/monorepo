@@ -4,7 +4,7 @@ import { Card, Typography } from "@metrom-xyz/ui";
 import { Pie, PieChart, Tooltip } from "recharts";
 import type { Address } from "viem";
 import { shuffle } from "@/src/utils/common";
-import type { Leaderboard, Rank } from "@/src/types/campaign";
+import type { Leaderboard, Rank } from "@/src/types/campaign/common";
 import classNames from "classnames";
 import { RankTooltip } from "./tooltip";
 import { EmptyState } from "../../empty-state";

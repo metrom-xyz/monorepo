@@ -100,8 +100,6 @@ export function Distributions({
             id: campaignItemId,
         });
 
-    console.log({ campaignItemDetails });
-
     useEffect(() => {
         if (distros.length === 0) return;
         setActiveIndex(0);
@@ -370,8 +368,8 @@ export function Distributions({
                             </InfoTooltip>
                         </div>
                         <TextInput
+                            label={t("filterAddress")}
                             icon={SearchIcon}
-                            placeholder={t("filterAddress")}
                             value={addressFilter}
                             disabled={distros.length === 0}
                             onChange={handleAddressFilterOnChange}

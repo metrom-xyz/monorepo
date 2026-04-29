@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply hidden sm:flex p-1.5 border-2;
+    @apply hidden sm:flex p-1.5 border-2 border-gray-300 dark:border-neutral-600;
 }
 
 .networksWrapper {

@@ -10,24 +10,31 @@ import {
     BaseCampaign as SdkBaseCampaign,
     CampaignDetails as SdkCampaignDetails,
     CampaignItem as SdkCampaignItem,
+    type AmmPool,
+    type AaveV3Collateral,
+    type LiquityV2Collateral,
+    type FungibleAssetInfo,
 } from "@metrom-xyz/sdk";
 import {
-    AmmPoolLiquidityCampaignPreviewPayload,
-    LiquityV2CampaignPreviewPayload,
-    EmptyTargetCampaignPreviewPayload,
-    type BaseCampaignPreviewPayload,
-    AaveV3CampaignPreviewPayload,
-    HoldFungibleAssetCampaignPreviewPayload,
     CampaignDetails,
+    type BaseCampaignPreviewPayload,
     type CampaignPreviewKpiDistribution,
-} from "../types/campaign";
+} from "../types/campaign/common";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
 import { SECONDS_IN_YEAR } from "../commons";
-import { type LiquityV2Protocol } from "@metrom-xyz/chains";
+import {
+    type AaveV3Protocol,
+    type LiquityV2Protocol,
+} from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
 import { getChainData, getCrossVmChainData } from "./chain";
 import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
+import { AmmPoolLiquidityCampaignPreviewPayload } from "../types/campaign/amm-pool-liquidity-campaign";
+import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-campaign";
+import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
+import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-target-campaign";
 
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
@@ -161,28 +168,119 @@ export function getCampaignTargetValueName(
     }
 }
 
+export function getAmmPoolLiquidityCampaignPreviewName(
+    t: TranslationsType<never>,
+    kind: CampaignKind,
+    pool: AmmPool,
+) {
+    const dex = pool.dex.name;
+    const poolName = pool.tokens.map((token) => token.symbol).join("/");
+
+    switch (kind) {
+        case CampaignKind.AmmPoolLiquidity: {
+            return t("campaignActions.lp", { dex, pool: poolName });
+        }
+        case CampaignKind.JumperWhitelistedAmmPoolLiquidity: {
+            return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
+                dex,
+                pool: poolName,
+            });
+        }
+        default: {
+            return "-";
+        }
+    }
+}
+
+export function getAaveV3CampaignPreviewName(
+    t: TranslationsType<never>,
+    kind: CampaignKind,
+    brand: AaveV3Protocol,
+    collateral: AaveV3Collateral,
+) {
+    const brandName = brand.name;
+    const token = collateral.symbol;
+
+    switch (kind) {
+        case CampaignKind.AaveV3Borrow: {
+            return t("campaignActions.aaveV3Borrow", {
+                brand: brandName,
+                token,
+            });
+        }
+        case CampaignKind.AaveV3Supply: {
+            return t("campaignActions.aaveV3Supply", {
+                brand: brandName,
+                token,
+            });
+        }
+        case CampaignKind.AaveV3NetSupply: {
+            return t("campaignActions.aaveV3NetSupply", {
+                brand: brandName,
+                token,
+            });
+        }
+        case CampaignKind.AaveV3BridgeAndSupply: {
+            return t("campaignActions.aaveV3BridgeAndSupply", {
+                brand: brandName,
+                token,
+            });
+        }
+        default: {
+            return "-";
+        }
+    }
+}
+
+export function getLiquityV2CampaignPreviewName(
+    t: TranslationsType<never>,
+    kind: CampaignKind,
+    brand: LiquityV2Protocol,
+    collateral: LiquityV2Collateral,
+) {
+    const brandName = brand.name;
+    const token = collateral.symbol;
+
+    switch (kind) {
+        case CampaignKind.LiquityV2Debt: {
+            return t("campaignActions.borrow", {
+                brand: brandName,
+                debtToken: brand.debtToken.symbol,
+                token,
+            });
+        }
+        case CampaignKind.LiquityV2StabilityPool: {
+            return t("campaignActions.depositStabilityPool", {
+                brand: brandName,
+                token,
+            });
+        }
+        default: {
+            return "-";
+        }
+    }
+}
+
+export function getHoldFungibleAssetCampaignPreviewName(
+    t: TranslationsType<never>,
+    asset: FungibleAssetInfo,
+) {
+    return t("campaignActions.holdFungibleAsset", {
+        name: asset.name,
+        symbol: asset.symbol,
+    });
+}
+
 export function getCampaignPreviewName(
     t: TranslationsType<never>,
     payload: BaseCampaignPreviewPayload,
 ): string {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
-        const dex = payload.pool.dex.name;
-        const pool = payload.pool.tokens.map((token) => token.symbol).join("/");
-
-        switch (payload.kind) {
-            case CampaignKind.AmmPoolLiquidity: {
-                return t("campaignActions.lp", { dex, pool });
-            }
-            case CampaignKind.JumperWhitelistedAmmPoolLiquidity: {
-                return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
-                    dex,
-                    pool,
-                });
-            }
-            default: {
-                return "-";
-            }
-        }
+        return getAmmPoolLiquidityCampaignPreviewName(
+            t,
+            payload.kind,
+            payload.pool,
+        );
     } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
         const targetProtocol = getChainData(
             payload.collateral.chainId,
@@ -213,29 +311,12 @@ export function getCampaignPreviewName(
             }
         }
     } else if (payload instanceof AaveV3CampaignPreviewPayload) {
-        const brand = payload.brand.name;
-        const token = payload.collateral.symbol;
-
-        switch (payload.kind) {
-            case CampaignKind.AaveV3Borrow: {
-                return t("campaignActions.aaveV3Borrow", { brand, token });
-            }
-            case CampaignKind.AaveV3Supply: {
-                return t("campaignActions.aaveV3Supply", { brand, token });
-            }
-            case CampaignKind.AaveV3NetSupply: {
-                return t("campaignActions.aaveV3NetSupply", { brand, token });
-            }
-            case CampaignKind.AaveV3BridgeAndSupply: {
-                return t("campaignActions.aaveV3BridgeAndSupply", {
-                    brand,
-                    token,
-                });
-            }
-            default: {
-                return "-";
-            }
-        }
+        return getAaveV3CampaignPreviewName(
+            t,
+            payload.kind,
+            payload.brand,
+            payload.collateral,
+        );
     } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
         return t("campaignActions.holdFungibleAsset", {
             name: payload.asset.name,

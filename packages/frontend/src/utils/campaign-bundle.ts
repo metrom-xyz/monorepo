@@ -7,20 +7,18 @@ import {
     U32,
     MoveVector,
 } from "@aptos-labs/ts-sdk";
-import {
-    AaveV3CampaignPreviewPayload,
-    AmmPoolLiquidityCampaignPreviewPayload,
-    EmptyTargetCampaignPreviewPayload,
-    HoldFungibleAssetCampaignPreviewPayload,
-    LiquityV2CampaignPreviewPayload,
-    type CampaignPreviewPayload,
-} from "../types/campaign";
+import { type CampaignPreviewPayload } from "../types/campaign/common";
 import {
     CampaignKind,
     SpecificationDistributionType,
     SupportedBridge,
     type Specification,
 } from "@metrom-xyz/sdk";
+import { AmmPoolLiquidityCampaignPreviewPayload } from "../types/campaign/amm-pool-liquidity-campaign";
+import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-target-campaign";
+import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
+import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -64,6 +62,11 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
                 payload.collateral.address,
                 blacklistedCollaterals,
             ],
+        );
+    } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
+        return encodeAbiParameters(
+            [{ name: "asset", type: "address" }],
+            [payload.asset.address],
         );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return "0x";
@@ -115,13 +118,6 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
         serializableParts.push(
             AccountAddress.fromString(payload.asset.address),
         );
-        serializableParts.push(
-            new MoveVector(
-                payload.stakingAssets.map(({ address }) =>
-                    AccountAddress.fromString(address),
-                ),
-            ),
-        );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return [];
     } else return null;
@@ -139,11 +135,27 @@ export function buildSpecificationBundle(
 ): Specification {
     const specification: Specification = {};
 
-    if (payload.kpiDistribution)
+    if (payload.kpiDistribution && payload.fixedDistribution) {
+        console.error(
+            "Both KPI distribution and fixed distribution are set in the payload",
+        );
+        throw new Error(
+            "Invalid campaign payload: both distribution types set",
+        );
+    }
+
+    if (payload.kpiDistribution) {
+        const minimumPayoutPercentage = payload.kpiDistribution
+            .minimumPayoutPercentage
+            ? payload.kpiDistribution.minimumPayoutPercentage / 100
+            : undefined;
+
         specification.distribution = {
             type: SpecificationDistributionType.Kpi,
             ...payload.kpiDistribution,
+            minimumPayoutPercentage,
         };
+    }
 
     if (payload.fixedDistribution)
         specification.distribution = {

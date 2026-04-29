@@ -1,0 +1,103 @@
+import { useTranslations } from "next-intl";
+import { Typography } from "@metrom-xyz/ui";
+import type { CampaignPayload } from "@/src/types/campaign/common";
+import { isAmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import { isAaveV3CampaignPayload } from "@/src/types/campaign/aave-v3-campaign";
+import { isLiquityV2CampaignPayload } from "@/src/types/campaign/liquity-v2-campaign";
+import { AmmLiquidityPoolFormPreview } from "./amm-liquidity-pool-form-preview";
+import { AaveV3FormPreview } from "./aave-v3-form-preview";
+import { DocumentTextIcon } from "@/src/assets/document-text-icon";
+import { useFormSteps } from "@/src/context/form-steps";
+import { LiquityV2FormPreview } from "./liquity-v2-form-preview";
+import { isHoldFungibleAssetCampaignPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
+import { HoldFungibleAssetFormPreview } from "./hold-fungible-asset-form-preview";
+
+import styles from "./styles.module.css";
+
+interface FormPreviewProps {
+    payload: CampaignPayload | null;
+}
+
+export function FormPreview({ payload }: FormPreviewProps) {
+    const t = useTranslations("newCampaign.formPreview");
+    const { errors } = useFormSteps();
+
+    const ammPoolLiquidityCampaignPayload =
+        payload && isAmmPoolLiquidityCampaignPayload(payload);
+    const aaveV3CampaignPayload = payload && isAaveV3CampaignPayload(payload);
+    const liquityV2CampaignPayload =
+        payload && isLiquityV2CampaignPayload(payload);
+    const holdFungibleAssetCampaignPayload =
+        payload && isHoldFungibleAssetCampaignPayload(payload);
+
+    const emptyPayload = !payload?.chainId;
+
+    return (
+        <div className={styles.root}>
+            <div className={styles.header}>
+                <Typography size="lg" weight="medium" className={styles.title}>
+                    {t("preview")}
+                </Typography>
+                {/* <div className={styles.buttons}>
+                    <Button
+                        size="sm"
+                        disabled
+                        icon={ShareIcon}
+                        className={{ root: styles.button }}
+                    >
+                        {t("share")}
+                    </Button>
+                    <Button
+                        size="sm"
+                        disabled
+                        icon={PlusCircleIcon}
+                        className={{ root: styles.button }}
+                    >
+                        {t("saveAsPreset")}
+                    </Button>
+                </div> */}
+            </div>
+            {emptyPayload ? (
+                <div className={styles.empty}>
+                    <DocumentTextIcon className={styles.documentTextIcon} />
+                    <div className={styles.emptyText}>
+                        <Typography
+                            weight="medium"
+                            variant="tertiary"
+                            uppercase
+                        >
+                            {t("campaignPreview")}
+                        </Typography>
+                        <Typography size="sm" variant="tertiary">
+                            {t("emptyText")}
+                        </Typography>
+                    </div>
+                </div>
+            ) : (
+                <div className={styles.content}>
+                    {ammPoolLiquidityCampaignPayload && (
+                        <AmmLiquidityPoolFormPreview
+                            payload={payload}
+                            errors={errors}
+                        />
+                    )}
+                    {aaveV3CampaignPayload && (
+                        <AaveV3FormPreview payload={payload} errors={errors} />
+                    )}
+                    {liquityV2CampaignPayload && (
+                        <LiquityV2FormPreview
+                            payload={payload}
+                            errors={errors}
+                        />
+                    )}
+                    {holdFungibleAssetCampaignPayload && (
+                        <HoldFungibleAssetFormPreview
+                            payload={payload}
+                            errors={errors}
+                        />
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}

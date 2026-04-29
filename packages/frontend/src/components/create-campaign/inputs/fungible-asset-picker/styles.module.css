@@ -1,0 +1,32 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full;
+}
+
+.input {
+    @apply w-full;
+}
+
+.trashIcon {
+    @apply size-4 cursor-pointer transition-colors duration-200 ease-in-out;
+}
+
+.trashIcon:hover {
+    @apply text-error;
+}
+
+.popover {
+    @apply cursor-pointer
+        bg-gray-150
+        dark:bg-neutral-900
+        hover:bg-gray-100
+        dark:hover:bg-neutral-700
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.asset {
+    @apply flex items-center gap-1.5;
+}

@@ -1,0 +1,31 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply w-full sm:min-w-2/4 flex flex-col gap-6;
+}
+
+.trashIcon {
+    @apply size-4 cursor-pointer transition-colors duration-200 ease-in-out;
+}
+
+.trashIcon:hover {
+    @apply text-error;
+}
+
+.popover {
+    @apply flex
+        flex-col
+        gap-3
+        cursor-pointer
+        bg-gray-150
+        dark:bg-neutral-900
+        hover:bg-gray-100
+        dark:hover:bg-neutral-700
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.header {
+    @apply flex justify-between items-center;
+}

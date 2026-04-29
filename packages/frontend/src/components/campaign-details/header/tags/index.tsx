@@ -1,11 +1,11 @@
-import type { CampaignDetails } from "@/src/types/campaign";
+import type { CampaignDetails } from "@/src/types/campaign/common";
+import { CampaignTag } from "@/src/components/campaign-tag";
+import { useTranslations } from "next-intl";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { formatDateTime } from "@/src/utils/format";
 import { CampaignStatus } from "../../../campaign-status";
-import { CampaignTag } from "@/src/components/campaign-tag";
 import { ElementPlusIcon } from "@/src/assets/element-plus-icon";
-import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 

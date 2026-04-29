@@ -11,3 +11,7 @@
 .tableWrapper {
     @apply flex flex-col;
 }
+
+.tabIcon :global(.icon) {
+    @apply size-5;
+}

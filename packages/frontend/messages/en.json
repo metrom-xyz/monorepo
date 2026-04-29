@@ -135,11 +135,14 @@
     },
     "newCampaign": {
         "pickType": {
-            "title": "Pick a campaign type",
-            "description": "Run efficient incentive strategies for your liquidity providers. Reduce leakage and maximize returns by using Metrom.",
+            "title": "Choose the campaign type you want to use",
+            "description": "Select the activity to incentivize, or use a saved preset.",
+            "tags": {
+                "popular": "Popular"
+            },
             "amm": {
                 "title": "AMM",
-                "description": "Incentivize users that provide liquidity to various types of AMMs (both full range and concentrated liquidity)."
+                "description": "Incentivize users for providing liquidity on AMMs, including full-range and concentrated pools."
             },
             "liquityV2": {
                 "title": "LIQUITY V2",
@@ -164,6 +167,7 @@
         },
         "partnerAction": {
             "pickAction": {
+                "back": "Back",
                 "title": "Pick an action type",
                 "description": "Pick an incentivization strategy from a set of custom built actions.",
                 "list": {
@@ -178,42 +182,162 @@
                 }
             }
         },
-        "type": {
-            "amm": "AMM liquidity pool",
-            "liquityV2": "Liquity v2 and forks",
-            "aaveV3": "Aave v3 and forks",
-            "holdFungibleAsset": "Hold token",
-            "odyssey": "Odyssey",
-            "partnerActions": "Partner action",
-            "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
-            "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
+        "formHeader": {
+            "createYourCampaign": "Create your {campaignType} incentive campaign",
+            "type": {
+                "amm": "AMM",
+                "liquityV2": "Liquity v2",
+                "aaveV3": "Aave v3",
+                "holdFungibleAsset": "Hold token",
+                "odyssey": "Odyssey",
+                "partnerActions": "Partner action",
+                "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
+                "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
+            }
+        },
+        "formPreview": {
+            "preview": "Preview",
+            "share": "Share",
+            "saveAsPreset": "Save as preset",
+            "campaignBasics": "Campaign basics",
+            "campaignPreview": "Campaign preview",
+            "emptyText": "Start filling in your campaign details to generate the preview",
+            "rewards": "Rewards",
+            "target": "Target",
+            "duration": "Duration",
+            "apr": "APR: {apr}",
+            "dailyAndTot": "Daily {dailyUsd} | Tot. {totalUsd}",
+            "points": "{pointsAmount} points",
+            "rewardRatio": "Reward ratio",
+            "fees": "Fees",
+            "addressRestrictions": "Address restrictions",
+            "blockedAddresses": "{count, plural, =1 {# blocked address} other {# blocked addresses}}",
+            "allowedAddresses": "{count, plural, =1 {# allowed address} other {# allowed addresses}}",
+            "showMore": "Show more",
+            "showLess": "Show less",
+            "rangeToReward": "Range to reward",
+            "price": "{price} {token1} PER {token0}",
+            "minPrice": "Min. price",
+            "maxPrice": "Max. price",
+            "kpiSetup": "Kpi set-up",
+            "parameters": "Parameters",
+            "bounds": "Bounds",
+            "minPayout": "Min. payout"
+        },
+        "pickDistributablesType": {
+            "navigation": {
+                "back": "Back",
+                "campaignType": "Campaign type"
+            },
+            "title": "Choose how to reward users",
+            "description": "Choose between distributing tokens directly or using a points system.",
+            "rewards": {
+                "title": "Token rewards",
+                "description": "Reward participation with tokens."
+            },
+            "points": {
+                "title": "Points system",
+                "description": "Reward participation with points."
+            }
         },
         "form": {
+            "basics": {
+                "title": "Set your campaign basics",
+                "notSaved": "Not saved",
+                "defineDuration": "Define the duration",
+                "chain": "Chain",
+                "protocol": "Protocol",
+                "pool": "Pool",
+                "startDate": "Start date",
+                "endDate": "End date",
+                "saveBasics": "Save basics"
+            },
+            "rewards": {
+                "title": "Define the rewards to distribute",
+                "apr": "APR: {apr}",
+                "notSaved": "Not saved",
+                "defineAssets": "Define assets to distribute",
+                "fixedApr": "Fixed APR",
+                "fixedAprDescription": "Automatically adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs. Set the desired APR and add the previewed token amount as reward.",
+                "defineRestrictions": "Define who can earn rewards",
+                "defineRestrictionDescription": "You can block unwanted addresses or allow only eligible ones. Zero and dead addresses are excluded by default.",
+                "saveRewards": "Save rewards"
+            },
+            "kpi": {
+                "title": "Set KPI",
+                "notSaved": "Not saved",
+                "defineStrategy": "Define your strategy",
+                "infoMessage": "Structure incentives with a <bold>{targetValueName} KPI</bold> - distributed in proportion to performance, aligning incentives when targets are partially met.",
+                "readMore": "Read more 🡥",
+                "defineParameters": "Define KPI parameters",
+                "currentTarget": "Current {targetValueName}:",
+                "defaultValues": "Default values are based on the current TVL. They can be adjusted at any time.",
+                "rangedTarget": {
+                    "lowerBound": "Lower {targetValueName} bound",
+                    "upperBound": "Upper {targetValueName} bound"
+                },
+                "warnings": {
+                    "notApplied": "Not applied"
+                },
+                "simulation": {
+                    "title": "KPI simulation",
+                    "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different {targetValueName} scenarios. Please review the values you entered carefully before submitting."
+                },
+                "minimumPayout": "Minimum payout",
+                "saveKpi": "Save KPI",
+                "skipKpi": "Skip KPI",
+                "presets": {
+                    "traditionalReward": {
+                        "title": "Traditional reward",
+                        "description": "Setup where the APR starts high and decreases as {targetValueName} grows."
+                    },
+                    "cappedRewardRate": {
+                        "title": "Capped reward rate",
+                        "description": "APR stays flat up to a specified goal {targetValueName} and then APR drops."
+                    },
+                    "increasingApr": {
+                        "title": "Increasing APR",
+                        "description": "APR rises with {targetValueName} and stops incentives below a set {targetValueName}."
+                    },
+                    "customReward": {
+                        "title": "Custom reward rate",
+                        "description": "Use your own strategy to distribute incentives."
+                    }
+                },
+                "fixedDistributionActive": "KPI can't be configured when fixed APR distribution is active"
+            },
+            "range": {
+                "title": "Set range to reward",
+                "setRange": "Set range to reward ({token0} per {token1})",
+                "price": "1 {token0} = {price} {token1}",
+                "saveRange": "Save reward range",
+                "skipRange": "Skip reward range",
+                "chart": "Range visualizer",
+                "notSaved": "Not saved",
+                "errors": {
+                    "poolChanged": "Pool changed, review range"
+                }
+            },
+            "approveLaunch": {
+                "title": "Approve assets and launch",
+                "protocolFee": "Protocol fee: {feeUsd}",
+                "approveDescription": "To launch the campaign, approve each reward token and confirm",
+                "noApproveNeeded": "No additional approvals are required",
+                "switchChain": "Switch to {chain} to launch the campaign",
+                "deploy": "Launch campaign",
+                "xOfY": "{current} of {total}",
+                "approveReward": "Approve {amount} {symbol} in wallet",
+                "approvedReward": "Approved {amount} {symbol}",
+                "connectWallet": "Connect wallet",
+                "connectYourWallet": "Connect your wallet to authorize token transfers and launch your campaign.",
+                "rewardsApproved": "Rewards approved, confirm and launch your campaign.",
+                "errors": {
+                    "specification": "An error occurred while processing the campaign specification"
+                }
+            },
             "base": {
                 "kind": {
                     "title": "Action"
-                },
-                "startDate": {
-                    "title": "Start date",
-                    "apply": "Apply",
-                    "errors": { "dateInThePast": "Date can't be in the past" }
-                },
-                "endDate": {
-                    "title": "End date",
-                    "apply": "Apply",
-                    "durations": {
-                        "1week": "1 week",
-                        "2weeks": "2 weeks",
-                        "1month": "1 month"
-                    },
-                    "campaignDuration": "Campaign duration",
-                    "days": "{count} days",
-                    "errors": {
-                        "endBeforeStart": "End date can't be before start date",
-                        "dateInThePast": "Date can't be in the past",
-                        "minimumDate": "Campaign must exceed {duration}",
-                        "maximumDate": "Campaign must be under {duration}"
-                    }
                 },
                 "rewards": {
                     "title": {
@@ -247,38 +371,16 @@
                     },
                     "points": {
                         "amount": "Points amount",
-                        "pickFeeToken": "Pick fee token",
+                        "feeToken": "Fee token",
                         "select": "Select",
-                        "usdCost": "{usd} total USD cost",
+                        "usdCost": "<bold>{usd}</bold> total USD cost",
                         "apply": "Apply",
                         "errors": {
                             "costChanged": "Cost changed, apply to confirm",
-                            "wrongAmount": "Wrong points amount"
+                            "wrongAmount": "Points amount can't be 0"
                         },
                         "noFeeTokens": "Points campaign not supported"
-                    },
-                    "fixedApr": {
-                        "title": "Fixed APR",
-                        "description": "Auto adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs.",
-                        "apr": "APR",
-                        "tvl": "TVL",
-                        "tvlAmount": "{amount} TVL",
-                        "preview": "Campaign preview at",
-                        "editTvl": "Click to edit TVL",
-                        "duration": "Duration",
-                        "totalBudget": "Total budget",
-                        "dailyEmission": "Daily emission",
-                        "buffer": "Buffer",
-                        "bufferTooltip": "Extra buffer on top of the budget to account for reward token price fluctuation during the campaign."
                     }
-                },
-                "weighting": {
-                    "title": "Reward ratio",
-                    "fees": "Fees",
-                    "apply": "Apply",
-                    "notApplied": "Not applied",
-                    "infoMessage": "Structure incentives based on the size of position that holds <bold>{token0}</bold> and <bold>{token1}</bold>. Fees based structure will be based on concentration and liquidity depth.",
-                    "readMore": "Read more 🡥"
                 },
                 "restrictions": {
                     "title": "Filter addresses",
@@ -297,8 +399,7 @@
                     "whitelist": "Allowlist",
                     "blacklist": "Blocklist",
                     "input": {
-                        "label": "Address",
-                        "placeholder": "Enter wallet address"
+                        "label": "Address"
                     },
                     "import": {
                         "label": "Import CSV",
@@ -317,51 +418,21 @@
                     "add": "Add",
                     "list": "List",
                     "apply": "Apply"
-                },
-                "kpi": {
-                    "title": "Set KPI",
-                    "currentTarget": "Current {targetValueName}",
-                    "infoMessage": "Structure incentives with a <bold>{targetValueName} KPI</bold> - distributed in proportion to performance, aligning incentives when targets are partially met.",
-                    "readMore": "Read more 🡥",
-                    "rangedTarget": {
-                        "lowerBound": "Lower {targetValueName} bound",
-                        "upperBound": "Upper {targetValueName} bound"
-                    },
-                    "errors": {
-                        "missing": "Bound missing",
-                        "malformed": "Wrong bound values"
-                    },
-                    "warnings": {
-                        "notApplied": "Not applied"
-                    },
-                    "simulation": {
-                        "title": "KPI simulation",
-                        "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different {targetValueName} scenarios. Please review the values you entered carefully before submitting."
-                    },
-                    "minimumPayout": "Minimum payout",
-                    "apply": "Apply"
                 }
             },
             "liquityV2": {
-                "brand": { "title": "Protocol" },
+                "action": "Action",
+                "noActions": "No actions found",
                 "actions": {
                     "borrow": "Borrow {debtToken}",
                     "depositToStabilityPool": "Deposit to stability pool"
-                },
-                "collaterals": {
-                    "title": "Collateral",
-                    "filters": "Collateral",
-                    "list": {
-                        "token": "Token",
-                        "empty": "Nothing here",
-                        "debt": "Debt",
-                        "deposits": "Deposits"
-                    },
-                    "apply": "Apply"
                 }
             },
             "aaveV3": {
-                "brand": { "title": "Platform" },
+                "blockCrossBorrow": "Block cross-borrow positions",
+                "blockCrossBorrowDescription": "Borrowing any of the selected collateral assets will reduce the position share of the rewards.",
+                "action": "Action",
+                "noActions": "No actions found",
                 "actions": {
                     "borrow": "Borrow",
                     "supply": "Supply",
@@ -390,84 +461,14 @@
                         "deposits": "Deposits"
                     },
                     "apply": "Apply"
-                },
-                "blacklistedCrossBorrowCollaterals": {
-                    "title": "Block cross borrow",
-                    "blocks": "Blocks borrowing",
-                    "collaterals": "Collaterals",
-                    "notApplied": "Not applied",
-                    "emptyCollaterals": "No collaterals",
-                    "infoMessage": "Net supply <bold>{symbol}</bold> = Supplied <bold>{symbol}</bold> - (borrowed <bold>{symbol}</bold>{borrowed}).",
-                    "borrowed": " + borrowed {symbol}",
-                    "apply": "Apply"
                 }
             },
             "ammPoolLiquidity": {
-                "dex": { "title": "Dex" },
-                "pool": {
-                    "title": "Pool",
-                    "list": {
-                        "label": "Search for pool",
-                        "pool": "Pool",
-                        "tvl": "Tvl",
-                        "empty": "Nothing here"
-                    },
-                    "label": "Enter pool address",
-                    "empty": "Enter a pool address to import a pool",
-                    "preview": {
-                        "pool": "Pool",
-                        "tvl": "TVL"
-                    },
-                    "errors": {
-                        "invalidAddress": "Invalid address",
-                        "enterValidAddress": "Enter a valid pool address",
-                        "invalidPool": "Invalid pool",
-                        "poolNotSupported": "Pool not supported",
-                        "inconsistentDex": "The pool doesn't belong to {dex}"
-                    }
-                },
-                "range": {
-                    "title": "Set range to reward",
-                    "currentPrice": "Current price",
-                    "range": {
-                        "label": "Range",
-                        "value": "{lowerPrice} - {upperPrice} {token1} PER {token0}"
-                    },
-                    "price": "1 {token0} = {price} {token1}",
-                    "minPrice": "Min price ({token1} per {token0})",
-                    "maxPrice": "Max price ({token1} per {token0})",
-                    "apply": "Apply",
-                    "chart": "Range visualizer",
-                    "errors": {
-                        "missing": "Bound missing",
-                        "malformed": "Wrong bound values",
-                        "rangeTooWide": "Range too wide"
-                    },
-                    "warnings": {
-                        "notApplied": "Not applied"
-                    }
-                }
-            },
-            "holdFungibleAsset": {
-                "picker": {
-                    "title": "Token",
-                    "infoMessage": "Pick a specific fungible token to reward users who hold it. Optionally pick one or multiple staking token addresses (tokens that track a staking position for the original asset).",
-                    "tokenAddressInput": {
-                        "label": "Token address",
-                        "placeholder": "Enter token address"
-                    },
-                    "stakingTokenAddressInput": {
-                        "label": "Staking token address",
-                        "placeholder": "Enter staking token address"
-                    },
-                    "errors": {
-                        "notAnAddress": "Not a valid address",
-                        "notFound": "Token not found",
-                        "alreadyAdded": "Already added"
-                    },
-                    "maxTokensLimit": "Maximum token limit reached",
-                    "add": "Add",
-                    "stakingTokens": "Staking tokens"
+                "weighting": {
+                    "title": "Reward ratio",
+                    "description": "Rewards are based on {token0}-{token1} position size, liquidity depth, and price range concentration.",
+                    "readMore": "Read more 🡥",
+                    "fees": "Fees"
                 }
             },
             "partnerAction": {
@@ -481,8 +482,8 @@
         "submit": {
             "connectWallet": "Connect wallet",
             "approveRewards": {
-                "approving": "Approving {amount} {symbol} ({currentIndex}/{totalAmount})",
-                "approve": "Approve {amount} {symbol} ({currentIndex}/{totalAmount})"
+                "approving": "Approving {amount} {symbol}",
+                "approve": "Approve {amount} {symbol}"
             },
             "preview": "Campaign preview"
         },
@@ -491,83 +492,155 @@
             "message2": "{campaignType} campaign creation isn't supported on {chain} chain.",
             "message3": "Please choose a different chain.",
             "backToCreate": "Back to create"
-        }
-    },
-    "campaignPreview": {
-        "header": {
-            "back": "Close",
-            "action": "Action",
-            "startDate": "Start date",
-            "runTimeLabel": "Run time",
-            "endDate": "End date",
-            "liquityV2Actions": {
-                "list": {
-                    "borrow": "Borrow {debtToken} using {collateral}",
-                    "depositCollateral": "Deposit collateral",
-                    "depositToStabilityPool": "Deposit to {collateral} stability pool"
+        },
+        "back": "Back",
+        "defineTarget": "Define the target",
+        "optional": "Optional",
+        "inputs": {
+            "chain": "Chain",
+            "noChains": "No chains found",
+            "dex": "Dex",
+            "noDexes": "No dexes found",
+            "poolSelect": {
+                "label": "Pool",
+                "tvl": "TVL",
+                "noPools": "No pools found",
+                "listPool": "If your pool isn't listed, it may not meet the minimum TVL requirement.",
+                "empty": "Type or paste a pool address",
+                "errors": {
+                    "invalidAddress": "Invalid address",
+                    "enterValidAddress": "Enter a valid pool address",
+                    "invalidPool": "Invalid pool",
+                    "poolNotSupported": "Pool not supported",
+                    "inconsistentDex": "The pool doesn't belong to {dex}"
                 }
             },
-            "aaveV3Actions": {
-                "list": {
-                    "borrow": "Borrow using {collateral}",
-                    "supply": "Supply {collateral}",
-                    "netSupply": "Net supply {collateral}",
-                    "bridgeAndSupply": "Bridge and supply {collateral}"
+            "platform": "Platform",
+            "noPlatforms": "No platforms found",
+            "collateral": "Collateral",
+            "noCollaterals": "No collaterals",
+            "token": "Token",
+            "debt": "Debt",
+            "deposits": "Deposits",
+            "startDatePicker": {
+                "label": "Start date",
+                "now": "Now",
+                "dateInThePast": "Date can't be in the past"
+            },
+            "weighting": {
+                "title": "Reward ratio",
+                "fees": "Fees",
+                "apply": "Apply",
+                "notApplied": "Not applied",
+                "infoMessage": "Structure incentives based on the size of position that holds <bold>{token0}</bold> and <bold>{token1}</bold>. Fees based structure will be based on concentration and liquidity depth.",
+                "readMore": "Read more 🡥"
+            },
+            "endDatePicker": {
+                "label": "End date",
+                "durations": {
+                    "1w": "1w",
+                    "2w": "2w",
+                    "1m": "1m"
+                },
+                "campaignDuration": "Campaign duration <bold>{duration}</bold>",
+                "days": "{count} days",
+                "endBeforeStart": "End date can't be before start date",
+                "dateInThePast": "Date can't be in the past",
+                "minimumDate": "Campaign must exceed {duration}",
+                "maximumDate": "Campaign must be under {duration}"
+            },
+            "rewardsPicker": {
+                "label": "Token",
+                "add": "Add",
+                "noTokens": "No tokens found",
+                "token": "Token",
+                "balance": "Balance",
+                "noToken": "Don't see your token?",
+                "requestIt": "Request it here",
+                "editAmount": "Click to edit amount",
+                "removeAsset": "Remove asset",
+                "errors": {
+                    "incompatibleChain": "Reward incompatible with the connected chain",
+                    "insufficientBalance": "Insufficient balance",
+                    "lowDistributionRate": "Low distribution rate"
+                }
+            },
+            "fixedAprPicker": {
+                "apr": "APR",
+                "aprInputDescription": "APR is fixed in USD. Emissions adjust automatically",
+                "reset": "Reset",
+                "preview": "Campaign preview: rewards at",
+                "editTvl": "Edit TVL",
+                "tvl": "TVL",
+                "tvlAmount": "{amount} TVL",
+                "noPreview": "No preview yet",
+                "noPreviewDescription": "Set an APR to see estimated rewards",
+                "duration": "Duration",
+                "totalBudget": "{usdBudget} <bold>total</bold> rewards to keep a {apr} fixed APR",
+                "dailyEmission": "Daily emission",
+                "buffer": "Buffer",
+                "bufferTooltip": "Extra buffer on top of the budget to account for reward token price fluctuation during the campaign."
+            },
+            "restrictionsPicker": {
+                "block": "Block",
+                "allow": "Allow",
+                "enterAddressToBlock": "Enter the address to block",
+                "enterAddressToAllow": "Enter the address to allow",
+                "importCsv": "Import CSV",
+                "add": "Add",
+                "removeAddress": "Remove address",
+                "removeAll": "Remove all",
+                "errors": {
+                    "notAnAddress": "Not a valid address",
+                    "alreadyRestricted": "Already restricted"
+                }
+            },
+            "rangePicker": {
+                "minPrice": "Min. price",
+                "maxPrice": "Max. price",
+                "errors": {
+                    "minPriceMissing": "Min. price missing",
+                    "maxPriceMissing": "Max. price missing",
+                    "minPriceMalformed": "Min. price can't be higher than max. price",
+                    "maxPriceMalformed": "Max. price can't be lower than min. price",
+                    "rangeTooWide": "Range too wide"
+                }
+            },
+            "kpiGoalInputs": {
+                "rangedTarget": {
+                    "lowerBound": "Lower {targetValueName} bound",
+                    "upperBound": "Upper {targetValueName} bound"
+                },
+                "minimumPayout": "Minimum payout",
+                "errors": {
+                    "missingLowerBound": "Lower bound missing",
+                    "missingUpperBound": "Upper bound missing",
+                    "lowerBoundMalformed": "Lower bound can't be higher than upper bound",
+                    "upperBoundMalformed": "Upper bound can't be lower than lower bound",
+                    "boundsEqual": "Bounds can't be equal",
+                    "malformed": "Wrong bound values"
+                }
+            },
+            "fungibleAssetPicker": {
+                "label": "Token address",
+                "infoMessage": "Pick a specific fungible token to reward users who hold it.",
+                "errors": {
+                    "notAnAddress": "Not a valid address",
+                    "notFound": "Token not found"
                 }
             }
         },
-        "apr": "APR",
-        "points": "Points",
-        "range": {
-            "title": "Price range",
-            "lowerPrice": {
-                "label": "Lower price",
-                "value": "{price} {token1} PER {token0}"
-            },
-            "upperPrice": {
-                "label": "Upper price",
-                "value": "{price} {token1} PER {token0}"
-            }
-        },
-        "weighting": {
-            "title": "Reward ratio",
-            "fees": "Fees"
-        },
-        "kpi": {
-            "title": "KPI",
-            "simulation": "KPI simulation",
-            "lowerBound": "Lower bound",
-            "upperBound": "Upper bound",
-            "minimumPayout": "Minimum payout"
-        },
-        "rewards": {
-            "title": "Rewards",
-            "daily": "Daily rewards",
-            "total": "Total rewards",
-            "token": "Reward token",
-            "amount": "Amount",
-            "fee": "Protocol fee"
-        },
-        "restrictions": {
-            "title": "Restrictions",
-            "blocks": "Blocks {count, plural, =0 {} =1 {# address} other {# adresses}}",
-            "allows": "Allows {count, plural, =0 {} =1 {# address} other {# adresses}}"
-        },
-        "errors": {
-            "specification": "An error occurred while processing the campaign specification"
-        },
-        "deploy": "Launch campaign",
-        "connectWallet": "Connect wallet",
-        "congratulations": "Congratulations!",
-        "launched": {
+        "launchFeedback": {
+            "congratulations": "Congratulations!",
             "standard": "Campaign successfully launched!",
+            "info": "You'll be able to see your campaign live in about 10 minutes.",
             "safe": {
                 "1": "The campaign creation transactions bundle is now ready to be signed.",
                 "2": "Please collect signatures and execute it before the campaign start date."
-            }
-        },
-        "discover": "Discover",
-        "newCampaign": "New campaign"
+            },
+            "discover": "Return to homepage",
+            "newCampaign": "Create new campaign"
+        }
     },
     "projectIntro": {
         "relatedArticles": "Related articles"
@@ -736,7 +809,6 @@
                 "title": "Detailed Distribution data",
                 "subtitle": "Select a date range to view detailed distribution metrics"
             },
-            "selectDateAndTime": "Select date & time",
             "search": "Search",
             "rangeLimit": "The date range is limited to <bold>7 days</bold>",
             "clear": "Clear",
@@ -896,7 +968,7 @@
         "priceRange": "Displayed APR assumes your liquidity is fully within the incentivized range. If only part of your position is in range, rewards scale down. Positions completely out of range do not earn rewards.",
         "weighting": "Rewards are distributed based on each position's composition (<bold>{token0Weight}</bold> on <bold>{token0Symbol}</bold> balance, <bold>{token1Weight}</bold> on <bold>{token1Symbol}</bold> balance, and <bold>{feeWeight}</bold> based on concentration), and displayed APR assumed optimal composition.",
         "priceRangeAndWeighting": "Displayed APR assumes your liquidity is fully within the incentivized range and matches the optimal composition. Rewards are distributed based on your position's composition (<bold>{token0Weight}</bold> on <bold>{token0Symbol}</bold> balance, <bold>{token1Weight}</bold> on <bold>{token1Symbol}</bold> balance, <bold>{feeWeight}</bold> on concentration).",
-        "aaveV3NetSupply": "As a net supply <bold>{collateral}</bold> campaign, you will earn rewards on this campaign based on the difference between total supplied <bold>{collateral}</bold> and the combined total borrowed of: <bold>{collateral}{blacklisted}</bold>.",
+        "aaveV3NetSupply": "As a net supply <bold>{collateral}</bold> campaign, you will earn rewards on this campaign based on the difference between total supplied <bold>{collateral}</bold> and the combined total borrowed of: <bold>{blacklisted}</bold>.",
         "learnMore": "Learn more"
     },
     "campaignActions": {
@@ -922,6 +994,7 @@
         "duration": "Duration"
     },
     "liquidityDensityChart": {
+        "rangeVisualizer": "Range visualizer",
         "tooltip": {
             "price": "1 {token0} = {price} {token1}"
         },
@@ -929,8 +1002,8 @@
         "upperPrice": "Upper price",
         "emptyData": "Missing price range data",
         "errors": {
-            "wrongData": "Wrong data",
-            "missingData": "Fill both min and max price values"
+            "unableToRender": "Unable to render range",
+            "adjustBounds": "Adjust the bounds prices to display the chart"
         }
     },
     "notifications": {
@@ -972,5 +1045,6 @@
             "upcoming": "in {time}",
             "expired": "{time} ago"
         }
-    }
+    },
+    "readMore": "Read more"
 }

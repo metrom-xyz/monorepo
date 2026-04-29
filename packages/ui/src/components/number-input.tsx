@@ -32,6 +32,8 @@ export const NumberInput: React.ForwardRefExoticComponent<
         placeholder,
         errorText,
         prefixElement,
+        noPrefixPadding,
+        endAdornment,
         icon,
         iconPlacement,
         error = false,
@@ -53,11 +55,14 @@ export const NumberInput: React.ForwardRefExoticComponent<
             label={label}
             size={size}
             loading={loading}
+            disabled={disabled}
             error={error}
             errorText={errorText}
             prefixElement={prefixElement}
+            noPrefixPadding={noPrefixPadding}
             icon={icon}
             iconPlacement={iconPlacement}
+            endAdornment={endAdornment}
             className={className}
         >
             <NumericFormat
@@ -68,9 +73,10 @@ export const NumberInput: React.ForwardRefExoticComponent<
                 decimalSeparator="."
                 value={value}
                 disabled={disabled || loading}
-                placeholder={placeholder}
                 getInputRef={ref}
                 {...rest}
+                autoComplete="off"
+                placeholder={placeholder && !label ? placeholder : " "}
                 className={classNames("input", styles.input)}
             />
         </BaseInputWrapper>

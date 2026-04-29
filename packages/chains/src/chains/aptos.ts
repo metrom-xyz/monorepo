@@ -164,17 +164,17 @@ export const aptosProductionData: ChainData = {
         {
             active: true,
             partner: false,
+            type: BaseCampaignType.AmmPoolLiquidity,
+        },
+        {
+            active: true,
+            partner: false,
             type: BaseCampaignType.AaveV3,
         },
         {
             active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
-        },
-        {
-            active: true,
-            partner: false,
-            type: BaseCampaignType.AmmPoolLiquidity,
         },
     ],
     protocols: [
@@ -226,5 +226,27 @@ export const aptosProductionData: ChainData = {
             },
         },
     ],
-    baseTokens: [],
+    baseTokens: [
+        {
+            address:
+                "0x000000000000000000000000000000000000000000000000000000000000000a",
+            symbol: "APT",
+            name: "Aptos Coin",
+            decimals: 8,
+        },
+        {
+            address:
+                "0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b",
+            symbol: "USDC",
+            name: "USDC",
+            decimals: 6,
+        },
+        {
+            address:
+                "0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b",
+            symbol: "USDT",
+            name: "Tether USD",
+            decimals: 6,
+        },
+    ],
 };

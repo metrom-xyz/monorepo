@@ -1,29 +1,31 @@
 import {
-    type CampaignPayloadErrors,
-    type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-    type HoldFungibleAssetCampaignPayload,
-    HoldFungibleAssetCampaignPreviewPayload,
-    type HoldFungibleAssetCampaignPayloadPart,
-    type CampaignPreviewKpiDistribution,
     type CampaignPreviewFixedDistribution,
-} from "@/src/types/campaign";
-import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
+    type CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
+import { useCallback, useMemo, useState } from "react";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
-import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
-import { Button } from "@metrom-xyz/ui";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import {
+    HoldFungibleAssetCampaignPreviewPayload,
+    type HoldFungibleAssetCampaignPayload,
+    type HoldFungibleAssetCampaignPayloadPart,
+} from "@/src/types/campaign/hold-fungible-asset-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import {
+    allFieldsFilled,
+    distributablesCompleted,
     validateDistributables,
     validateDistributions,
-} from "@/src/utils/creation-form";
-import { HoldFungibleAssetPickerStep } from "../../steps/hold-token-picker-step";
+} from "@/src/utils/form";
+import type { LiquityV2CampaignPayloadPart } from "@/src/types/campaign/liquity-v2-campaign";
+import { useFormSteps } from "@/src/context/form-steps";
+import { FormStepId } from "@/src/types/form";
+import {
+    HOLD_FUNGIBLE_ASSET_BASIC_PAYLOAD_KEYS,
+    HoldFungibleAssetBasicsStep,
+} from "./hold-fungible-asset-basics-step";
+import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
+import { HoldFungibleAssetRewardsStep } from "./hold-fungible-asset-rewards-step";
 
 import styles from "./styles.module.css";
 
@@ -37,7 +39,6 @@ function validatePayload(
     const {
         kind,
         asset,
-        stakingAssets,
         startDate,
         endDate,
         distributables,
@@ -55,9 +56,10 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
-            distributables as CampaignPreviewDistributables,
+            distributables,
             kpiDistribution as CampaignPreviewKpiDistribution,
             fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
@@ -66,10 +68,10 @@ function validatePayload(
 
     return new HoldFungibleAssetCampaignPreviewPayload(
         asset,
-        stakingAssets,
+        chainId,
         startDate,
         endDate,
-        distributables as CampaignPreviewDistributables,
+        distributables,
         kpiDistribution as CampaignPreviewKpiDistribution,
         fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
@@ -77,119 +79,86 @@ function validatePayload(
 }
 
 interface HoldFungibleAssetFormProps {
-    unsupportedChain: boolean;
-    onPreviewClick: (
-        payload:
-            | HoldFungibleAssetCampaignPreviewPayload
-            | EmptyTargetCampaignPreviewPayload
-            | null,
-    ) => void;
+    distributablesType: DistributablesType;
+    onStepComplete: (payload: LiquityV2CampaignPayloadPart) => void;
+    onLaunch: () => void;
 }
 
-const initialPayload: HoldFungibleAssetCampaignPayload = {
-    distributables: { type: DistributablesType.Tokens },
-    kind: CampaignKind.HoldFungibleAsset,
-    stakingAssets: [],
-};
-
 export function HoldFungibleAssetForm({
-    unsupportedChain,
-    onPreviewClick,
+    distributablesType,
+    onStepComplete,
+    onLaunch,
 }: HoldFungibleAssetFormProps) {
-    const t = useTranslations("newCampaign");
-    const { id: chainId } = useChainWithType();
+    const [payload, setPayload] = useState<HoldFungibleAssetCampaignPayload>({
+        kind: CampaignKind.HoldFungibleAsset,
+        distributables: { type: distributablesType },
+    });
 
-    const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
+    const { errors, unsaved, activeStepId, updateActiveStepId } =
+        useFormSteps();
 
-    const previewPayload = useMemo(() => {
-        if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload);
-    }, [chainId, payload, errors]);
+    const validatedPayload = useMemo(() => {
+        if (Object.values(errors).some((error) => !!error) || !payload.chainId)
+            return null;
+        return validatePayload(payload.chainId, payload);
+    }, [payload, errors]);
 
-    const noDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
-        return !validateDistributables(payload.distributables);
-    }, [payload.distributables]);
+    const steps: FormStepId[] = useMemo(
+        () => [FormStepId.Basics, FormStepId.Rewards, FormStepId.Launch],
+        [],
+    );
 
-    useEffect(() => {
-        setPayload(initialPayload);
-    }, [chainId]);
-
-    const handlePayloadOnChange = useCallback(
-        (part: HoldFungibleAssetCampaignPayloadPart) => {
+    const handleOnApply = useCallback(
+        (part: HoldFungibleAssetCampaignPayloadPart, stepId: FormStepId) => {
             setPayload((prev) => ({ ...prev, ...part }));
+            onStepComplete({ ...payload, ...part });
+
+            const currentIndex = steps.indexOf(activeStepId);
+            const appliedStepIndex = steps.indexOf(stepId);
+
+            const nextStepIndex =
+                currentIndex > appliedStepIndex
+                    ? currentIndex
+                    : appliedStepIndex + 1;
+
+            const next = steps[nextStepIndex];
+            if (!next) return;
+            updateActiveStepId(next);
         },
-        [],
+        [activeStepId, payload, steps, onStepComplete, updateActiveStepId],
     );
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
-
-    function handlePreviewOnClick() {
-        onPreviewClick(previewPayload);
-    }
+    const unsavedSteps = Object.values(unsaved).some((item) => !!item);
 
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <HoldFungibleAssetPickerStep
-                    disabled={unsupportedChain}
-                    asset={payload.asset}
-                    stakingAssets={payload.stakingAssets}
-                    onFungibleAssetChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                <HoldFungibleAssetBasicsStep
+                    payload={payload}
+                    onApply={handleOnApply}
                 />
-                <StartDateStep
-                    disabled={!payload.asset || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <EndDateStep
+                <HoldFungibleAssetRewardsStep
+                    payload={payload}
                     disabled={
-                        !payload.asset || !payload.startDate || unsupportedChain
+                        !!errors.basics ||
+                        !allFieldsFilled(
+                            payload,
+                            HOLD_FUNGIBLE_ASSET_BASIC_PAYLOAD_KEYS,
+                        )
                     }
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                    onApply={handleOnApply}
                 />
-                <RewardsStep
+                <CampaignApproveLaunchStep
+                    payload={validatedPayload}
                     disabled={
-                        !payload.asset || !payload.endDate || unsupportedChain
+                        unsavedSteps ||
+                        !validatedPayload ||
+                        !!Object.values(errors).some((error) => !!error) ||
+                        !distributablesCompleted(payload)
                     }
-                    distributables={payload.distributables}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onDistributablesChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <RestrictionsStep
-                    disabled={
-                        !payload.asset || noDistributables || unsupportedChain
-                    }
-                    restrictions={payload.restrictions}
-                    onRestrictionsChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                    onLaunch={onLaunch}
                 />
             </div>
-            <Button
-                icon={ArrowRightIcon}
-                iconPlacement="right"
-                disabled={!previewPayload}
-                onClick={handlePreviewOnClick}
-                className={{ root: styles.button }}
-            >
-                {t("submit.preview")}
-            </Button>
         </div>
     );
 }

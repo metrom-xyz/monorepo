@@ -1,33 +1,28 @@
 import {
-    type AaveV3CampaignPayload,
-    type AaveV3CampaignPayloadPart,
-    AaveV3CampaignPreviewPayload,
-    type CampaignPayloadErrors,
     type CampaignPreviewDistributables,
     type CampaignPreviewFixedDistribution,
     type CampaignPreviewKpiDistribution,
-    EmptyTargetCampaignPreviewPayload,
-} from "@/src/types/campaign";
+} from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
-import { AaveV3CollateralStep } from "../../steps/aave-v3-collateral-step";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
-import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
 import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import { KpiStep } from "../../steps/kpi-step";
 import { AaveV3BridgeAndSupplyBoostStep } from "../../steps/aave-v3-bridge-supply-boost";
 import { AaveV3MarketStep } from "../../steps/aave-v3-market-step";
 import { AaveV3BrandStep } from "../../steps/aave-v3-brand-step";
 import {
+    AaveV3CampaignPreviewPayload,
+    type AaveV3CampaignPayload,
+    type AaveV3CampaignPayloadPart,
+} from "@/src/types/campaign/aave-v3-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import {
     validateDistributables,
     validateDistributions,
-} from "@/src/utils/creation-form";
+} from "@/src/utils/form";
 
 import styles from "./styles.module.css";
 
@@ -68,6 +63,7 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
             distributables as CampaignPreviewDistributables,
@@ -85,6 +81,7 @@ function validatePayload(
         undefined,
         boostingFactor,
         undefined,
+        chainId,
         startDate,
         endDate,
         distributables as CampaignPreviewDistributables,
@@ -120,7 +117,7 @@ export function AaveV3BridgeAndSupplyForm({
     const { id: chainId } = useChainWithType();
 
     const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
+    const [errors, setErrors] = useState({});
 
     const previewPayload = useMemo(() => {
         if (Object.values(errors).some((error) => !!error)) return null;
@@ -156,12 +153,10 @@ export function AaveV3BridgeAndSupplyForm({
         [],
     );
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handlePayloadOnError = useCallback((errors: any) => {
+        setErrors((state) => ({ ...state, ...errors }));
+    }, []);
 
     function handlePreviewOnClick() {
         onPreviewClick(previewPayload);
@@ -179,7 +174,7 @@ export function AaveV3BridgeAndSupplyForm({
                     brand={payload.brand}
                     onMarketChange={handlePayloadOnChange}
                 />
-                <AaveV3CollateralStep
+                {/* <AaveV3CollateralStep
                     disabled={
                         !payload.brand || !payload.market || unsupportedChain
                     }
@@ -188,22 +183,8 @@ export function AaveV3BridgeAndSupplyForm({
                     market={payload.market}
                     collateral={payload.collateral}
                     onCollateralChange={handlePayloadOnChange}
-                />
-                <StartDateStep
-                    disabled={!payload.collateral || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <RewardsStep
+                /> */}
+                {/* <RewardsStep
                     disabled={!payload.endDate || unsupportedChain}
                     distributables={payload.distributables}
                     startDate={payload.startDate}
@@ -212,8 +193,8 @@ export function AaveV3BridgeAndSupplyForm({
                     fixedDistribution={payload.fixedDistribution}
                     onDistributablesChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
-                <KpiStep
+                /> */}
+                {/* <KpiStep
                     disabled={noDistributables || unsupportedChain}
                     kind={payload.kind}
                     usdTvl={payload.collateral?.usdSupply}
@@ -229,19 +210,19 @@ export function AaveV3BridgeAndSupplyForm({
                     fixedDistribution={payload.fixedDistribution}
                     onKpiChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
                 <AaveV3BridgeAndSupplyBoostStep
                     disabled={noDistributables || unsupportedChain}
                     boostingFactor={payload.boostingFactor}
                     onBoostingFactorChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
                 />
-                <RestrictionsStep
+                {/* <RestrictionsStep
                     disabled={noDistributables || unsupportedChain}
                     restrictions={payload.restrictions}
                     onRestrictionsChange={handlePayloadOnChange}
                     onError={handlePayloadOnError}
-                />
+                /> */}
             </div>
             <Button
                 size="lg"

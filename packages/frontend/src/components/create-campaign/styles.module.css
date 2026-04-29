@@ -1,73 +1,41 @@
 @reference "../../app.css";
 
 .root {
-    @apply flex items-center flex-col gap-6 px-4 w-full max-w-screen-xl;
+    @apply flex flex-col gap-7 px-4 sm:px-0 w-full max-w-screen-xl;
 }
 
-.description {
-    @apply text-center;
+.header {
+    @apply flex flex-col gap-1;
 }
 
-.campaignCardsWrapper {
-    @apply flex flex-wrap gap-2 justify-center;
-}
-
-.link {
-    @apply w-full sm:w-fit;
-}
-
-.campaignLinkCard {
-    @apply h-full
-        max-w-[27rem]
-        hover:bg-gray-150
-        dark:hover:bg-neutral-800
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.campaignCard {
-    @apply max-w-[27rem]
-        cursor-pointer
-        hover:bg-gray-150
-        dark:hover:bg-neutral-800
-        transition-colors
-        duration-200
-        ease-in-out;
-}
-
-.campaignCardBody {
-    @apply h-full flex flex-col sm:flex-row gap-4 items-center;
-}
-
-.iconWrapper {
-    @apply flex
-        items-center
-        justify-center
-        min-w-[5.75rem]
-        min-h-[5.75rem]
-        p-3
-        rounded-2xl
-        bg-gray-200
-        dark:bg-neutral-950;
+.cardsWrapper {
+    @apply flex flex-wrap gap-2;
 }
 
 .rightContent {
-    @apply flex flex-col gap-2 items-center sm:items-start;
+    @apply flex flex-col gap-1 items-center sm:items-start;
 }
 
-.ammIcon {
-    @apply h-10 w-10 text-black dark:text-white;
+.tags {
+    @apply absolute top-0 right-0 w-fit flex;
 }
 
-.liquidityV2Icon {
-    @apply h-14 w-14 dark:stroke-neutral-900;
+.tag {
+    @apply py-1 px-3 backdrop-blur-sm bg-gray-300 dark:bg-neutral-700;
 }
 
-.aaveIcon {
-    @apply h-10 w-10;
+.tag:first-child {
+    @apply rounded-bl-xl;
 }
 
 .partnerActionsIcon {
     @apply h-10 w-10;
+}
+
+.liquidityV2Icon > path:first-child {
+    @apply dark:stroke-gray-150 dark:fill-gray-150;
+}
+
+.liquidityV2Icon > path:not(:first-child) {
+    @apply dark:stroke-[#111827] dark:fill-[#111827];
 }

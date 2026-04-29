@@ -1,0 +1,82 @@
+@reference "../../../../../app.css";
+
+.container {
+    @apply flex flex-col gap-3;
+}
+
+.button {
+    @apply self-end w-full sm:w-fit;
+}
+
+.rewards {
+    @apply flex sm:items-center flex-col sm:flex-row sm:flex-wrap gap-5 transition-opacity duration-200 ease-in-out;
+}
+
+.rewards.notConnected {
+    @apply opacity-70;
+}
+
+.rewardWrapper {
+    @apply flex flex-col sm:flex-row sm:items-center gap-5 transition-opacity duration-200 ease-in-out;
+}
+
+.rewardWrapper.opaque {
+    @apply opacity-70;
+}
+
+.divider {
+    @apply w-7
+        border
+        border-dashed
+        border-gray-300
+        dark:border-neutral-600
+        ml-1
+        sm:ml-0
+        rotate-90
+        sm:rotate-0
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.divider.approved {
+    @apply border-brand-green-dark dark:border-brand-green;
+}
+
+.reward {
+    @apply flex items-center gap-3;
+}
+
+.rewardLogoWrapper {
+    @apply relative
+        flex
+        items-center
+        justify-center
+        size-9
+        p-1
+        rounded-full
+        border-2
+        border-gray-300
+        dark:border-neutral-600
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.spinner {
+    @apply absolute
+        size-9
+        border-2
+        rounded-full
+        border-transparent
+        border-t-brand-green-dark
+        dark:border-t-brand-green;
+}
+
+.checkIcon {
+    @apply size-3 text-brand-green-dark dark:text-brand-green;
+}
+
+.buttonsWrapper {
+    @apply w-full flex justify-end;
+}

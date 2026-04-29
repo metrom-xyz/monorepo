@@ -16,10 +16,7 @@ import { useTranslations } from "next-intl";
 import { Step } from "@/src/components/step";
 import { StepPreview } from "@/src/components/step/preview";
 import { StepContent } from "@/src/components/step/content";
-import {
-    type AaveV3CampaignPayloadPart,
-    type CampaignPayloadErrors,
-} from "@/src/types/campaign";
+import type { AaveV3CampaignPayloadPart } from "@/src/types/campaign/aave-v3-campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { usePrevious } from "react-use";
@@ -33,7 +30,7 @@ interface AaveV3BridgeAndSupplyBoostStepProps {
     disabled?: boolean;
     boostingFactor?: number;
     onBoostingFactorChange: (boostingFactor: AaveV3CampaignPayloadPart) => void;
-    onError: (errors: CampaignPayloadErrors) => void;
+    onError: (errors: unknown) => void;
 }
 
 type ErrorMessage = LocalizedMessage<"newCampaign.form.aaveV3.boost">;

@@ -23,11 +23,15 @@
 }
 
 .clickable {
-    @apply cursor-pointer hover:bg-gray-500/[8%] hover:dark:bg-neutral-100/[8%];
+    @apply cursor-pointer hover:bg-gray-500/8 hover:dark:bg-neutral-100/8;
 }
 
 .active {
     @apply border-transparent;
+}
+
+.root.disabled {
+    @apply cursor-not-allowed opacity-65;
 }
 
 .active.primary {

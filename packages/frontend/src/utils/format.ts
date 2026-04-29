@@ -1,5 +1,14 @@
 import dayjs, { Dayjs } from "dayjs";
 import numeral from "numeral";
+import {
+    formatUnits as formatUnitsEvm,
+    parseUnits as parseUnitsEvm,
+} from "viem";
+import {
+    formatUnits as formatUnitsMvm,
+    parseUnits as parseUnitsMvm,
+} from "@aptos-labs/js-pro";
+import { APTOS } from "../commons/env";
 
 const HIDE_DECIMALS_AMOUNT_CUTOFF = 1000;
 const HUMANIZE_AMOUNT_CUTOFF = 100_000;
@@ -105,11 +114,21 @@ export function formatUsdAmountChange({
 export function formatDateTime(dateTime?: Dayjs | number): string {
     if (!dateTime) return "-";
     if (typeof dateTime === "number") dateTime = dayjs.unix(dateTime);
-    return dateTime.format("DD MMM YYYY | HH:mm");
+    return dateTime.format("DD MMM YYYY, HH:mm");
 }
 
 export function formatDate(date?: Dayjs | number): string {
     if (!date) return "-";
     if (typeof date === "number") date = dayjs.unix(date);
     return date.format("DD MMM YYYY");
+}
+
+export function formatUnits(value: bigint, decimals: number) {
+    if (APTOS) return formatUnitsMvm(value, decimals);
+    else return formatUnitsEvm(value, decimals);
+}
+
+export function parseUnits(value: string, decimals: number) {
+    if (APTOS) return parseUnitsMvm(value, decimals);
+    else return parseUnitsEvm(value, decimals);
 }

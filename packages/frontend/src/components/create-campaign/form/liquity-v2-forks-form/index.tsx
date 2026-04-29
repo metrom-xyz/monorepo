@@ -1,36 +1,32 @@
 import {
-    type CampaignPayloadErrors,
+    type CampaignPreviewFixedDistribution,
+    type CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
+import { useCallback, useMemo, useState } from "react";
+import { DistributablesType } from "@metrom-xyz/sdk";
+import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
+import {
+    getLiquityV2TargetValue,
     LiquityV2CampaignPreviewPayload,
     type LiquityV2CampaignPayload,
     type LiquityV2CampaignPayloadPart,
-    type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-    type CampaignPreviewKpiDistribution,
-    type CampaignPreviewFixedDistribution,
-} from "@/src/types/campaign";
-import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
-import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
-import { RewardsStep } from "../../steps/rewards-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
-import { Button } from "@metrom-xyz/ui";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { LiquityV2BrandStep } from "../../steps/liquity-v2-brand-step";
-import { LiquityV2CollateralStep } from "../../steps/liquity-v2-collateral-step";
-import { KpiStep } from "../../steps/kpi-step";
-import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
+} from "@/src/types/campaign/liquity-v2-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 import {
-    CampaignKindStep,
-    type CampaignKindOption,
-} from "../../steps/campaign-kind-step";
-import {
+    allFieldsFilled,
+    distributablesCompleted,
     validateDistributables,
     validateDistributions,
-} from "@/src/utils/creation-form";
-import type { TranslationsKeys } from "@/src/types/utils";
+} from "@/src/utils/form";
+import {
+    LIQUITY_V2_BASIC_PAYLOAD_KEYS,
+    LiquityV2BasicsStep,
+} from "./liquity-v2-basics-step";
+import { useFormSteps } from "@/src/context/form-steps";
+import { FormStepId } from "@/src/types/form";
+import { LiquityV2RewardsStep } from "./liquity-v2-rewards-step";
+import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
+import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
 
 import styles from "./styles.module.css";
 
@@ -66,9 +62,10 @@ function validatePayload(
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
-            distributables as CampaignPreviewDistributables,
+            distributables,
             kpiDistribution as CampaignPreviewKpiDistribution,
             fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
@@ -79,9 +76,10 @@ function validatePayload(
         kind,
         brand,
         collateral,
+        chainId,
         startDate,
         endDate,
-        distributables as CampaignPreviewDistributables,
+        distributables,
         kpiDistribution as CampaignPreviewKpiDistribution,
         fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
@@ -89,193 +87,98 @@ function validatePayload(
 }
 
 interface LiquityV2ForksFormProps {
-    unsupportedChain: boolean;
-    onPreviewClick: (
-        payload:
-            | LiquityV2CampaignPreviewPayload
-            | EmptyTargetCampaignPreviewPayload
-            | null,
-    ) => void;
+    distributablesType: DistributablesType;
+    onStepComplete: (payload: LiquityV2CampaignPayloadPart) => void;
+    onLaunch: () => void;
 }
 
-const LIQUITY_V2_CAMPAIGN_KIND_OPTIONS: CampaignKindOption<
-    TranslationsKeys<"newCampaign">
->[] = [
-    {
-        label: "form.liquityV2.actions.borrow",
-        value: CampaignKind.LiquityV2Debt,
-    },
-    {
-        label: "form.liquityV2.actions.depositToStabilityPool",
-        value: CampaignKind.LiquityV2StabilityPool,
-    },
-] as const;
-
-const initialPayload: LiquityV2CampaignPayload = {
-    distributables: { type: DistributablesType.Tokens },
-};
-
 export function LiquityV2ForksForm({
-    unsupportedChain,
-    onPreviewClick,
+    distributablesType,
+    onStepComplete,
+    onLaunch,
 }: LiquityV2ForksFormProps) {
-    const t = useTranslations("newCampaign");
-    const { id: chainId } = useChainWithType();
+    const [payload, setPayload] = useState<LiquityV2CampaignPayload>({
+        distributables: { type: distributablesType },
+    });
 
-    const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
+    const { errors, unsaved, activeStepId, updateActiveStepId } =
+        useFormSteps();
 
-    const previewPayload = useMemo(() => {
-        if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload);
-    }, [chainId, payload, errors]);
+    const validatedPayload = useMemo(() => {
+        if (Object.values(errors).some((error) => !!error) || !payload.chainId)
+            return null;
+        return validatePayload(payload.chainId, payload);
+    }, [payload, errors]);
 
-    const noDistributables = useMemo(() => {
-        return (
-            !payload.distributables ||
-            payload.distributables.type === DistributablesType.FixedPoints ||
-            payload.distributables.type === DistributablesType.DynamicPoints ||
-            payload.distributables.type ===
-                DistributablesType.NoDistributables ||
-            !payload.distributables.tokens ||
-            payload.distributables.tokens.length === 0
-        );
-    }, [payload.distributables]);
+    const steps: FormStepId[] = useMemo(
+        () => [
+            FormStepId.Basics,
+            FormStepId.Rewards,
+            ...(distributablesType === DistributablesType.Tokens
+                ? [FormStepId.Kpi]
+                : []),
+            FormStepId.Launch,
+        ],
+        [distributablesType],
+    );
 
-    const missingDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
-
-        const { type } = payload.distributables;
-
-        if (type === DistributablesType.FixedPoints)
-            return (
-                !payload.distributables.fee || !payload.distributables.points
-            );
-        if (type === DistributablesType.Tokens)
-            return (
-                !payload.distributables.tokens ||
-                payload.distributables.tokens.length === 0
-            );
-
-        return true;
-    }, [payload.distributables]);
-
-    const kindOptions = useMemo(() => {
-        return LIQUITY_V2_CAMPAIGN_KIND_OPTIONS.map((option) => ({
-            ...option,
-            label: t(option.label, {
-                debtToken: payload.brand?.debtToken.symbol || "",
-            }),
-        }));
-    }, [payload.brand?.debtToken.symbol, t]);
-
-    useEffect(() => {
-        setPayload(initialPayload);
-    }, [chainId]);
-
-    const handlePayloadOnChange = useCallback(
-        (part: LiquityV2CampaignPayloadPart) => {
+    const handleOnApply = useCallback(
+        (part: LiquityV2CampaignPayloadPart, stepId: FormStepId) => {
             setPayload((prev) => ({ ...prev, ...part }));
+            onStepComplete({ ...payload, ...part });
+
+            const currentIndex = steps.indexOf(activeStepId);
+            const appliedStepIndex = steps.indexOf(stepId);
+
+            const nextStepIndex =
+                currentIndex > appliedStepIndex
+                    ? currentIndex
+                    : appliedStepIndex + 1;
+
+            const next = steps[nextStepIndex];
+            if (!next) return;
+            updateActiveStepId(next);
         },
-        [],
+        [payload, activeStepId, steps, onStepComplete, updateActiveStepId],
     );
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
-
-    function handlePreviewOnClick() {
-        onPreviewClick(previewPayload);
-    }
+    const targetUsdValue = getLiquityV2TargetValue(payload)?.usd;
+    const unsavedSteps = Object.values(unsaved).some((item) => !!item);
 
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <LiquityV2BrandStep
-                    disabled={unsupportedChain}
-                    brand={payload.brand}
-                    onBrandChange={handlePayloadOnChange}
+                <LiquityV2BasicsStep
+                    payload={payload}
+                    onApply={handleOnApply}
                 />
-                <CampaignKindStep
-                    disabled={!payload.brand || unsupportedChain}
-                    kinds={kindOptions}
-                    kind={payload.kind}
-                    onKindChange={handlePayloadOnChange}
-                />
-                <LiquityV2CollateralStep
-                    disabled={!payload.kind || unsupportedChain}
-                    brand={payload.brand}
-                    kind={payload.kind}
-                    collateral={payload.collateral}
-                    onCollateralChange={handlePayloadOnChange}
-                />
-                <StartDateStep
-                    disabled={!payload.collateral || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <RewardsStep
-                    disabled={!payload.endDate || unsupportedChain}
-                    distributables={payload.distributables}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onDistributablesChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <KpiStep
-                    disabled={noDistributables || unsupportedChain}
-                    kind={payload.kind}
-                    usdTvl={
-                        payload.kind === CampaignKind.LiquityV2Debt
-                            ? payload.collateral?.usdMintedDebt
-                            : payload.kind ===
-                                CampaignKind.LiquityV2StabilityPool
-                              ? payload.collateral?.usdStabilityPoolDebt
-                              : undefined
+                <LiquityV2RewardsStep
+                    payload={payload}
+                    disabled={
+                        !!errors.basics ||
+                        !allFieldsFilled(payload, LIQUITY_V2_BASIC_PAYLOAD_KEYS)
                     }
-                    distributables={
-                        payload.distributables?.type ===
-                        DistributablesType.Tokens
-                            ? payload.distributables
-                            : undefined
-                    }
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onKpiChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                    onApply={handleOnApply}
                 />
-                <RestrictionsStep
-                    disabled={missingDistributables || unsupportedChain}
-                    restrictions={payload.restrictions}
-                    onRestrictionsChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                <CampaignKpiStep
+                    payload={payload}
+                    targetUsdValue={targetUsdValue}
+                    disabled={
+                        !!errors.rewards || !distributablesCompleted(payload)
+                    }
+                    onApply={handleOnApply}
+                />
+                <CampaignApproveLaunchStep
+                    payload={validatedPayload}
+                    disabled={
+                        unsavedSteps ||
+                        !validatedPayload ||
+                        !!Object.values(errors).some((error) => !!error) ||
+                        !distributablesCompleted(payload)
+                    }
+                    onLaunch={onLaunch}
                 />
             </div>
-            <Button
-                icon={ArrowRightIcon}
-                iconPlacement="right"
-                disabled={!previewPayload}
-                onClick={handlePreviewOnClick}
-                className={{ root: styles.button }}
-            >
-                {t("submit.preview")}
-            </Button>
         </div>
     );
 }

@@ -1,0 +1,5 @@
+@reference "../../../../../app.css";
+
+.button {
+    @apply self-end w-full sm:w-fit;
+}

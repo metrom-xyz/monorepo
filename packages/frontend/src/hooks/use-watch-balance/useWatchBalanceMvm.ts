@@ -4,8 +4,11 @@ import type { UseWatchBalanceParams, UseWatchBalanceReturnValue } from ".";
 import { useWatchBlockNumber } from "../use-watch-block-number";
 import { useQuery } from "@tanstack/react-query";
 import { useClients } from "@aptos-labs/react";
+import { chainIdToAptosNetwork } from "@/src/utils/chain";
+import type { Network } from "@aptos-labs/ts-sdk";
 
 export function useWatchBalanceMvm({
+    chainId,
     address,
     token,
     enabled = true,
@@ -37,6 +40,14 @@ export function useWatchBalanceMvm({
             try {
                 return await client.fetchBalance({
                     address,
+                    network: chainId
+                        ? {
+                              network:
+                                  (chainIdToAptosNetwork(
+                                      chainId,
+                                  ) as unknown as Network) || undefined,
+                          }
+                        : undefined,
                     asset: token,
                 });
             } catch (error) {

@@ -1,0 +1,41 @@
+@reference "../../../app.css";
+
+.root {
+    @apply flex flex-col gap-7 px-4 sm:px-0 w-full max-w-screen-xl;
+}
+
+.navigation {
+    @apply flex gap-5 items-center;
+}
+
+.header {
+    @apply flex flex-col gap-1;
+}
+
+.skeleton {
+    @apply surface-primary animate-pulse rounded-xl;
+}
+
+.navigation > .skeleton {
+    @apply h-9;
+}
+
+.navigation > .skeleton:first-child {
+    @apply w-20;
+}
+
+.navigation > .skeleton:last-child {
+    @apply w-52;
+}
+
+.header > .skeleton:first-child {
+    @apply h-8 w-72;
+}
+
+.header > .skeleton:last-child {
+    @apply h-6 w-96;
+}
+
+.card {
+    @apply h-[5.75rem] w-[26rem] rounded-xl animate-pulse surface-primary;
+}

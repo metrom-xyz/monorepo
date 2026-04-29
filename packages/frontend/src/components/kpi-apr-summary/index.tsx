@@ -8,7 +8,7 @@ import {
     type KpiDistributionSpecification,
     type Specification,
 } from "@metrom-xyz/sdk";
-import type { CampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign/common";
 import { useMemo } from "react";
 import { getCampaignApr } from "@/src/utils/campaign";
 import { getCampaignAprTargetText } from "@/src/utils/kpi";

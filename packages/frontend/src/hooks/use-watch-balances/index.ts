@@ -11,6 +11,7 @@ export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
 }
 
 export interface UseWatchBalancesParams<T> extends HookBaseParams {
+    chainId?: number;
     address?: Address;
     tokens?: T[];
 }

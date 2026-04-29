@@ -1,6 +1,9 @@
 import { Typography } from "@metrom-xyz/ui";
 import { type AaveV3TargetType } from "@metrom-xyz/sdk";
-import { Campaign, type TargetedNamedCampaign } from "@/src/types/campaign";
+import type {
+    Campaign,
+    TargetedNamedCampaign,
+} from "@/src/types/campaign/common";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
 

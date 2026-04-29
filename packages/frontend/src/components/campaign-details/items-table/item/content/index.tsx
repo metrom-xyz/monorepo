@@ -1,4 +1,4 @@
-import type { CampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign/common";
 import { Tabs, UnderlinedTab } from "@metrom-xyz/ui";
 import { useEffect, useMemo, useState } from "react";
 import type { TranslationsKeys } from "@/src/types/utils";

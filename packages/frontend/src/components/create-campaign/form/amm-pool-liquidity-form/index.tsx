@@ -1,42 +1,39 @@
-import {
-    type AmmPoolLiquidityCampaignPayload,
-    type CampaignPayloadErrors,
-    AmmPoolLiquidityCampaignPreviewPayload,
-    type AmmPoolLiquidityCampaignPayloadPart,
-    type CampaignPreviewDistributables,
-    EmptyTargetCampaignPreviewPayload,
-    type CampaignPreviewKpiDistribution,
-    type CampaignPreviewFixedDistribution,
-} from "@/src/types/campaign";
-import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
+import { useCallback, useMemo, useState } from "react";
 import {
     AmmPoolLiquidityType,
     CampaignKind,
     DistributablesType,
     SupportedAmm,
 } from "@metrom-xyz/sdk";
-import { PoolStep } from "../../steps/pool-step";
-import { StartDateStep } from "../../steps/start-date-step";
-import { EndDateStep } from "../../steps/end-date-step";
-import { RewardsStep } from "../../steps/rewards-step";
-import { KpiStep } from "../../steps/kpi-step";
-import { RangeStep } from "../../steps/range-step";
-import { RestrictionsStep } from "../../steps/restrictions-step";
-import { DexStep } from "../../steps/dex-step";
-import { Button } from "@metrom-xyz/ui";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import {
-    AMM_SUPPORTS_RANGE_INCENTIVES,
-    AMM_SUPPORTS_TOKENS_RATIO,
-} from "@/src/commons";
-import { WeightingStep } from "../../steps/weighting";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
 import {
+    AmmPoolLiquidityCampaignPreviewPayload,
+    type AmmPoolLiquidityCampaignPayload,
+    type AmmPoolLiquidityCampaignPayloadPart,
+} from "@/src/types/campaign/amm-pool-liquidity-campaign";
+import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
+import {
+    AmmPoolLiquidityBasicsStep,
+    AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS,
+} from "./amm-pool-liquidity-basics-step";
+import { AmmPoolLiquidityRewardsStep } from "./amm-pool-liquidity-rewards-step";
+import { useFormSteps } from "@/src/context/form-steps";
+import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
+import { AMM_SUPPORTS_RANGE_INCENTIVES } from "@/src/commons";
+import { CampaignPoolRangeStep } from "../../steps/campaign-pool-range-step";
+import {
+    allFieldsFilled,
+    distributablesCompleted,
     validateDistributables,
     validateDistributions,
-} from "@/src/utils/creation-form";
+    validatePriceRangeSpecification,
+} from "@/src/utils/form";
+import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
+import { FormStepId } from "@/src/types/form";
+import type {
+    CampaignPreviewFixedDistribution,
+    CampaignPreviewKpiDistribution,
+} from "@/src/types/campaign/common";
 
 import styles from "./styles.module.css";
 
@@ -65,13 +62,19 @@ function validatePayload(
         return null;
     if (!validateDistributables(distributables)) return null;
     if (!validateDistributions(kpiDistribution, fixedDistribution)) return null;
+    if (
+        priceRangeSpecification &&
+        !validatePriceRangeSpecification(priceRangeSpecification)
+    )
+        return null;
 
     // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
+            chainId,
             startDate,
             endDate,
-            distributables as CampaignPreviewDistributables,
+            distributables,
             kpiDistribution as CampaignPreviewKpiDistribution,
             fixedDistribution as CampaignPreviewFixedDistribution,
             restrictions,
@@ -84,9 +87,10 @@ function validatePayload(
         pool,
         weighting,
         priceRangeSpecification,
+        chainId,
         startDate,
         endDate,
-        distributables as CampaignPreviewDistributables,
+        distributables,
         kpiDistribution as CampaignPreviewKpiDistribution,
         fixedDistribution as CampaignPreviewFixedDistribution,
         restrictions,
@@ -95,72 +99,31 @@ function validatePayload(
 
 interface AmmPoolLiquidityFormProps {
     kind: CampaignKind;
-    unsupportedChain: boolean;
-    onPreviewClick: (
-        payload:
-            | AmmPoolLiquidityCampaignPreviewPayload
-            | EmptyTargetCampaignPreviewPayload
-            | null,
-    ) => void;
+    distributablesType: DistributablesType;
+    onStepComplete: (payload: AmmPoolLiquidityCampaignPayloadPart) => void;
+    onLaunch: () => void;
 }
-
-const initialPayload: AmmPoolLiquidityCampaignPayload = {
-    distributables: { type: DistributablesType.Tokens },
-};
 
 export function AmmPoolLiquidityForm({
     kind,
-    unsupportedChain,
-    onPreviewClick,
+    distributablesType,
+    onStepComplete,
+    onLaunch,
 }: AmmPoolLiquidityFormProps) {
-    const t = useTranslations("newCampaign");
-    const { id: chainId } = useChainWithType();
+    const [payload, setPayload] = useState<AmmPoolLiquidityCampaignPayload>({
+        kind,
+        distributables: { type: distributablesType },
+        weighting: { liquidity: 100, token0: 0, token1: 0 },
+    });
 
-    const [payload, setPayload] = useState(initialPayload);
-    const [errors, setErrors] = useState<CampaignPayloadErrors>({});
+    const { errors, unsaved, activeStepId, updateActiveStepId } =
+        useFormSteps();
 
-    const previewPayload = useMemo(() => {
-        if (Object.values(errors).some((error) => !!error)) return null;
-        return validatePayload(chainId, payload);
-    }, [chainId, payload, errors]);
-
-    const noDistributables = useMemo(() => {
-        return (
-            !payload.distributables ||
-            payload.distributables.type === DistributablesType.FixedPoints ||
-            payload.distributables.type === DistributablesType.DynamicPoints ||
-            payload.distributables.type ===
-                DistributablesType.NoDistributables ||
-            !payload.distributables.tokens ||
-            payload.distributables.tokens.length === 0
-        );
-    }, [payload.distributables]);
-
-    const missingDistributables = useMemo(() => {
-        if (!payload.distributables) return true;
-
-        const { type } = payload.distributables;
-
-        if (type === DistributablesType.FixedPoints)
-            return (
-                !payload.distributables.fee || !payload.distributables.points
-            );
-        if (type === DistributablesType.Tokens)
-            return (
-                !payload.distributables.tokens ||
-                payload.distributables.tokens.length === 0
-            );
-
-        return true;
-    }, [payload.distributables]);
-
-    const tokensRatioSupported = useMemo(() => {
-        return (
-            !!payload.pool &&
-            AMM_SUPPORTS_TOKENS_RATIO[payload.pool.amm as SupportedAmm] &&
-            payload.pool.liquidityType === AmmPoolLiquidityType.Concentrated
-        );
-    }, [payload.pool]);
+    const validatedPayload = useMemo(() => {
+        if (Object.values(errors).some((error) => !!error) || !payload.chainId)
+            return null;
+        return validatePayload(payload.chainId, payload);
+    }, [payload, errors]);
 
     const rangeSupported = useMemo(() => {
         return (
@@ -170,121 +133,91 @@ export function AmmPoolLiquidityForm({
         );
     }, [payload.pool]);
 
-    useEffect(() => {
-        setPayload({ ...initialPayload, kind });
-    }, [chainId, kind]);
+    const steps: FormStepId[] = useMemo(
+        () => [
+            FormStepId.Basics,
+            FormStepId.Rewards,
+            ...(distributablesType === DistributablesType.Tokens
+                ? [FormStepId.Kpi]
+                : []),
+            ...(rangeSupported &&
+            distributablesType === DistributablesType.Tokens
+                ? [FormStepId.PoolRange]
+                : []),
+            FormStepId.Launch,
+        ],
+        [distributablesType, rangeSupported],
+    );
 
-    const handlePayloadOnChange = useCallback(
-        (part: AmmPoolLiquidityCampaignPayloadPart) => {
+    const handleOnApply = useCallback(
+        (part: AmmPoolLiquidityCampaignPayloadPart, stepId: FormStepId) => {
             setPayload((prev) => ({ ...prev, ...part }));
+            onStepComplete({ ...payload, ...part });
+
+            const currentIndex = steps.indexOf(activeStepId);
+            const appliedStepIndex = steps.indexOf(stepId);
+
+            const nextStepIndex =
+                currentIndex > appliedStepIndex
+                    ? currentIndex
+                    : appliedStepIndex + 1;
+
+            const next = steps[nextStepIndex];
+            if (!next) return;
+            updateActiveStepId(next);
         },
-        [],
+        [activeStepId, payload, steps, onStepComplete, updateActiveStepId],
     );
 
-    const handlePayloadOnError = useCallback(
-        (errors: CampaignPayloadErrors) => {
-            setErrors((state) => ({ ...state, ...errors }));
-        },
-        [],
-    );
-
-    function handlePreviewOnClick() {
-        onPreviewClick(previewPayload);
-    }
+    const unsavedSteps = Object.values(unsaved).some((item) => !!item);
 
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <DexStep
-                    disabled={unsupportedChain}
-                    dex={payload.dex}
-                    onDexChange={handlePayloadOnChange}
+                <AmmPoolLiquidityBasicsStep
+                    payload={payload}
+                    onApply={handleOnApply}
                 />
-                <PoolStep
-                    disabled={!payload.dex || unsupportedChain}
-                    dex={payload.dex}
-                    pool={payload.pool}
-                    onPoolChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <StartDateStep
-                    disabled={!payload.pool || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onStartDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <EndDateStep
-                    disabled={!payload.startDate || unsupportedChain}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    onEndDateChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                <RewardsStep
-                    disabled={!payload.endDate || unsupportedChain}
-                    distributables={payload.distributables}
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onDistributablesChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
-                />
-                {tokensRatioSupported && (
-                    <WeightingStep
-                        pool={payload.pool}
-                        disabled={noDistributables || unsupportedChain}
-                        weighting={payload.weighting}
-                        onWeightingChange={handlePayloadOnChange}
-                        onError={handlePayloadOnError}
-                    />
-                )}
-                <KpiStep
-                    disabled={noDistributables || unsupportedChain}
-                    kind={payload.kind}
-                    usdTvl={payload.pool?.usdTvl}
-                    distributables={
-                        payload.distributables?.type ===
-                        DistributablesType.Tokens
-                            ? payload.distributables
-                            : undefined
+                <AmmPoolLiquidityRewardsStep
+                    payload={payload}
+                    disabled={
+                        !!errors.basics ||
+                        !allFieldsFilled(
+                            payload,
+                            AMM_POOL_LIQUIDITY_BASIC_PAYLOAD_KEYS,
+                        )
                     }
-                    startDate={payload.startDate}
-                    endDate={payload.endDate}
-                    kpiDistribution={payload.kpiDistribution}
-                    fixedDistribution={payload.fixedDistribution}
-                    onKpiChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                    onApply={handleOnApply}
+                />
+                <CampaignKpiStep
+                    payload={payload}
+                    targetUsdValue={payload.pool?.usdTvl}
+                    disabled={
+                        !!errors.rewards || !distributablesCompleted(payload)
+                    }
+                    onApply={handleOnApply}
                 />
                 {rangeSupported && (
-                    <RangeStep
-                        disabled={noDistributables || unsupportedChain}
-                        distributablesType={payload.distributables?.type}
-                        pool={payload.pool}
-                        priceRangeSpecification={
-                            payload.priceRangeSpecification
+                    <CampaignPoolRangeStep
+                        payload={payload}
+                        disabled={
+                            !!errors.rewards ||
+                            !distributablesCompleted(payload)
                         }
-                        onRangeChange={handlePayloadOnChange}
-                        onError={handlePayloadOnError}
+                        onApply={handleOnApply}
                     />
                 )}
-                <RestrictionsStep
-                    disabled={missingDistributables || unsupportedChain}
-                    restrictions={payload.restrictions}
-                    onRestrictionsChange={handlePayloadOnChange}
-                    onError={handlePayloadOnError}
+                <CampaignApproveLaunchStep
+                    payload={validatedPayload}
+                    disabled={
+                        unsavedSteps ||
+                        !validatedPayload ||
+                        !!Object.values(errors).some((error) => !!error) ||
+                        !distributablesCompleted(payload)
+                    }
+                    onLaunch={onLaunch}
                 />
             </div>
-            <Button
-                icon={ArrowRightIcon}
-                iconPlacement="right"
-                disabled={!previewPayload}
-                onClick={handlePreviewOnClick}
-                className={{ root: styles.button }}
-            >
-                {t("submit.preview")}
-            </Button>
         </div>
     );
 }

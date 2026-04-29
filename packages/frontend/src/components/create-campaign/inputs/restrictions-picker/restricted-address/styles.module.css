@@ -1,0 +1,37 @@
+@reference "../../../../../app.css";
+
+.root {
+    @apply rounded-lg p-1 bg-gray-200 dark:bg-neutral-800 flex items-center gap-2;
+}
+
+.account {
+    @apply flex items-center gap-1.5;
+}
+
+.avatarBorder {
+    @apply rounded-lg border-2;
+}
+
+.avatarBorder.blacklist {
+    @apply border-error;
+}
+
+.avatarBorder.whitelist {
+    @apply border-brand-green-dark dark:border-brand-green;
+}
+
+.popover {
+    @apply p-1.5;
+}
+
+.removeButton {
+    @apply flex items-center justify-center rounded-lg p-1 cursor-pointer hover:bg-[#DC26261F] size-6 transition-colors duration-200 ease-in-out;
+}
+
+.removeButton > svg {
+    @apply transition-colors duration-200 ease-in-out;
+}
+
+.removeButton:hover > svg {
+    @apply text-error;
+}

@@ -12,6 +12,7 @@ import {
 } from "react-number-format";
 import { Minus } from "../../assets/minus";
 import { Plus } from "../../assets/plus";
+import { ErrorText } from "../error-text";
 
 import styles from "./styles.module.css";
 import commonStyles from "../commons/styles.module.css";
@@ -29,8 +30,8 @@ export type StepNumberInputProps = {
     id?: string;
     step?: InputAttributes["step"];
     label?: string;
-    prefix?: string;
     placeholder?: string;
+    prefix?: string;
     error?: boolean;
     loading?: boolean;
     disabled?: boolean;
@@ -50,6 +51,7 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
         {
             id,
             label,
+            placeholder,
             size = "base",
             errorText,
             error = false,
@@ -89,18 +91,11 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
         const resolvedId = id || generatedId;
 
         return (
-            <BaseInputWrapper
-                id={resolvedId}
-                label={label}
-                size={size}
-                loading={loading}
-                error={error}
-                errorText={errorText}
-                className={className}
-            >
+            <div className={classNames("root", styles.root, className)}>
                 <div
                     className={classNames(styles.wrapper, {
                         [styles[size]]: true,
+                        [styles.error]: error,
                     })}
                 >
                     <Button
@@ -114,23 +109,36 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                                 styles.stepDownButton,
                                 {
                                     [styles[size]]: true,
+                                    [styles.disabled]: disabled || loading,
                                 },
                             ),
                             icon: styles.stepButtonIcon,
                         }}
                     />
-                    <NumberFormatBase
+                    <BaseInputWrapper
                         id={resolvedId}
-                        format={format}
-                        getInputRef={ref}
-                        {...formatBaseProps}
-                        onValueChange={handleOnValueChange}
-                        onKeyDown={handleOnKeyDown}
-                        onBlur={onBlur}
-                        className={classNames("input", commonStyles.input, {
-                            [commonStyles[size]]: true,
-                        })}
-                    />
+                        label={label}
+                        size={size}
+                        error={error}
+                        loading={loading}
+                    >
+                        <NumberFormatBase
+                            id={resolvedId}
+                            format={format}
+                            getInputRef={ref}
+                            {...formatBaseProps}
+                            autoComplete="off"
+                            placeholder={
+                                placeholder && !label ? placeholder : " "
+                            }
+                            onValueChange={handleOnValueChange}
+                            onKeyDown={handleOnKeyDown}
+                            onBlur={onBlur}
+                            className={classNames("input", commonStyles.input, {
+                                [commonStyles[size]]: true,
+                            })}
+                        />
+                    </BaseInputWrapper>
                     <input
                         ref={internalRef}
                         type="number"
@@ -149,12 +157,23 @@ export const StepNumberInput: React.ForwardRefExoticComponent<StepNumberInputPro
                                 styles.stepUpButton,
                                 {
                                     [styles[size]]: true,
+                                    [styles.disabled]: disabled || loading,
                                 },
                             ),
                             icon: styles.stepButtonIcon,
                         }}
                     />
                 </div>
-            </BaseInputWrapper>
+                {error && errorText && (
+                    <ErrorText
+                        size="xs"
+                        uppercase={false}
+                        weight="medium"
+                        className={commonStyles.errorText}
+                    >
+                        {errorText}
+                    </ErrorText>
+                )}
+            </div>
         );
     });

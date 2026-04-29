@@ -1,0 +1,32 @@
+@reference "../../../../app.css";
+
+.root :global(.content) {
+    @apply flex flex-col gap-3;
+}
+
+.feeChip {
+    @apply px-2
+        py-1
+        rounded-lg
+        bg-gray-300
+        dark:bg-neutral-600
+        transition-opacity
+        duration-200
+        ease-in-out;
+}
+
+.feeSkeleton {
+    @apply w-[120px];
+}
+
+.warning {
+    @apply flex items-center gap-1;
+}
+
+.infoWarningIcon {
+    @apply size-4 text-warning;
+}
+
+.warningText {
+    @apply text-warning;
+}

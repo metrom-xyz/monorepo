@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { ItemContent } from "./content";
 import { CampaignTag } from "@/src/components/campaign-tag";
 import { CampaignStatus } from "../../../campaign-status";
-import type { CampaignItem } from "@/src/types/campaign";
+import type { CampaignItem } from "@/src/types/campaign/common";
 import { KpiTagPopover } from "./kpi-tag-popover";
 import { Header } from "./header";
 import { InfoMessage } from "@/src/components/info-message";

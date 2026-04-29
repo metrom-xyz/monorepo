@@ -1,0 +1,45 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply hidden sm:flex flex-col gap-7 flex-[27%];
+}
+
+.header {
+    @apply flex items-start justify-between;
+}
+
+.basicsHeader {
+    @apply flex items-center gap-3;
+}
+
+.targetUsdChip {
+    @apply w-fit px-2 py-1 rounded-lg bg-gray-300 dark:bg-neutral-600;
+}
+
+.title {
+    @apply leading-7 sm:leading-8;
+}
+
+.buttons {
+    @apply flex items-center gap-2;
+}
+
+.button {
+    @apply h-9;
+}
+
+.empty {
+    @apply h-full flex flex-col gap-2 items-center justify-center self-center;
+}
+
+.documentTextIcon {
+    @apply text-tertiary;
+}
+
+.emptyText {
+    @apply flex flex-col text-center gap-1;
+}
+
+.content {
+    @apply flex flex-col gap-7;
+}
