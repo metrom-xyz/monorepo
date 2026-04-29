@@ -461,16 +461,6 @@
                         "deposits": "Deposits"
                     },
                     "apply": "Apply"
-                },
-                "blacklistedCrossBorrowCollaterals": {
-                    "title": "Block cross borrow",
-                    "blocks": "Blocks borrowing",
-                    "collaterals": "Collaterals",
-                    "notApplied": "Not applied",
-                    "emptyCollaterals": "No collaterals",
-                    "infoMessage": "Net supply <bold>{symbol}</bold> = Supplied <bold>{symbol}</bold> - (borrowed <bold>{symbol}</bold>{borrowed}).",
-                    "borrowed": " + borrowed {symbol}",
-                    "apply": "Apply"
                 }
             },
             "ammPoolLiquidity": {
