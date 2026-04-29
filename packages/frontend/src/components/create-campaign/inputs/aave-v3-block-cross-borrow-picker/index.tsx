@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { Chip, Typography } from "@metrom-xyz/ui";
+import { Chip, Skeleton, Typography } from "@metrom-xyz/ui";
 import type { AaveV3CampaignPayloadPart } from "@/src/types/campaign/aave-v3-campaign";
 import { type AaveV3Protocol } from "@metrom-xyz/chains";
 import type { AaveV3Collateral, AaveV3Market } from "@metrom-xyz/sdk";
@@ -64,8 +64,23 @@ export function AaveV3BlockCrossBorrowPicker({
     return (
         <div className={styles.root}>
             {loading ? (
-                // TODO: aadd loading state
-                <div>loading</div>
+                <>
+                    <Skeleton
+                        width={80}
+                        height={32}
+                        className={styles.skeletonChip}
+                    />
+                    <Skeleton
+                        width={80}
+                        height={32}
+                        className={styles.skeletonChip}
+                    />
+                    <Skeleton
+                        width={80}
+                        height={32}
+                        className={styles.skeletonChip}
+                    />
+                </>
             ) : (
                 availableCollaterals.map((collateral) => {
                     const active = !!value?.find(

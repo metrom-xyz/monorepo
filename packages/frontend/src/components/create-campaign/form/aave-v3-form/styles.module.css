@@ -8,6 +8,10 @@
     @apply flex flex-col gap-4;
 }
 
+.basics {
+    @apply flex flex-col gap-4;
+}
+
 .target {
     @apply flex flex-col sm:flex-row gap-4;
 }
