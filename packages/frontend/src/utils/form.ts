@@ -97,6 +97,8 @@ export function distributablesEqual(
         return (
             prev.distributables.fee?.token.address ===
                 current.distributables.fee?.token.address &&
+            prev.distributables.fee?.amount.raw ===
+                current.distributables.fee?.amount.raw &&
             prev.distributables.points === current.distributables.points
         );
     }

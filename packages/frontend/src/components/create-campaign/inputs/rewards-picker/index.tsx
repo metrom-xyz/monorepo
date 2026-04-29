@@ -5,6 +5,7 @@ import type {
 import { DistributablesType } from "@metrom-xyz/sdk";
 import { RewardsPickerTokens } from "./tokens";
 import type { FormSteps } from "@/src/context/form-steps";
+import { RewardPoints } from "./points";
 
 interface RewardsPickerProps {
     chainId?: number;
@@ -21,19 +22,25 @@ export function RewardsPicker({
     onChange,
     onError,
 }: RewardsPickerProps) {
-    return (
-        <>
-            {/* TODO: implement inputs */}
-            {value?.type === DistributablesType.FixedPoints && null}
-            {value?.type === DistributablesType.Tokens && (
-                <RewardsPickerTokens
-                    chainId={chainId}
-                    campaignDuration={campaignDuration}
-                    value={value}
-                    onChange={onChange}
-                    onError={onError}
-                />
-            )}
-        </>
-    );
+    if (value?.type === DistributablesType.FixedPoints)
+        return (
+            <RewardPoints
+                chainId={chainId}
+                campaignDuration={campaignDuration}
+                value={value}
+                onChange={onChange}
+                onError={onError}
+            />
+        );
+
+    if (value?.type === DistributablesType.Tokens)
+        return (
+            <RewardsPickerTokens
+                chainId={chainId}
+                campaignDuration={campaignDuration}
+                value={value}
+                onChange={onChange}
+                onError={onError}
+            />
+        );
 }

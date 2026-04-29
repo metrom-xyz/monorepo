@@ -137,11 +137,16 @@ export function AmmPoolLiquidityForm({
         () => [
             FormStepId.Basics,
             FormStepId.Rewards,
-            FormStepId.Kpi,
-            ...(rangeSupported ? [FormStepId.PoolRange] : []),
+            ...(distributablesType === DistributablesType.Tokens
+                ? [FormStepId.Kpi]
+                : []),
+            ...(rangeSupported &&
+            distributablesType === DistributablesType.Tokens
+                ? [FormStepId.PoolRange]
+                : []),
             FormStepId.Launch,
         ],
-        [rangeSupported],
+        [distributablesType, rangeSupported],
     );
 
     const handleOnApply = useCallback(

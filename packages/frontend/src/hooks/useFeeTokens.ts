@@ -30,6 +30,7 @@ export function useFeeTokens({ enabled = true }: UseFeeTokensParams = {}): {
             }
         },
         enabled,
+        retry: false,
     });
 
     return {

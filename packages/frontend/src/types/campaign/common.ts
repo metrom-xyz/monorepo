@@ -206,23 +206,6 @@ export interface DistributablesCampaignPreviewPayload<
             : never;
 }
 
-export interface CampaignPayloadErrors {
-    basics?: string;
-    rewards?: string;
-
-    // TODO: remove single prop errors
-    pool?: boolean;
-    holdFungibleAsset?: boolean;
-    startDate?: boolean;
-    endDate?: boolean;
-    weighting?: boolean;
-    distribution?: boolean;
-    priceRangeSpecification?: boolean;
-    boostingFactor?: boolean;
-    blacklistedCrossSupplyCollaterals?: boolean;
-    restrictions?: boolean;
-}
-
 export type BaseCampaignPayloadPart = PropertyUnion<BaseCampaignPayload>;
 
 export type CampaignPayloadPart<T extends ProtocolType | undefined> =

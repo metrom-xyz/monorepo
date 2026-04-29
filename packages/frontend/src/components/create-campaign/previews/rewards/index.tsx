@@ -90,85 +90,110 @@ export function Rewards({
                     <Typography size="xs" weight="semibold" uppercase>
                         {t("rewards")}
                     </Typography>
-                    <div
-                        className={classNames(styles.aprChip, {
-                            [styles.noApr]: derivedApr === undefined,
-                        })}
-                    >
-                        {loadingApr ? (
-                            <Skeleton size="xs" className={styles.loadingApr} />
-                        ) : (
-                            <Typography size="xs" weight="medium">
-                                {t("apr", {
-                                    apr:
-                                        derivedApr !== undefined
-                                            ? formatPercentage({
-                                                  percentage: derivedApr,
-                                              })
-                                            : "-",
-                                })}
-                            </Typography>
-                        )}
-                    </div>
+                    {distributables?.type === DistributablesType.Tokens && (
+                        <div
+                            className={classNames(styles.aprChip, {
+                                [styles.noApr]: derivedApr === undefined,
+                            })}
+                        >
+                            {loadingApr ? (
+                                <Skeleton
+                                    size="xs"
+                                    className={styles.loadingApr}
+                                />
+                            ) : (
+                                <Typography size="xs" weight="medium">
+                                    {t("apr", {
+                                        apr:
+                                            derivedApr !== undefined
+                                                ? formatPercentage({
+                                                      percentage: derivedApr,
+                                                  })
+                                                : "-",
+                                    })}
+                                </Typography>
+                            )}
+                        </div>
+                    )}
                 </div>
             }
             completed={completed}
             error={!!errors.rewards}
         >
             <div className={styles.distributables}>
-                <Typography size="xs" weight="medium" variant="tertiary">
-                    {t("dailyAndTot", {
-                        dailyUsd: formatUsdAmount({ amount: dailyUsd }),
-                        totalUsd: formatUsdAmount({ amount: totalUsd }),
-                    })}
-                </Typography>
-                <div className={styles.tokens}>
-                    {distributables &&
-                        distributables.type === DistributablesType.Tokens &&
-                        distributables.tokens
-                            ?.sort(
-                                (a, b) => b.amount.usdValue - a.amount.usdValue,
-                            )
-                            .map(({ token, amount }) => {
-                                return (
-                                    <div
-                                        key={token.address}
-                                        className={styles.token}
-                                    >
-                                        <div className={styles.tokenName}>
-                                            <RemoteLogo
-                                                size="xxs"
-                                                address={token.address}
-                                                chain={chainId}
-                                            />
-                                            <Typography
-                                                size="sm"
-                                                weight="medium"
-                                            >
-                                                {token.symbol}
-                                            </Typography>
-                                        </div>
-                                        <div className={styles.amount}>
-                                            <Typography
-                                                size="sm"
-                                                weight="medium"
-                                            >
-                                                {formatAmount({
-                                                    amount: amount.formatted,
-                                                })}
-                                            </Typography>
-                                            <Typography
-                                                size="sm"
-                                                weight="medium"
-                                                variant="tertiary"
-                                            >
-                                                {`(${formatUsdAmount({ amount: amount.usdValue })})`}
-                                            </Typography>
-                                        </div>
-                                    </div>
-                                );
+                {distributables?.type === DistributablesType.Tokens && (
+                    <>
+                        <Typography
+                            size="xs"
+                            weight="medium"
+                            variant="tertiary"
+                        >
+                            {t("dailyAndTot", {
+                                dailyUsd: formatUsdAmount({ amount: dailyUsd }),
+                                totalUsd: formatUsdAmount({ amount: totalUsd }),
                             })}
-                </div>
+                        </Typography>
+                        <div className={styles.tokens}>
+                            {distributables &&
+                                distributables.tokens
+                                    ?.sort(
+                                        (a, b) =>
+                                            b.amount.usdValue -
+                                            a.amount.usdValue,
+                                    )
+                                    .map(({ token, amount }) => {
+                                        return (
+                                            <div
+                                                key={token.address}
+                                                className={styles.token}
+                                            >
+                                                <div
+                                                    className={styles.tokenName}
+                                                >
+                                                    <RemoteLogo
+                                                        size="xxs"
+                                                        address={token.address}
+                                                        chain={chainId}
+                                                    />
+                                                    <Typography
+                                                        size="sm"
+                                                        weight="medium"
+                                                    >
+                                                        {token.symbol}
+                                                    </Typography>
+                                                </div>
+                                                <div className={styles.amount}>
+                                                    <Typography
+                                                        size="sm"
+                                                        weight="medium"
+                                                    >
+                                                        {formatAmount({
+                                                            amount: amount.formatted,
+                                                        })}
+                                                    </Typography>
+                                                    <Typography
+                                                        size="sm"
+                                                        weight="medium"
+                                                        variant="tertiary"
+                                                    >
+                                                        {`(${formatUsdAmount({ amount: amount.usdValue })})`}
+                                                    </Typography>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                        </div>
+                    </>
+                )}
+                {distributables?.type === DistributablesType.FixedPoints && (
+                    <Typography size="xs" weight="medium" variant="tertiary">
+                        {t("points", {
+                            pointsAmount: formatAmount({
+                                amount: distributables.points,
+                            }),
+                        })}
+                    </Typography>
+                )}
             </div>
             {pool && weighting && (
                 <div className={styles.weighting}>
