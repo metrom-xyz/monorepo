@@ -251,6 +251,8 @@ export function CampaignKpiStep({
         }));
     }
 
+    if (payload.distributables?.type !== DistributablesType.Tokens) return null;
+
     return (
         <>
             {!!payload.fixedDistribution && (

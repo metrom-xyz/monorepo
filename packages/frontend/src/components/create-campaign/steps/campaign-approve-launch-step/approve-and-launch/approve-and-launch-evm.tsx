@@ -75,7 +75,7 @@ export function ApproveAndDeployEvm({
             }
             case DistributablesType.FixedPoints: {
                 const { amount, token } = payload.distributables.fee;
-                const adjustedFeeAmountRaw = (amount.raw * 115n) / 100n;
+                const adjustedFeeAmountRaw = (amount.raw * 1015n) / 1000n;
                 const adjustedFeeAmountFormatted = Number(
                     formatUnits(adjustedFeeAmountRaw, token.decimals),
                 );

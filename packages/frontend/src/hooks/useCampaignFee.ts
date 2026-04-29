@@ -16,19 +16,28 @@ export function useCampaignFee({ distributables }: UseCampaignFeeProps) {
     const [resolvedFee, setResolvedFee] = useState<number>();
 
     const totalRewardsUsdAmount = useMemo(() => {
-        if (
-            !distributables ||
-            distributables.type !== DistributablesType.Tokens ||
-            !distributables.tokens
-        )
-            return 0;
+        if (!distributables) return 0;
 
-        let total = 0;
-        for (const reward of distributables.tokens) {
-            if (!reward.amount.usdValue) return 0;
-            total += reward.amount.usdValue;
+        if (
+            distributables.type === DistributablesType.FixedPoints &&
+            distributables.fee
+        ) {
+            return distributables.fee.amount.usdValue;
         }
-        return total;
+
+        if (
+            distributables.type === DistributablesType.Tokens &&
+            distributables.tokens
+        ) {
+            let total = 0;
+            for (const reward of distributables.tokens) {
+                if (!reward.amount.usdValue) return 0;
+                total += reward.amount.usdValue;
+            }
+            return total;
+        }
+
+        return 0;
     }, [distributables]);
 
     useEffect(() => {

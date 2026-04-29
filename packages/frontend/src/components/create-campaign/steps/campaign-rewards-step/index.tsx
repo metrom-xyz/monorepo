@@ -120,26 +120,32 @@ export function CampaignRewardsStep({
             <FormStepSection
                 title={t("defineAssets")}
                 headerDecorator={
-                    <div
-                        className={classNames(styles.aprChip, {
-                            [styles.noApr]: derivedApr === undefined,
-                        })}
-                    >
-                        {loadingApr ? (
-                            <Skeleton size="xs" className={styles.loadingApr} />
-                        ) : (
-                            <Typography size="xs" weight="medium">
-                                {t("apr", {
-                                    apr:
-                                        derivedApr !== undefined
-                                            ? formatPercentage({
-                                                  percentage: derivedApr,
-                                              })
-                                            : "-",
-                                })}
-                            </Typography>
-                        )}
-                    </div>
+                    payload.distributables?.type ===
+                    DistributablesType.Tokens ? (
+                        <div
+                            className={classNames(styles.aprChip, {
+                                [styles.noApr]: derivedApr === undefined,
+                            })}
+                        >
+                            {loadingApr ? (
+                                <Skeleton
+                                    size="xs"
+                                    className={styles.loadingApr}
+                                />
+                            ) : (
+                                <Typography size="xs" weight="medium">
+                                    {t("apr", {
+                                        apr:
+                                            derivedApr !== undefined
+                                                ? formatPercentage({
+                                                      percentage: derivedApr,
+                                                  })
+                                                : "-",
+                                    })}
+                                </Typography>
+                            )}
+                        </div>
+                    ) : undefined
                 }
             >
                 <RewardsPicker
