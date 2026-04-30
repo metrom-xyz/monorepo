@@ -51,6 +51,11 @@ export function FormNotSupported({
     const t = useTranslations("newCampaign");
 
     if (type && !CAMPAIGN_TYPE_TRANSLATION[type]) notFound();
+    if (
+        distributablesType &&
+        !DISTRIBUTABLES_TYPE_TRANSLATION[distributablesType]
+    )
+        notFound();
 
     return (
         <div className={styles.root}>

@@ -15,3 +15,15 @@
 .header {
     @apply flex justify-between items-center px-3 pt-3;
 }
+
+.skeletonCollateral {
+    @apply w-full flex items-center justify-between;
+}
+
+.skeletonCollateral > div {
+    @apply w-full flex items-center gap-1;
+}
+
+.skeleton :global(.skeleton) {
+    @apply bg-gray-200 dark:bg-neutral-800;
+}
