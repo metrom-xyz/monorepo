@@ -72,6 +72,8 @@ export function HoldFungibleAssetBasicsStep({
         setBasicsPayload((prev) => ({ ...prev, ...part }));
     }
 
+    if (!payload.distributables) return null;
+
     return (
         <CampaignBasicsStep
             payload={basicsPayload}
@@ -86,6 +88,7 @@ export function HoldFungibleAssetBasicsStep({
                     <div className={styles.target}>
                         <ChainSelect
                             campaignType={BaseCampaignType.HoldFungibleAsset}
+                            distributablesType={payload.distributables.type}
                             value={basicsPayload.chainId}
                             onChange={handlePayloadOnChange}
                         />

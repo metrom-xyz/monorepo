@@ -1,19 +1,43 @@
-import type { CampaignType } from "@metrom-xyz/sdk";
-import { useChainData } from "./useChainData";
+import type { Form } from "@metrom-xyz/chains";
+import { getChainData } from "../utils/chain";
+import { useActiveChains } from "./useActiveChains";
+import type { CampaignType, DistributablesType } from "@metrom-xyz/sdk";
 
 interface UseFormsProps {
-    chainId: number;
     type?: CampaignType;
-    partner?: boolean;
+    distributablesType?: DistributablesType;
 }
 
-export function useForms({ chainId, type, partner }: UseFormsProps) {
-    const data = useChainData({ chainId });
-    if (!data) return [];
+interface UseFormsReturnValue {
+    forms: Form[];
+    partners: Form[];
+}
 
-    return data.forms.filter((form) => {
-        if (partner !== undefined && partner !== form.partner) return false;
-        if (type !== undefined && type !== form.type) return false;
-        return form.active;
+export function useForms({
+    type,
+    distributablesType,
+}: UseFormsProps = {}): UseFormsReturnValue {
+    const chains = useActiveChains();
+
+    const forms: Record<string, Form> = {};
+    const partners: Record<string, Form> = {};
+    chains.forEach((chain) => {
+        const data = getChainData(chain.id);
+        if (!data) return;
+
+        data.forms.forEach((form) => {
+            if (!form.active) return;
+            if (type && form.type !== type) return;
+            if (
+                distributablesType &&
+                !form.distributables.includes(distributablesType)
+            )
+                return;
+
+            if (form.partner) partners[form.type] = form;
+            else forms[form.type] = form;
+        });
     });
+
+    return { forms: Object.values(forms), partners: Object.values(partners) };
 }

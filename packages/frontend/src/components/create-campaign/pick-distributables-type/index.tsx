@@ -15,12 +15,11 @@ import { ArrowLeftIcon } from "@/src/assets/arrow-left-icon";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { ReactNode } from "react";
 import { FORM_INFO } from "..";
-import { NavigationCard, SkeletonNavigationCard } from "../navigation-card";
+import { NavigationCard } from "../navigation-card";
 import { PARTNER_FORM_INFO } from "../pick-partner-action";
-import { useForms } from "@/src/hooks/useForms";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { FormNotSupported } from "../form-not-supported";
-import { useFeeTokens } from "@/src/hooks/useFeeTokens";
+import { useForms } from "@/src/hooks/useForms";
+import { useFormDistributables } from "@/src/hooks/useFormDistributables";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -32,20 +31,25 @@ interface DistributableTypeConfig {
     icon: ReactNode;
 }
 
-const DISTRIBUTABLE_TYPES: DistributableTypeConfig[] = [
-    {
+const DISTRIBUTABLE_TYPES: Record<
+    DistributablesType,
+    DistributableTypeConfig | null
+> = {
+    [DistributablesType.Tokens]: {
         type: DistributablesType.Tokens,
         title: "rewards.title",
         description: "rewards.description",
         icon: <TokensIcon />,
     },
-    {
+    [DistributablesType.FixedPoints]: {
         type: DistributablesType.FixedPoints,
         title: "points.title",
         description: "points.description",
         icon: <PointsIcon />,
     },
-];
+    [DistributablesType.DynamicPoints]: null,
+    [DistributablesType.NoDistributables]: null,
+};
 
 const CAMPAIGN_TYPE_TITLE: Record<
     CampaignType,
@@ -72,28 +76,8 @@ export function PickDistributablesType({
     const campaignTypeT = useTranslations("newCampaign.formHeader.type");
 
     const router = useRouter();
-    const { id: chainId } = useChainWithType();
-    const { tokens: feeTokens, loading: loadingFeeTokens } = useFeeTokens();
-
-    const formsByType = useForms({
-        chainId,
-        type: campaignType,
-        partner: false,
-    });
-    const partnerFormsByType = useForms({
-        chainId,
-        type: campaignType,
-        partner: true,
-    });
-
-    const formsByChain = useForms({ chainId, partner: false });
-    const partnerFormsByChain = useForms({
-        chainId,
-        partner: true,
-    });
-
-    const supportedByType = [...formsByType, ...partnerFormsByType];
-    const supportedByChain = [...formsByChain, ...partnerFormsByChain];
+    const { forms, partners } = useForms({ type: campaignType });
+    const distributables = useFormDistributables({ type: campaignType });
 
     const { icon } =
         FORM_INFO[campaignType as BaseCampaignType] ||
@@ -105,24 +89,22 @@ export function PickDistributablesType({
         router.push("/campaigns/create");
     }
 
-    if (supportedByType.length === 0)
-        return <FormNotSupported type={campaignType} chainId={chainId} />;
+    if (forms.length === 0 && partners.length === 0)
+        return <FormNotSupported type={campaignType} />;
 
     return (
         <div className={styles.root}>
             <div className={styles.navigation}>
-                {supportedByChain.length > 1 && (
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        border={false}
-                        icon={ArrowLeftIcon}
-                        onClick={handleBackOnClick}
-                        className={{ root: styles.button }}
-                    >
-                        {t("navigation.back")}
-                    </Button>
-                )}
+                <Button
+                    size="sm"
+                    variant="secondary"
+                    border={false}
+                    icon={ArrowLeftIcon}
+                    onClick={handleBackOnClick}
+                    className={{ root: styles.button }}
+                >
+                    {t("navigation.back")}
+                </Button>
                 <div className={styles.campaignTypeChip}>
                     <Typography
                         weight="medium"
@@ -148,29 +130,22 @@ export function PickDistributablesType({
                 </Typography>
             </div>
             <div className={commonStyles.cardsWrapper}>
-                {loadingFeeTokens
-                    ? Array.from({ length: DISTRIBUTABLE_TYPES.length }).map(
-                          (_, index) => <SkeletonNavigationCard key={index} />,
-                      )
-                    : DISTRIBUTABLE_TYPES.map(
-                          ({ type, title, description, icon }) => {
-                              if (
-                                  type === DistributablesType.FixedPoints &&
-                                  (!feeTokens || feeTokens.length === 0)
-                              )
-                                  return null;
+                {distributables.map((distributable) => {
+                    if (!DISTRIBUTABLE_TYPES[distributable]) return;
 
-                              return (
-                                  <NavigationCard
-                                      key={type}
-                                      href={`/campaigns/create/${campaignType}/${type}`}
-                                      title={t(title)}
-                                      description={t(description)}
-                                      icon={icon}
-                                  />
-                              );
-                          },
-                      )}
+                    const { type, title, description, icon } =
+                        DISTRIBUTABLE_TYPES[distributable];
+
+                    return (
+                        <NavigationCard
+                            key={type}
+                            href={`/campaigns/create/${campaignType}/${type}`}
+                            title={t(title)}
+                            description={t(description)}
+                            icon={icon}
+                        />
+                    );
+                })}
             </div>
         </div>
     );

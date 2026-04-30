@@ -79,7 +79,7 @@ export function CampaignRewardsStep({
     }, [applied, completed, activeStepId]);
 
     useEffect(() => {
-        updateUnsaved({ basics: unsavedChanges });
+        updateUnsaved({ rewards: unsavedChanges });
     }, [unsavedChanges, updateUnsaved]);
 
     const campaignDuration = useMemo(() => {

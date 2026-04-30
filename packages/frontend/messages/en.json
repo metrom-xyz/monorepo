@@ -193,6 +193,12 @@
                 "partnerActions": "Partner action",
                 "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
                 "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
+            },
+            "distributables": {
+                "tokens": "Tokens rewards",
+                "points": "Points system",
+                "dynamicPoints": "Dynamic points system",
+                "noDistributables": "No distributables"
             }
         },
         "formPreview": {
@@ -488,9 +494,9 @@
             "preview": "Campaign preview"
         },
         "empty": {
-            "message1": "Campaign creation isn't supported on {chain} chain.",
-            "message2": "{campaignType} campaign creation isn't supported on {chain} chain.",
-            "message3": "Please choose a different chain.",
+            "message1": "<bold>{campaignType}</bold> campaign creation isn't supported for distributables of type <bold>{distributablesType}</bold>.",
+            "message2": "<bold>{campaignType}</bold> campaign creation isn't supported.",
+            "message3": "Please choose a different campaign type.",
             "backToCreate": "Back to create"
         },
         "back": "Back",

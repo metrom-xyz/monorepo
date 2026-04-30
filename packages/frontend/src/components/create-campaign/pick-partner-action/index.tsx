@@ -8,9 +8,8 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import { PartnerCampaignType } from "@metrom-xyz/sdk";
 import { NavigationCard } from "../navigation-card";
 import { ArrowLeftIcon } from "@/src/assets/arrow-left-icon";
-import { useForms } from "@/src/hooks/useForms";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useRouter } from "@/src/i18n/routing";
+import { useForms } from "@/src/hooks/useForms";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -37,11 +36,7 @@ export const PARTNER_FORM_INFO: Record<PartnerCampaignType, ActionCard> = {
 export function PickPartnerAction() {
     const t = useTranslations("newCampaign.partnerAction.pickAction");
     const router = useRouter();
-    const { id: chainId } = useChainWithType();
-    const forms = useForms({
-        chainId,
-        partner: true,
-    });
+    const { partners } = useForms();
 
     return (
         <div className={styles.root}>
@@ -66,7 +61,7 @@ export function PickPartnerAction() {
                 </Typography>
             </div>
             <div className={commonStyles.cardsWrapper}>
-                {forms.map(({ active, partner, type }) => {
+                {partners.map(({ active, partner, type }) => {
                     const info = PARTNER_FORM_INFO[type as PartnerCampaignType];
                     if (!info || !partner || !active) return null;
 

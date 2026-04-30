@@ -1,4 +1,9 @@
-import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { baseSepolia } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -20,11 +25,19 @@ export const baseSepoliaData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [
+                DistributablesType.Tokens,
+                DistributablesType.FixedPoints,
+            ],
         },
         {
             active: true,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [
+                DistributablesType.Tokens,
+                DistributablesType.FixedPoints,
+            ],
         },
     ],
     protocols: [

@@ -26,9 +26,8 @@ import { CheckIcon } from "@/src/assets/check-icon";
 import { SAFE } from "@/src/commons/env";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { AnimatePresence, easeInOut, motion } from "motion/react";
-import { useForms } from "@/src/hooks/useForms";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { FormNotSupported } from "../form-not-supported";
+import { useForms } from "@/src/hooks/useForms";
 
 import styles from "./styles.module.css";
 
@@ -45,17 +44,10 @@ export function CreateCampaignForm<T extends CampaignType>({
     const [payload, setPayload] = useState<CampaignPayload | null>(null);
 
     const t = useTranslations("newCampaign");
-    const { id: chainId } = useChainWithType();
     const router = useRouter();
-    const formsByType = useForms({
-        chainId,
+    const { forms, partners } = useForms({
         type: campaignType,
-        partner: false,
-    });
-    const partnerFormsByType = useForms({
-        chainId,
-        type: campaignType,
-        partner: true,
+        distributablesType,
     });
 
     function handlePreviewOnClick() {
@@ -82,10 +74,13 @@ export function CreateCampaignForm<T extends CampaignType>({
         router.push("/");
     }
 
-    const supportedByType = [...formsByType, ...partnerFormsByType];
-
-    if (supportedByType.length === 0)
-        return <FormNotSupported type={campaignType} chainId={chainId} />;
+    if (forms.length === 0 && partners.length === 0)
+        return (
+            <FormNotSupported
+                type={campaignType}
+                distributablesType={distributablesType}
+            />
+        );
 
     return (
         <AnimatePresence mode="wait">

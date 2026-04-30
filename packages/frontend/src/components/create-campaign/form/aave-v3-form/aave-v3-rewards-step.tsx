@@ -44,7 +44,7 @@ export function AaveV3RewardsStep({
     });
 
     const { errors } = useFormSteps();
-    const { id: chainId, type: chainType } = useChainWithType();
+    const { type: chainType } = useChainWithType();
     const {
         loading: loadingCollateralUsdNetSupply,
         usdNetSupply: collateralUsdNetSupply,
@@ -109,7 +109,7 @@ export function AaveV3RewardsStep({
 
     return (
         <CampaignRewardsStep
-            chainId={chainId}
+            chainId={payload.chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
             kpiDistribution={payload.kpiDistribution}

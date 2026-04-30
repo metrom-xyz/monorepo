@@ -1,6 +1,7 @@
 import {
     BaseCampaignType,
     ChainType,
+    DistributablesType,
     PartnerCampaignType,
     SupportedDex,
     SupportedYieldSeeker,
@@ -31,11 +32,13 @@ export const baseData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

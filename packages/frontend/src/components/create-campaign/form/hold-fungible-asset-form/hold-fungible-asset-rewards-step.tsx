@@ -9,7 +9,6 @@ import {
 } from "@/src/utils/form";
 import { DistributablesType, RestrictionType } from "@metrom-xyz/sdk";
 import { useFormSteps } from "@/src/context/form-steps";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import type { Address } from "viem";
 import type { FormStepId } from "@/src/types/form";
 import {
@@ -42,7 +41,6 @@ export function HoldFungibleAssetRewardsStep({
     });
 
     const { errors } = useFormSteps();
-    const { id: chainId } = useChainWithType();
 
     const unsavedChanges = useMemo(() => {
         if (
@@ -89,7 +87,7 @@ export function HoldFungibleAssetRewardsStep({
 
     return (
         <CampaignRewardsStep
-            chainId={chainId}
+            chainId={payload.chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
             kpiDistribution={payload.kpiDistribution}

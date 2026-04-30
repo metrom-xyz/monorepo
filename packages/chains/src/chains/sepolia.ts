@@ -4,6 +4,7 @@ import { sepolia } from "viem/chains";
 import {
     BaseCampaignType,
     ChainType,
+    DistributablesType,
     SupportedDex,
     SupportedLiquityV2,
     TargetType,
@@ -30,16 +31,19 @@ export const sepoliaData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: true,
             partner: false,
             type: BaseCampaignType.LiquityV2,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: true,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

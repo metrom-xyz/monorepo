@@ -1,6 +1,7 @@
 import {
     BaseCampaignType,
     ChainType,
+    DistributablesType,
     PartnerCampaignType,
     SupportedDex,
 } from "@metrom-xyz/sdk";
@@ -25,11 +26,13 @@ export const gnosisData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [
@@ -41,7 +44,8 @@ export const gnosisData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/uniswap/v3/liquidity/gnosis/{pool}",
+                template:
+                    "https://oku.trade/uniswap/v3/liquidity/gnosis/{pool}",
             },
             supportsFetchAllPools: true,
         },

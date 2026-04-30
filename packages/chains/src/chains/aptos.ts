@@ -1,6 +1,7 @@
 import {
     BaseCampaignType,
     ChainType,
+    DistributablesType,
     SupportedAaveV3,
     SupportedDex,
     TargetType,
@@ -35,11 +36,13 @@ export const aptosDevelopmentData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AaveV3,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: true,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [
@@ -94,16 +97,19 @@ export const aptosDevelopmentProductionData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AaveV3,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [
@@ -165,16 +171,19 @@ export const aptosProductionData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: true,
             partner: false,
             type: BaseCampaignType.AaveV3,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: false,
             partner: false,
             type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

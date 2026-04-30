@@ -1,4 +1,9 @@
-import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { LightLinkPhoenixLogo } from "../assets/logos/chains/lightlink-phoenix";
 import { lightlinkPhoenix } from "viem/chains";
@@ -20,6 +25,7 @@ export const lightlinkPhoenixData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [
@@ -31,7 +37,8 @@ export const lightlinkPhoenixData: ChainData = {
             name: "Uniswap v3",
             depositUrl: {
                 type: DepositUrlType.PathPoolAddress,
-                template: "https://oku.trade/uniswap/v3/liquidity/lightlink/{pool}",
+                template:
+                    "https://oku.trade/uniswap/v3/liquidity/lightlink/{pool}",
             },
             supportsFetchAllPools: true,
         },

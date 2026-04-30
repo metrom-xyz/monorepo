@@ -3,14 +3,15 @@ import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, type FunctionComponent } from "react";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
-import type { CampaignType } from "@metrom-xyz/sdk";
+import type { CampaignType, DistributablesType } from "@metrom-xyz/sdk";
 import type { SVGIcon } from "@metrom-xyz/chains";
-import { useChainsForForm } from "@/src/hooks/useChainsForForm";
+import { useFormChains } from "@/src/hooks/useFormChains";
 
 import styles from "./styles.module.css";
 
 interface ChainSelectProps {
     campaignType: CampaignType;
+    distributablesType: DistributablesType;
     value?: number;
     onChange: (value: BaseCampaignPayloadPart) => void;
 }
@@ -42,11 +43,15 @@ const selectedPrefix = (
 
 export function ChainSelect({
     campaignType,
+    distributablesType,
     value,
     onChange,
 }: ChainSelectProps) {
     const t = useTranslations("newCampaign.inputs");
-    const activeChains = useChainsForForm({ type: campaignType });
+    const activeChains = useFormChains({
+        type: campaignType,
+        distributablesType,
+    });
 
     const options: SelectOption<number, OptionData>[] = useMemo(() => {
         const options: SelectOption<number, OptionData>[] = [];

@@ -1,6 +1,7 @@
 import {
     BaseCampaignType,
     ChainType,
+    DistributablesType,
     PartnerCampaignType,
     SupportedDex,
     SupportedLiquityV2,
@@ -29,16 +30,19 @@ export const swellData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: true,
             partner: false,
             type: BaseCampaignType.LiquityV2,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

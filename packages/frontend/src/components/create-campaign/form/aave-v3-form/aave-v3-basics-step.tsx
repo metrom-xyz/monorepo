@@ -114,6 +114,8 @@ export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
         setBasicsPayload((prev) => ({ ...prev, ...part }));
     }
 
+    if (!payload.distributables) return null;
+
     return (
         <CampaignBasicsStep
             payload={basicsPayload}
@@ -129,6 +131,7 @@ export function AaveV3BasicsStep({ payload, onApply }: AaveV3BasicsStepProps) {
                         <div className={styles.target}>
                             <ChainSelect
                                 campaignType={BaseCampaignType.AaveV3}
+                                distributablesType={payload.distributables.type}
                                 value={basicsPayload.chainId}
                                 onChange={handlePayloadOnChange}
                             />

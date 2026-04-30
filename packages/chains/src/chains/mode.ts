@@ -2,7 +2,11 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { ModeLogo } from "../assets/logos/chains/mode";
 import { mode } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { ChainType, PartnerCampaignType } from "@metrom-xyz/sdk";
+import {
+    ChainType,
+    DistributablesType,
+    PartnerCampaignType,
+} from "@metrom-xyz/sdk";
 
 export const modeData: ChainData = {
     active: false,
@@ -18,6 +22,7 @@ export const modeData: ChainData = {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [],
