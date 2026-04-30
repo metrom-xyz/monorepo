@@ -47,6 +47,10 @@
     @apply w-fit;
 }
 
+.backButton {
+    @apply h-9;
+}
+
 .skeletonStepsWrapper {
     @apply flex flex-col gap-2;
 }

@@ -150,7 +150,7 @@ export function CreateCampaignForm<T extends CampaignType>({
                         border={false}
                         icon={ArrowLeftIcon}
                         onClick={handleBackOnClick}
-                        className={{ root: styles.button }}
+                        className={{ root: styles.backButton }}
                     >
                         {t("back")}
                     </Button>

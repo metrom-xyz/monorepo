@@ -1,13 +1,14 @@
 @reference "../../../../../app.css";
 
 .root {
-    @apply flex items-center flex-col sm:flex-row gap-4;
+    @apply flex items-center flex-col sm:flex-row gap-3;
 }
 
 .preset {
     @apply flex
         flex-1
         flex-col
+        justify-between
         gap-3
         w-full
         sm:w-fit
@@ -33,4 +34,8 @@
 
 .icon {
     @apply size-4;
+}
+
+.content {
+    @apply flex flex-col gap-0.5;
 }
