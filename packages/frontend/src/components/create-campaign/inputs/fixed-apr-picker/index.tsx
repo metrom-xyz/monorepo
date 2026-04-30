@@ -250,7 +250,6 @@ export function FixedAprPicker({
                         placeholder="0%"
                         suffix="%"
                         label={t("apr")}
-                        border={false}
                         value={value?.apr || ""}
                         allowNegative={false}
                         onValueChange={handleAprOnChange}

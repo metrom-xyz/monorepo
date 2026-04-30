@@ -75,7 +75,7 @@ export const KPI_PRESETS: Record<KpiPresetType, KpiPreset> = {
         description: "increasingApr.description",
         setLowerBound: (targetUsdValue) => targetUsdValue / 2,
         setUpperBound: (targetUsdValue) => targetUsdValue * 1.5,
-        minimumPayoutPercentage: 0,
+        minimumPayoutPercentage: 20,
     },
     [KpiPresetType.CustomRewardRate]: {
         icon: CustomRewardRateIcon,
@@ -141,6 +141,10 @@ export function CampaignKpiStep({
         payload.startDate && payload.endDate
             ? payload.endDate.unix() - payload.startDate.unix()
             : 1;
+    const minimumPayoutPercentage = kpiPayload.kpiDistribution
+        ?.minimumPayoutPercentage
+        ? kpiPayload.kpiDistribution.minimumPayoutPercentage / 100
+        : undefined;
 
     const unsavedChanges = useMemo(() => {
         if (!payload.kpiDistribution)
@@ -363,10 +367,7 @@ export function CampaignKpiStep({
                             }
                             totalRewardsUsd={totalRewardsUsdAmount}
                             campaignDurationSeconds={campaignDurationSeconds}
-                            minimumPayoutPercentage={
-                                kpiPayload.kpiDistribution
-                                    ?.minimumPayoutPercentage
-                            }
+                            minimumPayoutPercentage={minimumPayoutPercentage}
                             targetUsdValue={targetUsdValue}
                             error={!!errors.kpi}
                         />
