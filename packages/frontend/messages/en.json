@@ -295,7 +295,7 @@
                 "presets": {
                     "traditionalReward": {
                         "title": "Traditional reward",
-                        "description": "Setup where the APR starts high and decreases as {targetValueName} grows."
+                        "description": "APR starts high and decreases as {targetValueName} grows."
                     },
                     "cappedRewardRate": {
                         "title": "Capped reward rate",
