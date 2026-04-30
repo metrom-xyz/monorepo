@@ -1,6 +1,11 @@
 import { useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
+import {
+    Select,
+    Skeleton,
+    Typography,
+    type SelectOption,
+} from "@metrom-xyz/ui";
 import type { AaveV3CampaignPayloadPart } from "@/src/types/campaign/aave-v3-campaign";
 import { type AaveV3Protocol } from "@metrom-xyz/chains";
 import { useChainType } from "@/src/hooks/useChainType";
@@ -49,6 +54,18 @@ const option = (option: SelectOption<string, OptionData>) => {
             <Typography size="sm" variant="secondary">
                 {formatUsdAmount({ amount: data.usdValue })}
             </Typography>
+        </div>
+    );
+};
+
+const loadingOption = () => {
+    return (
+        <div className={styles.skeletonCollateral}>
+            <div>
+                <RemoteLogo loading size="xxs" className={styles.skeleton} />
+                <Skeleton width={40} className={styles.skeleton} />
+            </div>
+            <Skeleton size="sm" width={64} className={styles.skeleton} />
         </div>
     );
 };
@@ -120,10 +137,12 @@ export function AaveV3CollateralSelect({
             disabled={!kind}
             options={options}
             loading={loading}
+            loadingItemCounts={4}
             value={value?.address as string}
             onChange={handleOnChange}
             messages={{ noResults: t("noCollaterals") }}
             renderOption={option}
+            renderLoadingOption={loadingOption}
             renderSelectedPrefix={selectedPrefix}
             noPrefixPadding
             listHeader={
