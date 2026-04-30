@@ -26,7 +26,6 @@ import { useFormSteps } from "@/src/context/form-steps";
 import type { Address } from "viem";
 import { InfoMessage } from "@/src/components/info-message";
 import { AMM_SUPPORTS_TOKENS_RATIO } from "@/src/commons";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import type { FormStepId } from "@/src/types/form";
 
 interface AmmPoolLiquidityRewardsStepProps {
@@ -54,7 +53,6 @@ export function AmmPoolLiquidityRewardsStep({
     });
 
     const t = useTranslations("newCampaign.form.ammPoolLiquidity");
-    const { id: chainId } = useChainWithType();
     const { errors } = useFormSteps();
 
     const unsavedChanges = useMemo(() => {
@@ -112,7 +110,7 @@ export function AmmPoolLiquidityRewardsStep({
 
     return (
         <CampaignRewardsStep
-            chainId={chainId}
+            chainId={payload.chainId}
             startDate={payload.startDate}
             endDate={payload.endDate}
             kpiDistribution={payload.kpiDistribution}

@@ -5,15 +5,12 @@ import { useTranslations } from "next-intl";
 import { LiquityV2CampaignIcon } from "@/src/assets/liquity-v2-campaign-icon";
 import { AmmCampaignIcon } from "@/src/assets/amm-campaign-icon";
 import { AaveThemeLogo } from "@metrom-xyz/chains";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CompassIcon } from "@/src/assets/compass-icon";
 import { type ReactNode } from "react";
 import type { TranslationsKeys } from "@/src/types/utils";
-import { useForms } from "@/src/hooks/useForms";
 import { BaseCampaignType } from "@metrom-xyz/sdk";
-import { FormNotSupported } from "./form-not-supported";
-import { Redirect } from "./redirect";
 import { NavigationCard } from "./navigation-card";
+import { useForms } from "@/src/hooks/useForms";
 
 import styles from "./styles.module.css";
 
@@ -56,17 +53,7 @@ export const FORM_INFO: Record<BaseCampaignType, CampaignTypeConfig> = {
 export function CreateCampaign() {
     const t = useTranslations("newCampaign.pickType");
 
-    const { id: chainId } = useChainWithType();
-    const forms = useForms({ chainId, partner: false });
-    const partnerForms = useForms({
-        chainId,
-        partner: true,
-    });
-
-    const supported = [...forms, ...partnerForms];
-
-    if (supported.length === 0) return <FormNotSupported chainId={chainId} />;
-    if (supported.length === 1) return <Redirect supported={supported} />;
+    const { forms, partners } = useForms();
 
     return (
         <div className={styles.root}>
@@ -96,7 +83,7 @@ export function CreateCampaign() {
                         />
                     );
                 })}
-                {partnerForms.length > 0 && (
+                {partners.length > 0 && (
                     <NavigationCard
                         href={`/campaigns/create/partner`}
                         title={t("partnerAction.title")}

@@ -2,7 +2,11 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { MantleLogo } from "../assets/logos/chains/mantle";
 import { mantle } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { ChainType, PartnerCampaignType } from "@metrom-xyz/sdk";
+import {
+    ChainType,
+    DistributablesType,
+    PartnerCampaignType,
+} from "@metrom-xyz/sdk";
 
 export const mantleData: ChainData = {
     active: false,
@@ -18,6 +22,7 @@ export const mantleData: ChainData = {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [],

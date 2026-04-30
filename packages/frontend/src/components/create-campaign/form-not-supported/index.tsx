@@ -2,19 +2,22 @@ import { Button, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     BaseCampaignType,
+    DistributablesType,
     PartnerCampaignType,
     type CampaignType,
 } from "@metrom-xyz/sdk";
-import { useChainData } from "@/src/hooks/useChainData";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { Link } from "@/src/i18n/routing";
 import { notFound } from "next/navigation";
 
 import styles from "./styles.module.css";
+import { EmptyIcon } from "@/src/assets/empty-icon";
+import { BoldText } from "../../bold-text";
+import { ArrowLeftIcon } from "@/src/assets/arrow-left-icon";
 
 interface FormNotSupportedProps {
-    type?: CampaignType;
-    chainId?: number;
+    type: CampaignType;
+    distributablesType?: DistributablesType;
 }
 
 const CAMPAIGN_TYPE_TRANSLATION: Record<
@@ -31,29 +34,52 @@ const CAMPAIGN_TYPE_TRANSLATION: Record<
         "type.jumperWhitelistedAmmPoolLiquidity",
 };
 
-export function FormNotSupported({ type, chainId }: FormNotSupportedProps) {
+const DISTRIBUTABLES_TYPE_TRANSLATION: Record<
+    DistributablesType,
+    TranslationsKeys<"newCampaign.formHeader">
+> = {
+    [DistributablesType.Tokens]: "distributables.tokens",
+    [DistributablesType.FixedPoints]: "distributables.points",
+    [DistributablesType.DynamicPoints]: "distributables.dynamicPoints",
+    [DistributablesType.NoDistributables]: "distributables.noDistributables",
+};
+
+export function FormNotSupported({
+    type,
+    distributablesType,
+}: FormNotSupportedProps) {
     const t = useTranslations("newCampaign");
-    const chainData = useChainData({ chainId });
 
     if (type && !CAMPAIGN_TYPE_TRANSLATION[type]) notFound();
 
     return (
         <div className={styles.root}>
-            <Typography weight="medium" size="lg">
-                {type
-                    ? t("empty.message2", {
-                          campaignType: t(
-                              `formHeader.${CAMPAIGN_TYPE_TRANSLATION[type]}`,
-                          ),
-                          chain: chainData?.name || "",
-                      })
-                    : t("empty.message1", { chain: chainData?.name || "" })}
-            </Typography>
-            <Typography weight="medium" size="lg">
-                {t("empty.message3")}
-            </Typography>
+            <EmptyIcon className={styles.icon} />
+            <div className={styles.text}>
+                <Typography>
+                    {distributablesType
+                        ? t.rich("empty.message1", {
+                              campaignType: t(
+                                  `formHeader.${CAMPAIGN_TYPE_TRANSLATION[type]}`,
+                              ).toUpperCase(),
+                              distributablesType: t(
+                                  `formHeader.${DISTRIBUTABLES_TYPE_TRANSLATION[distributablesType]}`,
+                              ).toUpperCase(),
+                              bold: (chunks) => <BoldText>{chunks}</BoldText>,
+                          })
+                        : t.rich("empty.message2", {
+                              campaignType: t(
+                                  `formHeader.${CAMPAIGN_TYPE_TRANSLATION[type]}`,
+                              ).toUpperCase(),
+                              bold: (chunks) => <BoldText>{chunks}</BoldText>,
+                          })}
+                </Typography>
+                <Typography size="sm">{t("empty.message3")}</Typography>
+            </div>
             <Link href="/campaigns/create">
-                <Button size="sm">{t("empty.backToCreate")}</Button>
+                <Button icon={ArrowLeftIcon} size="sm">
+                    {t("empty.backToCreate")}
+                </Button>
             </Link>
         </div>
     );

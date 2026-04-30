@@ -1,5 +1,10 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import {
     DepositUrlType,
     HemiLogo,
@@ -23,6 +28,7 @@ export const hemiData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

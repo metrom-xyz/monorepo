@@ -7,7 +7,6 @@ import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { DiscoverIcon } from "@/src/assets/discover-icon";
 import { ClaimsIcon } from "@/src/assets/claims-icon";
-import { NetworkSelect } from "../../network-select";
 import { useMemo, type FunctionComponent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { SVGIcon } from "@/src/types/common";
@@ -64,7 +63,6 @@ export function Nav() {
                 </div>
                 <div className={styles.rightContentContainer}>
                     <ThemeToggle />
-                    <NetworkSelect />
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>

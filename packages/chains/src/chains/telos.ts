@@ -1,5 +1,10 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
-import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { TelosLogo } from "../assets/logos/chains/telos";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { telos } from "viem/chains";
@@ -25,6 +30,7 @@ export const telosData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

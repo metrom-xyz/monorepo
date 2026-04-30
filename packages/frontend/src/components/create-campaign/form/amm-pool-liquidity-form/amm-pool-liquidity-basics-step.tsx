@@ -73,6 +73,8 @@ export function AmmPoolLiquidityBasicsStep({
         setBasicsPayload((prev) => ({ ...prev, ...part }));
     }
 
+    if (!payload.distributables) return null;
+
     return (
         <CampaignBasicsStep
             payload={basicsPayload}
@@ -87,6 +89,7 @@ export function AmmPoolLiquidityBasicsStep({
                     <div className={styles.target}>
                         <ChainSelect
                             campaignType={BaseCampaignType.AmmPoolLiquidity}
+                            distributablesType={payload.distributables.type}
                             value={basicsPayload.chainId}
                             onChange={handlePayloadOnChange}
                         />

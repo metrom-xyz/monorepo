@@ -2,6 +2,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import {
     BaseCampaignType,
     ChainType,
+    DistributablesType,
     PartnerCampaignType,
     SupportedDex,
     SupportedGmxV1,
@@ -32,11 +33,13 @@ export const sonicData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

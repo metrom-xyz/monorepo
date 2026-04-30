@@ -8,7 +8,12 @@ import {
     type ChainData,
 } from "..";
 import { lens } from "viem/chains";
-import { BaseCampaignType, ChainType, PartnerCampaignType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+    PartnerCampaignType,
+} from "@metrom-xyz/sdk";
 
 export const lensData: ChainData = {
     active: false,
@@ -24,11 +29,13 @@ export const lensData: ChainData = {
             active: false,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
         {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

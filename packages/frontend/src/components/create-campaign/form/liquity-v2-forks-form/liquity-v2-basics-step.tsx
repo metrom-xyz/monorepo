@@ -36,14 +36,9 @@ const KIND_OPTIONS: CampaignKindOption<TranslationsKeys<"newCampaign">>[] = [
     },
 ] as const;
 
-export const LIQUITY_V2_BASIC_PAYLOAD_KEYS: Partial<keyof LiquityV2CampaignPayload>[] = [
-    "chainId",
-    "brand",
-    "kind",
-    "collateral",
-    "startDate",
-    "endDate",
-];
+export const LIQUITY_V2_BASIC_PAYLOAD_KEYS: Partial<
+    keyof LiquityV2CampaignPayload
+>[] = ["chainId", "brand", "kind", "collateral", "startDate", "endDate"];
 
 export function LiquityV2BasicsStep({
     payload,
@@ -92,6 +87,8 @@ export function LiquityV2BasicsStep({
         setBasicsPayload((prev) => ({ ...prev, ...part }));
     }
 
+    if (!payload.distributables) return null;
+
     return (
         <CampaignBasicsStep
             payload={basicsPayload}
@@ -107,6 +104,7 @@ export function LiquityV2BasicsStep({
                         <div className={styles.target}>
                             <ChainSelect
                                 campaignType={BaseCampaignType.LiquityV2}
+                                distributablesType={payload.distributables.type}
                                 value={basicsPayload.chainId}
                                 onChange={handlePayloadOnChange}
                             />

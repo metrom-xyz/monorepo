@@ -1,4 +1,9 @@
-import { BaseCampaignType, ChainType, SupportedDex } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+    SupportedDex,
+} from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { lumiaMainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -20,6 +25,7 @@ export const lumiaData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [

@@ -1,4 +1,11 @@
-import { BaseCampaignType, ChainType, SupportedDex, SupportedLiquityV2, TargetType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+    SupportedDex,
+    SupportedLiquityV2,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { plasma } from "viem/chains";
 import type { ChainData } from "../types/chains";
@@ -19,6 +26,7 @@ export const plasmaData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [
