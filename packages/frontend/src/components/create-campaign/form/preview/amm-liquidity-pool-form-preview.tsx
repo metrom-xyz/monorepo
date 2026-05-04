@@ -94,13 +94,13 @@ export function AmmLiquidityPoolFormPreview({
                     restrictions={payload.restrictions}
                 />
             )}
+            {kpiSetup && <Kpi kpiDistribution={payload.kpiDistribution} />}
             {poolRangeCompleted && (
                 <PoolRange
                     pool={payload.pool}
                     priceRangeSpecification={payload.priceRangeSpecification}
                 />
             )}
-            {kpiSetup && <Kpi kpiDistribution={payload.kpiDistribution} />}
         </>
     );
 }
