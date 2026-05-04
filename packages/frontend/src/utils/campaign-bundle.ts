@@ -163,7 +163,7 @@ export function buildSpecificationBundle(
             apr: payload.fixedDistribution.apr / 100,
         };
 
-    if (payload.restrictions)
+    if (payload.restrictions && payload.restrictions.list.length > 0)
         specification[payload.restrictions.type] = payload.restrictions.list;
 
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
