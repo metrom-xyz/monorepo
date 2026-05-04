@@ -52,13 +52,15 @@ interface KpiPreset {
     minimumPayoutPercentage?: number;
 }
 
+const UPPER_BOUND_DEFAULT = 100_000;
 export const KPI_PRESETS: Record<KpiPresetType, KpiPreset> = {
     [KpiPresetType.TraditionalReward]: {
         icon: TraditionalRewardIcon,
         title: "traditionalReward.title",
         description: "traditionalReward.description",
         setLowerBound: () => 0,
-        setUpperBound: (targetUsdValue) => targetUsdValue * 2,
+        setUpperBound: (targetUsdValue) =>
+            targetUsdValue === 0 ? UPPER_BOUND_DEFAULT : targetUsdValue * 2,
         minimumPayoutPercentage: 60,
     },
     [KpiPresetType.CappedRewardRate]: {
@@ -66,7 +68,8 @@ export const KPI_PRESETS: Record<KpiPresetType, KpiPreset> = {
         title: "cappedRewardRate.title",
         description: "cappedRewardRate.description",
         setLowerBound: () => 0,
-        setUpperBound: (targetUsdValue) => targetUsdValue * 2,
+        setUpperBound: (targetUsdValue) =>
+            targetUsdValue === 0 ? UPPER_BOUND_DEFAULT : targetUsdValue * 2,
         minimumPayoutPercentage: 0,
     },
     [KpiPresetType.IncreasingApr]: {
@@ -74,7 +77,8 @@ export const KPI_PRESETS: Record<KpiPresetType, KpiPreset> = {
         title: "increasingApr.title",
         description: "increasingApr.description",
         setLowerBound: (targetUsdValue) => targetUsdValue / 2,
-        setUpperBound: (targetUsdValue) => targetUsdValue * 1.5,
+        setUpperBound: (targetUsdValue) =>
+            targetUsdValue === 0 ? UPPER_BOUND_DEFAULT : targetUsdValue * 1.5,
         minimumPayoutPercentage: 20,
     },
     [KpiPresetType.CustomRewardRate]: {

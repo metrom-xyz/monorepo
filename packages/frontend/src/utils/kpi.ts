@@ -4,10 +4,7 @@ import {
     TargetType,
 } from "@metrom-xyz/sdk";
 import type { TranslationsKeys } from "../types/utils";
-import type {
-    CampaignDetails,
-    CampaignItem,
-} from "../types/campaign/common";
+import type { CampaignDetails, CampaignItem } from "../types/campaign/common";
 
 const TICK_ACTIVE_PROXIMITY_THRESHOLD = 1;
 
@@ -16,11 +13,10 @@ export function getReachedGoalPercentage(
     lowerUsdTarget: number,
     upperUsdTarget: number,
 ) {
-    return Math.min(
-        1,
-        Math.max(0, usdTvl - lowerUsdTarget) /
-            (upperUsdTarget - lowerUsdTarget),
-    );
+    const range = upperUsdTarget - lowerUsdTarget;
+    if (range <= 0) return 0;
+
+    return Math.min(1, Math.max(0, usdTvl - lowerUsdTarget) / range);
 }
 
 export function getDistributableRewardsPercentage(
@@ -35,7 +31,7 @@ export function getDistributableRewardsPercentage(
         upperUsdTarget,
     );
 
-    const minPayoutPercentage = minimumPayoutPercentage || 0;
+    const minPayoutPercentage = minimumPayoutPercentage ?? 0;
     const goalBoundPercentage = 1 - minPayoutPercentage;
     const goalReachedPercentage = goalBoundPercentage * reachedPercentage;
 
@@ -51,7 +47,10 @@ export function getChartAxisScale(
     min: number,
     max: number,
 ) {
-    return ((value - minValue) / (maxValue - minValue)) * (max - min) + min;
+    const range = maxValue - minValue;
+    if (range === 0) return min;
+
+    return ((value - minValue) / range) * (max - min) + min;
 }
 
 export function isChartAxisTickActive(value: number, scale: number) {

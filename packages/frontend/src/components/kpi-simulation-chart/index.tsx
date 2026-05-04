@@ -124,11 +124,13 @@ export function KpiSimulationChart({
         const targetValues = [targetUsdValue, lowerUsdTarget, upperUsdTarget];
         targetValues.sort((a, b) => a - b);
         const fullRange = targetValues[2] - targetValues[0];
-        const basicPadding = fullRange * 0.28;
-        const paddingForLowerZeroLowerBound = fullRange * 0.25;
+        const minPadding = targetValues[2] * 0.25;
+        const basicPadding = fullRange > 0 ? fullRange * 0.28 : minPadding;
         const lowerBoundPadding =
             targetValues[0] === 0
-                ? paddingForLowerZeroLowerBound
+                ? fullRange > 0
+                    ? fullRange * 0.25
+                    : minPadding
                 : basicPadding;
 
         return [
@@ -252,6 +254,8 @@ export function KpiSimulationChart({
         const upperTargetUsdValue = sortedSignificantTargetUsdValues[4];
         const targetUsdValueRange = upperTargetUsdValue - lowertTargetUsdValue;
         const domainStep = targetUsdValueRange / POINTS_COUNT;
+
+        if (domainStep === 0) return [];
 
         const chartData: DistributedAreaDataPoint[] = [];
 
