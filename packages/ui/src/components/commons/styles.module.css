@@ -50,12 +50,16 @@
     @apply absolute
         w-auto
         top-0
-        left-2
+        left-3
         h-full
         flex
         justify-center
         items-center
         pointer-events-none;
+}
+
+.prefixElementWrapper.xs {
+    @apply left-2;
 }
 
 .prefixElementWrapper.hasLeftIcon {

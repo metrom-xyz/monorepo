@@ -196,9 +196,10 @@ export function EndDatePicker({
                     uppercase
                 >
                     {t.rich("campaignDuration", {
-                        duration: endDate
-                            ? dayjs(startDate).to(endDate, true)
-                            : "",
+                        duration:
+                            startDate && endDate
+                                ? dayjs(startDate).to(endDate, true)
+                                : "",
                         bold: (chunks) => <BoldText>{chunks}</BoldText>,
                     })}
                 </Typography>

@@ -92,7 +92,10 @@ export function BaseInputWrapper<V>({
         if (!prefixRef && !icon) return;
 
         let padding = 0;
-        if (prefixRef) padding += prefixRef.offsetWidth + 12;
+        if (prefixRef) {
+            padding += prefixRef.offsetWidth + 12;
+            if (size !== "xs") padding += 4;
+        }
         if (!!icon && iconPlacement === "left") padding += 36;
 
         setInputLeftPadding(padding);
@@ -123,6 +126,7 @@ export function BaseInputWrapper<V>({
                     <div
                         ref={setPrefixRef}
                         className={classNames(styles.prefixElementWrapper, {
+                            [styles[size]]: true,
                             [styles.hasLeftIcon]:
                                 !!icon && iconPlacement === "left",
                         })}
@@ -146,17 +150,12 @@ export function BaseInputWrapper<V>({
                 {!!label && (
                     <label
                         htmlFor={id}
-                        className={classNames(
-                            "label",
-                            styles.label,
-                            styles.floating,
-                            {
-                                [styles[size]]: true,
-                                [styles.hasLeftIcon]: hasLeftIcon,
-                                [styles.hasPrefixElement]: !!prefixElement,
-                                [styles.noPrefixPadding]: noPrefixPadding,
-                            },
-                        )}
+                        className={classNames("label", styles.label, {
+                            [styles[size]]: true,
+                            [styles.hasLeftIcon]: hasLeftIcon,
+                            [styles.hasPrefixElement]: !!prefixElement,
+                            [styles.noPrefixPadding]: noPrefixPadding,
+                        })}
                         style={
                             {
                                 ...(!!prefixElement && inputLeftPadding
