@@ -204,7 +204,7 @@ export function MobileFilters({
                             values={protocols}
                             onChange={setProtocols}
                             onOpenChange={setSelectOpen}
-                            label={t("protocol.label")}
+                            placeholder={t("protocol.label")}
                             renderOption={protocolSelectRenderOption}
                             messages={{
                                 noResults: "",
@@ -221,7 +221,7 @@ export function MobileFilters({
                             values={chains}
                             onChange={setChains}
                             onOpenChange={setSelectOpen}
-                            label={t("chain.label")}
+                            placeholder={t("chain.label")}
                             renderOption={chainSelectRenderOption}
                             messages={{
                                 noResults: "",

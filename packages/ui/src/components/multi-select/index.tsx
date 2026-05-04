@@ -66,6 +66,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
     {
         id,
         label,
+        placeholder,
         error,
         size = "base",
         options,
@@ -216,6 +217,9 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                 focused={open || selectedOptions.length > 0}
                 size={size}
                 label={label}
+                placeholder={
+                    selectedOptions.length === 0 ? placeholder : undefined
+                }
                 readOnly={!search}
                 icon={open ? ChevronUp : ChevronDown}
                 loading={loading}
@@ -223,7 +227,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
                     selectedOptions.length > 0 && (
                         <div className={styles.prefix}>
                             <Typography size={size} weight="medium">
-                                {label}
+                                {label || placeholder}
                             </Typography>
                             <div
                                 className={classNames(styles.counter, {
