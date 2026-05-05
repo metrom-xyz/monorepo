@@ -147,7 +147,7 @@ export function LiquidityBar({
                     {showPriceRange && closestFrom === idx && (
                         <text
                             x={x + 15}
-                            y={300}
+                            y={180}
                             textAnchor="end"
                             className={classNames(styles.label, styles.big)}
                         >
@@ -167,7 +167,7 @@ export function LiquidityBar({
                     {showPriceRange && closestTo === idx && (
                         <text
                             x={x}
-                            y={300}
+                            y={180}
                             textAnchor="start"
                             className={classNames(styles.label, styles.big)}
                         >

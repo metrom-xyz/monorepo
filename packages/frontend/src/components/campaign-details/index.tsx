@@ -56,7 +56,7 @@ export function CampaignDetails({
 
     return (
         <div className={styles.root}>
-            <BackButton />
+            <BackButton pathname="/" />
             <div className={styles.headerWrapper}>
                 {!campaignDetails || loading ? (
                     <SkeletonHeader />

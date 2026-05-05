@@ -60,7 +60,6 @@ export function AverageIncentive({
                         weight="medium"
                         variant="tertiary"
                         uppercase
-                        className={styles.header}
                     >
                         {t("averageIncentive")}
                     </Typography>

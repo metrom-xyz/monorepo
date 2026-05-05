@@ -8,10 +8,10 @@
     @apply flex
         flex-1
         flex-col
-        justify-between
         gap-3
         w-full
         sm:w-fit
+        min-h-[7.5rem]
         p-3
         rounded-lg
         border

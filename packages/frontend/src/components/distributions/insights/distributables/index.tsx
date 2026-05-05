@@ -43,7 +43,6 @@ export function Distributables({ chain, distributables }: DistributablesProps) {
                         weight="medium"
                         variant="tertiary"
                         uppercase
-                        className={styles.header}
                     >
                         {t("incetivizedAssets")}
                     </Typography>

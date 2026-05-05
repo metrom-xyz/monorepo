@@ -7,10 +7,10 @@
         p-3
         rounded-lg
         border
-        bg-gray-100
-        dark:bg-neutral-950
-        border-gray-300
-        dark:border-neutral-600;
+        bg-gray-150
+        dark:bg-neutral-900
+        border-gray-500
+        dark:border-neutral-400;
 }
 
 .row {
