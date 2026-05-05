@@ -45,7 +45,7 @@ export function AverageDistributionChart({
     const popoverRef = useRef<HTMLDivElement>(null);
 
     const rewardsPercentage = useMemo(() => {
-        if (!kpiMeasurementPercentage || loading) return undefined;
+        if (kpiMeasurementPercentage === undefined || loading) return undefined;
 
         const normalizedKpiMeasurementPercentage = Math.max(
             Math.min(kpiMeasurementPercentage, 1),
@@ -155,6 +155,7 @@ export function AverageDistributionChart({
                 anchor={anchor}
                 open={!!popover}
                 onOpenChange={handlePopoverOnChange}
+                className={styles.popover}
             >
                 <div className={styles.popoverContent}>
                     <div className={styles.header}>

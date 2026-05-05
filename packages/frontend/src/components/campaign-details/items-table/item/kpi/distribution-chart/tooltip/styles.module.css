@@ -8,10 +8,10 @@
         min-w-60
         rounded-lg
         border
-        bg-gray-100
-        dark:bg-neutral-950
-        border-gray-300
-        dark:border-neutral-600;
+        bg-gray-150
+        dark:bg-neutral-900
+        border-gray-500
+        dark:border-neutral-400;
 }
 
 .fieldWrapper {
@@ -43,11 +43,11 @@
 }
 
 .header {
-    @apply grid grid-cols-[1.2fr_0.7fr_0.7fr] gap-3 items-center px-2;
+    @apply grid grid-cols-[1.2fr_0.7fr_0.7fr] gap-3 items-center;
 }
 
 .row {
-    @apply grid grid-cols-[1.2fr_0.7fr_0.7fr] gap-3 items-center bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+    @apply grid grid-cols-[1.2fr_0.7fr_0.7fr] gap-3 items-center bg-gray-150 dark:bg-neutral-900 rounded-sm;
 }
 
 .row > :first-child,

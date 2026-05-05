@@ -55,7 +55,9 @@ export function KpiPresets({
                             {t(preset.title)}
                         </Typography>
                         <Typography size="xs" variant="tertiary">
-                            {t(preset.description, { targetValueName })}
+                            {t(preset.description, {
+                                targetValueName: targetValueName.toLowerCase(),
+                            })}
                         </Typography>
                     </div>
                 </div>

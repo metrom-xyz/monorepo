@@ -299,7 +299,7 @@
                     },
                     "cappedRewardRate": {
                         "title": "Capped reward rate",
-                        "description": "APR stays flat up to a specified goal {targetValueName} and then APR drops."
+                        "description": "APR stays flat up to a specified {targetValueName} and then APR drops."
                     },
                     "increasingApr": {
                         "title": "Increasing APR",

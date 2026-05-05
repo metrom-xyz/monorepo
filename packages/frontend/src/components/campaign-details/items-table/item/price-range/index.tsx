@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { useLiquidityDensity } from "@/src/hooks/useLiquidityDensity";
 import { LiquidityDensityChart } from "../../../../liquidity-density-chart";
-import classNames from "classnames";
 import { BoldText } from "../../../../bold-text";
 import type { CampaignItem, TargetedNamedCampaign } from "@/src/types/campaign/common";
 
@@ -50,7 +49,7 @@ export function PriceRange({ campaignItem }: PriceRangeProps) {
                 })}
             </Typography>
             <Card className={styles.card}>
-                <div className={classNames(styles.chartWrapper)}>
+                <div className={styles.chartWrapper}>
                     <LiquidityDensityChart
                         pool={pool}
                         from={{

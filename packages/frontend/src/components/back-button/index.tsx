@@ -6,13 +6,18 @@ import { useTranslations } from "next-intl";
 
 import styles from "./styles.module.css";
 
-export function BackButton() {
+interface BackButtonProps {
+    pathname?: string;
+}
+
+export function BackButton({ pathname }: BackButtonProps) {
     const t = useTranslations("backButton");
-    const { back } = useRouter();
+    const { back, push } = useRouter();
 
     const handleBackOnClick = useCallback(() => {
-        back();
-    }, [back]);
+        if (pathname) push({ pathname });
+        else back();
+    }, [pathname, push, back]);
 
     return (
         <Button
