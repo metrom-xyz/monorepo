@@ -9,5 +9,5 @@
 }
 
 .chartWrapper {
-    @apply w-full flex-1 mt-4;
+    @apply h-full w-full flex-1 mt-4;
 }
