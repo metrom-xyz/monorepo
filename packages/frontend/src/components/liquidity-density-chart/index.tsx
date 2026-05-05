@@ -246,7 +246,12 @@ export function LiquidityDensityChart({
             )}
             <ResponsiveContainer
                 width="100%"
-                className={classNames("container", styles.container, className)}
+                className={classNames(
+                    "container",
+                    styles.container,
+                    className,
+                    { [styles.withPrice]: !!showPriceRange },
+                )}
             >
                 <BarChart
                     data={visibleTicks}

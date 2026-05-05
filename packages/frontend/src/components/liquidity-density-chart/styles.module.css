@@ -42,6 +42,10 @@
     @apply h-full min-h-50;
 }
 
+.container.withPrice {
+    @apply min-h-80;
+}
+
 .header {
     @apply flex items-center justify-between rounded-md;
 }
