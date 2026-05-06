@@ -5,11 +5,16 @@ import { FEE_UNIT } from "../commons";
 import { DistributablesType } from "@metrom-xyz/sdk";
 
 interface UseCampaignFeeProps {
+    chainId?: number;
     distributables?: CampaignPayloadDistributables;
 }
 
-export function useCampaignFee({ distributables }: UseCampaignFeeProps) {
+export function useCampaignFee({
+    chainId,
+    distributables,
+}: UseCampaignFeeProps) {
     const { fee, feeRebate, loading } = useProtocolFees({
+        chainId,
         enabled: !!distributables,
     });
 

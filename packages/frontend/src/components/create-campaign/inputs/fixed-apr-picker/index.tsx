@@ -72,7 +72,7 @@ export function FixedAprPicker({
     const tvlInputRef = useRef<HTMLInputElement>(null);
 
     const t = useTranslations("newCampaign.inputs.fixedAprPicker");
-    const { fee, feeRebate } = useProtocolFees();
+    const { fee, feeRebate } = useProtocolFees({ chainId });
     const { address } = useAccount();
     const { tokens: rewardTokens, loading: loadingRewardTokens } =
         useRewardTokens({ chainId });

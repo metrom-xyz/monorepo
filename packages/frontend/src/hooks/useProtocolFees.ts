@@ -1,6 +1,5 @@
 import type { HookBaseParams } from "@/src/types/hooks";
 import { APTOS } from "@/src/commons/env";
-import { useChainWithType } from "./useChainWithType";
 import { useChainData } from "./useChainData";
 import { useAccount } from "./useAccount";
 import { useReadContracts } from "wagmi";
@@ -9,8 +8,11 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useViewModule } from "@aptos-labs/react";
 import { useMemo } from "react";
 import { zeroAddress } from "viem";
+import { chainIdToAptosNetwork } from "../utils/chain";
 
-export type UseProtocolFeesParams = HookBaseParams;
+export interface UseProtocolFeesParams extends HookBaseParams {
+    chainId?: number;
+}
 
 export interface ProtocolFees {
     fee?: number;
@@ -24,9 +26,9 @@ export interface UseProtocolFeesReturnValue {
 }
 
 export function useProtocolFees({
+    chainId,
     enabled,
 }: UseProtocolFeesParams = {}): UseProtocolFeesReturnValue {
-    const { id: chainId } = useChainWithType();
     const chainData = useChainData({ chainId });
     const { address: addressEvm } = useAccount();
     const { account: accountMvm } = useWallet();
@@ -37,11 +39,13 @@ export function useProtocolFees({
         contracts: [
             {
                 abi: metromAbi,
+                chainId,
                 address: chainData?.metromContract.address,
                 functionName: "fee",
             },
             {
                 abi: metromAbi,
+                chainId,
                 address: chainData?.metromContract.address,
                 functionName: "feeRebate",
                 args: [addressEvm || zeroAddress],
@@ -54,7 +58,12 @@ export function useProtocolFees({
         payload: {
             function: `${chainData?.metromContract.address}::metrom::fee`,
         },
-        enabled: APTOS && !!chainData && enabled,
+        network: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            network: chainIdToAptosNetwork(chainId) as any,
+        },
+        enabled:
+            APTOS && !!chainData && enabled && !!chainIdToAptosNetwork(chainId),
     });
 
     const rebateFeeMvm = useViewModule({
@@ -62,7 +71,16 @@ export function useProtocolFees({
             function: `${chainData?.metromContract.address}::metrom::fee_rebate`,
             functionArguments: [addressMvm],
         },
-        enabled: APTOS && !!chainData && !!addressMvm && enabled,
+        network: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            network: chainIdToAptosNetwork(chainId) as any,
+        },
+        enabled:
+            APTOS &&
+            !!chainData &&
+            !!addressMvm &&
+            enabled &&
+            !!chainIdToAptosNetwork(chainId),
     });
 
     const loading =
@@ -76,11 +94,18 @@ export function useProtocolFees({
                 fee: Number(feeMvm.data[0]),
                 feeRebate: rebateFeeMvm.data ? Number(rebateFeeMvm.data[0]) : 0,
             };
-        if (!APTOS && feesEvm.data)
+        if (!APTOS && feesEvm.data) {
             return {
-                fee: Number(feesEvm.data[0].result),
-                feeRebate: Number(feesEvm.data[1].result),
+                fee:
+                    feesEvm.data[0].result !== undefined
+                        ? Number(feesEvm.data[0].result)
+                        : undefined,
+                feeRebate:
+                    feesEvm.data[1].result !== undefined
+                        ? Number(feesEvm.data[1].result)
+                        : undefined,
             };
+        }
 
         return undefined;
     }, [loading, feesEvm.data, feeMvm.data, rebateFeeMvm.data]);
