@@ -69,7 +69,7 @@
 }
 
 .popoverHeader {
-    @apply flex justify-between gap-7 items-center px-2;
+    @apply flex justify-between gap-7 items-center;
 }
 
 .popoverTokenRows {
@@ -77,11 +77,11 @@
 }
 
 .tokenRow {
-    @apply grid grid-cols-[minmax(0,0.7fr)_1fr_1fr] gap-4 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+    @apply flex items-center justify-between gap-4 bg-gray-150 dark:bg-neutral-900 rounded-sm;
 }
 
 .totalEearnedTokenRow {
-    @apply w-full grid items-center grid-cols-2 gap-4 bg-gray-150 dark:bg-neutral-900 rounded-sm px-2 py-1;
+    @apply w-full grid items-center grid-cols-2 gap-4 bg-gray-150 dark:bg-neutral-900 rounded-sm;
 }
 
 .tokenRow > :last-child,
@@ -103,11 +103,11 @@
 }
 
 .amountChangeBox.negative {
-    @apply bg-error/[12%];
+    @apply bg-error/12;
 }
 
 .amountChangeBox.positive {
-    @apply bg-brand-green-dark/[12%] dark:bg-brand-green/[12%];
+    @apply bg-brand-green-dark/12 dark:bg-brand-green/12;
 }
 
 .trendIcon {
