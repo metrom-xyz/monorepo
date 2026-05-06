@@ -44,6 +44,8 @@ export function CampaignApproveLaunchStep({
     const { connected } = useAccount();
     const { errors, activeStepId } = useFormSteps();
     const { campaignFee, loading: loadingCampaignFee } = useCampaignFee({
+        // Right now the chain id where the campaign lives is the same as the targets', since there's no cross chain campaign support yet
+        chainId: payload?.chainId,
         distributables: payload?.distributables,
     });
 
