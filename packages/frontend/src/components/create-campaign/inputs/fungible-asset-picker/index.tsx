@@ -17,6 +17,7 @@ import { TrashIcon } from "@/src/assets/trash-icon";
 import { useFormSteps } from "@/src/context/form-steps";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { SearchIcon } from "@/src/assets/search-icon";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -24,6 +25,7 @@ interface FungibleAssetPickerProps {
     chainId?: number;
     asset?: FungibleAssetInfo;
     disabled?: boolean;
+    resetTrigger?: unknown;
     onChange: (value: HoldFungibleAssetCampaignPayloadPart) => void;
 }
 
@@ -33,6 +35,7 @@ export function FungibleAssetPicker({
     chainId,
     asset,
     disabled,
+    resetTrigger,
     onChange,
 }: FungibleAssetPickerProps) {
     const t = useTranslations("newCampaign.inputs.fungibleAssetPicker");
@@ -46,6 +49,7 @@ export function FungibleAssetPicker({
 
     const popoverRef = useRef<HTMLDivElement>(null);
     const { updateErrors } = useFormSteps();
+    const prevResetTrigger = usePrevious(resetTrigger);
 
     const {
         info: assetInfo,
@@ -56,6 +60,13 @@ export function FungibleAssetPicker({
         address: assetAddress,
         enabled: isAddress(assetAddress) && !disabled,
     });
+
+    useEffect(() => {
+        if (resetTrigger === prevResetTrigger || !prevResetTrigger) return;
+        setAssetAddress("");
+        setPickedAssetAddress("");
+        onChange({ asset: undefined });
+    }, [resetTrigger, prevResetTrigger, onChange]);
 
     useEffect(() => {
         setPicked(false);
