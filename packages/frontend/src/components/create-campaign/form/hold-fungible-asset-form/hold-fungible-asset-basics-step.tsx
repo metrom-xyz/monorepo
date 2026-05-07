@@ -96,6 +96,7 @@ export function HoldFungibleAssetBasicsStep({
                             chainId={basicsPayload.chainId}
                             asset={basicsPayload.asset}
                             disabled={!basicsPayload.chainId}
+                            resetTrigger={basicsPayload.chainId}
                             onChange={handlePayloadOnChange}
                         />
                     </div>
