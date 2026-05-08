@@ -1541,7 +1541,7 @@ function processCampaignTarget(
             };
             break;
         }
-        case "erc-4626-vault": {
+        case "erc4626-vault": {
             target = <Erc4626VaultTarget>{
                 type: TargetType.Erc4626Vault,
                 chainType,
@@ -1558,6 +1558,7 @@ function processCampaignTarget(
             target = <EmptyTarget>{
                 ...campaign.target,
             };
+            break;
         }
     }
 

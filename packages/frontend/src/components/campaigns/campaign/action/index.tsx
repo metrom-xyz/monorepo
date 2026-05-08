@@ -21,6 +21,7 @@ import { CampaignTag } from "@/src/components/campaign-tag";
 import { YieldSeeker } from "./yield-seeker";
 import { Odyssey } from "./odyssey";
 import { ElementPlusIcon } from "@/src/assets/element-plus-icon";
+import { Erc4626Vault } from "./erc4826-vault";
 
 import styles from "./styles.module.css";
 
@@ -70,6 +71,8 @@ export function Action({
 
     const odyssey = campaign.isTargeting(TargetType.Odyssey);
 
+    const erc4626Vault = campaign.isTargeting(TargetType.Erc4626Vault);
+
     const empty = campaign.isTargeting(TargetType.Empty);
 
     const dynamicPoints = campaign.isDistributing(
@@ -93,6 +96,7 @@ export function Action({
             {turtleVault && <TurtleVault campaign={campaign} {...sizes} />}
             {yieldSeeker && <YieldSeeker campaign={campaign} {...sizes} />}
             {odyssey && <Odyssey campaign={campaign} {...sizes} />}
+            {erc4626Vault && <Erc4626Vault campaign={campaign} {...sizes} />}
             {dynamicPoints && liquityV2 && (
                 <DynamicPointsBoostChip
                     protocol={campaign.target.brand.slug}

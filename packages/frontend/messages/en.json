@@ -136,7 +136,7 @@
     "newCampaign": {
         "pickType": {
             "title": "Choose the campaign type you want to use",
-            "description": "Select the activity to incentivize, or use a saved preset.",
+            "description": "Select the action you want to incentivize.",
             "tags": {
                 "popular": "Popular"
             },
