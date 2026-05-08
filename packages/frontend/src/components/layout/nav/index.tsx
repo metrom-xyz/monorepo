@@ -13,7 +13,6 @@ import type { SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { Address } from "viem";
 import { useClaims } from "@/src/hooks/use-claims";
-import { useActiveChains } from "@/src/hooks/useActiveChains";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 import { ThemeToggle } from "../../theme-toggle";
@@ -41,8 +40,7 @@ export function Nav() {
     const pathname = usePathname();
     const { address } = useAccount();
     const { claims } = useClaims();
-    const { id: chain, type: chainType } = useChainWithType();
-    const activeChains = useActiveChains();
+    const { type: chainType } = useChainWithType();
 
     const pendingClaimsCount = useMemo(() => {
         if (!claims || !address) return undefined;
@@ -85,38 +83,9 @@ export function Nav() {
                 </div>
                 <div className={styles.tabs}>
                     {ROUTES.map(({ path, label, icon: Icon }) => {
-                        const disabled =
-                            path === "/campaigns/create" &&
-                            !activeChains.find(({ id }) => id === chain);
                         const active =
                             pathname === path ||
                             (path !== "/" && pathname.startsWith(path));
-
-                        if (disabled)
-                            return (
-                                <div
-                                    key={path}
-                                    className={classNames(
-                                        styles.tab,
-                                        styles.disabled,
-                                    )}
-                                >
-                                    {Icon && (
-                                        <Icon
-                                            className={classNames(
-                                                styles.icon,
-                                                styles.disabled,
-                                                {
-                                                    [styles.active]: active,
-                                                },
-                                            )}
-                                        />
-                                    )}
-                                    <Typography weight="medium">
-                                        {t(label)}
-                                    </Typography>
-                                </div>
-                            );
 
                         return (
                             <Link
@@ -174,30 +143,9 @@ export function Nav() {
                 </div>
                 <div className={styles.mobileNavigationWrapper}>
                     {ROUTES.map(({ path, label, icon: Icon }) => {
-                        const disabled =
-                            path === "/campaigns/create" &&
-                            !activeChains.find(({ id }) => id === chain);
                         const active =
                             pathname === path ||
                             (path !== "/" && pathname.startsWith(path));
-
-                        if (disabled)
-                            return (
-                                <div
-                                    key={path}
-                                    className={classNames(
-                                        styles.tab,
-                                        styles.disabled,
-                                    )}
-                                >
-                                    {Icon && (
-                                        <Icon className={styles.tabIcon} />
-                                    )}
-                                    <Typography weight="medium">
-                                        {t(label)}
-                                    </Typography>
-                                </div>
-                            );
 
                         return (
                             <Link

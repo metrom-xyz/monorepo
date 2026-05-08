@@ -91,15 +91,6 @@
         cursor-pointer;
 }
 
-.tab.disabled {
-    @apply cursor-not-allowed;
-}
-
-.tab.disabled > p,
-.tab.disabled > svg {
-    @apply text-secondary;
-}
-
 .tab.active > p {
     @apply text-brand-green-dark dark:text-brand-green;
 }
@@ -110,10 +101,6 @@
 
 .icon.active {
     @apply text-brand-green-dark dark:text-brand-green;
-}
-
-.icon.disabled {
-    @apply text-primary;
 }
 
 .label {
