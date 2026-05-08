@@ -60,7 +60,7 @@ const CAMPAIGN_TYPE_TITLE: Record<
     "aave-v3": "aaveV3",
     "hold-fungible-asset": "holdFungibleAsset",
     odyssey: "odyssey",
-    "erc-4626-vault": "erc4626Vault",
+    "erc4626-vault": "erc4626Vault",
     "aave-v3-bridge-and-supply": "aaveV3BridgeAndSupply",
     "jumper-whitelisted-amm-pool-liquidity":
         "jumperWhitelistedAmmPoolLiquidity",
