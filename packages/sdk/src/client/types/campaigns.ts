@@ -85,7 +85,7 @@ export interface BackendOdysseyTarget extends BaseTarget {
 }
 
 export interface BackendErc4626VaultTarget extends BaseTarget {
-    type: "erc-4626-vault";
+    type: "erc4626-vault";
     brand: SupportedErc4626Vault;
     vault: BackendErc20Token;
 }

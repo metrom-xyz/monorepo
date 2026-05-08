@@ -41,7 +41,7 @@ export enum BaseCampaignType {
     AaveV3 = "aave-v3",
     HoldFungibleAsset = "hold-fungible-asset",
     Odyssey = "odyssey",
-    Erc4626Vault = "erc-4626-vault",
+    Erc4626Vault = "erc4626-vault",
 }
 
 export enum PartnerCampaignType {
@@ -67,7 +67,7 @@ export enum TargetType {
     AmmPoolNetSwapVolume = "amm-pool-net-swap-volume",
     YieldSeeker = "yield-seeker",
     Odyssey = "odyssey",
-    Erc4626Vault = "erc-4626-vault",
+    Erc4626Vault = "erc4626-vault",
 }
 
 export type AmmPoolLiquidityTargetType =
