@@ -1164,10 +1164,6 @@ function processCampaignsResponse(
         const target = processCampaignTarget(backendCampaign);
         const distributables = processCampaignDistributables(backendCampaign);
 
-        if (!target)
-            throw new Error(
-                `Unsupported campaign target type ${backendCampaign.target.type}`,
-            );
         if (!distributables)
             throw new Error("Unsupported campaign distributables");
 
@@ -1208,10 +1204,6 @@ function processCampaignDetailsResponse(
     const target = processCampaignTarget(backendCampaign);
     const distributables = processCampaignDistributables(backendCampaign);
 
-    if (!target)
-        throw new Error(
-            `Unsupported campaign target type ${backendCampaign.target.type}`,
-        );
     if (!distributables) throw new Error("Unsupported campaign distributables");
 
     const from = unix(new Date(backendCampaign.from));
@@ -1295,10 +1287,6 @@ function processCampaignItemDetailsResponse(
     const target = processCampaignTarget(backendCampaign);
     const distributables = processCampaignDistributables(backendCampaign);
 
-    if (!target)
-        throw new Error(
-            `Unsupported campaign target type ${backendCampaign.target.type}`,
-        );
     if (!distributables) throw new Error("Unsupported campaign distributables");
 
     const from = unix(new Date(backendCampaign.from));
@@ -1518,7 +1506,7 @@ function processCampaignTarget(
             };
             break;
         }
-        case "empty": {
+        default: {
             target = <EmptyTarget>{
                 ...campaign.target,
             };
