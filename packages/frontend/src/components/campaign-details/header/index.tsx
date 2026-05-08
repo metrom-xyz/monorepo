@@ -9,6 +9,7 @@ import { EmptyHeader } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
 import { SkeletonTags } from "./tags";
 import { OdysseyHeader } from "./odyssey";
+import { Erc4626Vault } from "./erc4626-vault";
 
 import styles from "./styles.module.css";
 
@@ -37,6 +38,8 @@ export function Header({ campaignDetails }: HeaderProps) {
         TargetType.HoldFungibleAsset,
     );
 
+    const erc4626Vault = campaignDetails.isTargeting(TargetType.Erc4626Vault);
+
     const odyssey = campaignDetails.isTargeting(TargetType.Odyssey);
 
     const empty = campaignDetails.isTargeting(TargetType.Empty);
@@ -52,6 +55,7 @@ export function Header({ campaignDetails }: HeaderProps) {
             {holdFungibleAsset && (
                 <HoldFungibleAsset campaignDetails={campaignDetails} />
             )}
+            {erc4626Vault && <Erc4626Vault campaignDetails={campaignDetails} />}
             {odyssey && <OdysseyHeader campaignDetails={campaignDetails} />}
         </div>
     );
