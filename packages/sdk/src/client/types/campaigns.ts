@@ -5,6 +5,7 @@ import type { ChainType, Erc20Token } from "src/types/commons";
 import type { BackendCampaignAmmPool } from "./pools";
 import type {
     SupportedAaveV3,
+    SupportedErc4626Vault,
     SupportedGmxV1,
     SupportedLiquityV2,
     SupportedOdyssey,
@@ -81,6 +82,12 @@ export interface BackendOdysseyTarget extends BaseTarget {
     brand: SupportedOdyssey;
     strategyId: SupportedOdysseyStrategy;
     asset: Erc20Token;
+}
+
+export interface BackendErc4626VaultTarget extends BaseTarget {
+    type: "erc-4626-vault";
+    brand: SupportedErc4626Vault;
+    vault: BackendErc20Token;
 }
 
 export interface BackendTurtleIncentive {
@@ -193,7 +200,8 @@ export interface BackendBaseCampaign {
         | BackendTurtleCampaignTarget
         | BackendAmmPoolNetSwapVolumeTarget
         | BackendYieldSeekerTarget
-        | BackendOdysseyTarget;
+        | BackendOdysseyTarget
+        | BackendErc4626VaultTarget;
     usdTvl?: number;
     apr?: number;
 }

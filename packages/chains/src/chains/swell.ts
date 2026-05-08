@@ -10,7 +10,7 @@ import {
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { swellchain } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { SwellLogo } from "../assets/logos/chains/swell";
 import { VelodromeLogo } from "../assets/logos/dexes/velodrome";
 import { OrkiDarkLogo } from "../assets/logos/liquity-v2-platforms/orki-dark";
@@ -53,7 +53,7 @@ export const swellData: ChainData = {
             logo: VelodromeLogo,
             name: "Velodrome",
             depositUrl: {
-                type: DepositUrlType.QueryTokenAddresses,
+                type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template: `https://velo.drome.eth.limo/deposit?token0={token_0}&token1={token_1}&chain0=${SupportedChain.Swell}&chain1=${SupportedChain.Swell}&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F`,
             },
             supportsFetchAllPools: true,

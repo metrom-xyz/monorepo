@@ -7,7 +7,7 @@ import {
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { lumiaMainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { LumiaLogo } from "../assets/logos/chains/lumia";
 import { MorphexLogo } from "../assets/logos/dexes/morphex";
 
@@ -36,7 +36,7 @@ export const lumiaData: ChainData = {
             logo: MorphexLogo,
             name: "Morphex",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://morphex.exchange/create-position/{pool}",
             },
             supportsFetchAllPools: true,

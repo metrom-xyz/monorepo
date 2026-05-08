@@ -5,11 +5,6 @@ import {
 import { useCallback, useMemo, useState } from "react";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { EXPERIMENTAL_CHAINS } from "@/src/commons/env";
-import {
-    HoldFungibleAssetCampaignPreviewPayload,
-    type HoldFungibleAssetCampaignPayload,
-    type HoldFungibleAssetCampaignPayloadPart,
-} from "@/src/types/campaign/hold-fungible-asset-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-target-campaign";
 import {
     allFieldsFilled,
@@ -19,25 +14,32 @@ import {
 } from "@/src/utils/form";
 import { useFormSteps } from "@/src/context/form-steps";
 import { FormStepId } from "@/src/types/form";
-import {
-    HOLD_FUNGIBLE_ASSET_BASIC_PAYLOAD_KEYS,
-    HoldFungibleAssetBasicsStep,
-} from "./hold-fungible-asset-basics-step";
 import { CampaignApproveLaunchStep } from "../../steps/campaign-approve-launch-step";
-import { HoldFungibleAssetRewardsStep } from "./hold-fungible-asset-rewards-step";
+import {
+    type Erc4626VaultCampaignPayload,
+    type Erc4626VaultCampaignPayloadPart,
+    Erc4626VaultCampaignPreviewPayload,
+} from "@/src/types/campaign/erc4626-vault-campaign";
+import {
+    ERC4626_VAULT_BASIC_PAYLOAD_KEYS,
+    Erc4626VaultBasicsStep,
+} from "./erc4626-vault-basics-step";
+import { Erc4626VaultRewardsStep } from "./erc4626-vault-rewards-step";
 
 import styles from "./styles.module.css";
+import { CampaignKpiStep } from "../../steps/campaign-kpi-step";
 
 function validatePayload(
     chainId: number,
-    payload: HoldFungibleAssetCampaignPayload,
+    payload: Erc4626VaultCampaignPayload,
 ):
-    | HoldFungibleAssetCampaignPreviewPayload
+    | Erc4626VaultCampaignPreviewPayload
     | EmptyTargetCampaignPreviewPayload
     | null {
     const {
         kind,
-        asset,
+        brand,
+        vault,
         startDate,
         endDate,
         distributables,
@@ -48,11 +50,12 @@ function validatePayload(
 
     if (
         !kind ||
-        !asset ||
+        !brand ||
+        !vault ||
         !startDate ||
         !endDate ||
         !distributables ||
-        kind !== CampaignKind.HoldFungibleAsset
+        kind !== CampaignKind.Erc4626Vault
     )
         return null;
 
@@ -72,8 +75,9 @@ function validatePayload(
         );
     }
 
-    return new HoldFungibleAssetCampaignPreviewPayload(
-        asset,
+    return new Erc4626VaultCampaignPreviewPayload(
+        brand,
+        vault,
         chainId,
         startDate,
         endDate,
@@ -84,19 +88,19 @@ function validatePayload(
     );
 }
 
-interface HoldFungibleAssetFormProps {
+interface Erc4626VaultFormProps {
     distributablesType: DistributablesType;
-    onStepComplete: (payload: HoldFungibleAssetCampaignPayloadPart) => void;
+    onStepComplete: (payload: Erc4626VaultCampaignPayloadPart) => void;
     onLaunch: () => void;
 }
 
-export function HoldFungibleAssetForm({
+export function Erc4626VaultForm({
     distributablesType,
     onStepComplete,
     onLaunch,
-}: HoldFungibleAssetFormProps) {
-    const [payload, setPayload] = useState<HoldFungibleAssetCampaignPayload>({
-        kind: CampaignKind.HoldFungibleAsset,
+}: Erc4626VaultFormProps) {
+    const [payload, setPayload] = useState<Erc4626VaultCampaignPayload>({
+        kind: CampaignKind.Erc4626Vault,
         distributables: { type: distributablesType },
     });
 
@@ -110,12 +114,19 @@ export function HoldFungibleAssetForm({
     }, [payload, errors]);
 
     const steps: FormStepId[] = useMemo(
-        () => [FormStepId.Basics, FormStepId.Rewards, FormStepId.Launch],
-        [],
+        () => [
+            FormStepId.Basics,
+            FormStepId.Rewards,
+            ...(distributablesType === DistributablesType.Tokens
+                ? [FormStepId.Kpi]
+                : []),
+            FormStepId.Launch,
+        ],
+        [distributablesType],
     );
 
     const handleOnApply = useCallback(
-        (part: HoldFungibleAssetCampaignPayloadPart, stepId: FormStepId) => {
+        (part: Erc4626VaultCampaignPayloadPart, stepId: FormStepId) => {
             setPayload((prev) => ({ ...prev, ...part }));
             onStepComplete({ ...payload, ...part });
 
@@ -139,18 +150,26 @@ export function HoldFungibleAssetForm({
     return (
         <div className={styles.root}>
             <div className={styles.stepsWrapper}>
-                <HoldFungibleAssetBasicsStep
+                <Erc4626VaultBasicsStep
                     payload={payload}
                     onApply={handleOnApply}
                 />
-                <HoldFungibleAssetRewardsStep
+                <Erc4626VaultRewardsStep
                     payload={payload}
                     disabled={
                         !!errors.basics ||
                         !allFieldsFilled(
                             payload,
-                            HOLD_FUNGIBLE_ASSET_BASIC_PAYLOAD_KEYS,
+                            ERC4626_VAULT_BASIC_PAYLOAD_KEYS,
                         )
+                    }
+                    onApply={handleOnApply}
+                />
+                <CampaignKpiStep
+                    payload={payload}
+                    targetUsdValue={payload.vault?.usdTvl}
+                    disabled={
+                        !!errors.rewards || !distributablesCompleted(payload)
                     }
                     onApply={handleOnApply}
                 />

@@ -11,7 +11,7 @@ import { taiko } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { UnagiLogo } from "../assets/logos/dexes/unagi";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { IzumiLogo } from "../assets/logos/dexes/izumi";
 
 export const taikoData: ChainData = {
@@ -45,7 +45,7 @@ export const taikoData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/uniswap/v3/liquidity/taiko/{pool}",
             },
             supportsFetchAllPools: true,
@@ -57,7 +57,7 @@ export const taikoData: ChainData = {
             logo: UnagiLogo,
             name: "Unagi",
             depositUrl: {
-                type: DepositUrlType.QueryTokenAddresses,
+                type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template:
                     "https://unagiswap.xyz/pool/create/amm/v3?from={token_0}&to={token_1}",
             },
@@ -70,7 +70,7 @@ export const taikoData: ChainData = {
             logo: IzumiLogo,
             name: "Izumi",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template:
                     "https://izumi.finance/trade/pool/?chain_id=167000&pool_address={pool}",
             },

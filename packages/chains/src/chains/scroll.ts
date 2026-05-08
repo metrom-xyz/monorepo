@@ -12,7 +12,7 @@ import { ScrollLogo } from "../assets/logos/chains/scroll";
 import { scroll } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { AmbientLogo, HoneypopLogo, QuillLogo } from "../assets";
 
 export const scrollData: ChainData = {
@@ -46,7 +46,7 @@ export const scrollData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/uniswap/v3/liquidity/sonic/{pool}",
             },
             supportsFetchAllPools: true,
@@ -58,7 +58,7 @@ export const scrollData: ChainData = {
             logo: AmbientLogo,
             name: "Ambient",
             depositUrl: {
-                type: DepositUrlType.QueryTokenAddresses,
+                type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template:
                     "https://ambient.finance/trade/pool/chain=0x82750&tokenA={token_0}&tokenB={token_1}",
             },
@@ -71,7 +71,7 @@ export const scrollData: ChainData = {
             logo: HoneypopLogo,
             name: "Honeypop",
             depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
+                type: AmmPoolDepositUrlType.PathTokenAddresses,
                 template: "https://honeypop.app/add/{pool}",
             },
             supportsFetchAllPools: true,

@@ -5,19 +5,17 @@ import {
     BaseCampaignType,
     CampaignKind,
     DistributablesType,
-    PartnerCampaignType,
     type CampaignType,
 } from "@metrom-xyz/sdk";
 import { useCallback, useState } from "react";
-import { trackFathomEvent } from "@/src/utils/fathom";
 import { Button, Typography } from "@metrom-xyz/ui";
 import { FormHeader } from "./header";
 import { AmmPoolLiquidityForm } from "./amm-pool-liquidity-form";
 import { LiquityV2ForksForm } from "./liquity-v2-forks-form";
 import { useRouter } from "@/src/i18n/routing";
 import { AaveV3Form } from "./aave-v3-form";
-import { AaveV3BridgeAndSupplyForm } from "./aave-v3-bridge-and-supply-form";
 import { HoldFungibleAssetForm } from "./hold-fungible-asset-form";
+import { Erc4626VaultForm } from "./erc4626-vault-form";
 import { FormPreview } from "./preview";
 import { ArrowLeftIcon } from "@/src/assets/arrow-left-icon";
 import { useTranslations } from "next-intl";
@@ -49,10 +47,6 @@ export function CreateCampaignForm<T extends CampaignType>({
         type: campaignType,
         distributablesType,
     });
-
-    function handlePreviewOnClick() {
-        trackFathomEvent("CLICK_CAMPAIGN_PREVIEW");
-    }
 
     const handleOnStepComplete = useCallback((part: object | undefined) => {
         setPayload((prev) => ({ ...prev, ...part }));
@@ -191,30 +185,40 @@ export function CreateCampaignForm<T extends CampaignType>({
                                     />
                                 )}
                                 {campaignType ===
+                                    BaseCampaignType.Erc4626Vault && (
+                                    <Erc4626VaultForm
+                                        distributablesType={distributablesType}
+                                        onStepComplete={handleOnStepComplete}
+                                        onLaunch={handleOnLaunch}
+                                    />
+                                )}
+                                {/* {campaignType ===
                                     PartnerCampaignType.AaveV3BridgeAndSupply && (
                                     <AaveV3BridgeAndSupplyForm
                                         unsupportedChain={false}
                                         onPreviewClick={handlePreviewOnClick}
                                     />
                                 )}
-                                {/* {campaignType ===
-                        PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity && (
-                        <AmmPoolLiquidityForm
-                            kind={
-                                CampaignKind.JumperWhitelistedAmmPoolLiquidity
-                            }
-                            unsupportedChain={unsupportedChain}
-                            payload={payload}
-                            errors={errors}
-                            completedRequiredSteps={completedRequiredSteps}
-                            onCompleteRequiredStep={
-                                handleOnCompletedRequiredStep
-                            }
-                            onChange={handlePayloadOnChange}
-                            onError={handlePayloadOnError}
-                            onPreviewClick={handlePreviewOnClick}
-                        />
-                    )} */}
+                                {campaignType ===
+                                    PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity && (
+                                    <AmmPoolLiquidityForm
+                                        kind={
+                                            CampaignKind.JumperWhitelistedAmmPoolLiquidity
+                                        }
+                                        unsupportedChain={unsupportedChain}
+                                        payload={payload}
+                                        errors={errors}
+                                        completedRequiredSteps={
+                                            completedRequiredSteps
+                                        }
+                                        onCompleteRequiredStep={
+                                            handleOnCompletedRequiredStep
+                                        }
+                                        onChange={handlePayloadOnChange}
+                                        onError={handlePayloadOnError}
+                                        onPreviewClick={handlePreviewOnClick}
+                                    />
+                                )} */}
                             </div>
                             <FormPreview payload={payload} />
                         </div>

@@ -5,6 +5,7 @@ import {
     Erc20Token,
     SupportedAaveV3,
     SupportedDex,
+    SupportedErc4626Vault,
     SupportedGmxV1,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
@@ -23,6 +24,7 @@ export enum ProtocolType {
     LiquidityProviderDeal = "liquidity-provider-deal",
     YieldSeeker = "yield-seeker",
     Odyssey = "odyssey",
+    Erc4626Vault = "erc-4626-vault",
 }
 
 export interface ProtocolBase<S = string, T = ProtocolType> {
@@ -34,29 +36,35 @@ export interface ProtocolBase<S = string, T = ProtocolType> {
     logoLight?: FunctionComponent<SVGIcon>;
 }
 
-export enum DepositUrlType {
+export enum AmmPoolDepositUrlType {
     PathPoolAddress = "path-pool-address",
     PathTokenAddresses = "path-token-addresses",
     QueryTokenAddresses = "query-pool-addresses",
 }
 
-export interface DexProtocol
-    extends ProtocolBase<SupportedDex, ProtocolType.Dex> {
+export interface DexProtocol extends ProtocolBase<
+    SupportedDex,
+    ProtocolType.Dex
+> {
     depositUrl: {
-        type: DepositUrlType;
+        type: AmmPoolDepositUrlType;
         template: string;
     };
     supportsFetchAllPools: boolean;
 }
 
-export interface GmxV1LiquidityProtocol
-    extends ProtocolBase<SupportedGmxV1, ProtocolType.GmxV1Liquidity> {
+export interface GmxV1LiquidityProtocol extends ProtocolBase<
+    SupportedGmxV1,
+    ProtocolType.GmxV1Liquidity
+> {
     brand: string;
     actionUrl: string;
 }
 
-export interface LiquityV2Protocol
-    extends ProtocolBase<SupportedLiquityV2, ProtocolType.LiquityV2> {
+export interface LiquityV2Protocol extends ProtocolBase<
+    SupportedLiquityV2,
+    ProtocolType.LiquityV2
+> {
     debtToken: Erc20Token;
     actionUrls: Record<
         TargetType.LiquityV2Debt | TargetType.LiquityV2StabilityPool,
@@ -64,8 +72,10 @@ export interface LiquityV2Protocol
     >;
 }
 
-export interface AaveV3Protocol
-    extends ProtocolBase<SupportedAaveV3, ProtocolType.AaveV3> {
+export interface AaveV3Protocol extends ProtocolBase<
+    SupportedAaveV3,
+    ProtocolType.AaveV3
+> {
     markets: AaveV3Market[];
     actionUrls: Record<
         | TargetType.AaveV3Borrow
@@ -76,11 +86,10 @@ export interface AaveV3Protocol
     >;
 }
 
-export interface LiquidityProviderDeal
-    extends ProtocolBase<
-        SupportedLiquidityProviderDeal,
-        ProtocolType.LiquidityProviderDeal
-    > {
+export interface LiquidityProviderDeal extends ProtocolBase<
+    SupportedLiquidityProviderDeal,
+    ProtocolType.LiquidityProviderDeal
+> {
     deal: SupportedTurtleDeal;
     actionUrl: string;
 }
@@ -90,9 +99,18 @@ export type YieldSeekerProtocol = ProtocolBase<
     ProtocolType.YieldSeeker
 >;
 
-export interface OdysseyProtocol
-    extends ProtocolBase<SupportedOdyssey, ProtocolType.Odyssey> {
+export interface OdysseyProtocol extends ProtocolBase<
+    SupportedOdyssey,
+    ProtocolType.Odyssey
+> {
     strategies: SupportedOdysseyStrategy[];
+}
+
+export interface Erc4626VaultProtocol extends ProtocolBase<
+    SupportedErc4626Vault,
+    ProtocolType.Erc4626Vault
+> {
+    vaultUrl: string;
 }
 
 export type Protocol =
@@ -102,4 +120,5 @@ export type Protocol =
     | AaveV3Protocol
     | LiquidityProviderDeal
     | YieldSeekerProtocol
-    | OdysseyProtocol;
+    | OdysseyProtocol
+    | Erc4626VaultProtocol;

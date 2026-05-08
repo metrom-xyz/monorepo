@@ -9,7 +9,7 @@ import { TelosLogo } from "../assets/logos/chains/telos";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { telos } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
 export const telosData: ChainData = {
     active: false,
@@ -41,7 +41,7 @@ export const telosData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/uniswap/v3/liquidity/telos/{pool}",
             },
             supportsFetchAllPools: true,

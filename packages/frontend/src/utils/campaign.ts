@@ -14,6 +14,7 @@ import {
     type AaveV3Collateral,
     type LiquityV2Collateral,
     type FungibleAssetInfo,
+    type Erc4626Vault,
 } from "@metrom-xyz/sdk";
 import {
     CampaignDetails,
@@ -35,6 +36,7 @@ import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-ca
 import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
 import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
 import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-target-campaign";
+import { Erc4626VaultCampaignPreviewPayload } from "../types/campaign/erc4626-vault-campaign";
 
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
@@ -130,6 +132,12 @@ export function getCampaignName(
                 asset: campaign.target.asset.symbol,
             });
         }
+        case TargetType.Erc4626Vault: {
+            return t("campaignActions.erc4626Vault", {
+                vault: campaign.target.vault.name,
+                brand: campaign.target.brand.name,
+            });
+        }
         case TargetType.Empty: {
             return t("campaignActions.empty");
         }
@@ -147,7 +155,8 @@ export function getCampaignTargetValueName(
         case CampaignKind.AmmPoolLiquidity:
         case CampaignKind.JumperWhitelistedAmmPoolLiquidity:
         case CampaignKind.HoldFungibleAsset:
-        case CampaignKind.OdysseyStrategy: {
+        case CampaignKind.OdysseyStrategy:
+        case CampaignKind.Erc4626Vault: {
             return t("campaignTargetValueName.tvl");
         }
         case CampaignKind.LiquityV2Debt:
@@ -271,6 +280,17 @@ export function getHoldFungibleAssetCampaignPreviewName(
     });
 }
 
+export function getErc4626VaultCampaignPreviewName(
+    t: TranslationsType<never>,
+    brand: string,
+    vault: Erc4626Vault,
+) {
+    return t("campaignActions.erc4626Vault", {
+        vault: vault.name,
+        brand: brand,
+    });
+}
+
 export function getCampaignPreviewName(
     t: TranslationsType<never>,
     payload: BaseCampaignPreviewPayload,
@@ -321,6 +341,11 @@ export function getCampaignPreviewName(
         return t("campaignActions.holdFungibleAsset", {
             name: payload.asset.name,
             symbol: payload.asset.symbol,
+        });
+    } else if (payload instanceof Erc4626VaultCampaignPreviewPayload) {
+        return t("campaignActions.erc4626Vault", {
+            vault: payload.vault.name,
+            brand: payload.brand.name,
         });
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return t("campaignActions.empty");

@@ -8,6 +8,7 @@ import {
     SupportedBridge,
     type SupportedProtocol,
     SupportedGmxV1,
+    SupportedErc4626Vault,
 } from "../commons";
 import type {
     BackendCampaign,
@@ -56,6 +57,7 @@ import {
     SpecificationDistributionType,
     CampaignItemDetails,
     CampaignItem,
+    type Erc4626VaultTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -110,6 +112,8 @@ import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
 import type { AmmPool, CampaignAmmPool } from "src/types/pools";
 import type { BackendProjectsResponse } from "./types/projects";
 import type { Project } from "src/types/projects";
+import type { Erc4626Vault } from "../types/erc4626-vault";
+import type { BackendErc4626VaultResponse } from "./types/erc4626-vault";
 
 const MIN_TICK = -887272;
 const MAX_TICK = -MIN_TICK;
@@ -158,6 +162,10 @@ const AAVE_V3_BRAND_NAME: Record<SupportedAaveV3, string> = {
 
 const BRIDGE_BRAND_NAME: Record<SupportedBridge, string> = {
     [SupportedBridge.LayerZero]: "Layer Zero",
+};
+
+const ERC4626_VAULT_PLATFORM_NAME: Record<SupportedErc4626Vault, string> = {
+    [SupportedErc4626Vault.Yearn]: "Yearn",
 };
 
 export interface FetchCampaignsParams {
@@ -269,6 +277,10 @@ export interface FetchFungibleAssetParams extends ChainParams {
 export interface FetchProjectsParams {
     chainType?: ChainType;
     crossVm?: boolean;
+}
+
+export interface FetchErc4626VaultsParams extends ChainParams {
+    brand: SupportedErc4626Vault;
 }
 
 export interface FetchAaveV3CollateralsParams extends ChainParams {
@@ -1153,6 +1165,29 @@ export class MetromApiClient {
                 return b.campaigns.total - a.campaigns.total;
             });
     }
+
+    async fetchErc4626Vaults(
+        params: FetchErc4626VaultsParams,
+    ): Promise<Erc4626Vault[]> {
+        const url = new URL(
+            `v2/erc4626/${params.chainType}/${params.chainId}/${params.brand}/vaults`,
+            this.baseUrl,
+        );
+
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error(
+                `Response not ok while fetching erc4626 vaults: ${await response.text()}`,
+            );
+
+        const parsedResponse =
+            (await response.json()) as BackendErc4626VaultResponse;
+
+        return parsedResponse.vaults.map((vault) => ({
+            ...vault,
+            totalAssets: BigInt(vault.totalAssets),
+        }));
+    }
 }
 
 function processCampaignsResponse(
@@ -1503,6 +1538,19 @@ function processCampaignTarget(
                 brand: campaign.target.brand,
                 strategyId: campaign.target.strategyId,
                 asset: campaign.target.asset,
+            };
+            break;
+        }
+        case "erc-4626-vault": {
+            target = <Erc4626VaultTarget>{
+                type: TargetType.Erc4626Vault,
+                chainType,
+                chainId,
+                vault: campaign.target.vault,
+                brand: {
+                    slug: campaign.target.brand,
+                    name: ERC4626_VAULT_PLATFORM_NAME[campaign.target.brand],
+                },
             };
             break;
         }

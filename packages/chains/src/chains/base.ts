@@ -4,6 +4,7 @@ import {
     DistributablesType,
     PartnerCampaignType,
     SupportedDex,
+    SupportedErc4626Vault,
     SupportedYieldSeeker,
 } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
@@ -11,12 +12,15 @@ import { BaseLogo } from "../assets/logos/chains/base";
 import { base } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
-import { HydrexLogo } from "../assets/logos/dexes/hydrex";
-import { BalancerLogo } from "../assets/logos/dexes/balancer";
-import { QuickswapLogo } from "../assets/logos/dexes/quickswap";
-import { YieldSeekerLogo } from "../assets/logos/yield-seeker";
-import { StabullLogo } from "../assets";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
+import {
+    YieldSeekerLogo,
+    StabullLogo,
+    HydrexLogo,
+    BalancerLogo,
+    QuickswapLogo,
+    YearnLogo,
+} from "../assets";
 
 export const baseData: ChainData = {
     active: true,
@@ -35,6 +39,12 @@ export const baseData: ChainData = {
             distributables: [DistributablesType.Tokens],
         },
         {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.Erc4626Vault,
+            distributables: [DistributablesType.Tokens],
+        },
+        {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
@@ -49,7 +59,7 @@ export const baseData: ChainData = {
             logo: HydrexLogo,
             name: "Hydrex",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://www.hydrex.fi/liquidity/{pool}/create",
             },
             supportsFetchAllPools: true,
@@ -61,7 +71,7 @@ export const baseData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://app.uniswap.org/explore/pools/base/{pool}",
             },
             supportsFetchAllPools: false,
@@ -73,7 +83,7 @@ export const baseData: ChainData = {
             logo: BalancerLogo,
             name: "Balancer v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://balancer.fi/pools/base/v3/{pool}",
             },
             supportsFetchAllPools: false,
@@ -85,7 +95,7 @@ export const baseData: ChainData = {
             logo: QuickswapLogo,
             name: "Quickswap",
             depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
+                type: AmmPoolDepositUrlType.PathTokenAddresses,
                 template:
                     "https://dapp.quickswap.exchange/pool/v4/{pool}?chainId=8453",
             },
@@ -98,11 +108,19 @@ export const baseData: ChainData = {
             logo: StabullLogo,
             name: "Stabull",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template:
                     "https://app.stabull.finance/add-liquidity/{pool}?chain=8453",
             },
             supportsFetchAllPools: true,
+        },
+        {
+            active: true,
+            type: ProtocolType.Erc4626Vault,
+            slug: SupportedErc4626Vault.Yearn,
+            logo: YearnLogo,
+            name: "Yearn",
+            vaultUrl: "https://yearn.fi/vaults/8453/{vault}",
         },
         {
             active: false,

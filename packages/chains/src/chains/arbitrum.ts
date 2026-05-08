@@ -8,7 +8,7 @@ import {
     DistributablesType,
     SupportedDex,
 } from "@metrom-xyz/sdk";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
 export const arbitrumData: ChainData = {
     active: true,
@@ -35,7 +35,7 @@ export const arbitrumData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template:
                     "https://app.uniswap.org/explore/pools/arbitrum/{pool}",
             },

@@ -1,0 +1,25 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply w-full sm:min-w-2/4;
+}
+
+.option {
+    @apply w-full flex gap-1.5 items-center justify-between;
+}
+
+.vault {
+    @apply max-w-2/3 w-full flex items-center gap-1;
+}
+
+.vaultNameWrapper {
+    @apply max-w-4/5;
+}
+
+.skeleton :global(.skeleton) {
+    @apply bg-gray-200 dark:bg-neutral-800;
+}
+
+.header {
+    @apply flex justify-between items-center px-3 pt-3;
+}
