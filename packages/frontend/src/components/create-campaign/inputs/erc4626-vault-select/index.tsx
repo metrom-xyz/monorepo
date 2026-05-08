@@ -28,11 +28,12 @@ interface Erc4626VaultSelectProps {
 
 interface OptionData {
     chainId: number;
+    asset: Address;
     usdValue: number;
 }
 
 const option = (option: SelectOption<string, OptionData>) => {
-    const { label, value, data } = option;
+    const { label, data } = option;
     if (!data) return <></>;
 
     return (
@@ -40,7 +41,7 @@ const option = (option: SelectOption<string, OptionData>) => {
             <div className={styles.vault}>
                 <RemoteLogo
                     chain={data.chainId}
-                    address={value as Address}
+                    address={data.asset}
                     size="xxs"
                 />
                 <div className={styles.vaultNameWrapper}>
@@ -70,15 +71,9 @@ const selectedPrefix = (
     option: SelectOption<string, OptionData> | null | undefined,
 ) => {
     if (!option || !option.data) return <></>;
-    const { value, data } = option;
+    const { data } = option;
 
-    return (
-        <RemoteLogo
-            chain={data.chainId}
-            address={value as Address}
-            size="xxs"
-        />
-    );
+    return <RemoteLogo chain={data.chainId} address={data.asset} size="xxs" />;
 };
 
 export function Erc4626VaultSelect({
@@ -111,6 +106,7 @@ export function Erc4626VaultSelect({
             value: vault.address,
             data: {
                 chainId,
+                asset: vault.asset,
                 usdValue: vault.usdTvl,
             },
         }));

@@ -43,7 +43,7 @@ export function Erc4626VaultTarget({ payload }: Erc4626VaultTargetProps) {
                 <RemoteLogo
                     size="xxs"
                     chain={payload.chainId}
-                    address={payload.vault.address}
+                    address={payload.vault.asset}
                 />
                 <Typography size="sm" weight="medium">
                     {getErc4626VaultCampaignPreviewName(

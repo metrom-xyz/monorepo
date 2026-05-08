@@ -98,13 +98,13 @@ export function Erc4626VaultBrandSelect({
     return (
         <Select
             size="lg"
-            label={t("vaultBrand")}
+            label={t("platform")}
             search
             disabled={!chainId}
             options={options}
             value={value?.slug as string}
             onChange={handleOnChange}
-            messages={{ noResults: t("noDexes") }}
+            messages={{ noResults: t("noPlatforms") }}
             renderOption={option}
             renderSelectedPrefix={selectedPrefix}
             noPrefixPadding
