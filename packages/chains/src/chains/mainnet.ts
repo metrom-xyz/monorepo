@@ -1,7 +1,7 @@
 import { EthLogo } from "../assets/logos/chains/eth";
 import { mainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import {
     BaseCampaignType,
     ChainType,
@@ -65,7 +65,7 @@ export const mainnetData: ChainData = {
             name: "Curve",
             depositUrl: {
                 template: "https://www.curve.finance/dex/ethereum/pools",
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
             },
             supportsFetchAllPools: true,
         },

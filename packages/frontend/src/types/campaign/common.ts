@@ -27,7 +27,7 @@ import type { Dayjs } from "dayjs";
 import type { Address } from "viem";
 import { type WhitelistedErc20TokenAmount } from "../common";
 import {
-    DepositUrlType,
+    AmmPoolDepositUrlType,
     ProtocolType,
     type ChainData,
     type DexProtocol,
@@ -275,12 +275,12 @@ export class Campaign extends SdkCampaign {
             : "";
 
         switch (type) {
-            case DepositUrlType.PathPoolAddress: {
+            case AmmPoolDepositUrlType.PathPoolAddress: {
                 return template
                     .replace("{pool}", `${pool.id}`)
                     .concat(queryParams);
             }
-            case DepositUrlType.PathTokenAddresses: {
+            case AmmPoolDepositUrlType.PathTokenAddresses: {
                 return template
                     .replace(
                         "{pool}",
@@ -288,7 +288,7 @@ export class Campaign extends SdkCampaign {
                     )
                     .concat(queryParams);
             }
-            case DepositUrlType.QueryTokenAddresses: {
+            case AmmPoolDepositUrlType.QueryTokenAddresses: {
                 const url = template
                     .replace("{token_0}", pool.tokens[0].address)
                     .replace("{token_1}", pool.tokens[1].address)
@@ -362,12 +362,12 @@ export class CampaignDetails extends SdkCampaignDetails {
             : "";
 
         switch (type) {
-            case DepositUrlType.PathPoolAddress: {
+            case AmmPoolDepositUrlType.PathPoolAddress: {
                 return template
                     .replace("{pool}", `${pool.id}`)
                     .concat(queryParams);
             }
-            case DepositUrlType.PathTokenAddresses: {
+            case AmmPoolDepositUrlType.PathTokenAddresses: {
                 return template
                     .replace(
                         "{pool}",
@@ -375,7 +375,7 @@ export class CampaignDetails extends SdkCampaignDetails {
                     )
                     .concat(queryParams);
             }
-            case DepositUrlType.QueryTokenAddresses: {
+            case AmmPoolDepositUrlType.QueryTokenAddresses: {
                 const url = template
                     .replace("{token_0}", pool.tokens[0].address)
                     .replace("{token_1}", pool.tokens[1].address)
@@ -534,12 +534,12 @@ export class CampaignItemDetails extends SdkCampaignItemDetails {
             : "";
 
         switch (type) {
-            case DepositUrlType.PathPoolAddress: {
+            case AmmPoolDepositUrlType.PathPoolAddress: {
                 return template
                     .replace("{pool}", `${pool.id}`)
                     .concat(queryParams);
             }
-            case DepositUrlType.PathTokenAddresses: {
+            case AmmPoolDepositUrlType.PathTokenAddresses: {
                 return template
                     .replace(
                         "{pool}",
@@ -547,7 +547,7 @@ export class CampaignItemDetails extends SdkCampaignItemDetails {
                     )
                     .concat(queryParams);
             }
-            case DepositUrlType.QueryTokenAddresses: {
+            case AmmPoolDepositUrlType.QueryTokenAddresses: {
                 const url = template
                     .replace("{token_0}", pool.tokens[0].address)
                     .replace("{token_1}", pool.tokens[1].address)

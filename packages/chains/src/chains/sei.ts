@@ -10,7 +10,7 @@ import { sei } from "viem/chains";
 import { SeiLogo } from "../assets/logos/chains/sei";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
 export const seiDevelopmentData: ChainData = {
     active: true,
@@ -45,7 +45,7 @@ export const seiDevelopmentData: ChainData = {
             logo: CarbonLogo,
             name: "Carbon DeFi",
             depositUrl: {
-                type: DepositUrlType.QueryTokenAddresses,
+                type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template:
                     "https://sei.carbondefi.xyz/trade/disposable?base={token_0}&quote={token_1}",
             },
@@ -110,7 +110,7 @@ export const seiProductionData: ChainData = {
             logo: CarbonLogo,
             name: "Carbon DeFi",
             depositUrl: {
-                type: DepositUrlType.QueryTokenAddresses,
+                type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template:
                     "https://sei.carbondefi.xyz/trade/disposable?base={token_0}&quote={token_1}",
             },

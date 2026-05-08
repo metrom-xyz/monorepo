@@ -15,6 +15,7 @@ export * from "./types/activities";
 export * from "./types/campaigns";
 export * from "./types/claims";
 export * from "./types/commons";
+export * from "./types/erc4626-vault";
 export * from "./types/fee-tokens";
 export * from "./types/fungible-asset";
 export * from "./types/initialized-ticks";

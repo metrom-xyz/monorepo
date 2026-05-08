@@ -9,7 +9,7 @@ import { LightLinkPhoenixLogo } from "../assets/logos/chains/lightlink-phoenix";
 import { lightlinkPhoenix } from "viem/chains";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
 export const lightlinkPhoenixData: ChainData = {
     active: true,
@@ -36,7 +36,7 @@ export const lightlinkPhoenixData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template:
                     "https://oku.trade/uniswap/v3/liquidity/lightlink/{pool}",
             },

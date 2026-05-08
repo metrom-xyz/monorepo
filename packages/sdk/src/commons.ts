@@ -47,6 +47,10 @@ export enum SupportedDex {
     Stabull = "stabull",
 }
 
+export enum SupportedErc4626Vault {
+    Yearn = "yearn",
+}
+
 export enum SupportedOdyssey {
     Odyssey = "odyssey",
 }
@@ -91,7 +95,8 @@ export type SupportedProtocol =
     | SupportedBridge
     | SupportedGmxV1
     | SupportedLiquidityProviderDeal
-    | SupportedYieldSeeker;
+    | SupportedYieldSeeker
+    | SupportedErc4626Vault;
 
 export enum SupportedOdysseyStrategy {
     // TODO: strategy wity id 1 is missing the name
@@ -136,6 +141,7 @@ export const CAMPAIGN_TARGET_TO_KIND: Record<TargetType, CampaignKind> = {
         CampaignKind.JumperWhitelistedAmmPoolLiquidity,
     [TargetType.HoldFungibleAsset]: CampaignKind.HoldFungibleAsset,
     [TargetType.Odyssey]: CampaignKind.OdysseyStrategy,
+    [TargetType.Erc4626Vault]: CampaignKind.Erc4626Vault,
 };
 
 export const SERVICE_URLS: Record<Environment, ServiceUrls> = {

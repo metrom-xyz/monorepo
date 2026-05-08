@@ -10,7 +10,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { plasma } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { BalancerLogo, EbisuLogo, LithosLogo, PlasmaLogo } from "../assets";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
 export const plasmaData: ChainData = {
     active: true,
@@ -37,7 +37,7 @@ export const plasmaData: ChainData = {
             logo: BalancerLogo,
             name: "Balancer v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://balancer.fi/pools/plasma/v3/{pool}",
             },
             supportsFetchAllPools: false,
@@ -49,7 +49,7 @@ export const plasmaData: ChainData = {
             logo: LithosLogo,
             name: "Lithos",
             depositUrl: {
-                type: DepositUrlType.QueryTokenAddresses,
+                type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template:
                     "https://lithos.to/pools/deposit?token0={token_0}&token1={token_1}",
             },

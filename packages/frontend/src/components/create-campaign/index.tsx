@@ -48,6 +48,11 @@ export const FORM_INFO: Record<BaseCampaignType, CampaignTypeConfig> = {
         description: "odyssey.description",
         icon: <AaveThemeLogo className={styles.aaveIcon} />,
     },
+    [BaseCampaignType.Erc4626Vault]: {
+        title: "erc4626Vault.title",
+        description: "erc4626Vault.description",
+        icon: <AaveThemeLogo className={styles.aaveIcon} />,
+    },
 };
 
 export function CreateCampaign() {

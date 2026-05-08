@@ -7,7 +7,7 @@ import {
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { baseSepolia } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { BaseLogo } from "../assets/logos/chains/base";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 
@@ -30,15 +30,6 @@ export const baseSepoliaData: ChainData = {
                 DistributablesType.FixedPoints,
             ],
         },
-        {
-            active: true,
-            partner: false,
-            type: BaseCampaignType.HoldFungibleAsset,
-            distributables: [
-                DistributablesType.Tokens,
-                DistributablesType.FixedPoints,
-            ],
-        },
     ],
     protocols: [
         {
@@ -48,7 +39,7 @@ export const baseSepoliaData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
+                type: AmmPoolDepositUrlType.PathTokenAddresses,
                 template:
                     "https://app.uniswap.org/explore/pools/base_sepolia/{pool}",
             },
