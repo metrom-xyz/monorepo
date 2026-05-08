@@ -10,6 +10,7 @@ import type {
 import type {
     SupportedAaveV3,
     SupportedBridge,
+    SupportedErc4626Vault,
     SupportedGmxV1,
     SupportedLiquityV2,
     SupportedOdyssey,
@@ -31,6 +32,7 @@ export enum CampaignKind {
     JumperWhitelistedAmmPoolLiquidity = 10,
     HoldFungibleAsset = 11,
     OdysseyStrategy = 12,
+    Erc4626Vault = 13,
 }
 
 export enum BaseCampaignType {
@@ -39,6 +41,7 @@ export enum BaseCampaignType {
     AaveV3 = "aave-v3",
     HoldFungibleAsset = "hold-fungible-asset",
     Odyssey = "odyssey",
+    Erc4626Vault = "erc-4626-vault",
 }
 
 export enum PartnerCampaignType {
@@ -64,6 +67,7 @@ export enum TargetType {
     AmmPoolNetSwapVolume = "amm-pool-net-swap-volume",
     YieldSeeker = "yield-seeker",
     Odyssey = "odyssey",
+    Erc4626Vault = "erc-4626-vault",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -178,6 +182,12 @@ export interface OdysseyTarget extends BaseTarget {
     asset: Erc20Token;
 }
 
+export interface Erc4626VaultTarget extends BaseTarget {
+    type: TargetType.Erc4626Vault;
+    brand: Brand<SupportedErc4626Vault>;
+    vault: Erc20Token;
+}
+
 export type YieldSeekerTarget = BaseTarget & {
     type: "yield-seeker";
 };
@@ -197,7 +207,8 @@ export type CampaignTarget =
     | TurtleTarget
     | AmmPoolNetSwapVolumeTarget
     | YieldSeekerTarget
-    | OdysseyTarget;
+    | OdysseyTarget
+    | Erc4626VaultTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -411,9 +422,11 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                               ? YieldSeekerTarget
                               : T extends TargetType.Odyssey
                                 ? OdysseyTarget
-                                : T extends TargetType.Empty
-                                  ? EmptyTarget
-                                  : never;
+                                : T extends TargetType.Erc4626Vault
+                                  ? Erc4626VaultTarget
+                                  : T extends TargetType.Empty
+                                    ? EmptyTarget
+                                    : never;
 }
 
 export type TargetedCampaign<T extends TargetType> = BaseTargetedCampaign<T> &

@@ -9,7 +9,7 @@ import { GnosisLogo } from "../assets/logos/chains/gnosis";
 import { gnosis } from "viem/chains";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { UniswapLogo } from "../assets";
 
 export const gnosisData: ChainData = {
@@ -43,7 +43,7 @@ export const gnosisData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template:
                     "https://oku.trade/uniswap/v3/liquidity/gnosis/{pool}",
             },

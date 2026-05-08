@@ -1,6 +1,6 @@
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import {
-    DepositUrlType,
+    AmmPoolDepositUrlType,
     LensLogo,
     ProtocolType,
     SupportedDex,
@@ -46,7 +46,7 @@ export const lensData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/uniswap/v3/liquidity/lens/{pool}",
             },
             supportsFetchAllPools: true,

@@ -19,6 +19,7 @@ import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-ca
 import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-target-campaign";
 import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
 import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
+import { Erc4626VaultCampaignPreviewPayload } from "../types/campaign/erc4626-vault-campaign";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -67,6 +68,17 @@ export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
         return encodeAbiParameters(
             [{ name: "asset", type: "address" }],
             [payload.asset.address],
+        );
+    } else if (payload instanceof Erc4626VaultCampaignPreviewPayload) {
+        return encodeAbiParameters(
+            [
+                { name: "brand", type: "bytes32" },
+                { name: "vault", type: "address" },
+            ],
+            [
+                stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
+                payload.vault.address,
+            ],
         );
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return "0x";

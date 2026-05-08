@@ -16,7 +16,7 @@
 }
 
 .form {
-    @apply w-full flex flex-col gap-5 sm:gap-8 flex-[73%];
+    @apply w-full flex flex-col gap-5 sm:gap-8 min-w-[73%] flex-[73%];
 }
 
 .launchFeedback {

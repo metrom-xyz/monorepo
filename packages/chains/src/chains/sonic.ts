@@ -11,7 +11,7 @@ import { SonicLogo } from "../assets/logos/chains/sonic";
 import { UniswapLogo } from "../assets/logos/dexes/uniswap";
 import { sonic } from "viem/chains";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { AmpedLogo } from "../assets";
 
 export const sonicData: ChainData = {
@@ -50,7 +50,7 @@ export const sonicData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/uniswap/v3/liquidity/sonic/{pool}",
             },
             supportsFetchAllPools: true,

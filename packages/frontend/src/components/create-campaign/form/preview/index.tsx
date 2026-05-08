@@ -11,6 +11,8 @@ import { useFormSteps } from "@/src/context/form-steps";
 import { LiquityV2FormPreview } from "./liquity-v2-form-preview";
 import { isHoldFungibleAssetCampaignPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
 import { HoldFungibleAssetFormPreview } from "./hold-fungible-asset-form-preview";
+import { isErc4626VaultCampaignPayload } from "@/src/types/campaign/erc4626-vault-campaign";
+import { Erc4626VaultFormPreview } from "./erc4626-vault-form-preview";
 
 import styles from "./styles.module.css";
 
@@ -29,6 +31,8 @@ export function FormPreview({ payload }: FormPreviewProps) {
         payload && isLiquityV2CampaignPayload(payload);
     const holdFungibleAssetCampaignPayload =
         payload && isHoldFungibleAssetCampaignPayload(payload);
+    const erc4626VaultCampaignPayload =
+        payload && isErc4626VaultCampaignPayload(payload);
 
     const emptyPayload = !payload?.chainId;
 
@@ -92,6 +96,12 @@ export function FormPreview({ payload }: FormPreviewProps) {
                     )}
                     {holdFungibleAssetCampaignPayload && (
                         <HoldFungibleAssetFormPreview
+                            payload={payload}
+                            errors={errors}
+                        />
+                    )}
+                    {erc4626VaultCampaignPayload && (
+                        <Erc4626VaultFormPreview
                             payload={payload}
                             errors={errors}
                         />

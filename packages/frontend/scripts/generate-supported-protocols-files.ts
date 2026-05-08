@@ -8,6 +8,7 @@ import {
     Environment,
     SupportedAaveV3,
     SupportedDex,
+    SupportedErc4626Vault,
     SupportedLiquityV2,
 } from "@metrom-xyz/sdk";
 import { writeFileSync } from "node:fs";
@@ -49,6 +50,10 @@ const AAVE_V3_HOMEPAGES: Record<SupportedAaveV3, string> = {
     [SupportedAaveV3.Aave]: "https://aave.com/",
 };
 
+const ERC4626_VAULTS_HOMEPAGES: Record<SupportedErc4626Vault, string> = {
+    [SupportedErc4626Vault.Yearn]: "https://yearn.fi/",
+};
+
 const PROTOCOL_CONFIGS = [
     {
         type: ProtocolType.Dex,
@@ -64,6 +69,11 @@ const PROTOCOL_CONFIGS = [
         type: ProtocolType.AaveV3,
         filename: "SUPPORTED_AAVE_V3s.md",
         homepages: AAVE_V3_HOMEPAGES,
+    },
+    {
+        type: ProtocolType.Erc4626Vault,
+        filename: "SUPPORTED_ERC4626_VAULTS.md",
+        homepages: ERC4626_VAULTS_HOMEPAGES,
     },
 ] as const;
 

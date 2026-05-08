@@ -8,7 +8,7 @@ import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { saga } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { SagaLogo, UniswapLogo } from "../assets";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
 export const sagaData: ChainData = {
     active: false,
@@ -35,7 +35,7 @@ export const sagaData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
+                type: AmmPoolDepositUrlType.PathTokenAddresses,
                 template: "https://oku.trade/info/saga/pool/{pool}",
             },
             supportsFetchAllPools: true,

@@ -6,7 +6,7 @@ import {
     SupportedDex,
 } from "@metrom-xyz/sdk";
 import {
-    DepositUrlType,
+    AmmPoolDepositUrlType,
     HemiLogo,
     ProtocolType,
     UniswapLogo,
@@ -39,7 +39,7 @@ export const hemiData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://oku.trade/uniswap/v3/liquidity/hemi/{pool}",
             },
             supportsFetchAllPools: true,

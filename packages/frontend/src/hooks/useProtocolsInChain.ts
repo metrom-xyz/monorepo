@@ -1,6 +1,7 @@
 import type {
     AaveV3Protocol,
     DexProtocol,
+    Erc4626VaultProtocol,
     GmxV1LiquidityProtocol,
     LiquidityProviderDeal,
     LiquityV2Protocol,
@@ -21,6 +22,7 @@ export interface ProtocolByType {
     [ProtocolType.LiquidityProviderDeal]: LiquidityProviderDeal;
     [ProtocolType.YieldSeeker]: YieldSeekerProtocol;
     [ProtocolType.Odyssey]: OdysseyProtocol;
+    [ProtocolType.Erc4626Vault]: Erc4626VaultProtocol;
 }
 
 export type ProtocolsInChain<T extends ProtocolType | undefined> =

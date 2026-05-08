@@ -13,7 +13,7 @@ import { LiquityLogo } from "../assets/logos/liquity-v2-platforms/liquity";
 import { EbisuLogo } from "../assets/logos/liquity-v2-platforms/ebisu";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
 import type { ChainData } from "../types/chains";
-import { DepositUrlType, ProtocolType } from "../types/protocol";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 import { BalancerLogo } from "../assets/logos/dexes/balancer";
 import { UniswapLogo } from "../assets";
 
@@ -92,7 +92,7 @@ export const sepoliaData: ChainData = {
             logo: CarbonLogo,
             name: "Carbon DeFi",
             depositUrl: {
-                type: DepositUrlType.QueryTokenAddresses,
+                type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template:
                     "https://app.carbondefi.xyz/trade/disposable?base={token0}&quote={token1}",
             },
@@ -105,7 +105,7 @@ export const sepoliaData: ChainData = {
             logo: BalancerLogo,
             name: "Balancer v3",
             depositUrl: {
-                type: DepositUrlType.PathPoolAddress,
+                type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://balancer.fi/pools/sepolia/v2/{pool}",
             },
             supportsFetchAllPools: false,
@@ -117,7 +117,7 @@ export const sepoliaData: ChainData = {
             logo: UniswapLogo,
             name: "Uniswap v4",
             depositUrl: {
-                type: DepositUrlType.PathTokenAddresses,
+                type: AmmPoolDepositUrlType.PathTokenAddresses,
                 template:
                     "https://app.uniswap.org/explore/pools/sepolia/{pool}",
             },

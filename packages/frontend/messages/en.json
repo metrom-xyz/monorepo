@@ -145,20 +145,24 @@
                 "description": "Incentivize users for providing liquidity on AMMs, including full-range and concentrated pools."
             },
             "liquityV2": {
-                "title": "LIQUITY V2",
+                "title": "Liquity v2",
                 "description": "Incentivize users borrowing and other actions on Liquity V2 and its forks."
             },
             "aaveV3": {
-                "title": "AAVE V3 AND FORKS",
+                "title": "Aave v3 and forks",
                 "description": "Incentivize users borrowing and supplying on Aave V3 and its forks."
             },
             "holdFungibleAsset": {
-                "title": "HOLD TOKEN",
+                "title": "Hold token",
                 "description": "Incentivize users holding any ERC20 token."
             },
             "odyssey": {
                 "title": "Odyssey strategy",
                 "description": "Incentivize users opting for a particular strategy on Odyssey."
+            },
+            "erc4626Vault": {
+                "title": "ERC4626 vaults",
+                "description": "Incentivize users depositing funds on the supported ERC4626 vaults platforms."
             },
             "partnerAction": {
                 "title": "PARTNER ACTION",
@@ -190,6 +194,7 @@
                 "aaveV3": "Aave v3",
                 "holdFungibleAsset": "Hold token",
                 "odyssey": "Odyssey",
+                "erc4626Vault": "ERC4626 vault",
                 "partnerActions": "Partner action",
                 "aaveV3BridgeAndSupply": "Aave v3 bridge and supply",
                 "jumperWhitelistedAmmPoolLiquidity": "Jumper AMM pool liquidity"
@@ -507,6 +512,8 @@
             "noChains": "No chains found",
             "dex": "Dex",
             "noDexes": "No dexes found",
+            "vaultBrand": "Vault brand",
+            "noVaultBrands": "No vault brands",
             "poolSelect": {
                 "label": "Pool",
                 "tvl": "TVL",
@@ -634,6 +641,11 @@
                     "notAnAddress": "Not a valid address",
                     "notFound": "Token not found"
                 }
+            },
+            "erc4626VaultSelect": {
+                "label": "Vaults",
+                "noVaults": "No vaults found",
+                "tvl": "TVL"
             }
         },
         "launchFeedback": {
@@ -708,6 +720,9 @@
         "header": {
             "groupedTarget": "Grouped target",
             "ammPoolLiquidity": {
+                "deposit": "Deposit"
+            },
+            "erc4626Vault": {
                 "deposit": "Deposit"
             },
             "liquityV2": {
@@ -990,6 +1005,7 @@
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
         "holdFungibleAsset": "Hold {name} ({symbol})",
         "odysseyStrategy": "Odyssey {strategy} strategy on {asset}",
+        "erc4626Vault": "Deposit to {vault} vault on {brand}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {
