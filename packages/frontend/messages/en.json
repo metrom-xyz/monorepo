@@ -1003,7 +1003,7 @@
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
         "holdFungibleAsset": "Hold {name} ({symbol})",
         "odysseyStrategy": "Odyssey {strategy} strategy on {asset}",
-        "erc4626Vault": "Deposit to {vault} vault on {brand}",
+        "erc4626Vault": "Deposit to {vault} on {brand}",
         "empty": "Test campaign"
     },
     "socialCampaignPreview": {
