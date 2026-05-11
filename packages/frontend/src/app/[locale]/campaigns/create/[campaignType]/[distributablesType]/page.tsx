@@ -6,6 +6,7 @@ import {
     PartnerCampaignType,
     type CampaignType,
 } from "@metrom-xyz/sdk";
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 
 interface Params {
@@ -18,7 +19,7 @@ interface CampaignFormPageProps {
     params: Promise<Params>;
 }
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Create new campaign",
     openGraph: {
         images: ["/images/opengraph-image.png"],
