@@ -3,6 +3,7 @@ import { CampaignDetails } from "@/src/components/campaign-details";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { getCampaignName } from "@/src/utils/campaign";
 import type { ChainType } from "@metrom-xyz/sdk";
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
@@ -18,7 +19,9 @@ export interface CampaignDetailsPageProps {
     params: Promise<Params>;
 }
 
-export async function generateMetadata({ params }: CampaignDetailsPageProps) {
+export async function generateMetadata({
+    params,
+}: CampaignDetailsPageProps): Promise<Metadata> {
     const { chain, chainType, campaignDetailsId } = await params;
     const t = await getTranslations();
 

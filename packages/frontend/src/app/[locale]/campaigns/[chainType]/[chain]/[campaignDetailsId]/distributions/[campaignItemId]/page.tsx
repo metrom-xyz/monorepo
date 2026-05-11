@@ -4,6 +4,7 @@ import type { Hex } from "viem";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ChainType } from "@metrom-xyz/sdk";
+import type { Metadata } from "next";
 
 export interface Params {
     locale: Locale;
@@ -16,7 +17,7 @@ export interface DistributionsPageProps {
     params: Promise<Params>;
 }
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Distributions insight",
 };
 
