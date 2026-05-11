@@ -201,7 +201,7 @@ export function CampaignRewardsStep({
                 disabled={disabled || applyDisabled}
                 className={{ root: styles.button }}
             >
-                {t("saveRewards")}
+                {t("next")}
             </Button>
         </FormStep>
     );
