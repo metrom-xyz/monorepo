@@ -11,6 +11,7 @@ import type { TranslationsKeys } from "@/src/types/utils";
 import { BaseCampaignType, DistributablesType } from "@metrom-xyz/sdk";
 import { NavigationCard } from "./navigation-card";
 import { useForms } from "@/src/hooks/useForms";
+import { VaultIcon } from "@/src/assets/vault-icon";
 
 import styles from "./styles.module.css";
 
@@ -46,12 +47,12 @@ export const FORM_INFO: Record<BaseCampaignType, CampaignTypeConfig> = {
     [BaseCampaignType.Odyssey]: {
         title: "odyssey.title",
         description: "odyssey.description",
-        icon: <AaveThemeLogo className={styles.aaveIcon} />,
+        icon: <AaveThemeLogo />,
     },
     [BaseCampaignType.Erc4626Vault]: {
         title: "erc4626Vault.title",
         description: "erc4626Vault.description",
-        icon: <AaveThemeLogo className={styles.aaveIcon} />,
+        icon: <VaultIcon />,
     },
 };
 
