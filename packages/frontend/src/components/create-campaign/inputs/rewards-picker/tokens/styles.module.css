@@ -12,6 +12,10 @@
     @apply flex;
 }
 
+.input {
+    @apply w-full sm:max-w-56;
+}
+
 .input :global(.fieldset) {
     @apply rounded-l-none;
 }
