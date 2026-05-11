@@ -6,6 +6,7 @@ import { METROM_APTOS_BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { APTOS } from "@/src/commons/env";
 import type { ChainWithType } from "@/src/types/chain";
+import { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -59,7 +60,11 @@ export function PopoverPicker({
                 {chains.map(({ id, type }) => {
                     const chainData = getCrossVmChainData(id, type);
 
-                    if (!APTOS && SUPPORTED_CHAINS_MVM.includes(id))
+                    if (
+                        !APTOS &&
+                        type === ChainType.Aptos &&
+                        SUPPORTED_CHAINS_MVM.includes(id)
+                    )
                         return (
                             <a
                                 key={id}

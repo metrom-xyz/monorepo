@@ -21,7 +21,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.34.0",
-        "@metrom-xyz/contracts": "^0.55.0",
+        "@metrom-xyz/contracts": "^0.56.0",
         "@tsconfig/node20": "^20.1.9",
         "@types/node": "^24.3.1",
         "eslint": "^9.34.0",
