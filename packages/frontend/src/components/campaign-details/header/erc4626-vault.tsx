@@ -60,7 +60,7 @@ export function Erc4626Vault({ campaignDetails }: Erc4626VaultProps) {
                     )}
                     <RemoteLogo
                         size="lg"
-                        address={target.vault.address}
+                        address={target.vault.asset}
                         chain={target.chainId}
                     />
                     <Typography size="xl3" weight="medium">

@@ -12,6 +12,7 @@ import type {
     SupportedOdysseyStrategy,
     SupportedPointsBooster,
 } from "src/commons";
+import type { BackendErc4626Vault } from "./erc4626-vault";
 
 export interface BaseTarget {
     chainType: ChainType;
@@ -87,7 +88,7 @@ export interface BackendOdysseyTarget extends BaseTarget {
 export interface BackendErc4626VaultTarget extends BaseTarget {
     type: "erc4626-vault";
     brand: SupportedErc4626Vault;
-    vault: BackendErc20Token;
+    vault: BackendErc4626Vault;
 }
 
 export interface BackendTurtleIncentive {

@@ -1546,7 +1546,10 @@ function processCampaignTarget(
                 type: TargetType.Erc4626Vault,
                 chainType,
                 chainId,
-                vault: campaign.target.vault,
+                vault: {
+                    ...campaign.target.vault,
+                    totalAssets: BigInt(campaign.target.vault.totalAssets)
+                },
                 brand: {
                     slug: campaign.target.brand,
                     name: ERC4626_VAULT_PLATFORM_NAME[campaign.target.brand],
