@@ -18,6 +18,7 @@ import type {
     SupportedPointsBooster,
 } from "src/commons";
 import type { AmmPool, CampaignAmmPool } from "./pools";
+import type { Erc4626Vault } from "./erc4626-vault";
 
 export enum CampaignKind {
     AmmPoolLiquidity = 1,
@@ -185,7 +186,7 @@ export interface OdysseyTarget extends BaseTarget {
 export interface Erc4626VaultTarget extends BaseTarget {
     type: TargetType.Erc4626Vault;
     brand: Brand<SupportedErc4626Vault>;
-    vault: Erc20Token;
+    vault: Erc4626Vault;
 }
 
 export type YieldSeekerTarget = BaseTarget & {

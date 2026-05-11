@@ -22,7 +22,7 @@ export function Erc4626Vault<T extends TargetType.Erc4626Vault>({
         <>
             <RemoteLogo
                 size={logoSize}
-                address={campaign.target.vault.address}
+                address={campaign.target.vault.asset}
                 chain={campaign.target.chainId}
             />
             <Typography size={nameSize} weight="medium" truncate>
