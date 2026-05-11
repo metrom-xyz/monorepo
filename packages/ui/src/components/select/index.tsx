@@ -268,12 +268,7 @@ function Component<
                         ),
                     )
                 ) : filteredOptions.length === 0 ? (
-                    <div
-                        style={{
-                            width: anchorEl?.parentElement?.clientWidth,
-                        }}
-                        className={styles.emptyOptionList}
-                    >
+                    <div className={styles.emptyOptionList}>
                         <Typography>{messages.noResults}</Typography>
                     </div>
                 ) : (

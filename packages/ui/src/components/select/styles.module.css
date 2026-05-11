@@ -13,7 +13,8 @@
 }
 
 .emptyOptionList {
-    @apply flex
+    @apply w-full
+        flex
         surface-secondary
         justify-center
         items-center
