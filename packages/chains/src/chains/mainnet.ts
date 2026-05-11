@@ -7,6 +7,7 @@ import {
     ChainType,
     DistributablesType,
     SupportedDex,
+    SupportedErc4626Vault,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
     SupportedOdyssey,
@@ -18,6 +19,7 @@ import {
     EbisuLogo,
     TurtleDarkLogo,
     TurtleLightLogo,
+    YearnLogo,
 } from "../assets";
 import { OdysseyLogo } from "../assets/logos/odyssey";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
@@ -36,6 +38,12 @@ export const mainnetData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.LiquityV2,
+            distributables: [DistributablesType.Tokens],
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.Erc4626Vault,
             distributables: [DistributablesType.Tokens],
         },
     ],
@@ -87,6 +95,14 @@ export const mainnetData: ChainData = {
             name: "Odyssey",
             slug: SupportedOdyssey.Odyssey,
             strategies: [],
+        },
+        {
+            active: true,
+            type: ProtocolType.Erc4626Vault,
+            slug: SupportedErc4626Vault.Yearn,
+            logo: YearnLogo,
+            name: "Yearn",
+            vaultUrl: "https://yearn.fi/vaults/1/{vault}",
         },
     ],
     baseTokens: [
