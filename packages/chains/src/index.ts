@@ -148,7 +148,6 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     plasma,
     saga,
     megaeth,
-    // This is required for the Turtle integration
     mainnet,
     // These are required for Turtle campaigns
     katana,

@@ -3,6 +3,7 @@ import { mainnet } from "viem/chains";
 import type { ChainData } from "../types/chains";
 import { DepositUrlType, ProtocolType } from "../types/protocol";
 import {
+    BaseCampaignType,
     ChainType,
     SupportedDex,
     SupportedLiquidityProviderDeal,
@@ -18,21 +19,27 @@ import {
     TurtleLightLogo,
 } from "../assets";
 import { OdysseyLogo } from "../assets/logos/odyssey";
+import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 
-// This is required for the Turtle integration and for dynamic points campaigns
 export const mainnetData: ChainData = {
-    active: false,
+    active: true,
     id: mainnet.id,
     type: ChainType.Evm,
     name: mainnet.name,
     slug: "ethereum",
-    metromContract: { address: "0x" },
+    metromContract: ADDRESS[SupportedChain.Mainnet],
     blockExplorers: mainnet.blockExplorers,
     icon: EthLogo,
-    forms: [],
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.LiquityV2,
+        },
+    ],
     protocols: [
         {
-            active: false,
+            active: true,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Ebisu,
             logo: EbisuLogo,
@@ -80,5 +87,12 @@ export const mainnetData: ChainData = {
             strategies: [],
         },
     ],
-    baseTokens: [],
+    baseTokens: [
+        {
+            address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            symbol: "USDC",
+            name: "USDC",
+            decimals: 6,
+        },
+    ],
 };
