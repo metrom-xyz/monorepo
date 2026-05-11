@@ -1,7 +1,7 @@
 {
     "type": "module",
     "name": "metrom-monorepo",
-    "packageManager": "npm@11.6.0",
+    "packageManager": "npm@11.12.1",
     "private": true,
     "scripts": {
         "changeset:publish": "npm run build && changeset publish",
