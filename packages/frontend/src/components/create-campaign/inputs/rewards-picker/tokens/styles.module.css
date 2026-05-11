@@ -12,10 +12,6 @@
     @apply flex;
 }
 
-.input {
-    @apply mr-2;
-}
-
 .input :global(.fieldset) {
     @apply rounded-l-none;
 }
