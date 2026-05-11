@@ -136,6 +136,7 @@ export function RewardsPickerTokensSelect({
             size="lg"
             loading={loading || loadingBalances}
             disabled={!tokens}
+            search
             options={options}
             value={value?.value as string}
             messages={{ noResults: t("noTokens") }}
