@@ -261,7 +261,7 @@
                 "pool": "Pool",
                 "startDate": "Start date",
                 "endDate": "End date",
-                "saveBasics": "Save basics"
+                "next": "Next"
             },
             "rewards": {
                 "title": "Define the rewards to distribute",
@@ -272,7 +272,7 @@
                 "fixedAprDescription": "Automatically adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs. Set the desired APR and add the previewed token amount as reward.",
                 "defineRestrictions": "Define who can earn rewards",
                 "defineRestrictionDescription": "You can block unwanted addresses or allow only eligible ones. Zero and dead addresses are excluded by default.",
-                "saveRewards": "Save rewards"
+                "next": "Next"
             },
             "kpi": {
                 "title": "Set KPI",
@@ -295,8 +295,8 @@
                     "description": "Disclaimer: This is an interactive simulation tool to visualize how incentives are distributed for different {targetValueName} scenarios. Please review the values you entered carefully before submitting."
                 },
                 "minimumPayout": "Minimum payout",
-                "saveKpi": "Save KPI",
-                "skipKpi": "Skip KPI",
+                "saveKpi": "Save",
+                "skipKpi": "Skip",
                 "presets": {
                     "traditionalReward": {
                         "title": "Traditional reward",
@@ -321,8 +321,8 @@
                 "title": "Set range to reward",
                 "setRange": "Set range to reward ({token0} per {token1})",
                 "price": "1 {token0} = {price} {token1}",
-                "saveRange": "Save reward range",
-                "skipRange": "Skip reward range",
+                "saveRange": "Save",
+                "skipRange": "Skip",
                 "chart": "Range visualizer",
                 "notSaved": "Not saved",
                 "errors": {

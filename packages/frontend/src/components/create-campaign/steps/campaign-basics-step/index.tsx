@@ -105,7 +105,7 @@ export function CampaignBasicsStep({
                 disabled={applyDisabled}
                 className={{ root: styles.button }}
             >
-                {t("saveBasics")}
+                {t("next")}
             </Button>
         </FormStep>
     );
