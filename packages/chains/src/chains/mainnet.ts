@@ -5,6 +5,7 @@ import { DepositUrlType, ProtocolType } from "../types/protocol";
 import {
     BaseCampaignType,
     ChainType,
+    DistributablesType,
     SupportedDex,
     SupportedLiquidityProviderDeal,
     SupportedLiquityV2,
@@ -35,6 +36,7 @@ export const mainnetData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.LiquityV2,
+            distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [
