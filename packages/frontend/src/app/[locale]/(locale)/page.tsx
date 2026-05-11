@@ -1,6 +1,7 @@
 import { Campaigns } from "@/src/components/campaigns";
+import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Explore opportunities",
     openGraph: {
         images: ["/images/opengraph-image.png"],

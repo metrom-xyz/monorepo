@@ -5,6 +5,7 @@ import {
     PartnerCampaignType,
     type CampaignType,
 } from "@metrom-xyz/sdk";
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 
 interface Params {
@@ -16,14 +17,14 @@ interface PickCampaignDistributablesTypePageProps {
     params: Promise<Params>;
 }
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Pick campaign distributables type",
     openGraph: {
         images: ["/images/opengraph-image.png"],
     },
 };
 
-export default async function PickCampaignDistributablesTypePagee({
+export default async function PickCampaignDistributablesTypePage({
     params,
 }: PickCampaignDistributablesTypePageProps) {
     const { campaignType, locale } = await params;

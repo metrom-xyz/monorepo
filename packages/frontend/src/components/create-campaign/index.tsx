@@ -8,7 +8,7 @@ import { AaveThemeLogo } from "@metrom-xyz/chains";
 import { CompassIcon } from "@/src/assets/compass-icon";
 import { type ReactNode } from "react";
 import type { TranslationsKeys } from "@/src/types/utils";
-import { BaseCampaignType } from "@metrom-xyz/sdk";
+import { BaseCampaignType, DistributablesType } from "@metrom-xyz/sdk";
 import { NavigationCard } from "./navigation-card";
 import { useForms } from "@/src/hooks/useForms";
 
@@ -80,7 +80,7 @@ export function CreateCampaign() {
                     return (
                         <NavigationCard
                             key={type}
-                            href={`/campaigns/create/${type}`}
+                            href={`/campaigns/create/${type}/${DistributablesType.Tokens}`}
                             title={t(title)}
                             description={t(description)}
                             icon={icon}
