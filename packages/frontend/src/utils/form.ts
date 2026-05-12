@@ -293,18 +293,3 @@ export function getCampaignFormApr(
 
     return aprPercentage;
 }
-
-export function getUsdBudgetForFixedApr(
-    referenceTvl: number,
-    bufferPercentage: number,
-    daysDuration: number,
-    apr?: number,
-) {
-    if (!apr) return 0;
-    return (
-        referenceTvl *
-        (apr / 100) *
-        (daysDuration / 365) *
-        (1 + bufferPercentage / 100)
-    );
-}

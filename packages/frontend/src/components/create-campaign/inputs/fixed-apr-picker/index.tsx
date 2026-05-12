@@ -16,13 +16,15 @@ import type {
 } from "@metrom-xyz/sdk";
 import { FEE_UNIT } from "@/src/commons";
 import type { Dayjs } from "dayjs";
-import { getUsdBudgetForFixedApr } from "@/src/utils/form";
+import {
+    getUsdBudgetForFixedApr,
+    getRawUsdBudgetForFixedApr,
+} from "@/src/utils/fixed-apr";
 import {
     formatAmount,
     formatPercentage,
     formatUnits,
     formatUsdAmount,
-    parseUnits,
 } from "@/src/utils/format";
 import { EmptyState } from "@/src/components/empty-state";
 import { MinusSquareIcon } from "@/src/assets/minus-square-icon";
@@ -47,9 +49,10 @@ interface NumberInputValues {
     formatted?: NumberFormatValues["formattedValue"];
 }
 
-const MAX_FORMATTED_BUDGET = 10_000_000;
 const REFERENCE_TVL = 1_000_000;
 const BUFFER_PERCENTAGE = 20;
+const MAX_APR_VALUE = 100_000;
+const MAX_TVL_VALUE = REFERENCE_TVL * 500;
 
 export function FixedAprPicker({
     chainId,
@@ -118,18 +121,20 @@ export function FixedAprPicker({
                 dailyEmission: null,
             };
 
-        const minutesDuration = endDate.diff(startDate, "minutes", false);
-        const daysDuration = minutesDuration / (60 * 24);
+        const minutes = endDate.diff(startDate, "minutes", false);
+        const days = minutes / (60 * 24);
+        const minutesRaw = BigInt(Math.ceil(minutes));
+
+        const rawUsdBudget = getRawUsdBudgetForFixedApr(
+            tvl.raw,
+            BigInt(Math.round(BUFFER_PERCENTAGE * 100)),
+            minutesRaw,
+            BigInt(Math.round((value?.apr ?? 0) * 100)),
+        );
         const usdBudget = getUsdBudgetForFixedApr(
             tvl.raw,
             BUFFER_PERCENTAGE,
-            daysDuration,
-            value?.apr,
-        );
-        const usdBudgetWithoutBuffer = getUsdBudgetForFixedApr(
-            tvl.raw,
-            0,
-            daysDuration,
+            days,
             value?.apr,
         );
 
@@ -143,49 +148,43 @@ export function FixedAprPicker({
                 })?.token || rewardTokens[0];
         }
 
-        const formattedBudget = Math.min(
-            (usdBudget * FEE_UNIT) /
-                (FEE_UNIT - resolvedFee) /
-                rewardToken.usdPrice,
-            MAX_FORMATTED_BUDGET,
-        );
+        const rawUsdBudgetWithFee =
+            (rawUsdBudget * BigInt(FEE_UNIT)) / BigInt(FEE_UNIT - resolvedFee);
 
-        const rawBudget = parseUnits(
-            formattedBudget.toFixed(),
-            rewardToken.decimals,
-        );
+        const usdPrice = BigInt(Math.round(rewardToken.usdPrice * 1_000_000));
+        const decimalsScale = BigInt(10 ** rewardToken.decimals);
 
-        const formattedBudgetWithoutBuffer = Math.min(
-            usdBudgetWithoutBuffer / rewardToken.usdPrice,
-            MAX_FORMATTED_BUDGET,
-        );
-        const rawBudgetWithoutBuffer = parseUnits(
-            formattedBudgetWithoutBuffer.toFixed(),
-            rewardToken.decimals,
-        );
+        const rawTokenBudget = (rawUsdBudgetWithFee * decimalsScale) / usdPrice;
+        const rawTokenBudgetWithoutBuffer =
+            (rawUsdBudget * decimalsScale) / usdPrice;
 
-        const rawPerMinuteEmission =
-            rawBudgetWithoutBuffer / BigInt(Math.ceil(minutesDuration));
-        const rawDailyEmission = rawPerMinuteEmission * BigInt(60 * 24);
-        const formattedDailyEmission = Number(
-            formatUnits(rawDailyEmission, rewardToken.decimals),
-        );
+        const rawPerMinuteEmission = rawTokenBudgetWithoutBuffer / minutesRaw;
+        const rawDailyEmission = rawPerMinuteEmission * 24n * 60n;
 
         return {
             tokenBudget: {
                 token: rewardToken,
                 amount: {
-                    raw: rawBudget,
-                    formatted: formattedBudget,
-                    usdValue: formattedBudget * rewardToken.usdPrice,
+                    raw: rawTokenBudget,
+                    formatted: Number(
+                        formatUnits(rawTokenBudget, rewardToken.decimals),
+                    ),
+                    usdValue: Number(formatUnits(rawUsdBudgetWithFee, 6)),
                 },
             },
             dailyEmission: {
                 token: rewardToken,
                 amount: {
                     raw: rawDailyEmission,
-                    formatted: formattedDailyEmission,
-                    usdValue: formattedDailyEmission * rewardToken.usdPrice,
+                    formatted: Number(
+                        formatUnits(rawDailyEmission, rewardToken.decimals),
+                    ),
+                    usdValue: Number(
+                        formatUnits(
+                            (rawDailyEmission * usdPrice) / decimalsScale,
+                            6,
+                        ),
+                    ),
                 },
             },
         };
@@ -208,6 +207,7 @@ export function FixedAprPicker({
                 onChange({ fixedDistribution: undefined });
                 return;
             }
+
             onChange({ fixedDistribution: { apr: floatValue } });
         },
         [onChange],
@@ -252,6 +252,10 @@ export function FixedAprPicker({
                         label={t("apr")}
                         value={value?.apr || ""}
                         allowNegative={false}
+                        isAllowed={({ floatValue }) => {
+                            if (!floatValue) return true;
+                            return floatValue <= MAX_APR_VALUE;
+                        }}
                         onValueChange={handleAprOnChange}
                         className={styles.aprInput}
                     />
@@ -290,6 +294,10 @@ export function FixedAprPicker({
                                 suffix="$"
                                 value={tvl?.formatted}
                                 allowNegative={false}
+                                isAllowed={({ floatValue }) => {
+                                    if (!floatValue) return true;
+                                    return floatValue <= MAX_TVL_VALUE;
+                                }}
                                 onValueChange={handleTvlOnChange}
                                 onBlur={handleTvlOnBlur}
                                 className={styles.tvlInput}
