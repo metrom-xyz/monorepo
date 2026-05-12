@@ -26,12 +26,8 @@ import {
     formatUnits,
     formatUsdAmount,
 } from "@/src/utils/format";
-import { EmptyState } from "@/src/components/empty-state";
-import { MinusSquareIcon } from "@/src/assets/minus-square-icon";
 import { PencilIcon } from "@/src/assets/pencil-icon";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { BoldText } from "@/src/components/bold-text";
-import { ResetIcon } from "@/src/assets/reset-icon";
 import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
@@ -213,10 +209,6 @@ export function FixedAprPicker({
         [onChange],
     );
 
-    const handleAprOnReset = useCallback(() => {
-        onChange({ fixedDistribution: undefined });
-    }, [onChange]);
-
     function handleTvlPopoverOpen() {
         setTvlPopover(true);
     }
@@ -244,185 +236,168 @@ export function FixedAprPicker({
 
     return (
         <div className={styles.root}>
-            <div className={styles.aprInputWrapper}>
-                <div>
-                    <NumberInput
-                        placeholder="0%"
-                        suffix="%"
-                        label={t("apr")}
-                        value={value?.apr || ""}
-                        allowNegative={false}
-                        isAllowed={({ floatValue }) => {
-                            if (!floatValue) return true;
-                            return floatValue <= MAX_APR_VALUE;
-                        }}
-                        onValueChange={handleAprOnChange}
-                        className={styles.aprInput}
-                    />
-                    <div className={styles.reset} onClick={handleAprOnReset}>
-                        <ResetIcon />
-                        <Typography size="xs" weight="medium">
-                            {t("reset")}
-                        </Typography>
-                    </div>
-                </div>
-                <Typography size="xs" variant="tertiary">
-                    {t("aprInputDescription")}
-                </Typography>
+            <div className="h-full">
+                <NumberInput
+                    size="lg"
+                    placeholder="0%"
+                    suffix="%"
+                    label={t("apr")}
+                    value={value?.apr || ""}
+                    allowNegative={false}
+                    isAllowed={({ floatValue }) => {
+                        if (!floatValue) return true;
+                        return floatValue <= MAX_APR_VALUE;
+                    }}
+                    onValueChange={handleAprOnChange}
+                    className={styles.aprInput}
+                />
             </div>
-            <div className={styles.previewWrapper}>
-                <div className={styles.titleContainer}>
-                    <Typography size="sm" weight="medium" uppercase>
-                        {t("preview")}
-                    </Typography>
-                    <Popover
-                        ref={tvlPopoverRef}
-                        open={tvlPopover && !editingTvl}
-                        anchor={tvlPopoverAnchor}
-                        placement="top"
-                        onOpenChange={setTvlPopover}
-                        margin={6}
-                        className={styles.popover}
-                    >
-                        <Typography size="xs">{t("editTvl")}</Typography>
-                    </Popover>
-                    {editingTvl ? (
-                        <>
-                            <NumberInput
-                                ref={tvlInputRef}
-                                size="xs"
-                                suffix="$"
-                                value={tvl?.formatted}
-                                allowNegative={false}
-                                isAllowed={({ floatValue }) => {
-                                    if (!floatValue) return true;
-                                    return floatValue <= MAX_TVL_VALUE;
-                                }}
-                                onValueChange={handleTvlOnChange}
-                                onBlur={handleTvlOnBlur}
-                                className={styles.tvlInput}
-                            />
-                            <Typography size="sm" weight="medium">
-                                {t("tvl")}
-                            </Typography>
-                        </>
-                    ) : (
-                        <div
-                            ref={setTvlPopoverAnchor}
-                            onClick={handleTvlOnClicK}
-                            onMouseEnter={handleTvlPopoverOpen}
-                            onMouseLeave={handleTvlPopoverClose}
-                            className={styles.tvlChip}
+            {value?.apr ? (
+                <div className={styles.previewWrapper}>
+                    <div className={styles.titleContainer}>
+                        <Typography size="sm" weight="medium" uppercase>
+                            {t("preview")}
+                        </Typography>
+                        <Popover
+                            ref={tvlPopoverRef}
+                            open={tvlPopover && !editingTvl}
+                            anchor={tvlPopoverAnchor}
+                            placement="top"
+                            onOpenChange={setTvlPopover}
+                            margin={6}
+                            className={styles.popover}
                         >
-                            <Typography size="sm" weight="medium" uppercase>
-                                {t("tvlAmount", {
-                                    amount: formatUsdAmount({
-                                        amount: tvl?.raw,
-                                    }),
-                                })}
-                            </Typography>
-                            <PencilIcon className={styles.editIcon} />
-                        </div>
-                    )}
-                </div>
-                {value?.apr ? (
+                            <Typography size="xs">{t("editTvl")}</Typography>
+                        </Popover>
+                        {editingTvl ? (
+                            <>
+                                <NumberInput
+                                    ref={tvlInputRef}
+                                    size="xs"
+                                    suffix="$"
+                                    value={tvl?.formatted}
+                                    allowNegative={false}
+                                    isAllowed={({ floatValue }) => {
+                                        if (!floatValue) return true;
+                                        return floatValue <= MAX_TVL_VALUE;
+                                    }}
+                                    onValueChange={handleTvlOnChange}
+                                    onBlur={handleTvlOnBlur}
+                                    className={styles.tvlInput}
+                                />
+                                <Typography size="sm" weight="medium">
+                                    {t("tvl")}
+                                </Typography>
+                            </>
+                        ) : (
+                            <div
+                                ref={setTvlPopoverAnchor}
+                                onClick={handleTvlOnClicK}
+                                onMouseEnter={handleTvlPopoverOpen}
+                                onMouseLeave={handleTvlPopoverClose}
+                                className={styles.tvlChip}
+                            >
+                                <Typography size="sm" weight="medium" uppercase>
+                                    {t("tvlAmount", {
+                                        amount: formatUsdAmount({
+                                            amount: tvl?.raw,
+                                        }),
+                                    })}
+                                </Typography>
+                                <PencilIcon className={styles.editIcon} />
+                            </div>
+                        )}
+                    </div>
                     <div className={styles.previewContent}>
                         <div className={styles.budget}>
+                            <Typography size="xs" variant="tertiary">
+                                {t("totRewards")}
+                            </Typography>
                             <div className={styles.token}>
                                 <RemoteLogo
-                                    size="xs"
+                                    size="xxs"
                                     chain={chainId}
                                     address={tokenBudget?.token.address}
                                 />
-                                <Typography size="lg" weight="medium">
-                                    {tokenBudget?.token.symbol}
-                                </Typography>
-                                <Typography size="lg" weight="medium">
+                                <Typography size="xs" weight="medium">
                                     {formatAmount({
                                         amount: tokenBudget?.amount.formatted,
                                     })}
                                 </Typography>
-                            </div>
-                            <Typography size="xs" variant="tertiary">
-                                {t.rich("totalBudget", {
-                                    usdBudget: formatUsdAmount({
+                                <Typography size="xs" weight="medium">
+                                    {tokenBudget?.token.symbol}
+                                </Typography>
+                                <Typography size="xs" variant="tertiary">
+                                    {formatUsdAmount({
                                         amount: tokenBudget?.amount.usdValue,
-                                    }),
-                                    apr: formatPercentage({
-                                        percentage: value?.apr,
-                                    }),
-                                    bold: (chunks) => (
-                                        <BoldText>{chunks}</BoldText>
-                                    ),
-                                })}
+                                    })}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className={styles.transparentBox}>
+                            <Typography size="xs" variant="tertiary">
+                                {t("daily")}
+                            </Typography>
+                            <div className={styles.dailyEmissionToken}>
+                                <RemoteLogo
+                                    size="xxs"
+                                    chain={chainId}
+                                    address={tokenBudget?.token.address}
+                                />
+                                <Typography size="xs" weight="medium">
+                                    {formatAmount({
+                                        amount: dailyEmission?.amount.formatted,
+                                    })}
+                                </Typography>
+                                <Typography size="xs" weight="medium">
+                                    {tokenBudget?.token.symbol}
+                                </Typography>
+                                <Typography size="xs" variant="tertiary">
+                                    {formatUsdAmount({
+                                        amount: dailyEmission?.amount.usdValue,
+                                    })}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className={styles.transparentBox}>
+                            <Typography size="xs" variant="tertiary">
+                                {t("duration")}
+                            </Typography>
+                            <Typography size="xs" weight="medium">
+                                {startDate
+                                    ? dayjs(startDate).to(endDate, true)
+                                    : "-"}
                             </Typography>
                         </div>
-                        <div className={styles.emissions}>
-                            <div className={styles.transparentBox}>
-                                <Typography size="xs" variant="tertiary">
-                                    {t("dailyEmission")}
+                        <div className={styles.transparentBox}>
+                            <Typography size="xs" variant="tertiary">
+                                {t("buffer")}
+                            </Typography>
+                            <div className={styles.buffer}>
+                                <Typography size="xs" weight="medium">
+                                    {formatPercentage({
+                                        percentage: BUFFER_PERCENTAGE,
+                                    })}
                                 </Typography>
-                                <div className={styles.dailyEmissionToken}>
-                                    <RemoteLogo
-                                        size="xxs"
-                                        chain={chainId}
-                                        address={tokenBudget?.token.address}
-                                    />
-                                    <Typography size="xs" weight="medium">
-                                        {tokenBudget?.token.symbol}{" "}
-                                        {formatAmount({
-                                            amount: dailyEmission?.amount
-                                                .formatted,
-                                        })}
+                                <InfoTooltip>
+                                    <Typography size="xs">
+                                        {t("bufferTooltip")}
                                     </Typography>
-                                    <Typography size="xs" variant="tertiary">
-                                        {formatUsdAmount({
-                                            amount: dailyEmission?.amount
-                                                .usdValue,
-                                        })}
-                                    </Typography>
-                                </div>
-                            </div>
-                            <div>
-                                <div className={styles.transparentBox}>
-                                    <Typography size="xs" variant="tertiary">
-                                        {t("duration")}
-                                    </Typography>
-                                    <Typography size="xs" weight="medium">
-                                        {startDate
-                                            ? dayjs(startDate).to(endDate, true)
-                                            : "-"}
-                                    </Typography>
-                                </div>
-                                <div className={styles.transparentBox}>
-                                    <Typography size="xs" variant="tertiary">
-                                        {t("buffer")}
-                                    </Typography>
-                                    <div className={styles.buffer}>
-                                        <Typography size="xs" weight="medium">
-                                            {formatPercentage({
-                                                percentage: BUFFER_PERCENTAGE,
-                                            })}
-                                        </Typography>
-                                        <InfoTooltip>
-                                            <Typography size="xs">
-                                                {t("bufferTooltip")}
-                                            </Typography>
-                                        </InfoTooltip>
-                                    </div>
-                                </div>
+                                </InfoTooltip>
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <EmptyState
-                        icon={MinusSquareIcon}
-                        title={t("noPreview")}
-                        subtitle={t("noPreviewDescription")}
-                        className={styles.empty}
-                    />
-                )}
-            </div>
+                </div>
+            ) : (
+                <Typography
+                    size="xs"
+                    variant="tertiary"
+                    uppercase
+                    className={styles.emptyText}
+                >
+                    {t("noPreviewDescription")}
+                </Typography>
+            )}
         </div>
     );
 }
