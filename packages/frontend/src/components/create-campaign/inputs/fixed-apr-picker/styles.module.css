@@ -1,37 +1,15 @@
 @reference "../../../../app.css";
 
 .root {
-    @apply flex flex-col sm:flex-row gap-4;
-}
-
-.aprInputWrapper {
-    @apply flex
-        flex-col
-        justify-between
-        gap-3
-        p-3
-        rounded-lg
-        border
-        border-gray-300
-        dark:border-neutral-700
-        transition-colors
-        duration-200;
-}
-
-.aprInputWrapper > div {
-    @apply flex gap-1 justify-between items-end;
+    @apply flex flex-col sm:flex-row items-stretch gap-4;
 }
 
 .aprInput {
-    @apply w-2/3;
-}
-
-.reset {
-    @apply flex items-center gap-1 cursor-pointer;
+    @apply w-full sm:w-40;
 }
 
 .previewWrapper {
-    @apply flex flex-col gap-3 w-full p-3 rounded-lg bg-gray-100 dark:bg-neutral-800;
+    @apply w-full flex flex-col gap-2 p-2 rounded-lg bg-gray-100 dark:bg-neutral-800;
 }
 
 .titleContainer {
@@ -77,27 +55,19 @@
 }
 
 .previewContent {
-    @apply w-full flex flex-col sm:flex-row items-center gap-2;
+    @apply w-full flex flex-col sm:flex-row sm:items-center gap-2;
 }
 
 .budget {
-    @apply h-full sm:h-16 w-full sm:w-[54%] flex flex-col justify-between rounded-lg px-3 py-2 bg-gray-150/90 dark:bg-neutral-900/60;
+    @apply h-7 flex items-center gap-2 rounded-lg p-2 bg-gray-150 dark:bg-neutral-900;
 }
 
 .token {
-    @apply flex items-center gap-1.5;
-}
-
-.emissions {
-    @apply w-full sm:w-[46%] flex flex-col gap-2;
-}
-
-.emissions > div:nth-child(2) {
-    @apply w-full flex items-center gap-2;
+    @apply flex items-center gap-1;
 }
 
 .transparentBox {
-    @apply h-7 w-full flex justify-center items-center gap-2 px-2 py-1 rounded-lg border border-gray-300 dark:border-neutral-700;
+    @apply h-7 flex justify-center items-center gap-2 p-2 rounded-lg border border-gray-300 dark:border-neutral-700;
 }
 
 .dailyEmissionToken {
@@ -108,6 +78,6 @@
     @apply flex items-center gap-0.5;
 }
 
-.empty {
-    @apply h-16;
+.emptyText {
+    @apply self-center opacity-60;
 }
