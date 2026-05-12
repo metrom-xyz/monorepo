@@ -19,17 +19,27 @@ export function Duration({ startDate, endDate }: DurationProps) {
     return (
         <div className={styles.root}>
             <Typography size="xs" weight="medium" variant="tertiary">
-                {t("duration")}
+                {t("duration", {
+                    duration: dayjs(startDate.toDate()).to(endDate, true),
+                })}
             </Typography>
             <div className={styles.duration}>
-                <Typography size="sm" weight="medium">
-                    {formatDateTime(startDate)}
-                    {" - "}
-                    {formatDateTime(endDate)}
-                </Typography>
-                <Typography size="xs" weight="medium" variant="tertiary">
-                    {`(${dayjs(startDate.toDate()).to(endDate, true)})`}
-                </Typography>
+                <div className={styles.row}>
+                    <Typography size="sm" weight="medium" variant="tertiary">
+                        {t("from")}
+                    </Typography>
+                    <Typography size="sm" weight="medium">
+                        {formatDateTime(startDate)}
+                    </Typography>
+                </div>
+                <div className={styles.row}>
+                    <Typography size="sm" weight="medium" variant="tertiary">
+                        {t("to")}
+                    </Typography>
+                    <Typography size="sm" weight="medium">
+                        {formatDateTime(endDate)}
+                    </Typography>
+                </div>
             </div>
         </div>
     );
