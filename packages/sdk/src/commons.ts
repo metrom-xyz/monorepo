@@ -49,6 +49,7 @@ export enum SupportedDex {
 
 export enum SupportedErc4626Vault {
     Yearn = "yearn",
+    Arche = "arche",
 }
 
 export enum SupportedOdyssey {

@@ -1,5 +1,9 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
-import { SupportedLiquidityProviderDeal, TargetType } from "@metrom-xyz/sdk";
+import {
+    SupportedErc4626Vault,
+    SupportedLiquidityProviderDeal,
+    TargetType,
+} from "@metrom-xyz/sdk";
 import type { Campaign } from "@/src/types/campaign/common";
 import { useRef, useState } from "react";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
@@ -22,7 +26,7 @@ export function Protocol({ campaign }: ProtocolProps) {
     const [details, setDetails] = useState<HTMLDivElement | null>(null);
     const dexDetailsPopoverRef = useRef<HTMLDivElement>(null);
 
-    const protocol = protocols.find((protocol) => {
+    let protocol = protocols.find((protocol) => {
         switch (campaign.target.type) {
             case TargetType.AmmPoolLiquidity:
             case TargetType.JumperWhitelistedAmmPoolLiquidity: {
@@ -60,6 +64,17 @@ export function Protocol({ campaign }: ProtocolProps) {
 
     function handleDexDetailsPopoverClose() {
         setPopoverOpen(false);
+    }
+
+    // FIXME: remove this once Arche is itself a protocol
+    if (
+        campaign.target.type === TargetType.Erc4626Vault &&
+        campaign.target.vault.address ===
+            "0x33ffc177a7278ff84aab314a036bc7b799b7cc15"
+    ) {
+        protocol = protocols.find(
+            (protocol) => protocol.slug === SupportedErc4626Vault.Arche,
+        );
     }
 
     return (

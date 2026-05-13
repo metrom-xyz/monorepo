@@ -133,6 +133,17 @@ export function getCampaignName(
             });
         }
         case TargetType.Erc4626Vault: {
+            // FIXME: remove this once Arche is itself a protocol
+            if (
+                campaign.target.vault.address ===
+                "0x33ffc177a7278ff84aab314a036bc7b799b7cc15"
+            ) {
+                return t("campaignActions.erc4626Vault", {
+                    vault: campaign.target.vault.name,
+                    brand: "Arche",
+                });
+            }
+
             return t("campaignActions.erc4626Vault", {
                 vault: campaign.target.vault.name,
                 brand: campaign.target.brand.name,
