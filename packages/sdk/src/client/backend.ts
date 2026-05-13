@@ -166,6 +166,7 @@ const BRIDGE_BRAND_NAME: Record<SupportedBridge, string> = {
 
 const ERC4626_VAULT_PLATFORM_NAME: Record<SupportedErc4626Vault, string> = {
     [SupportedErc4626Vault.Yearn]: "Yearn",
+    [SupportedErc4626Vault.Arche]: "Arche",
 };
 
 export interface FetchCampaignsParams {

@@ -33,7 +33,7 @@ export function Erc4626Vault({ campaignDetails }: Erc4626VaultProps) {
         type: ProtocolType.Erc4626Vault,
     }).find((brand) => brand.slug === target.brand.slug);
 
-    const depositLink = erc4626Vault?.vaultUrl.replace(
+    let depositLink = erc4626Vault?.vaultUrl.replace(
         "{vault}",
         target.vault.address,
     );
@@ -45,6 +45,11 @@ export function Erc4626Vault({ campaignDetails }: Erc4626VaultProps) {
 
     function handleExploreOnClick() {
         trackFathomEvent("CLICK_FUNGIBLE_ASSET_EXPLORE");
+    }
+
+    // FIXME: remove this once Arche is itself a protocol
+    if (target.vault.address === "0x33ffc177a7278ff84aab314a036bc7b799b7cc15") {
+        depositLink = "https://app.arche.money/";
     }
 
     return (

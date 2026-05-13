@@ -15,6 +15,7 @@ import {
     TargetType,
 } from "@metrom-xyz/sdk";
 import {
+    ArcheLogo,
     CurveLogo,
     EbisuLogo,
     TurtleDarkLogo,
@@ -103,6 +104,14 @@ export const mainnetData: ChainData = {
             logo: YearnLogo,
             name: "Yearn",
             vaultUrl: "https://yearn.fi/vaults/1/{vault}",
+        },
+        {
+            active: false,
+            type: ProtocolType.Erc4626Vault,
+            slug: SupportedErc4626Vault.Arche,
+            logo: ArcheLogo,
+            name: "Arche",
+            vaultUrl: "https://app.arche.money",
         },
     ],
     baseTokens: [
