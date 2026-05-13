@@ -52,6 +52,7 @@ const AAVE_V3_HOMEPAGES: Record<SupportedAaveV3, string> = {
 
 const ERC4626_VAULTS_HOMEPAGES: Record<SupportedErc4626Vault, string> = {
     [SupportedErc4626Vault.Yearn]: "https://yearn.fi/",
+    [SupportedErc4626Vault.Arche]: "https://arche.money/",
 };
 
 const PROTOCOL_CONFIGS = [
