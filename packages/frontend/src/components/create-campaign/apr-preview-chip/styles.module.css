@@ -1,0 +1,21 @@
+@reference "../../../app.css";
+
+.root {
+    @apply px-2 py-1 rounded-lg bg-brand-blue transition-opacity duration-200 ease-in-out;
+}
+
+.root.noApr {
+    @apply bg-gray-300 dark:bg-neutral-600;
+}
+
+.root.hasKpi {
+    @apply bg-carrot-orange;
+}
+
+.loading {
+    @apply w-16;
+}
+
+.lightText {
+    @apply text-neutral-100;
+}

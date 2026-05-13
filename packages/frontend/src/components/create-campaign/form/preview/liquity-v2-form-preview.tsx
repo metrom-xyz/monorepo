@@ -83,6 +83,7 @@ export function LiquityV2FormPreview({
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     fixedDistribution={payload.fixedDistribution}
+                    kpiDistribution={payload.kpiDistribution}
                     distributables={payload.distributables}
                     restrictions={payload.restrictions}
                 />

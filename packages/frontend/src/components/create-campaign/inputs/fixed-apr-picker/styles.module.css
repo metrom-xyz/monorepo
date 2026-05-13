@@ -5,7 +5,7 @@
 }
 
 .aprInput {
-    @apply w-full sm:w-40;
+    @apply w-full sm:w-32;
 }
 
 .previewWrapper {

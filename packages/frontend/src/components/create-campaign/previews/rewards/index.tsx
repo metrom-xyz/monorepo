@@ -1,6 +1,5 @@
-import classNames from "classnames";
 import { FormStepPreview } from "../../form-step-preview";
-import { Skeleton, Typography } from "@metrom-xyz/ui";
+import { Typography } from "@metrom-xyz/ui";
 import {
     formatAmount,
     formatPercentage,
@@ -18,10 +17,12 @@ import {
 import type {
     CampaignPayloadDistributables,
     CampaignPayloadFixedDistribution,
+    CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign/common";
 import type { Dayjs } from "dayjs";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { AddressRestrictions } from "./address-restrictions";
+import { AprPreviewChip } from "../../apr-preview-chip";
 
 import styles from "./styles.module.css";
 
@@ -35,6 +36,7 @@ interface RewardsProps {
     distributables?: CampaignPayloadDistributables;
     pool?: AmmPool;
     fixedDistribution?: CampaignPayloadFixedDistribution;
+    kpiDistribution?: CampaignPayloadKpiDistribution;
     weighting?: Weighting;
     restrictions?: Restrictions;
 }
@@ -49,6 +51,7 @@ export function Rewards({
     distributables,
     pool,
     fixedDistribution,
+    kpiDistribution,
     weighting,
     restrictions,
 }: RewardsProps) {
@@ -91,29 +94,11 @@ export function Rewards({
                         {t("rewards")}
                     </Typography>
                     {distributables?.type === DistributablesType.Tokens && (
-                        <div
-                            className={classNames(styles.aprChip, {
-                                [styles.noApr]: derivedApr === undefined,
-                            })}
-                        >
-                            {loadingApr ? (
-                                <Skeleton
-                                    size="xs"
-                                    className={styles.loadingApr}
-                                />
-                            ) : (
-                                <Typography size="xs" weight="medium">
-                                    {t("apr", {
-                                        apr:
-                                            derivedApr !== undefined
-                                                ? formatPercentage({
-                                                      percentage: derivedApr,
-                                                  })
-                                                : "-",
-                                    })}
-                                </Typography>
-                            )}
-                        </div>
+                        <AprPreviewChip
+                            apr={derivedApr}
+                            hasKpi={!!kpiDistribution}
+                            loading={loadingApr}
+                        />
                     )}
                 </div>
             }

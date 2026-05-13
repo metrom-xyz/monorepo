@@ -4,18 +4,6 @@
     @apply flex items-center gap-3;
 }
 
-.aprChip {
-    @apply w-fit px-2 py-1 rounded-lg bg-gray-300 dark:bg-neutral-600 transition-opacity duration-200 ease-in-out;
-}
-
-.aprChip.noApr {
-    @apply opacity-50;
-}
-
-.loadingApr {
-    @apply w-16;
-}
-
 .distributables,
 .weighting,
 .restrictions {

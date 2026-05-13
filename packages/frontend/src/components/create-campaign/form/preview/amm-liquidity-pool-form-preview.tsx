@@ -90,6 +90,7 @@ export function AmmLiquidityPoolFormPreview({
                     distributables={payload.distributables}
                     pool={payload.pool}
                     fixedDistribution={payload.fixedDistribution}
+                    kpiDistribution={payload.kpiDistribution}
                     weighting={payload.weighting}
                     restrictions={payload.restrictions}
                 />

@@ -86,6 +86,7 @@ export function Erc4626VaultFormPreview({
                     endDate={payload.endDate}
                     distributables={payload.distributables}
                     fixedDistribution={payload.fixedDistribution}
+                    kpiDistribution={payload.kpiDistribution}
                     restrictions={payload.restrictions}
                 />
             )}
