@@ -29,6 +29,12 @@ export const gnosisData: ChainData = {
             distributables: [DistributablesType.Tokens],
         },
         {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
+        },
+        {
             active: false,
             partner: true,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,

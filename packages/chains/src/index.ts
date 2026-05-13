@@ -21,6 +21,7 @@ import {
     linea,
     saga,
     megaeth,
+    bsc,
 } from "viem/chains";
 import {
     sonicData,
@@ -59,6 +60,7 @@ import {
 } from "./chains/aptos";
 import { lineaData } from "./chains/linea";
 import { sagaData } from "./chains/saga";
+import { bscData } from "./chains/bsc";
 
 export {
     Environment,
@@ -103,6 +105,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.Plasma]: plasmaData,
         [SupportedProductionEvmChain.Saga]: sagaData,
         [SupportedProductionEvmChain.MegaEth]: megaethData,
+        [SupportedProductionEvmChain.Bsc]: bscData,
     },
 };
 
@@ -149,6 +152,7 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     saga,
     megaeth,
     mainnet,
+    bsc,
     // These are required for Turtle campaigns
     katana,
     linea,

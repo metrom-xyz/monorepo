@@ -14,6 +14,7 @@ import { useForms } from "@/src/hooks/useForms";
 import { VaultIcon } from "@/src/assets/vault-icon";
 
 import styles from "./styles.module.css";
+import { TokensIcon } from "@/src/assets/tokens-icon";
 
 interface CampaignTypeConfig {
     title: TranslationsKeys<"newCampaign.pickType">;
@@ -42,7 +43,7 @@ export const FORM_INFO: Record<BaseCampaignType, CampaignTypeConfig> = {
     [BaseCampaignType.HoldFungibleAsset]: {
         title: "holdFungibleAsset.title",
         description: "holdFungibleAsset.description",
-        icon: <AaveThemeLogo />,
+        icon: <TokensIcon />,
     },
     [BaseCampaignType.Odyssey]: {
         title: "odyssey.title",
