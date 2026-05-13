@@ -81,14 +81,14 @@ export function EndDatePicker({
         else if (endDate.isBefore(dayjs())) dateError = t("dateInThePast");
         else if (campaignDuration < limits.minimumSeconds)
             dateError = t("minimumDate", {
-                duration: dayjs(startDate).to(
+                duration: dayjs(startDate.toDate()).to(
                     startDate.add(limits.minimumSeconds, "second"),
                     true,
                 ),
             });
         else if (campaignDuration > limits.maximumSeconds)
             dateError = t("maximumDate", {
-                duration: dayjs(startDate).to(
+                duration: dayjs(startDate.toDate()).to(
                     startDate.add(limits.maximumSeconds, "second"),
                     true,
                 ),
@@ -198,7 +198,10 @@ export function EndDatePicker({
                     {t.rich("campaignDuration", {
                         duration:
                             startDate && endDate
-                                ? dayjs(startDate).to(endDate, true)
+                                ? dayjs(startDate.toDate()).to(
+                                      endDate.toDate(),
+                                      true,
+                                  )
                                 : "",
                         bold: (chunks) => <BoldText>{chunks}</BoldText>,
                     })}
