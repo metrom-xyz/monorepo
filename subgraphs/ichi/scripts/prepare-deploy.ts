@@ -61,4 +61,4 @@ try {
     process.exit(1);
 }
 
-exec("npm run format");
+exec("pnpm format");

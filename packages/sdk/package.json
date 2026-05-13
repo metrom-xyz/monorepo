@@ -20,6 +20,7 @@
         "format": "eslint --fix ."
     },
     "devDependencies": {
+        "@eslint/eslintrc": "^3.3.4",
         "@eslint/js": "^9.34.0",
         "@metrom-xyz/contracts": "^0.56.0",
         "@tsconfig/node20": "^20.1.9",
