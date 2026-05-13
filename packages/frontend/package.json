@@ -21,7 +21,6 @@
         "@metrom-xyz/aptos-contracts": "^0.9.0",
         "@metrom-xyz/chains": "*",
         "@metrom-xyz/contracts": "^0.56.0",
-        "@metrom-xyz/enso-shortcuts-widget": "*",
         "@metrom-xyz/sdk": "*",
         "@metrom-xyz/ui": "*",
         "@next/eslint-plugin-next": "^15.5.4",
