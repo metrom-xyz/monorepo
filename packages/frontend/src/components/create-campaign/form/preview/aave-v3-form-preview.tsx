@@ -111,6 +111,7 @@ export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
                     startDate={payload.startDate}
                     endDate={payload.endDate}
                     fixedDistribution={payload.fixedDistribution}
+                    kpiDistribution={payload.kpiDistribution}
                     distributables={payload.distributables}
                     restrictions={payload.restrictions}
                 />

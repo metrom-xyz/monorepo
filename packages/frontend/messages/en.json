@@ -254,6 +254,7 @@
             }
         },
         "form": {
+            "apr": "APR: {apr}",
             "basics": {
                 "title": "Set your campaign basics",
                 "notSaved": "Not saved",
@@ -267,7 +268,6 @@
             },
             "rewards": {
                 "title": "Define the rewards to distribute",
-                "apr": "APR: {apr}",
                 "notSaved": "Not saved",
                 "defineAssets": "Define assets to distribute",
                 "fixedApr": "Fixed APR",

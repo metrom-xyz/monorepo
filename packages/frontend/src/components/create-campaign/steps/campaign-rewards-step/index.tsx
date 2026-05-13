@@ -13,10 +13,8 @@ import type {
     CampaignPayloadKpiDistribution,
 } from "@/src/types/campaign/common";
 import { FormStepSection } from "../../form-step-section";
-import { Button, Skeleton, Typography } from "@metrom-xyz/ui";
+import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { formatPercentage } from "@/src/utils/format";
-import classNames from "classnames";
 import { RewardsPicker } from "../../inputs/rewards-picker";
 import type { Dayjs } from "dayjs";
 import { useFormSteps, type FormSteps } from "@/src/context/form-steps";
@@ -26,6 +24,7 @@ import { FormStepId } from "@/src/types/form";
 import { FixedAprPicker } from "../../inputs/fixed-apr-picker";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import { DistributablesType } from "@metrom-xyz/sdk";
+import { AprPreviewChip } from "../../apr-preview-chip";
 
 import styles from "./styles.module.css";
 
@@ -122,29 +121,11 @@ export function CampaignRewardsStep({
                 headerDecorator={
                     payload.distributables?.type ===
                     DistributablesType.Tokens ? (
-                        <div
-                            className={classNames(styles.aprChip, {
-                                [styles.noApr]: derivedApr === undefined,
-                            })}
-                        >
-                            {loadingApr ? (
-                                <Skeleton
-                                    size="xs"
-                                    className={styles.loadingApr}
-                                />
-                            ) : (
-                                <Typography size="xs" weight="medium">
-                                    {t("apr", {
-                                        apr:
-                                            derivedApr !== undefined
-                                                ? formatPercentage({
-                                                      percentage: derivedApr,
-                                                  })
-                                                : "-",
-                                    })}
-                                </Typography>
-                            )}
-                        </div>
+                        <AprPreviewChip
+                            apr={derivedApr}
+                            hasKpi={!!kpiDistribution}
+                            loading={loadingApr}
+                        />
                     ) : undefined
                 }
             >
