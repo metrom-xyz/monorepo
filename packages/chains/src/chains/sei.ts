@@ -36,6 +36,12 @@ export const seiDevelopmentData: ChainData = {
             type: BaseCampaignType.AmmPoolLiquidity,
             distributables: [DistributablesType.Tokens],
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
+        },
     ],
     protocols: [
         {
@@ -93,6 +99,12 @@ export const seiProductionData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
             distributables: [DistributablesType.Tokens],
         },
         {
