@@ -38,6 +38,7 @@
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^5.0.0",
+        "@eslint/eslintrc": "^3.3.4",
         "@eslint/js": "^9.39.2",
         "@fontsource/ibm-plex-mono": "^5.2.7",
         "@fontsource/ibm-plex-sans": "^5.2.8",
