@@ -61,7 +61,7 @@ export const DateTimePicker = ({
     // in case a value change happened, check if we're still
     // alright with validation and rectify if needed
     useLayoutEffect(() => {
-        if (!value || !onChange) return;
+        if (!value || !onChange || dayjs(minDate).isAfter(maxDate)) return;
         const originalValue = dayjs(value);
         const rectifiedValue = rectifyDate(dayjs(value), min, max);
         if (!originalValue.isSame(rectifiedValue, "seconds"))

@@ -28,7 +28,7 @@ export function Duration({ startDate, endDate }: DurationProps) {
                     {formatDateTime(endDate)}
                 </Typography>
                 <Typography size="xs" weight="medium" variant="tertiary">
-                    {`(${dayjs(startDate).to(endDate, true)})`}
+                    {`(${dayjs(startDate.toDate()).to(endDate, true)})`}
                 </Typography>
             </div>
         </div>
