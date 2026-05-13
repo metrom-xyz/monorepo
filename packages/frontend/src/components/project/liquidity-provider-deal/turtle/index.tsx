@@ -51,13 +51,6 @@ export function Turtle({ campaignId }: TurtleProps) {
                     }
                 />
             </div>
-            {/* TODO: enable once Turtle widget supports campaign filtering */}
-            {/* <div className={styles.widgetWrapper}>
-                <Typography size="lg" weight="medium" uppercase>
-                    {t("exploreDeals")}
-                </Typography>
-                <Earn />
-            </div> */}
         </div>
     );
 }
