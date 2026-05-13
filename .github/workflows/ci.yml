@@ -31,7 +31,7 @@ jobs:
           node-version-file: "package.json"
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm ci
       - name: Run linter
         run: pnpm lint
   unit-test:
@@ -48,6 +48,6 @@ jobs:
           node-version-file: "package.json"
           cache: "pnpm"
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm ci
       - name: Run tests
         run: pnpm test
