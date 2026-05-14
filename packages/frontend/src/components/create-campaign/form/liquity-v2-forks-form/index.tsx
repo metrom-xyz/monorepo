@@ -15,6 +15,7 @@ import { EmptyTargetCampaignPreviewPayload } from "@/src/types/campaign/empty-ta
 import {
     allFieldsFilled,
     distributablesCompleted,
+    getNextFormStep,
     validateDistributables,
     validateDistributions,
 } from "@/src/utils/form";
@@ -127,16 +128,9 @@ export function LiquityV2ForksForm({
             setPayload((prev) => ({ ...prev, ...part }));
             onStepComplete({ ...payload, ...part });
 
-            const currentIndex = steps.indexOf(activeStepId);
-            const appliedStepIndex = steps.indexOf(stepId);
-
-            const nextStepIndex =
-                currentIndex > appliedStepIndex
-                    ? currentIndex
-                    : appliedStepIndex + 1;
-
-            const next = steps[nextStepIndex];
+            const next = getNextFormStep(steps, activeStepId, stepId, part);
             if (!next) return;
+
             updateActiveStepId(next);
         },
         [payload, activeStepId, steps, onStepComplete, updateActiveStepId],
