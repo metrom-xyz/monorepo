@@ -365,7 +365,10 @@ export function FixedAprPicker({
                             </Typography>
                             <Typography size="xs" weight="medium">
                                 {startDate
-                                    ? dayjs(startDate).to(endDate, true)
+                                    ? dayjs(startDate.toDate()).to(
+                                          endDate,
+                                          true,
+                                      )
                                     : "-"}
                             </Typography>
                         </div>

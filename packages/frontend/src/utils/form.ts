@@ -18,6 +18,30 @@ import type {
     AmmPoolLiquidityCampaignPayload,
     AugmentedPriceRangeSpecification,
 } from "../types/campaign/amm-pool-liquidity-campaign";
+import { FormStepId } from "../types/form";
+
+export function getNextFormStep(
+    steps: FormStepId[],
+    activeStepId: FormStepId,
+    appliedStepId: FormStepId,
+    payload?: unknown,
+) {
+    const currentIndex = steps.indexOf(activeStepId);
+    const appliedStepIndex = steps.indexOf(appliedStepId);
+
+    let nextStepIndex =
+        currentIndex > appliedStepIndex ? currentIndex : appliedStepIndex + 1;
+
+    if (
+        appliedStepId === FormStepId.Rewards &&
+        steps[nextStepIndex] === FormStepId.Kpi &&
+        payload &&
+        !!(payload as BaseCampaignPayload).fixedDistribution
+    )
+        nextStepIndex++;
+
+    return steps[nextStepIndex];
+}
 
 export function allFieldsFilled<T extends object, K extends keyof T>(
     source: T,
