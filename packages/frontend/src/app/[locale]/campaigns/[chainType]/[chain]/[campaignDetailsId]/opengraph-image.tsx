@@ -14,6 +14,7 @@ import {
     CAMPAIGN_TARGET_TO_KIND,
     ChainType,
     DistributablesType,
+    SupportedErc4626Vault,
     TargetType,
     type CampaignTarget,
 } from "@metrom-xyz/sdk";
@@ -32,6 +33,8 @@ import { LiquityV2 } from "@/src/components/campaign-social-preview/liquity-v2";
 import { PointsIcon } from "@/src/assets/points-icon";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { AaveV3 } from "@/src/components/campaign-social-preview/aave-v3";
+import { Erc4626Vault } from "@/src/components/campaign-social-preview/erc4626-vault";
+import { HoldFungibleAsset } from "@/src/components/campaign-social-preview/hold-fungible-asset";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -94,6 +97,15 @@ function getCampaignTargetProtocol(
                 case TargetType.AaveV3Borrow:
                 case TargetType.AaveV3Supply:
                 case TargetType.AaveV3NetSupply: {
+                    return protocol.slug === target.brand.slug;
+                }
+                case TargetType.Erc4626Vault: {
+                    // FIXME: remove this once Arche is itself a protocol
+                    if (
+                        target.vault.address ===
+                        "0x33ffc177a7278ff84aab314a036bc7b799b7cc15"
+                    )
+                        return protocol.slug === SupportedErc4626Vault.Arche;
                     return protocol.slug === target.brand.slug;
                 }
             }
@@ -160,6 +172,10 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
         campaign.isTargeting(TargetType.AaveV3BridgeAndSupply)
     )
         tokenAddresses.push(campaign.target.collateral.address);
+    if (campaign.isTargeting(TargetType.Erc4626Vault))
+        tokenAddresses.push(campaign.target.vault.asset);
+    if (campaign.isTargeting(TargetType.HoldFungibleAsset))
+        tokenAddresses.push(campaign.target.asset.address);
     if (campaign.isDistributing(DistributablesType.Tokens))
         tokenAddresses.push(
             ...campaign.distributables.list.map(({ token }) => token.address),
@@ -176,6 +192,10 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
         campaign.isTargeting(TargetType.AaveV3NetSupply) ||
         campaign.isTargeting(TargetType.AaveV3Supply) ||
         campaign.isTargeting(TargetType.AaveV3BridgeAndSupply);
+    const holdFungibleAsset = campaign.isTargeting(
+        TargetType.HoldFungibleAsset,
+    );
+    const erc4626Vault = campaign.isTargeting(TargetType.Erc4626Vault);
 
     return new ImageResponse(
         <div
@@ -217,6 +237,20 @@ export default async function Image({ params }: CampaignDetailsPageProps) {
                             <LiquityV2
                                 address={campaign.target.collateral.address}
                                 symbol={campaign.target.collateral.symbol}
+                                tokenUris={tokenUris}
+                            />
+                        )}
+                        {holdFungibleAsset && (
+                            <HoldFungibleAsset
+                                address={campaign.target.asset.address}
+                                symbol={campaign.target.asset.symbol}
+                                tokenUris={tokenUris}
+                            />
+                        )}
+                        {erc4626Vault && (
+                            <Erc4626Vault
+                                address={campaign.target.vault.asset}
+                                name={campaign.target.vault.name}
                                 tokenUris={tokenUris}
                             />
                         )}

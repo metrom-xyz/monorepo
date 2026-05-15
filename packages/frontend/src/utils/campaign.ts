@@ -396,6 +396,18 @@ export async function getSocialPreviewCampaignName(
                 chain,
             });
         }
+        case TargetType.HoldFungibleAsset: {
+            return t("socialCampaignPreview.title", {
+                protocol: campaign.target.asset.name,
+                chain,
+            });
+        }
+        case TargetType.Erc4626Vault: {
+            return t("socialCampaignPreview.title", {
+                protocol: campaign.target.vault.name,
+                chain,
+            });
+        }
         case TargetType.Empty: {
             return t("socialCampaignPreview.empty");
         }
