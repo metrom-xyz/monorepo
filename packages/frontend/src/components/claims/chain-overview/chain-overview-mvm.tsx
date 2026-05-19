@@ -3,7 +3,7 @@ import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
 import { ClaimFail } from "../notification/claim-fail";
@@ -142,7 +142,7 @@ export function ChainOverviewMvm({
 
                 toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
                 onRecoverAll();
-                trackFathomEvent("CLICK_RECOVER_ALL");
+                trackUmamiEvent("click-recover-all");
             } catch (error) {
                 toast.custom((toastId) => <RecoverFail toastId={toastId} />);
                 console.warn("Could not recover", error);
@@ -185,7 +185,7 @@ export function ChainOverviewMvm({
 
                 toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
                 onClaimAll();
-                trackFathomEvent("CLICK_CLAIM_ALL");
+                trackUmamiEvent("click-claim-all");
             } catch (error) {
                 toast.custom((toastId) => (
                     <ClaimFail

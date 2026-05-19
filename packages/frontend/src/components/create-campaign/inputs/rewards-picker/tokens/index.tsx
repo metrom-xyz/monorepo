@@ -19,7 +19,7 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { DistributablesType, type Erc20Token } from "@metrom-xyz/sdk";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import { type Address } from "viem";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { Reward } from "./reward";
 import { useAccount } from "@/src/hooks/useAccount";
@@ -126,7 +126,7 @@ export function RewardsPickerTokens({
         });
         setToken(undefined);
         setAmount({ floatValue: undefined, formattedValue: "", value: "" });
-        trackFathomEvent("PICK_REWARD");
+        trackUmamiEvent("pick-reward");
     }, [amount, token, value?.tokens, onChange]);
 
     const handleOnUpdate = useCallback(

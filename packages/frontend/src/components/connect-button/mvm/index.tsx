@@ -8,7 +8,7 @@ import { Button, Modal, Typography, X } from "@metrom-xyz/ui";
 import { cloneElement, useMemo, useState } from "react";
 import { AccountMenu, type Balance } from "../account-menu";
 import type { Address } from "viem";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
 import { useTranslations } from "next-intl";
@@ -58,7 +58,7 @@ export function ConnectButtonMvm({ customComponent }: ConnectButtonProps) {
 
     function handleAccountMenuOpen() {
         setAccountMenu(true);
-        trackFathomEvent("OPEN_SIDEBAR");
+        trackUmamiEvent("open-sidebar");
     }
 
     function handleAccountMenuClose() {

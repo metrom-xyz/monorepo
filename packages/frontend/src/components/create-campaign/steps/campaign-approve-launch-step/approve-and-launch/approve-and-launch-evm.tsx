@@ -28,7 +28,7 @@ import {
 import { buildCampaignDataBundleEvm } from "@/src/utils/campaign-bundle";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { SAFE_APP_SDK } from "@/src/commons";
 import { ApproveTokensButton } from "../approve-tokens-button";
 import { TokenToApproveEvm } from "./token-to-approve-evm";
@@ -299,7 +299,7 @@ export function ApproveAndDeployEvm({
                 }
 
                 onLaunch();
-                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
+                trackUmamiEvent("click-deploy-campaign");
             } catch (error) {
                 console.warn("Could not create campaign", error);
             } finally {
@@ -343,7 +343,7 @@ export function ApproveAndDeployEvm({
                 await SAFE_APP_SDK.txs.send({ txs: safeTxs });
 
                 onLaunch();
-                trackFathomEvent("CLICK_DEPLOY_CAMPAIGN");
+                trackUmamiEvent("click-deploy-campaign");
             } catch (error) {
                 console.warn("Could not create campaign", error);
             } finally {

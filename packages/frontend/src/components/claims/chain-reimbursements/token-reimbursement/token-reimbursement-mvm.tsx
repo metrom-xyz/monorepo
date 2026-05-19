@@ -4,7 +4,7 @@ import { useAccount } from "@/src/hooks/useAccount";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { RecoverSuccess } from "../../notification/recover-success";
 import { RecoverFail } from "../../notification/recover-fail";
@@ -110,7 +110,7 @@ export function TokenReimbursementMvm({
                 ));
                 setRecovered(true);
                 onRecover(tokenReimbursements.token);
-                trackFathomEvent("CLICK_RECOVER_SINGLE");
+                trackUmamiEvent("click-recover-single");
             } catch (error) {
                 toast.custom((toastId) => <RecoverFail toastId={toastId} />);
                 console.warn("Could not recover", error);

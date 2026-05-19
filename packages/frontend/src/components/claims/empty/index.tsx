@@ -2,7 +2,7 @@ import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { useAccount } from "@/src/hooks/useAccount";
 import { ConnectButton } from "../../connect-button";
 
@@ -13,7 +13,7 @@ export function Empty() {
     const { address } = useAccount();
 
     useEffect(() => {
-        trackFathomEvent("NO_REWARDS_CLAIM");
+        trackUmamiEvent("no-rewards-claim");
     }, []);
 
     return address ? (

@@ -10,7 +10,7 @@ import {
 import { useAccount } from "@/src/hooks/useAccount";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
 import { type WriteContractErrorType, encodeFunctionData } from "viem";
@@ -146,7 +146,7 @@ export function ChainOverviewEvm({
 
                 toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
                 onRecoverAll();
-                trackFathomEvent("CLICK_RECOVER_ALL");
+                trackUmamiEvent("click-recover-all");
             } catch (error) {
                 if (
                     !(error as WriteContractErrorType).message.includes(
@@ -198,7 +198,7 @@ export function ChainOverviewEvm({
                     <RecoverSuccess toastId={toastId} safe />
                 ));
                 onRecoverAll();
-                trackFathomEvent("CLICK_RECOVER_ALL");
+                trackUmamiEvent("click-recover-all");
             } catch (error) {
                 console.warn("Could not recover", error);
             } finally {
@@ -231,7 +231,7 @@ export function ChainOverviewEvm({
 
                 toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
                 onClaimAll();
-                trackFathomEvent("CLICK_CLAIM_ALL");
+                trackUmamiEvent("click-claim-all");
             } catch (error) {
                 if (
                     !(error as WriteContractErrorType).message.includes(
@@ -285,7 +285,7 @@ export function ChainOverviewEvm({
                     <ClaimSuccess toastId={toastId} safe />
                 ));
                 onClaimAll();
-                trackFathomEvent("CLICK_CLAIM_ALL");
+                trackUmamiEvent("click-claim-all");
             } catch (error) {
                 console.warn("Could not claim", error);
             } finally {

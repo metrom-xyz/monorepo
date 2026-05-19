@@ -6,7 +6,7 @@ import { DiscordLogo } from "@/src/assets/logos/socials/discord";
 import { TelegramLogo } from "@/src/assets/logos/socials/telegram";
 import { Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { MetromLogo } from "@/src/assets/logos/metrom/metrom-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 
@@ -24,7 +24,7 @@ export function Footer() {
                         href="https://github.com/metrom-xyz"
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => trackFathomEvent("CLICK_GITHUB_LINK")}
+                        onClick={() => trackUmamiEvent("click-github-link")}
                         className={styles.socialLink}
                     >
                         <GithubLogo className={styles.socialIcon} />
@@ -34,7 +34,7 @@ export function Footer() {
                         href="https://x.com/metromxyz"
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => trackFathomEvent("CLICK_X_LINK")}
+                        onClick={() => trackUmamiEvent("click-x-link")}
                         className={styles.socialLink}
                     >
                         <XLogo className={styles.socialIcon} />
@@ -44,7 +44,7 @@ export function Footer() {
                         href="https://discord.com/invite/uRer2D4Pdf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => trackFathomEvent("CLICK_DISCORD_LINK")}
+                        onClick={() => trackUmamiEvent("click-discord-link")}
                         className={styles.socialLink}
                     >
                         <DiscordLogo className={styles.socialIcon} />
@@ -54,7 +54,7 @@ export function Footer() {
                         href="https://t.me/metrom_xyz"
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => trackFathomEvent("CLICK_TELEGRAM_LINK")}
+                        onClick={() => trackUmamiEvent("click-telegram-link")}
                         className={styles.socialLink}
                     >
                         <TelegramLogo className={styles.socialIcon} />
@@ -80,7 +80,7 @@ export function Footer() {
                     href="https://docs.metrom.xyz"
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackFathomEvent("CLICK_DOCUMENTATION_LINK")}
+                    onClick={() => trackUmamiEvent("click-documentation-link")}
                     className={styles.supportLink}
                 >
                     <Typography size="xs" weight="semibold">

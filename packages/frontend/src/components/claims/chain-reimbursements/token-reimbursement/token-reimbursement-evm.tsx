@@ -11,7 +11,7 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { type WriteContractErrorType, encodeFunctionData } from "viem";
 import { RecoverSuccess } from "../../notification/recover-success";
@@ -103,7 +103,7 @@ export function TokenReimbursementEvm({
                 ));
                 setRecovered(true);
                 onRecover(tokenReimbursements.token);
-                trackFathomEvent("CLICK_RECOVER_SINGLE");
+                trackUmamiEvent("click-recover-single");
             } catch (error) {
                 if (
                     !(error as WriteContractErrorType).message.includes(
@@ -169,7 +169,7 @@ export function TokenReimbursementEvm({
                 ));
                 setRecovered(true);
                 onRecover(tokenReimbursements.token);
-                trackFathomEvent("CLICK_RECOVER_SINGLE");
+                trackUmamiEvent("click-recover-single");
             } catch (error) {
                 console.warn("Could not recover", error);
             } finally {

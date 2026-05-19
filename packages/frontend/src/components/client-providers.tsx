@@ -11,7 +11,6 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import updateLocale from "dayjs/plugin/updateLocale";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import Fathom from "./fathom";
 import { ReownAppKitContextProvider } from "../context/reown-app-kit";
 import {
     APTOS_CLIENT_API_KEY,
@@ -82,7 +81,6 @@ export function ClientProviders({
                 <AptosCoreProvider>
                     <ReownAppKitContextProvider>
                         <TokenIconsProvider>
-                            <Fathom />
                             <Toaster />
                             {children}
                         </TokenIconsProvider>

@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ClaimSuccess } from "../../notification/claim-success";
 import { ClaimFail } from "../../notification/claim-fail";
@@ -115,7 +115,7 @@ export function TokenClaimMvm({
                 ));
                 setClaimed(true);
                 onClaim(tokenClaims.token);
-                trackFathomEvent("CLICK_CLAIM_SINGLE");
+                trackUmamiEvent("click-claim-single");
             } catch (error) {
                 toast.custom((toastId) => <ClaimFail toastId={toastId} />);
                 console.warn("Could not claim", error);

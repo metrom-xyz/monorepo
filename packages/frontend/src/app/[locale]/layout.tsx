@@ -14,6 +14,7 @@ import { Layout as AppLayout } from "../../components/layout";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
 import { BASE_URL } from "@/src/commons";
+import { UMAMI_WEBSITE_ID } from "@/src/commons/env";
 
 interface Params {
     locale: string;
@@ -59,6 +60,14 @@ export default async function Layout({ children, params }: LayoutParams) {
 
     return (
         <html lang={locale} suppressHydrationWarning>
+            <head>
+                <script
+                    defer
+                    src="https://umami.metrom.xyz/s.js"
+                    data-website-id={UMAMI_WEBSITE_ID}
+                    data-domains="app.metrom.xyz"
+                ></script>
+            </head>
             <body>
                 <NextIntlClientProvider>
                     <ThemeProvider attribute={"data-theme"}>
