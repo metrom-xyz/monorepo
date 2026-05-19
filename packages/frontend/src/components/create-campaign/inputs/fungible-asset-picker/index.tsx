@@ -83,7 +83,8 @@ export function FungibleAssetPicker({
         }
 
         if (!isAddress(assetAddress)) setError("errors.notAnAddress");
-        else if (!assetInfo && assetInfoErrored) setError("errors.notFound");
+        else if (!assetInfo && assetInfoErrored)
+            setError("errors.notSupported");
         else setError("");
     }, [assetAddress, assetInfo, assetInfoErrored]);
 
