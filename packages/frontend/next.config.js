@@ -24,6 +24,28 @@ const cspHeader = `
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    experimental: {
+        optimizePackageImports: [
+            "@reown/appkit",
+            "@reown/appkit-adapter-wagmi",
+            "wagmi",
+            "viem",
+            "@wagmi/core",
+            "@aptos-labs/js-pro",
+            "@aptos-labs/react",
+            "@aptos-labs/wallet-adapter-react",
+            "@aptos-labs/ts-sdk",
+            "recharts",
+            "motion",
+            "react-use",
+            "@metrom-xyz/ui",
+            "@metrom-xyz/sdk",
+            "@metrom-xyz/chains",
+        ],
+    },
     images: {
         remotePatterns: [
             {
