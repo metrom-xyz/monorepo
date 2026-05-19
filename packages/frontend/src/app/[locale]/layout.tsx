@@ -65,7 +65,7 @@ export default async function Layout({ children, params }: LayoutParams) {
                     defer
                     src="https://umami.metrom.xyz/s.js"
                     data-website-id={UMAMI_WEBSITE_ID}
-                    data-domains="app.metrom.xyz"
+                    data-domains="app.metrom.xyz,aptos.metrom.xyz"
                 ></script>
             </head>
             <body>
