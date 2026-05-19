@@ -5,7 +5,7 @@ import type {
     CampaignDetails,
 } from "@/src/types/campaign/common";
 import { RemoteLogo } from "../../remote-logo";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { Tags } from "./tags";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
@@ -44,7 +44,7 @@ export function Erc4626Vault({ campaignDetails }: Erc4626VaultProps) {
     );
 
     function handleExploreOnClick() {
-        trackFathomEvent("CLICK_FUNGIBLE_ASSET_EXPLORE");
+        trackUmamiEvent("click-fungible-asset-explore");
     }
 
     // FIXME: remove this once Arche is itself a protocol

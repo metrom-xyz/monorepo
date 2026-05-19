@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { Typography, Skeleton } from "@metrom-xyz/ui";
 import { Link } from "@/src/i18n/routing";
 import { formatAmount } from "@/src/utils/format";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getTxExplorerLink } from "@/src/utils/explorer";
@@ -71,7 +71,7 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
     }, [campaign, dexes, liquityV2s, aaveV3s]);
 
     function handleActivityOnClick() {
-        trackFathomEvent("CLICK_ACTIVITY");
+        trackUmamiEvent("click-activity");
     }
 
     const createCampaign = payload.type === "create-campaign";

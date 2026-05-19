@@ -5,7 +5,7 @@ import type {
     CampaignDetails,
 } from "@/src/types/campaign/common";
 import { RemoteLogo } from "../../remote-logo";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getFungibleAssetExplorerLink } from "@/src/utils/explorer";
 import { Tags } from "./tags";
@@ -30,7 +30,7 @@ export function HoldFungibleAsset({ campaignDetails }: HoldFungibleAssetProps) {
     );
 
     function handleExploreOnClick() {
-        trackFathomEvent("CLICK_FUNGIBLE_ASSET_EXPLORE");
+        trackUmamiEvent("click-fungible-asset-explore");
     }
 
     return (

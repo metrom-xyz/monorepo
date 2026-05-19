@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getExplorerLink } from "@/src/utils/explorer";
 import { formatPercentage } from "@/src/utils/format";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { PoolRemoteLogo } from "../../pool-remote-logo";
 import { type AmmPoolLiquidityTargetType } from "@metrom-xyz/sdk";
 import type {
@@ -52,11 +52,11 @@ export function AmmPoolLiquityHeader({
     );
 
     function handleAddLiquidityOnClick() {
-        trackFathomEvent("CLICK_POOL_DEPOSIT");
+        trackUmamiEvent("click-pool-deposit");
     }
 
     function handleExploreOnClick() {
-        trackFathomEvent("CLICK_DEX_EXPLORE");
+        trackUmamiEvent("click-dex-explore");
     }
 
     return (

@@ -5,7 +5,7 @@ import { cloneElement, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { type Address } from "blo";
 import { AccountMenu, type Balance } from "../account-menu";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_CONNECTOR_ID } from "@/src/commons";
@@ -98,7 +98,7 @@ export function ConnectButtonEvm({ customComponent }: ConnectButtonProps) {
 
     function handleAccountMenuOpen() {
         setAccountMenu(true);
-        trackFathomEvent("OPEN_SIDEBAR");
+        trackUmamiEvent("open-sidebar");
     }
 
     function handleAccountMenuClose() {

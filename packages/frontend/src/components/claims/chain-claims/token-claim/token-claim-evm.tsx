@@ -10,7 +10,7 @@ import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatAmount, formatUsdAmount } from "@/src/utils/format";
-import { trackFathomEvent } from "@/src/utils/fathom";
+import { trackUmamiEvent } from "@/src/utils/umami";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { ClaimSuccess } from "../../notification/claim-success";
 import { ClaimFail } from "../../notification/claim-fail";
@@ -101,7 +101,7 @@ export function TokenClaimEvm({
                 ));
                 setClaimed(true);
                 onClaim(tokenClaims.token);
-                trackFathomEvent("CLICK_CLAIM_SINGLE");
+                trackUmamiEvent("click-claim-single");
             } catch (error) {
                 if (
                     !(error as WriteContractErrorType).message.includes(
@@ -163,7 +163,7 @@ export function TokenClaimEvm({
                 ));
                 setClaimed(true);
                 onClaim(tokenClaims.token);
-                trackFathomEvent("CLICK_CLAIM_SINGLE");
+                trackUmamiEvent("click-claim-single");
             } catch (error) {
                 console.warn("Could not claim", error);
             } finally {
