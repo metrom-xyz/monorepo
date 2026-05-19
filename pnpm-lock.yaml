@@ -153,6 +153,9 @@ importers:
       dayjs:
         specifier: ^1.11.20
         version: 1.11.20
+      keyv:
+        specifier: 4.5.4
+        version: 4.5.4
       motion:
         specifier: ^12.34.0
         version: 12.35.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
