@@ -16,7 +16,6 @@ if (!SAFE && !WALLETCONNECT_PROJECT_ID)
         "A valid NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID env variable is needed",
     );
 
-export const FATHOM_SITE_ID: string = process.env.NEXT_PUBLIC_FATHOM_SITE_ID!;
 export const UMAMI_WEBSITE_ID: string =
     process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID!;
 
