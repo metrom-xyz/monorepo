@@ -1,5 +1,4 @@
 import {
-    ChainType,
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
