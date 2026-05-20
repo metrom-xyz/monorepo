@@ -4,13 +4,13 @@ import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import { Campaign } from "../types/campaign/common";
 import type { HookBaseParams } from "../types/hooks";
 import { useTranslations } from "next-intl";
-import { getChainData } from "../utils/chain";
+import { getCrossVmChainData } from "../utils/chain";
 import {
     BackendCampaignOrderBy,
     BackendCampaignStatus,
     BackendCampaignType,
     CAMPAIGN_TARGET_TO_KIND,
-    type ChainType,
+    ChainType,
     type SupportedProtocol,
 } from "@metrom-xyz/sdk";
 
@@ -89,7 +89,10 @@ export function useCampaigns({
                                 t,
                                 CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
                             ),
-                            getChainData(campaign.chainId),
+                            getCrossVmChainData(
+                                campaign.chainId,
+                                campaign.chainType,
+                            ),
                         );
                     }),
                 };

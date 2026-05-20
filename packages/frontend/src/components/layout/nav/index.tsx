@@ -13,15 +13,11 @@ import type { SVGIcon } from "@/src/types/common";
 import type { TranslationsKeys } from "@/src/types/utils";
 import type { Address } from "viem";
 import { useClaims } from "@/src/hooks/use-claims";
-import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { useAccount } from "@/src/hooks/useAccount";
 import { ThemeToggle } from "../../theme-toggle";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
 import { PlusCircleIcon } from "@/src/assets/plus-circle-icon";
-import { ChainType } from "@metrom-xyz/sdk";
-import { AptosLogo } from "@metrom-xyz/chains";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { METROM_APTOS_BASE_URL } from "@/src/commons";
+import { EcosystemPicker } from "../ecosystem-picker";
 
 import styles from "./styles.module.css";
 
@@ -40,7 +36,6 @@ export function Nav() {
     const pathname = usePathname();
     const { address } = useAccount();
     const { claims } = useClaims();
-    const { type: chainType } = useChainWithType();
 
     const pendingClaimsCount = useMemo(() => {
         if (!claims || !address) return undefined;
@@ -65,20 +60,7 @@ export function Nav() {
                 </div>
                 <div className={styles.rightContentContainer}>
                     <ThemeToggle />
-                    {chainType === ChainType.Evm && (
-                        <a
-                            href={METROM_APTOS_BASE_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.aptosAppLink}
-                        >
-                            <AptosLogo className={styles.chainLogo} />
-                            <Typography weight="medium">Aptos</Typography>
-                            <ArrowRightIcon
-                                className={styles.externalLinkIcon}
-                            />
-                        </a>
-                    )}
+                    <EcosystemPicker />
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>

@@ -1,14 +1,15 @@
 import type { SupportedChain } from "@metrom-xyz/contracts";
-import { CHAIN_TYPE, METROM_API_CLIENT } from "../commons";
-import type { RewardToken } from "@metrom-xyz/sdk";
+import { METROM_API_CLIENT } from "../commons";
+import type { ChainType, RewardToken } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
+import { useChainType } from "./useChainType";
 
 interface UseRewardTokensParams extends HookBaseParams {
     chainId?: number;
 }
 
-type QueryKey = [string, SupportedChain | undefined];
+type QueryKey = [string, SupportedChain | undefined, ChainType];
 
 const collator = new Intl.Collator();
 
@@ -19,16 +20,18 @@ export function useRewardTokens({
     loading: boolean;
     tokens: RewardToken[] | undefined;
 } {
+    const chainType = useChainType();
+
     const { data: tokens, isPending: loading } = useQuery({
-        queryKey: ["reward-tokens", chainId],
+        queryKey: ["reward-tokens", chainId, chainType],
         queryFn: async ({ queryKey }) => {
-            const [, chainId] = queryKey as QueryKey;
+            const [, chainId, chainType] = queryKey as QueryKey;
             if (!chainId) return null;
 
             try {
                 const rewardTokens = await METROM_API_CLIENT.fetchRewardTokens({
                     chainId,
-                    chainType: CHAIN_TYPE,
+                    chainType,
                 });
 
                 return rewardTokens.sort((a, b) =>
