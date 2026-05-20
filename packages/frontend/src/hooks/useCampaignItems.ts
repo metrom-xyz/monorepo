@@ -2,7 +2,7 @@ import { METROM_API_CLIENT } from "../commons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
 import { CampaignDetails, CampaignItem } from "../types/campaign/common";
-import { getChainData } from "../utils/chain";
+import { getCrossVmChainData } from "../utils/chain";
 import { useTranslations } from "next-intl";
 import { getCampaignName, getCampaignTargetValueName } from "../utils/campaign";
 import { CAMPAIGN_TARGET_TO_KIND } from "@metrom-xyz/sdk";
@@ -58,7 +58,7 @@ export function useCampaignItems({
                                 t,
                                 CAMPAIGN_TARGET_TO_KIND[item.target.type],
                             ),
-                            getChainData(item.chainId),
+                            getCrossVmChainData(item.chainId, item.chainType),
                         );
                     }),
                 };

@@ -14,7 +14,12 @@ export default defineConfig({
             formats: ["es"],
         },
         rollupOptions: {
-            external: [/^react($|\/)/, /^react-dom($|\/)/, /^viem($|\/)/],
+            external: [
+                /^react($|\/)/,
+                /^react-dom($|\/)/,
+                /^viem($|\/)/,
+                /^@coral-xyz\/anchor($|\/)/,
+            ],
         },
     },
 });

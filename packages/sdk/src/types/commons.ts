@@ -2,6 +2,7 @@ import type { Address } from "viem";
 
 export enum ChainType {
     Evm = "evm",
+    Svm = "svm",
     Aptos = "aptos",
 }
 

@@ -3,10 +3,10 @@
 import { Button } from "@metrom-xyz/ui";
 import { cloneElement, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { type Address } from "blo";
 import { AccountMenu, type Balance } from "../account-menu";
 import { trackUmamiEvent } from "@/src/utils/umami";
 import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
+import { type Address } from "viem";
 import { SAFE } from "@/src/commons/env";
 import { SAFE_CONNECTOR_ID } from "@/src/commons";
 import { toast } from "sonner";

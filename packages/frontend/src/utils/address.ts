@@ -1,9 +1,10 @@
-import { type Address, zeroAddress, isAddress as isAddressViem } from "viem";
+import { zeroAddress, isAddress as isAddressViem } from "viem";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
-import { CHAIN_TYPE } from "../commons";
 import { ChainType } from "@metrom-xyz/sdk";
+import { isAddress as isAddressSvm } from "@solana/addresses";
+import { getChainType } from "./chain";
 
-export function shortenAddress(address?: Address, long?: boolean) {
+export function shortenAddress(address?: string, long?: boolean) {
     if (!address) return "";
 
     const start = long ? 8 : 6;
@@ -14,7 +15,7 @@ export function shortenAddress(address?: Address, long?: boolean) {
     return `${address.slice(0, start)}...${address.slice(-end)}`;
 }
 
-export function getColorFromAddress(address: Address) {
+export function getColorFromAddress(address: string) {
     if (isZeroAddress(address)) return "#6b7280";
 
     let hash = 0;
@@ -49,20 +50,36 @@ function hslToHex(hsl: { h: number; s: number; l: number }): string {
 }
 
 export function isAddress(address: string): boolean {
-    if (CHAIN_TYPE === ChainType.Aptos)
-        return AccountAddress.isValid({ input: address, strict: true }).valid;
-    if (CHAIN_TYPE === ChainType.Evm) return isAddressViem(address);
-    return false;
+    const chainType = getChainType();
+
+    switch (chainType) {
+        case ChainType.Evm:
+            return isAddressViem(address);
+        case ChainType.Aptos:
+            return AccountAddress.isValid({ input: address, strict: true })
+                .valid;
+        case ChainType.Svm:
+            return isAddressSvm(address);
+        default:
+            return false;
+    }
 }
 
 export function isAddressOnChainType(
     address: string,
     chainType: ChainType,
 ): boolean {
-    if (chainType === ChainType.Aptos)
-        return AccountAddress.isValid({ input: address, strict: true }).valid;
-    if (chainType === ChainType.Evm) return isAddressViem(address);
-    return false;
+    switch (chainType) {
+        case ChainType.Evm:
+            return isAddressViem(address);
+        case ChainType.Aptos:
+            return AccountAddress.isValid({ input: address, strict: true })
+                .valid;
+        case ChainType.Svm:
+            return isAddressSvm(address);
+        default:
+            return false;
+    }
 }
 
 export function isZeroAddress(address: string) {

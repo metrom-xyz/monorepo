@@ -14,6 +14,7 @@ export { scrollData } from "./scroll";
 export { gnosisData } from "./gnosis";
 export { hemiData } from "./hemi";
 export { sepoliaData } from "./sepolia";
+export { solanaDevelopmentData } from "./solana";
 export { telosData } from "./telos";
 export { katanaData } from "./katana";
 export { lensData } from "./lens";
