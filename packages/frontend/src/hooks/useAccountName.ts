@@ -2,10 +2,12 @@ import { type UseEnsNameParameters } from "wagmi";
 import { useConfig } from "wagmi";
 import { getEnsName } from "@wagmi/core";
 import { useQuery } from "@tanstack/react-query";
-import { APTOS } from "../commons/env";
+import { useChainType } from "./useChainType";
+import { ChainType } from "@metrom-xyz/sdk";
 
 export function useAccountName(params: UseEnsNameParameters) {
     const config = useConfig();
+    const chainType = useChainType();
 
     const data = useQuery({
         queryKey: ["account-name", params.address],
@@ -14,8 +16,8 @@ export function useAccountName(params: UseEnsNameParameters) {
                 const { address, ...rest } = params;
                 if (!address) return null;
 
-                // TODO: implement for Aptos
-                if (APTOS) return null;
+                // TODO: implement for Aptos and Solana
+                if (chainType !== ChainType.Evm) return null;
 
                 return await getEnsName(params.config || config, {
                     ...rest,

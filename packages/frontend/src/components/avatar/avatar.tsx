@@ -1,33 +1,27 @@
 import { Skeleton } from "@metrom-xyz/ui";
 import { normalize } from "viem/ens";
-import { blo, type Address } from "blo";
-import { mainnet } from "viem/chains";
-import { mainnetWagmiConfig } from "@/src/context/reown-app-kit";
-import { zeroAddress } from "viem";
+import { blo } from "blo";
+import { zeroAddress, type Address } from "viem";
 import { useAccountName } from "@/src/hooks/useAccountName";
 import { useAccountAvatar } from "@/src/hooks/useAccountAvatar";
 
 import styles from "./styles.module.css";
 
 interface AvatarProps {
-    address?: Address;
+    address?: string;
     height: number;
     width: number;
 }
 
 export function Avatar({ address, height, width }: AvatarProps) {
     const { data: ensName, isLoading: loadingEnsName } = useAccountName({
-        address,
-        chainId: mainnet.id,
-        config: mainnetWagmiConfig,
+        address: address as Address,
     });
     const { data: ensAvatar, isLoading: loadingEnsAvatar } = useAccountAvatar({
         name: ensName ? normalize(ensName) : undefined,
-        chainId: mainnet.id,
-        config: mainnetWagmiConfig,
     });
 
-    const blockie = blo(address || zeroAddress);
+    const blockie = blo((address as Address) || zeroAddress);
 
     if (loadingEnsName || loadingEnsAvatar)
         return (

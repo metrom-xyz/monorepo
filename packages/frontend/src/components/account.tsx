@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { useAccountName } from "../hooks/useAccountName";
 
 interface AccountProps extends Omit<TypographyProps, "children"> {
-    address?: Address;
+    address?: string;
     length?: "full" | "long" | "short";
     className?: string;
 }
@@ -19,7 +19,7 @@ export function Account({
     ...rest
 }: AccountProps) {
     const { data: ensName } = useAccountName({
-        address,
+        address: address as Address,
         chainId: mainnet.id,
         config: mainnetWagmiConfig,
     });

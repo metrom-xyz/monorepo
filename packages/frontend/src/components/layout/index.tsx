@@ -3,9 +3,11 @@
 import { useEffect, type ReactNode } from "react";
 import { Nav } from "./nav";
 import { Footer } from "./footer";
-import { useAccount, useDisconnect } from "wagmi";
-import { APTOS } from "@/src/commons/env";
+import { useDisconnect } from "wagmi";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { useChainType } from "@/src/hooks/useChainType";
+import { useWalletConnection } from "@solana/react-hooks";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 
@@ -14,15 +16,21 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-    const { isConnected: connectedEvm } = useAccount();
-    const { connected: connectedMvm, disconnect: disconnectMvm } = useWallet();
+    const chainType = useChainType();
+    const { disconnect: disconnectMvm } = useWallet();
     const { disconnect: disconnectEvm } = useDisconnect();
+    const { disconnect: disconnectSvm } = useWalletConnection();
 
-    // Needed to make sure the unnecessary wallet provider gets disconnected.
+    const prevChainType = usePrevious(chainType);
+
+    // Disconnect from the previous chain when the chain type changes to prevent issues with stale connections
     useEffect(() => {
-        if (APTOS && connectedEvm) disconnectEvm();
-        if (!APTOS && connectedMvm) disconnectMvm();
-    }, [connectedEvm, connectedMvm, disconnectMvm, disconnectEvm]);
+        if (prevChainType === chainType) return;
+
+        disconnectEvm();
+        disconnectMvm();
+        disconnectSvm();
+    }, [prevChainType, chainType, disconnectEvm, disconnectMvm, disconnectSvm]);
 
     return (
         <div className={styles.layout}>
