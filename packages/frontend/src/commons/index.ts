@@ -1,11 +1,10 @@
 import {
-    ChainType,
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
     SupportedPointsBooster,
 } from "@metrom-xyz/sdk";
-import { APTOS, ENVIRONMENT } from "./env";
+import { ENVIRONMENT } from "./env";
 import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
     SUPPORTED_DEVELOPMENT_CHAINS,
@@ -14,14 +13,17 @@ import {
 import { NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
 
-export const CHAIN_TYPE = APTOS ? ChainType.Aptos : ChainType.Evm;
-
 export const BASE_URL = "https://app.metrom.xyz";
 
 export const METROM_APTOS_BASE_URL =
     ENVIRONMENT === Environment.Production
         ? "https://aptos.metrom.xyz"
         : "https://aptos.dev.metrom.xyz";
+
+export const METROM_SOLANA_BASE_URL =
+    ENVIRONMENT === Environment.Production
+        ? "https://solana.metrom.xyz"
+        : "https://solana.dev.metrom.xyz";
 
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 export const TURTLE_APP_EARN_URL = "https://app.turtle.xyz/earn/opportunities";

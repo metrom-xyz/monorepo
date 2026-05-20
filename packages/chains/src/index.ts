@@ -48,13 +48,16 @@ import {
     bscData,
     aptosTestnetData,
     aptosData,
+    solanaDevelopmentData,
 } from "./chains";
 import {
     ChainData,
     SupportedDevelopmentEvmChain,
     SupportedDevelopmentMvmChain,
+    SupportedDevelopmentSvmChain,
     SupportedProductionEvmChain,
     SupportedProductionMvmChain,
+    SupportedProductionSvmChain,
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
 
@@ -112,6 +115,19 @@ export const MVM_CHAIN_DATA: {
     },
     [Environment.Production]: {
         [SupportedProductionMvmChain.Aptos]: aptosData,
+    },
+};
+
+export const SVM_CHAIN_DATA: {
+    [Environment.Development]: Record<SupportedDevelopmentSvmChain, ChainData>;
+    [Environment.Production]: Record<SupportedProductionSvmChain, ChainData>;
+} = {
+    [Environment.Development]: {
+        [SupportedDevelopmentSvmChain.Testnet]: solanaDevelopmentData,
+    },
+    [Environment.Production]: {
+        // TODO: add production data
+        [SupportedProductionSvmChain.Mainnet]: solanaDevelopmentData,
     },
 };
 

@@ -1,6 +1,5 @@
-import { ChainType } from "@metrom-xyz/sdk";
-import { APTOS } from "../commons/env";
+import { getChainType } from "../utils/chain";
 
 export function useChainType() {
-    return APTOS ? ChainType.Aptos : ChainType.Evm;
+    return getChainType();
 }

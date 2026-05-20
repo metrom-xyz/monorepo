@@ -5,6 +5,7 @@ import type { ChainType, Erc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
 import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
+import { SupportedChain as SupportedChainSvm } from "@metrom-xyz/programs-solana";
 import { katana, linea } from "viem/chains";
 import { Form } from "./forms";
 
@@ -57,4 +58,13 @@ export enum SupportedProductionEvmChain {
     // These are required for Turtle campaigns
     Katana = katana.id,
     Linea = linea.id,
+}
+
+export enum SupportedDevelopmentSvmChain {
+    Testnet = SupportedChainSvm.Testnet,
+}
+
+export enum SupportedProductionSvmChain {
+    // FIXME: add mainnet id
+    Mainnet = 103,
 }

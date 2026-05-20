@@ -1,6 +1,5 @@
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { type Hex } from "viem";
-import type { Address } from "blo";
+import { type Hex, type Address } from "viem";
 import {
     chainIdToAptosNetwork,
     getChainData,
