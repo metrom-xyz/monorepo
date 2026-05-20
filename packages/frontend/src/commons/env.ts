@@ -20,6 +20,10 @@ export const UMAMI_WEBSITE_ID: string =
     process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID!;
 
 export const APTOS: boolean = process.env.NEXT_PUBLIC_APTOS === "true";
+export const SOLANA: boolean = process.env.NEXT_PUBLIC_SOLANA === "true";
+
+if (SOLANA && APTOS)
+    throw new Error("Both NEXT_PUBLIC_APTOS and NEXT_PUBLIC_SOLANA provided");
 
 export const APTOS_CLIENT_TESTNET_API_KEY: string | undefined =
     process.env.NEXT_PUBLIC_APTOS_CLIENT_TESTNET_API_KEY;

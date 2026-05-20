@@ -29,7 +29,7 @@ import {
     type LiquityV2Protocol,
 } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
-import { getChainData, getCrossVmChainData } from "./chain";
+import { getCrossVmChainData } from "./chain";
 import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
 import { getErc20Protocol } from "./erc20";
 
@@ -53,8 +53,9 @@ export function getCampaignName(
             });
         }
         case TargetType.LiquityV2Debt: {
-            const targetProtocol = getChainData(
+            const targetProtocol = getCrossVmChainData(
                 campaign.chainId,
+                campaign.chainType,
             )?.protocols.find(
                 ({ slug }) =>
                     slug ===

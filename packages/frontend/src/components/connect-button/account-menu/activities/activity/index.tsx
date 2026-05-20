@@ -11,13 +11,13 @@ import { useCampaignDetails } from "@/src/hooks/useCampaignDetails";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { CHAIN_TYPE } from "@/src/commons";
 import { useMemo } from "react";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
 import classNames from "classnames";
 import { Action } from "@/src/components/campaigns/campaign/action";
 import { getErc20Protocol } from "@/src/utils/erc20";
 import { FungibleAssetLogo } from "@/src/components/fungible-asset/fungible-asset-logo";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
@@ -26,11 +26,12 @@ interface ActivityProps extends Activity {
 }
 
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
+    const chainType = useChainType();
     const t = useTranslations("accountMenu.activities");
 
     const { campaignDetails: campaign, loading } = useCampaignDetails({
         chainId,
-        chainType: CHAIN_TYPE,
+        chainType,
         id: payload.type === "create-campaign" ? payload.id : undefined,
     });
 
