@@ -164,8 +164,9 @@ export function Picker({
                 onOpenChange={setPopover}
                 placement="bottom-start"
                 margin={4}
+                className={styles.popover}
             >
-                <div className={styles.popover}>
+                <div className={styles.popoverContent}>
                     <div className={styles.header}>
                         <Typography
                             size="xs"
@@ -185,16 +186,18 @@ export function Picker({
                         </Typography>
                     </div>
                     {validPool && (
-                        <Pool
-                            chainId={importedPool.chainId}
-                            label={importedPool.tokens
-                                .map((token) => token.symbol)
-                                .join(" / ")}
-                            tokens={importedPool.tokens}
-                            usdTvl={importedPool.usdTvl}
-                            fee={importedPool.fee}
-                            onClick={handlePoolOnPick}
-                        />
+                        <div className={styles.pool}>
+                            <Pool
+                                chainId={importedPool.chainId}
+                                label={importedPool.tokens
+                                    .map((token) => token.symbol)
+                                    .join(" / ")}
+                                tokens={importedPool.tokens}
+                                usdTvl={importedPool.usdTvl}
+                                fee={importedPool.fee}
+                                onClick={handlePoolOnPick}
+                            />
+                        </div>
                     )}
                 </div>
             </Popover>
