@@ -14,7 +14,7 @@ interface UseFungibleAssetInfoParams extends HookBaseParams {
 interface UseFungibleAssetInfoReturnValue {
     loading: boolean;
     errored: boolean;
-    info?: FungibleAssetInfo | null;
+    info: FungibleAssetInfo | null;
 }
 
 type QueryKey = [string, ChainType, SupportedChain | undefined, Address];
@@ -47,6 +47,7 @@ export function useFungibleAssetInfo({
                 throw error;
             }
         },
+        retry: false,
         enabled: !!address && enabled,
     });
 

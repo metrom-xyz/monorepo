@@ -83,10 +83,10 @@ export function FungibleAssetPicker({
         }
 
         if (!isAddress(assetAddress)) setError("errors.notAnAddress");
-        else if (!assetInfo && assetInfoErrored)
+        else if ((!assetInfo && !loadingAssetInfo) || assetInfoErrored)
             setError("errors.notSupported");
         else setError("");
-    }, [assetAddress, assetInfo, assetInfoErrored]);
+    }, [assetAddress, assetInfo, assetInfoErrored, loadingAssetInfo]);
 
     function handleAssetOnChange(event: ChangeEvent<HTMLInputElement>) {
         const address = event.target.value as Address;
