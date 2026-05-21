@@ -1103,13 +1103,14 @@ export class MetromApiClient {
 
     async fetchFungibleAssetInfo(
         params: FetchFungibleAssetParams,
-    ): Promise<FungibleAssetInfo> {
+    ): Promise<FungibleAssetInfo | null> {
         const url = new URL(
             `v2/fungible-assets/${params.chainType}/${params.chainId}/${params.address}`,
             this.baseUrl,
         );
 
         const response = await fetch(url);
+        if (response.status === 404) return null;
         if (!response.ok)
             throw new Error(
                 `Response not ok while fetching fungible asset info: ${await response.text()}`,
@@ -1549,7 +1550,7 @@ function processCampaignTarget(
                 chainId,
                 vault: {
                     ...campaign.target.vault,
-                    totalAssets: BigInt(campaign.target.vault.totalAssets)
+                    totalAssets: BigInt(campaign.target.vault.totalAssets),
                 },
                 brand: {
                     slug: campaign.target.brand,
