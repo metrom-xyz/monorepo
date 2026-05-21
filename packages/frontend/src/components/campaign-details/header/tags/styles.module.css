@@ -19,3 +19,11 @@
 .calendarIcon {
     @apply size-3.5 text-primary;
 }
+
+.warningText {
+    @apply text-warning;
+}
+
+.holdFungibleAssetAlertTag {
+    @apply h-fit sm:min-h-7 border-warning! bg-warning/12;
+}

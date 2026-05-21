@@ -6,6 +6,7 @@ import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { formatDateTime } from "@/src/utils/format";
 import { CampaignStatus } from "../../../campaign-status";
 import { ElementPlusIcon } from "@/src/assets/element-plus-icon";
+import { TargetType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
@@ -16,6 +17,10 @@ interface TagsProps {
 export function Tags({ campaignDetails }: TagsProps) {
     const t = useTranslations("campaignDetails.header");
     const { status, from, to, opportunitiesAmount } = campaignDetails;
+
+    const holdFungibleAsset = campaignDetails.isTargeting(
+        TargetType.HoldFungibleAsset,
+    );
 
     return (
         <div className={styles.root}>
@@ -48,6 +53,21 @@ export function Tags({ campaignDetails }: TagsProps) {
                 />
             )}
             <CampaignStatus tag from={from} to={to} status={status} />
+            {holdFungibleAsset && (
+                <CampaignTag
+                    variant="secondary"
+                    text={
+                        <Typography
+                            size="sm"
+                            weight="medium"
+                            className={styles.warningText}
+                        >
+                            {t("holdTokenDisclaimer")}
+                        </Typography>
+                    }
+                    className={styles.holdFungibleAssetAlertTag}
+                />
+            )}
         </div>
     );
 }
