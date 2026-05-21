@@ -9,7 +9,19 @@
 }
 
 .title {
-    @apply w-full min-h-10 flex flex-wrap items-center gap-3;
+    @apply w-full min-h-10 flex flex-col sm:flex-row sm:flex-wrap sm:items-start gap-3;
+}
+
+.icons {
+    @apply flex items-center gap-2;
+}
+
+.name {
+    @apply sm:max-w-3/4;
+}
+
+.nameTypography {
+    @apply sm:truncate;
 }
 
 .chainLogo {

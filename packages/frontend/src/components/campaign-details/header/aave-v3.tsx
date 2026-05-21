@@ -39,21 +39,33 @@ export function AaveV3Header({ campaignDetails }: AaveV3HeaderProps) {
         <>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>
-                    {ChainIcon && (
-                        <InfoTooltip
-                            icon={<ChainIcon className={styles.chainLogo} />}
+                    <div className={styles.icons}>
+                        {ChainIcon && (
+                            <InfoTooltip
+                                icon={
+                                    <ChainIcon className={styles.chainLogo} />
+                                }
+                            >
+                                <Typography size="sm">
+                                    {chainData.name}
+                                </Typography>
+                            </InfoTooltip>
+                        )}
+                        <RemoteLogo
+                            size="lg"
+                            address={target.collateral.address}
+                            chain={target.chainId}
+                        />
+                    </div>
+                    <div className={styles.name}>
+                        <Typography
+                            size="xl3"
+                            weight="medium"
+                            className={styles.nameTypography}
                         >
-                            <Typography size="sm">{chainData.name}</Typography>
-                        </InfoTooltip>
-                    )}
-                    <RemoteLogo
-                        size="lg"
-                        address={target.collateral.address}
-                        chain={target.chainId}
-                    />
-                    <Typography size="xl3" weight="medium">
-                        {name}
-                    </Typography>
+                            {name}
+                        </Typography>
+                    </div>
                 </div>
                 <Tags campaignDetails={campaignDetails} />
             </div>
