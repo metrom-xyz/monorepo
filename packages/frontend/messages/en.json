@@ -716,6 +716,7 @@
         },
         "totValue": "Tot. value <highlighted>{usdValue}</highlighted>",
         "header": {
+            "holdTokenDisclaimer": "Holding a token comes with price risks and volatility. Do your own research before investing.",
             "groupedTarget": "Grouped target",
             "ammPoolLiquidity": {
                 "deposit": "Deposit"
