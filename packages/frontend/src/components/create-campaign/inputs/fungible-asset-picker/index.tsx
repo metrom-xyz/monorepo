@@ -129,7 +129,13 @@ export function FungibleAssetPicker({
                     onChange={handleAssetOnChange}
                     onBlur={handleAssetOnBlur}
                     prefixElement={
-                        asset && <RemoteLogo size="xxs" chain={chainId} />
+                        asset && (
+                            <RemoteLogo
+                                size="xxs"
+                                chain={chainId}
+                                address={asset.address}
+                            />
+                        )
                     }
                     noPrefixPadding
                     endAdornment={
