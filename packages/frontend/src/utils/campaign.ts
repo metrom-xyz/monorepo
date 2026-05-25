@@ -23,7 +23,7 @@ import {
 } from "../types/campaign/common";
 import type { TranslationsType } from "../types/utils";
 import { getDistributableRewardsPercentage } from "./kpi";
-import { SECONDS_IN_YEAR } from "../commons";
+import { ARCHE_ARUSD_VAULT_ADDRESSES, SECONDS_IN_YEAR } from "../commons";
 import {
     type AaveV3Protocol,
     type LiquityV2Protocol,
@@ -133,10 +133,10 @@ export function getCampaignName(
             });
         }
         case TargetType.Erc4626Vault: {
-            // FIXME: remove this once Arche is itself a protocol
             if (
-                campaign.target.vault.address ===
-                "0x33ffc177a7278ff84aab314a036bc7b799b7cc15"
+                ARCHE_ARUSD_VAULT_ADDRESSES.includes(
+                    campaign.target.vault.address,
+                )
             ) {
                 return t("campaignActions.erc4626Vault", {
                     vault: campaign.target.vault.name,

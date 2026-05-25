@@ -13,6 +13,7 @@ import classNames from "classnames";
 import { ProtocolType } from "@metrom-xyz/chains";
 import { getExplorerLink } from "@/src/utils/explorer";
 import { useTranslations } from "next-intl";
+import { ARCHE_ARUSD_VAULT_ADDRESSES } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -47,8 +48,7 @@ export function Erc4626Vault({ campaignDetails }: Erc4626VaultProps) {
         trackUmamiEvent("click-fungible-asset-explore");
     }
 
-    // FIXME: remove this once Arche is itself a protocol
-    if (target.vault.address === "0x33ffc177a7278ff84aab314a036bc7b799b7cc15") {
+    if (ARCHE_ARUSD_VAULT_ADDRESSES.includes(target.vault.address)) {
         depositLink = "https://app.arche.money/";
     }
 

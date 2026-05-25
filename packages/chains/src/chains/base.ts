@@ -108,7 +108,7 @@ export const baseData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
-            active: true,
+            active: false,
             type: ProtocolType.Dex,
             slug: SupportedDex.Stabull,
             logo: StabullLogo,

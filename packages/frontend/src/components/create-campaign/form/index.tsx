@@ -53,11 +53,11 @@ export function CreateCampaignForm<T extends CampaignType>({
     }, []);
 
     function handleCreateNewOnClick() {
-        router.push(`/campaigns/create/${campaignType}`);
+        router.push(`/campaigns/create`);
     }
 
     function handleBackOnClick() {
-        router.push(`/campaigns/create/${campaignType}`);
+        router.push(`/campaigns/create`);
     }
 
     function handleOnLaunch() {

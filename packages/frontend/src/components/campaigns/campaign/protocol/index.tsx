@@ -8,6 +8,7 @@ import type { Campaign } from "@/src/types/campaign/common";
 import { useRef, useState } from "react";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
+import { ARCHE_ARUSD_VAULT_ADDRESSES } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -66,11 +67,9 @@ export function Protocol({ campaign }: ProtocolProps) {
         setPopoverOpen(false);
     }
 
-    // FIXME: remove this once Arche is itself a protocol
     if (
         campaign.target.type === TargetType.Erc4626Vault &&
-        campaign.target.vault.address ===
-            "0x33ffc177a7278ff84aab314a036bc7b799b7cc15"
+        ARCHE_ARUSD_VAULT_ADDRESSES.includes(campaign.target.vault.address)
     ) {
         protocol = protocols.find(
             (protocol) => protocol.slug === SupportedErc4626Vault.Arche,
