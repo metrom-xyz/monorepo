@@ -1,4 +1,8 @@
-import { METROM_API_CLIENT, TOKEN_ICONS_URL } from "@/src/commons";
+import {
+    ARCHE_ARUSD_VAULT_ADDRESSES,
+    METROM_API_CLIENT,
+    TOKEN_ICONS_URL,
+} from "@/src/commons";
 import { ImageResponse } from "next/og";
 import type { CampaignDetailsPageProps } from "./page";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
@@ -100,10 +104,10 @@ function getCampaignTargetProtocol(
                     return protocol.slug === target.brand.slug;
                 }
                 case TargetType.Erc4626Vault: {
-                    // FIXME: remove this once Arche is itself a protocol
                     if (
-                        target.vault.address ===
-                        "0x33ffc177a7278ff84aab314a036bc7b799b7cc15"
+                        ARCHE_ARUSD_VAULT_ADDRESSES.includes(
+                            target.vault.address,
+                        )
                     )
                         return protocol.slug === SupportedErc4626Vault.Arche;
                     return protocol.slug === target.brand.slug;

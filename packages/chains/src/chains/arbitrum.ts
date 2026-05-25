@@ -1,12 +1,13 @@
 import { arbitrum } from "viem/chains";
 import { ChainData } from "../types/chains";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
-import { ArbitrumLogo, UniswapLogo } from "../assets";
+import { ArbitrumLogo, ArcheLogo, UniswapLogo, YearnLogo } from "../assets";
 import {
     BaseCampaignType,
     ChainType,
     DistributablesType,
     SupportedDex,
+    SupportedErc4626Vault,
 } from "@metrom-xyz/sdk";
 import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
@@ -32,6 +33,12 @@ export const arbitrumData: ChainData = {
             type: BaseCampaignType.HoldFungibleAsset,
             distributables: [DistributablesType.Tokens],
         },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.Erc4626Vault,
+            distributables: [DistributablesType.Tokens],
+        },
     ],
     protocols: [
         {
@@ -46,6 +53,22 @@ export const arbitrumData: ChainData = {
                     "https://app.uniswap.org/explore/pools/arbitrum/{pool}",
             },
             supportsFetchAllPools: false,
+        },
+        {
+            active: true,
+            type: ProtocolType.Erc4626Vault,
+            slug: SupportedErc4626Vault.Yearn,
+            logo: YearnLogo,
+            name: "Yearn",
+            vaultUrl: "https://yearn.fi/vaults/1/{vault}",
+        },
+        {
+            active: false,
+            type: ProtocolType.Erc4626Vault,
+            slug: SupportedErc4626Vault.Arche,
+            logo: ArcheLogo,
+            name: "Arche",
+            vaultUrl: "https://app.arche.money",
         },
     ],
     baseTokens: [

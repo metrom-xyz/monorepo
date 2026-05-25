@@ -31,6 +31,11 @@ export const YIELDSEEKER_APP_BASE_URL = "https://beta.yieldseeker.xyz";
 export const YIELDSEEKER_REFERRAL_CODE = "TRENCHES";
 export const YIELDSEEKER_BONUS_PERCENTAGE = 12;
 
+export const ARCHE_ARUSD_VAULT_ADDRESSES = [
+    "0x33ffc177a7278ff84aab314a036bc7b799b7cc15", // mainnet
+    "0xfc8b4e2f2773BEDcD14bE22951144a5C7f863Fad", // arbitrum
+];
+
 export const POINTS_BOOSTER_REFERRAL_URLS: Record<
     SupportedPointsBooster,
     string
