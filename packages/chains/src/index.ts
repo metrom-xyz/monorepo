@@ -36,14 +36,18 @@ import {
     lensData,
     lightlinkPhoenixData,
     lumiaData,
-    seiDevelopmentData,
-    seiProductionData,
+    seiData,
     swellData,
     hemiData,
     mainnetData,
     arbitrumData,
     plasmaData,
     megaethData,
+    lineaData,
+    sagaData,
+    bscData,
+    aptosTestnetData,
+    aptosData,
 } from "./chains";
 import {
     ChainData,
@@ -53,14 +57,6 @@ import {
     SupportedProductionMvmChain,
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
-import {
-    aptosDevelopmentData,
-    aptosDevelopmentProductionData,
-    aptosProductionData,
-} from "./chains/aptos";
-import { lineaData } from "./chains/linea";
-import { sagaData } from "./chains/saga";
-import { bscData } from "./chains/bsc";
 
 export {
     Environment,
@@ -82,8 +78,6 @@ export const EVM_CHAIN_DATA: {
     [Environment.Development]: {
         [SupportedDevelopmentEvmChain.BaseSepolia]: baseSepoliaData,
         [SupportedDevelopmentEvmChain.Sepolia]: sepoliaData,
-        [SupportedDevelopmentEvmChain.Sei]: seiDevelopmentData,
-        [SupportedProductionEvmChain.Katana]: katanaData,
     },
     [Environment.Production]: {
         [SupportedProductionEvmChain.ArbitrumOne]: arbitrumData,
@@ -100,7 +94,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.Mainnet]: mainnetData,
         [SupportedProductionEvmChain.Katana]: katanaData,
         [SupportedProductionEvmChain.Linea]: lineaData,
-        [SupportedProductionEvmChain.Sei]: seiProductionData,
+        [SupportedProductionEvmChain.Sei]: seiData,
         [SupportedProductionEvmChain.Hemi]: hemiData,
         [SupportedProductionEvmChain.Plasma]: plasmaData,
         [SupportedProductionEvmChain.Saga]: sagaData,
@@ -114,12 +108,10 @@ export const MVM_CHAIN_DATA: {
     [Environment.Production]: Record<SupportedProductionMvmChain, ChainData>;
 } = {
     [Environment.Development]: {
-        [SupportedDevelopmentMvmChain.AptosMainnet]:
-            aptosDevelopmentProductionData,
-        [SupportedDevelopmentMvmChain.AptosTestnet]: aptosDevelopmentData,
+        [SupportedDevelopmentMvmChain.AptosTestnet]: aptosTestnetData,
     },
     [Environment.Production]: {
-        [SupportedProductionMvmChain.Aptos]: aptosProductionData,
+        [SupportedProductionMvmChain.Aptos]: aptosData,
     },
 };
 
@@ -129,8 +121,6 @@ export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     sepolia,
     sei,
     swellchain,
-    // TODO: this is required for the Katana vault campaigns testing, remove this as soon as that is done
-    katana,
 ];
 
 // Needed for wagmi context setup, not needed for MVM chains
