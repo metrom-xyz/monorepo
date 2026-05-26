@@ -28,12 +28,6 @@ export const plasmaData: ChainData = {
             type: BaseCampaignType.AmmPoolLiquidity,
             distributables: [DistributablesType.Tokens],
         },
-        {
-            active: true,
-            partner: false,
-            type: BaseCampaignType.HoldFungibleAsset,
-            distributables: [DistributablesType.Tokens],
-        },
     ],
     protocols: [
         {

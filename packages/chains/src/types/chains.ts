@@ -23,7 +23,6 @@ export interface ChainData {
 }
 
 export enum SupportedDevelopmentMvmChain {
-    AptosMainnet = SupportedChainMvm.Mainnet,
     AptosTestnet = SupportedChainMvm.Testnet,
 }
 
@@ -34,10 +33,6 @@ export enum SupportedProductionMvmChain {
 export enum SupportedDevelopmentEvmChain {
     Sepolia = SupportedChainEvm.Sepolia,
     BaseSepolia = SupportedChainEvm.BaseSepolia,
-    // TODO: this is temporary as we are testing, remove this as soon as that is done
-    Sei = SupportedChainEvm.Sei,
-    // TODO: this is required for the Katana vault campaigns testing, remove this as soon as that is done
-    Katana = katana.id,
 }
 
 export enum SupportedProductionEvmChain {

@@ -1,4 +1,5 @@
-export { aptosDevelopmentData, aptosProductionData } from "./aptos";
+export { aptosData } from "./aptos";
+export { aptosTestnetData } from "./aptos-testnet";
 export { arbitrumData } from "./arbitrum";
 export { modeData } from "./mode";
 export { plasmaData } from "./plasma";
@@ -18,5 +19,8 @@ export { lensData } from "./lens";
 export { lightlinkPhoenixData } from "./lightlink-phoenix";
 export { lumiaData } from "./lumia";
 export { mainnetData } from "./mainnet";
-export { seiDevelopmentData, seiProductionData } from "./sei";
+export { seiData } from "./sei";
 export { megaethData } from "./megaeth";
+export { lineaData } from "./linea";
+export { bscData } from "./bsc";
+export { sagaData } from "./saga";
