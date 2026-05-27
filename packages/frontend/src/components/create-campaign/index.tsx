@@ -12,9 +12,9 @@ import { BaseCampaignType, DistributablesType } from "@metrom-xyz/sdk";
 import { NavigationCard } from "./navigation-card";
 import { useForms } from "@/src/hooks/useForms";
 import { VaultIcon } from "@/src/assets/vault-icon";
+import { TokensIcon } from "@/src/assets/tokens-icon";
 
 import styles from "./styles.module.css";
-import { TokensIcon } from "@/src/assets/tokens-icon";
 
 interface CampaignTypeConfig {
     title: TranslationsKeys<"newCampaign.pickType">;

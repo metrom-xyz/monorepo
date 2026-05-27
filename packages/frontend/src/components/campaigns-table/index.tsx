@@ -9,7 +9,6 @@ import { useTranslations } from "next-intl";
 import { CampaignRow, SkeletonCampaign } from "../campaigns/campaign";
 import { Filters, type FilterParams, type RawFilters } from "./filters";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
-import { APTOS } from "@/src/commons/env";
 import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
 import { LoadingBar } from "../loading-bar";
 import { useDebounce, usePrevious } from "react-use";
@@ -22,6 +21,7 @@ import {
     URL_ENABLED_CAMPAIGNS_FILTERS,
     type BackendCampaignTypeAndProjects,
 } from "../campaigns";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
@@ -124,6 +124,7 @@ export function CampaignsTable({
     onClearFilters,
 }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
+    const chainType = useChainType();
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -224,18 +225,14 @@ export function CampaignsTable({
                     chainTypes.push(chainType as ChainType);
                 if (!chainIds.includes(chainId)) chainIds.push(chainId);
             });
-
             return {
                 chainIds: chainIds.map(Number),
                 protocols: protocols.map(({ value }) => value),
                 statuses: statuses.map(({ value }) => value),
-                chainTypes: APTOS
-                    ? [ChainType.Aptos]
-                    : chainTypes
-                      ? chainTypes
-                      : undefined,
+                chainTypes:
+                    chainType === ChainType.Evm ? chainTypes : [chainType],
             };
-        }, [debouncedRawFilters]);
+        }, [chainType, debouncedRawFilters]);
 
     const { loading, fetching, placeholderData, campaigns, totalCampaigns } =
         useCampaigns({

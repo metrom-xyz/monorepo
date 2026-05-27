@@ -3,7 +3,7 @@ import { getBlockNumber } from "@wagmi/core";
 import { useConfig } from "wagmi";
 import type { HookBaseParams } from "@/src/types/hooks";
 
-const BLOCk_WATCH_TIME_MS = 5000;
+const BLOCK_WATCH_TIME_MS = 5000;
 
 export function useWatchBlockNumberEvm({
     enabled = true,
@@ -17,7 +17,7 @@ export function useWatchBlockNumberEvm({
 
         const fetchBlock = async () => {
             const blockNumber = await getBlockNumber(config, {
-                cacheTime: BLOCk_WATCH_TIME_MS,
+                cacheTime: BLOCK_WATCH_TIME_MS,
             });
 
             setBlockNumber(blockNumber);
@@ -27,7 +27,7 @@ export function useWatchBlockNumberEvm({
 
         const interval = setInterval(() => {
             fetchBlock();
-        }, BLOCk_WATCH_TIME_MS);
+        }, BLOCK_WATCH_TIME_MS);
 
         return () => {
             clearInterval(interval);
