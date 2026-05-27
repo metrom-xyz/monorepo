@@ -27,7 +27,7 @@
         "deploy:plasma": "pnpm prepare:deploy plasma-mainnet && pnpm codegen && graph build && goldsky subgraph deploy metrom-plasma/0.0.1",
         "deploy:saga": "pnpm prepare:deploy saga-evm && pnpm codegen && graph build && goldsky subgraph deploy metrom-saga/0.0.1",
         "deploy:bsc": "pnpm prepare:deploy bsc && pnpm codegen && graph deploy metrom-bsc -l 0.0.1",
-        "deploy:megaeth": "pnpm prepare:deploy megaeth && pnpm codegen && graph deploy metrom-megaeth -l 0.0.1",
+        "deploy:megaeth": "pnpm prepare:deploy megaeth-mainnet && pnpm codegen && graph build && goldsky subgraph deploy metrom-megaeth/0.0.1",
         "deploy:mainnet": "pnpm prepare:deploy mainnet && pnpm codegen && graph deploy metrom-mainnet -l 0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."

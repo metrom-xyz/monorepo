@@ -29,6 +29,7 @@ const NETWORK_NAME: Record<SupportedChain, string> = {
     [SupportedChain.Saga]: "saga-evm",
     [SupportedChain.Bsc]: "bsc",
     [SupportedChain.Mainnet]: "mainnet",
+    [SupportedChain.MegaEth]: "megaeth-mainnet",
 };
 
 const [, , rawNetwork = ""] = process.argv;
