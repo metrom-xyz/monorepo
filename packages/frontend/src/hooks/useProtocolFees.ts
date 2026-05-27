@@ -4,6 +4,7 @@ import { useChainData } from "./useChainData";
 import { useAccount } from "./useAccount";
 import { useReadContracts } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
+import { getU32Decoder } from "@solana/kit";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useViewModule } from "@aptos-labs/react";
 import { useMemo } from "react";
