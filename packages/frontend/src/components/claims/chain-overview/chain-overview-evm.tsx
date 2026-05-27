@@ -180,7 +180,7 @@ export function ChainOverviewEvm({
                 await SAFE_APP_SDK.txs.send({
                     txs: [
                         {
-                            to: chainWithRewardsData.chainData.metromContract
+                            to: chainWithRewardsData.chainData.metromProgram
                                 .address,
                             data: encodeFunctionData({
                                 abi: metromAbi,
@@ -269,7 +269,7 @@ export function ChainOverviewEvm({
                 await SAFE_APP_SDK.txs.send({
                     txs: [
                         {
-                            to: chainWithRewardsData.chainData.metromContract
+                            to: chainWithRewardsData.chainData.metromProgram
                                 .address,
                             data: encodeFunctionData({
                                 abi: metromAbi,
