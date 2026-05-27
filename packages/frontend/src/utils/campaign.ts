@@ -29,7 +29,7 @@ import {
     type LiquityV2Protocol,
 } from "@metrom-xyz/chains";
 import { getTranslations } from "next-intl/server";
-import { getChainData, getCrossVmChainData } from "./chain";
+import { getCrossVmChainData } from "./chain";
 import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
 import { AmmPoolLiquidityCampaignPreviewPayload } from "../types/campaign/amm-pool-liquidity-campaign";
 import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-campaign";
@@ -58,8 +58,9 @@ export function getCampaignName(
             });
         }
         case TargetType.LiquityV2Debt: {
-            const targetProtocol = getChainData(
+            const targetProtocol = getCrossVmChainData(
                 campaign.chainId,
+                campaign.chainType,
             )?.protocols.find(
                 ({ slug }) =>
                     slug ===
@@ -313,8 +314,9 @@ export function getCampaignPreviewName(
             payload.pool,
         );
     } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
-        const targetProtocol = getChainData(
+        const targetProtocol = getCrossVmChainData(
             payload.collateral.chainId,
+            payload.collateral.chainType,
         )?.protocols.find(({ slug }) => slug === payload.brand.slug) as
             | LiquityV2Protocol
             | undefined;

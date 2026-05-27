@@ -109,6 +109,7 @@ export function FixedAprPicker({
             !startDate ||
             !rewardTokens ||
             !rewardTokensWithBalance ||
+            rewardTokensWithBalance.length === 0 ||
             loadingRewardTokens ||
             loadingRewardTokensBalances
         )

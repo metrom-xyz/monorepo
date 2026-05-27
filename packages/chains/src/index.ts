@@ -48,13 +48,16 @@ import {
     bscData,
     aptosTestnetData,
     aptosData,
+    solanaDevelopmentData,
 } from "./chains";
 import {
     ChainData,
     SupportedDevelopmentEvmChain,
     SupportedDevelopmentMvmChain,
+    SupportedDevelopmentSvmChain,
     SupportedProductionEvmChain,
     SupportedProductionMvmChain,
+    SupportedProductionSvmChain,
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
 
@@ -115,7 +118,20 @@ export const MVM_CHAIN_DATA: {
     },
 };
 
-// Needed for wagmi context setup, not needed for MVM chains
+export const SVM_CHAIN_DATA: {
+    [Environment.Development]: Record<SupportedDevelopmentSvmChain, ChainData>;
+    [Environment.Production]: Record<SupportedProductionSvmChain, ChainData>;
+} = {
+    [Environment.Development]: {
+        [SupportedDevelopmentSvmChain.Testnet]: solanaDevelopmentData,
+    },
+    [Environment.Production]: {
+        // TODO: add production data
+        [SupportedProductionSvmChain.Mainnet]: solanaDevelopmentData,
+    },
+};
+
+// Needed for wagmi context setup, not needed for MVM or SVM chains
 export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     baseSepolia,
     sepolia,
@@ -123,7 +139,7 @@ export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     swellchain,
 ];
 
-// Needed for wagmi context setup, not needed for MVM chains
+// Needed for wagmi context setup, not needed for MVM or SVM chains
 export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     arbitrum,
     base,

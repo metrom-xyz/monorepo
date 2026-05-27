@@ -10,9 +10,9 @@ import { Campaigns, type BackendCampaignTypeAndProjects } from "../campaigns";
 import { useMemo } from "react";
 import type { FilterParams, RawFilters } from "../campaigns-table/filters";
 import { useCampaignsCount } from "@/src/hooks/useCampaignsCount";
-import { APTOS } from "@/src/commons/env";
 import { getChainDataBySlug } from "@/src/utils/chain";
 import { BackButton } from "../back-button";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
@@ -21,6 +21,7 @@ interface ProjectProps {
 }
 
 export function Project({ project }: ProjectProps) {
+    const chainType = useChainType();
     const details = PROJECTS_METADATA[project];
 
     const {
@@ -102,13 +103,9 @@ export function Project({ project }: ProjectProps) {
             chainIds: chainIds.map(Number),
             protocols: protocols.map(({ value }) => value),
             statuses: statuses.map(({ value }) => value),
-            chainTypes: APTOS
-                ? [ChainType.Aptos]
-                : chainTypes
-                  ? chainTypes
-                  : undefined,
+            chainTypes: chainType === ChainType.Evm ? chainTypes : [chainType],
         };
-    }, [optionalFilters]);
+    }, [chainType, optionalFilters]);
 
     const { loading, points, rewards } = useCampaignsCount({
         chainTypes,

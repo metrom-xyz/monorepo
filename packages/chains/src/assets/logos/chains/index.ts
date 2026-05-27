@@ -17,6 +17,7 @@ export * from "./plasma";
 export * from "./saga";
 export * from "./scroll";
 export * from "./sei";
+export * from "./solana";
 export * from "./sonic";
 export * from "./swell";
 export * from "./taiko";

@@ -1,11 +1,10 @@
 import {
-    ChainType,
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
     SupportedPointsBooster,
 } from "@metrom-xyz/sdk";
-import { APTOS, ENVIRONMENT } from "./env";
+import { ENVIRONMENT } from "./env";
 import SafeAppsSdk from "@safe-global/safe-apps-sdk";
 import {
     SUPPORTED_DEVELOPMENT_CHAINS,
@@ -13,8 +12,7 @@ import {
 } from "@metrom-xyz/chains";
 import { NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
-
-export const CHAIN_TYPE = APTOS ? ChainType.Aptos : ChainType.Evm;
+import { SupportedChain as SupportedSvm } from "@metrom-xyz/programs-solana";
 
 export const BASE_URL = "https://app.metrom.xyz";
 
@@ -22,6 +20,11 @@ export const METROM_APTOS_BASE_URL =
     ENVIRONMENT === Environment.Production
         ? "https://aptos.metrom.xyz"
         : "https://aptos.dev.metrom.xyz";
+
+export const METROM_SOLANA_BASE_URL =
+    ENVIRONMENT === Environment.Production
+        ? "https://solana.metrom.xyz"
+        : "https://solana.dev.metrom.xyz";
 
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 export const TURTLE_APP_EARN_URL = "https://app.turtle.xyz/earn/opportunities";
@@ -72,6 +75,12 @@ export const SUPPORTED_CHAINS_MVM =
               NetworkToChainId[SupportedAptosChain.Mainnet],
               NetworkToChainId[SupportedAptosChain.Testnet],
           ];
+
+export const SUPPORTED_CHAINS_SVM =
+    ENVIRONMENT === Environment.Production
+        ? // FIXME: add solana mainnet chain id
+          []
+        : [SupportedSvm.Testnet];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 

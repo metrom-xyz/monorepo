@@ -1,0 +1,36 @@
+@reference "../../../app.css";
+
+.popover {
+    @apply p-0 overflow-hidden;
+}
+
+.link {
+    @apply flex items-center gap-1 h-9 px-2 py-2.5 cursor-pointer surface-secondary-hover transition-colors duration-200 ease-in-out;
+}
+
+.trigger {
+    @apply flex
+        items-center
+        h-9
+        gap-1
+        border
+        rounded-lg
+        px-2
+        py-2.5
+        border-gray-300
+        dark:border-neutral-700
+        hover:border-gray-400
+        dark:hover:border-neutral-500
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.logo {
+    @apply size-4;
+}
+
+.externalLinkIcon {
+    @apply size-4 transform -rotate-45;
+}
