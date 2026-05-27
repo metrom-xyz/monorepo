@@ -131,7 +131,7 @@ export const SVM_CHAIN_DATA: {
     },
 };
 
-// Needed for wagmi context setup, not needed for MVM chains
+// Needed for wagmi context setup, not needed for MVM or SVM chains
 export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     baseSepolia,
     sepolia,
@@ -139,7 +139,7 @@ export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     swellchain,
 ];
 
-// Needed for wagmi context setup, not needed for MVM chains
+// Needed for wagmi context setup, not needed for MVM or SVM chains
 export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     arbitrum,
     base,

@@ -9,11 +9,16 @@ import { CampaignBasicsStep } from "../../steps/campaign-basics-step";
 import { FormStepSection } from "../../form-step-section";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
-import { BaseCampaignType } from "@metrom-xyz/sdk";
-import { useMemo, useState } from "react";
+import { BaseCampaignType, ChainType } from "@metrom-xyz/sdk";
+import { useEffect, useMemo, useState } from "react";
 import { allFieldsFilled } from "@/src/utils/form";
 import { useFormSteps } from "@/src/context/form-steps";
 import type { FormStepId } from "@/src/types/form";
+import {
+    generatePlaceholderDexProtocol,
+    generatePlaceholderPool,
+} from "@/src/utils/experimental-chain";
+import { useIsChainExperimental } from "@/src/hooks/useIsChainExperimental";
 
 import styles from "./styles.module.css";
 
@@ -43,6 +48,9 @@ export function AmmPoolLiquidityBasicsStep({
     );
 
     const t = useTranslations("newCampaign");
+    const experimentalChain = useIsChainExperimental({
+        chainId: basicsPayload.chainId,
+    });
     const { errors, updateErrors } = useFormSteps();
 
     const unsavedChanges = useMemo(() => {
@@ -58,6 +66,19 @@ export function AmmPoolLiquidityBasicsStep({
             (key) => basicsPayload[key] !== payload[key],
         );
     }, [payload, basicsPayload]);
+
+    useEffect(() => {
+        const chainId = basicsPayload.chainId;
+        if (!chainId) return;
+
+        if (experimentalChain) {
+            setBasicsPayload((prev) => ({
+                ...prev,
+                dex: generatePlaceholderDexProtocol(),
+                pool: generatePlaceholderPool(chainId, ChainType.Evm),
+            }));
+        }
+    }, [basicsPayload.chainId, experimentalChain]);
 
     const applyDisabled =
         !!errors.basics ||

@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { HookBaseParams } from "@/src/types/hooks";
-import { useClients } from "@aptos-labs/react";
+import { useSolanaClient } from "@solana/react-hooks";
 
-const BLOCK_WATCH_TIME_MS = 15000;
+const BLOCK_WATCH_TIME_MS = 10000;
 
-export function useWatchBlockNumberMvm({
+export function useWatchBlockNumberSvm({
     enabled = true,
 }: HookBaseParams = {}) {
-    const { aptos } = useClients();
+    const client = useSolanaClient();
+    const clientRef = useRef(client);
 
     const [blockNumber, setBlockNumber] = useState<bigint | undefined>();
 
@@ -15,8 +16,10 @@ export function useWatchBlockNumberMvm({
         if (!enabled) return;
 
         const fetchBlock = async () => {
-            const { block_height } = await aptos.getLedgerInfo();
-            setBlockNumber(BigInt(block_height));
+            const slot = await clientRef.current.runtime.rpc
+                .getBlockHeight({ commitment: "confirmed" })
+                .send();
+            setBlockNumber(slot);
         };
 
         fetchBlock();
@@ -28,7 +31,7 @@ export function useWatchBlockNumberMvm({
         return () => {
             clearInterval(interval);
         };
-    }, [aptos, enabled]);
+    }, [enabled]);
 
     return blockNumber;
 }

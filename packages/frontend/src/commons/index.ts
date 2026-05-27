@@ -12,6 +12,7 @@ import {
 } from "@metrom-xyz/chains";
 import { NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
+import { SupportedChain as SupportedSvm } from "@metrom-xyz/programs-solana";
 
 export const BASE_URL = "https://app.metrom.xyz";
 
@@ -74,6 +75,12 @@ export const SUPPORTED_CHAINS_MVM =
               NetworkToChainId[SupportedAptosChain.Mainnet],
               NetworkToChainId[SupportedAptosChain.Testnet],
           ];
+
+export const SUPPORTED_CHAINS_SVM =
+    ENVIRONMENT === Environment.Production
+        ? // FIXME: add solana mainnet chain id
+          []
+        : [SupportedSvm.Testnet];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 

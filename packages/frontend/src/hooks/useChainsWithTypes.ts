@@ -1,4 +1,4 @@
-import { SUPPORTED_CHAINS_MVM } from "@/src/commons";
+import { SUPPORTED_CHAINS_MVM, SUPPORTED_CHAINS_SVM } from "@/src/commons";
 import { ChainType } from "@metrom-xyz/sdk";
 import { getChains } from "@wagmi/core";
 import { useConfig } from "wagmi";
@@ -19,6 +19,12 @@ export function useChainsWithTypes({
             SUPPORTED_CHAINS_MVM.map((id) => ({
                 id,
                 type: ChainType.Aptos,
+            })),
+        )
+        .concat(
+            SUPPORTED_CHAINS_SVM.map((id) => ({
+                id,
+                type: ChainType.Svm,
             })),
         );
 

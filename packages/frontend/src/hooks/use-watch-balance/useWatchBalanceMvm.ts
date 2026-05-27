@@ -21,12 +21,7 @@ export function useWatchBalanceMvm({
         isLoading: loading,
         refetch,
     } = useQuery({
-        queryKey: [
-            "watch-whitelisted-token-balance",
-            blockNumber,
-            token,
-            address,
-        ],
+        queryKey: ["watch-token-balance", blockNumber, token, address],
         queryFn: async ({ queryKey }) => {
             const [, , token, address] = queryKey as [
                 string,
@@ -52,7 +47,7 @@ export function useWatchBalanceMvm({
                 });
             } catch (error) {
                 console.error(
-                    `Could not fetch balance for whitelisted token: ${error}`,
+                    `Could not fetch balance for token: ${error}`,
                 );
                 throw error;
             }
