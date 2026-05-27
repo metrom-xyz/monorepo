@@ -69,7 +69,6 @@ function validatePayload(
     )
         return null;
 
-    // TODO: handle chain type for same chain ids?
     if (EXPERIMENTAL_CHAINS.includes(chainId)) {
         return new EmptyTargetCampaignPreviewPayload(
             chainId,

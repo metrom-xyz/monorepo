@@ -2,11 +2,16 @@ import { Popover, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { useWindowSize } from "react-use";
 import { getCrossVmChainData } from "@/src/utils/chain";
-import { METROM_APTOS_BASE_URL, SUPPORTED_CHAINS_MVM } from "@/src/commons";
+import {
+    METROM_APTOS_BASE_URL,
+    METROM_SOLANA_BASE_URL,
+    SUPPORTED_CHAINS_MVM,
+    SUPPORTED_CHAINS_SVM,
+} from "@/src/commons";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { APTOS } from "@/src/commons/env";
 import type { ChainWithType } from "@/src/types/chain";
 import { ChainType } from "@metrom-xyz/sdk";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -30,6 +35,7 @@ export function PopoverPicker({
     onChange,
     onOpen,
 }: PopoverPickerProps) {
+    const chainType = useChainType();
     const { width } = useWindowSize();
 
     function getOnChangeHandler(chainId: number) {
@@ -61,7 +67,7 @@ export function PopoverPicker({
                     const chainData = getCrossVmChainData(id, type);
 
                     if (
-                        !APTOS &&
+                        chainType !== ChainType.Aptos &&
                         type === ChainType.Aptos &&
                         SUPPORTED_CHAINS_MVM.includes(id)
                     )
@@ -69,6 +75,31 @@ export function PopoverPicker({
                             <a
                                 key={id}
                                 href={METROM_APTOS_BASE_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.network}
+                            >
+                                {chainData?.icon && (
+                                    <chainData.icon
+                                        className={commonStyles.icon}
+                                    />
+                                )}
+                                <Typography>{chainData?.name}</Typography>
+                                <ArrowRightIcon
+                                    className={commonStyles.externalLinkIcon}
+                                />
+                            </a>
+                        );
+
+                    if (
+                        chainType !== ChainType.Svm &&
+                        type === ChainType.Svm &&
+                        SUPPORTED_CHAINS_SVM.includes(id)
+                    )
+                        return (
+                            <a
+                                key={id}
+                                href={METROM_SOLANA_BASE_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={styles.network}

@@ -1,8 +1,10 @@
-import { APTOS } from "@/src/commons/env";
 import { useClaimsEvm } from "./useClaimsEvm";
 import { useClaimsMvm } from "./useClaimsMvm";
 import type { HookBaseParams } from "@/src/types/hooks";
 import type { ClaimWithRemaining } from "@/src/types/campaign/common";
+import { useChainType } from "../useChainType";
+import { useClaimsSvm } from "./useClaimsSvm";
+import { ChainType } from "@metrom-xyz/sdk";
 
 export type UseClaimsParams = HookBaseParams;
 
@@ -13,9 +15,29 @@ export interface UseClaimsReturnValue {
 }
 
 export function useClaims(params: UseClaimsParams = {}): UseClaimsReturnValue {
-    const claimsEvm = useClaimsEvm({ ...params, enabled: !APTOS });
-    const claimsMvm = useClaimsMvm({ ...params, enabled: APTOS });
+    const chainType = useChainType();
 
-    if (APTOS) return claimsMvm;
-    return claimsEvm;
+    const claimsEvm = useClaimsEvm({
+        ...params,
+        enabled: chainType === ChainType.Evm,
+    });
+    const claimsMvm = useClaimsMvm({
+        ...params,
+        enabled: chainType === ChainType.Aptos,
+    });
+    const claimsSvm = useClaimsSvm({
+        ...params,
+        enabled: chainType === ChainType.Svm,
+    });
+
+    switch (chainType) {
+        case ChainType.Evm:
+            return claimsEvm;
+        case ChainType.Aptos:
+            return claimsMvm;
+        case ChainType.Svm:
+            return claimsSvm;
+        default:
+            throw new Error(`Unsupported chain type ${chainType} in useClaims`);
+    }
 }
