@@ -7,7 +7,7 @@
         "codegen": "graph codegen",
         "deploy:uni-v4:sepolia": "pnpm prepare:deploy sepolia uni-v4 && pnpm codegen && graph deploy metrom-uni-v-4-sepolia -l 0.0.29",
         "deploy:uni-v4:base": "pnpm prepare:deploy base uni-v4 && pnpm codegen && graph deploy metrom-uni-v-4-base -l 0.0.1",
-        "deploy:uni-v4:megaeth": "pnpm prepare:deploy megaeth uni-v4 && pnpm codegen && graph deploy metrom-uni-v-4-megaeth -l 0.0.1",
+        "deploy:uni-v4:megaeth": "pnpm prepare:deploy megaeth-mainnet uni-v4 && pnpm codegen && graph build && goldsky subgraph deploy metrom-uni-v4-megaeth/0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

@@ -63,7 +63,7 @@ export const DEPLOYMENTS: {
             },
         },
     },
-    megaeth: {
+    "megaeth-mainnet": {
         nativeToken: {
             address: "0x0000000000000000000000000000000000000000",
             decimals: 18,
