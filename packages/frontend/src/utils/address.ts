@@ -1,7 +1,7 @@
 import { zeroAddress, isAddress as isAddressViem } from "viem";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
 import { ChainType } from "@metrom-xyz/sdk";
-import { isAddress as isAddressSvm } from "@solana/addresses";
+import { isAddress as isAddressSvm } from "@solana/kit";
 import { getChainType } from "./chain";
 
 export function shortenAddress(address?: string, long?: boolean) {
