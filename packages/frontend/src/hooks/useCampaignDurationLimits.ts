@@ -3,9 +3,10 @@ import { useChainWithType } from "./useChainWithType";
 import { useChainData } from "./useChainData";
 import { useReadContracts } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { APTOS } from "@/src/commons/env";
 import { useViewModule } from "@aptos-labs/react";
 import { useMemo } from "react";
+import { useSolanaMetromProgramState } from "./useSolanaMetromProgramState";
+import { ChainType } from "@metrom-xyz/sdk";
 
 export interface CampaignDurationLimits {
     minimumSeconds: number;
@@ -22,7 +23,7 @@ export interface UseCampaignDurationReturnValue {
 export function useCampaignDurationLimits({
     enabled,
 }: UseCampaignDurationLimitsParams = {}): UseCampaignDurationReturnValue {
-    const { id: chainId } = useChainWithType();
+    const { id: chainId, type: chainType } = useChainWithType();
     const chainData = useChainData({ chainId });
 
     const limitsEvm = useReadContracts({
@@ -39,7 +40,7 @@ export function useCampaignDurationLimits({
             },
         ],
         query: {
-            enabled: !APTOS && !!chainData && enabled,
+            enabled: chainType === ChainType.Evm && !!chainData && enabled,
         },
     });
 
@@ -47,35 +48,57 @@ export function useCampaignDurationLimits({
         payload: {
             function: `${chainData?.metromContract.address}::metrom::minimum_campaign_duration`,
         },
-        enabled: APTOS && !!chainData && enabled,
+        enabled: chainType === ChainType.Aptos && !!chainData && enabled,
     });
-
     const maxLimitMvm = useViewModule({
         payload: {
             function: `${chainData?.metromContract.address}::metrom::maximum_campaign_duration`,
         },
-        enabled: APTOS && !!chainData && enabled,
+        enabled: chainType === ChainType.Aptos && !!chainData && enabled,
+    });
+
+    const metromProgramState = useSolanaMetromProgramState({
+        enabled: chainType === ChainType.Svm && !!chainData && enabled,
     });
 
     const loading =
-        limitsEvm.isLoading || minLimitMvm.isLoading || maxLimitMvm.isLoading;
+        limitsEvm.isLoading ||
+        minLimitMvm.isLoading ||
+        maxLimitMvm.isLoading ||
+        metromProgramState.loading;
 
     const limits: CampaignDurationLimits | undefined = useMemo(() => {
         if (loading) return undefined;
 
-        if (APTOS && minLimitMvm.data && maxLimitMvm.data)
+        if (
+            chainType === ChainType.Aptos &&
+            minLimitMvm.data &&
+            maxLimitMvm.data
+        )
             return {
                 minimumSeconds: Number(minLimitMvm.data[0]),
                 maximumSeconds: Number(maxLimitMvm.data[0]),
             };
-        if (!APTOS && limitsEvm.data)
+        if (chainType === ChainType.Evm && limitsEvm.data)
             return {
                 minimumSeconds: Number(limitsEvm.data[0].result),
                 maximumSeconds: Number(limitsEvm.data[1].result),
             };
+        if (chainType === ChainType.Svm && metromProgramState.data)
+            return {
+                minimumSeconds: metromProgramState.data.minimumCampaignDuration,
+                maximumSeconds: metromProgramState.data.maximumCampaignDuration,
+            };
 
         return undefined;
-    }, [loading, limitsEvm.data, minLimitMvm.data, maxLimitMvm.data]);
+    }, [
+        chainType,
+        loading,
+        limitsEvm.data,
+        minLimitMvm.data,
+        maxLimitMvm.data,
+        metromProgramState.data,
+    ]);
 
     return {
         loading,

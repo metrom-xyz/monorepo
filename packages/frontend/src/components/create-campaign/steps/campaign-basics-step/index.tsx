@@ -12,6 +12,7 @@ import { Button } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useFormSteps } from "@/src/context/form-steps";
 import { FormStepId } from "@/src/types/form";
+import { useIsChainExperimental } from "@/src/hooks/useIsChainExperimental";
 
 import styles from "./styles.module.css";
 
@@ -40,6 +41,9 @@ export function CampaignBasicsStep({
     const [applied, setApplied] = useState(false);
 
     const t = useTranslations("newCampaign.form.basics");
+    const experimentalChain = useIsChainExperimental({
+        chainId: payload.chainId,
+    });
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();
 
@@ -79,7 +83,7 @@ export function CampaignBasicsStep({
             onToggle={setOpen}
             className={styles.root}
         >
-            {targetSection}
+            {!experimentalChain && targetSection}
             <FormStepSection title={t("defineDuration")}>
                 <div className={styles.datePickers}>
                     <StartDatePicker
