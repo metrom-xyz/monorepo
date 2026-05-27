@@ -35,6 +35,9 @@ export const ARCHE_ARUSD_VAULT_ADDRESSES = [
     "0x33ffc177a7278ff84aab314a036bc7b799b7cc15", // mainnet
     "0xfc8b4e2f2773BEDcD14bE22951144a5C7f863Fad", // arbitrum
 ];
+export const ARCHE_USD_TOKEN_ADDRESSES = [
+    "0xfc8b4e2f2773bedcd14be22951144a5c7f863fad", // arbitrum
+];
 
 export const POINTS_BOOSTER_REFERRAL_URLS: Record<
     SupportedPointsBooster,

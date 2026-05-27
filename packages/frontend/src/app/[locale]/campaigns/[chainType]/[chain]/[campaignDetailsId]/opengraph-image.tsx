@@ -1,5 +1,6 @@
 import {
     ARCHE_ARUSD_VAULT_ADDRESSES,
+    ARCHE_USD_TOKEN_ADDRESSES,
     METROM_API_CLIENT,
     TOKEN_ICONS_URL,
 } from "@/src/commons";
@@ -111,6 +112,14 @@ function getCampaignTargetProtocol(
                     )
                         return protocol.slug === SupportedErc4626Vault.Arche;
                     return protocol.slug === target.brand.slug;
+                }
+                case TargetType.HoldFungibleAsset: {
+                    if (
+                        ARCHE_USD_TOKEN_ADDRESSES.includes(target.asset.address)
+                    )
+                        return protocol.slug === SupportedErc4626Vault.Arche;
+
+                    return false;
                 }
             }
         },
