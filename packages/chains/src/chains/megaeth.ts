@@ -9,7 +9,7 @@ import {
 } from "@metrom-xyz/sdk";
 
 export const megaethData: ChainData = {
-    active: false,
+    active: true,
     id: megaeth.id,
     type: ChainType.Evm,
     name: megaeth.name,
