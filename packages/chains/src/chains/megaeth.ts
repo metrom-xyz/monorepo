@@ -2,7 +2,11 @@ import { megaeth } from "viem/chains";
 import { ChainData } from "../types/chains";
 import { ADDRESS, SupportedChain } from "@metrom-xyz/contracts";
 import { MegaEthLogo } from "../assets";
-import { ChainType } from "@metrom-xyz/sdk";
+import {
+    BaseCampaignType,
+    ChainType,
+    DistributablesType,
+} from "@metrom-xyz/sdk";
 
 export const megaethData: ChainData = {
     active: false,
@@ -13,7 +17,14 @@ export const megaethData: ChainData = {
     metromContract: ADDRESS[SupportedChain.MegaEth],
     blockExplorers: megaeth.blockExplorers,
     icon: MegaEthLogo,
-    forms: [],
+    forms: [
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
+        },
+    ],
     protocols: [],
     baseTokens: [
         {
