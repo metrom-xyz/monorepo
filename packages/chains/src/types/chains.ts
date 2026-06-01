@@ -19,7 +19,7 @@ export interface ChainData {
     icon: FunctionComponent<SVGIcon>;
     forms: Form[];
     protocols: Protocol[];
-    baseTokens: Erc20Token[];
+    baseTokens: Omit<Erc20Token, "details">[];
 }
 
 export enum SupportedDevelopmentMvmChain {

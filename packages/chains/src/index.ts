@@ -70,6 +70,7 @@ export * from "./types/common";
 export * from "./types/forms";
 export * from "./types/protocol";
 export * from "./assets";
+export * from "./fungible-asset-protocols";
 
 export const EVM_CHAIN_DATA: {
     [Environment.Development]: Record<SupportedDevelopmentEvmChain, ChainData>;

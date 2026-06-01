@@ -37,25 +37,41 @@ export type BackendResolvedAaveV3CollateralsRegistry = Record<
     >
 >;
 
+export interface BackendErc20LpDetails {
+    type: "lp";
+    dex: string;
+    baseTokenSymbol: string;
+    quoteTokenSymbol: string;
+}
+
+export interface BackendErc20ProtocolDetails {
+    type: "protocol";
+    slug: string;
+}
+
+export type BackendErc20TokenDetails =
+    | BackendErc20LpDetails
+    | BackendErc20ProtocolDetails
+    | null;
+
 export interface BackendErc20Token {
     address: Address;
     decimals: number;
     symbol: string;
     name: string;
+    details: BackendErc20TokenDetails;
 }
 
 export interface BackendUsdPricedErc20Token extends BackendErc20Token {
     usdPrice: number;
 }
 
-export interface BackendUsdPricedErc20TokenWithTotalSupply
-    extends BackendUsdPricedErc20Token {
+export interface BackendUsdPricedErc20TokenWithTotalSupply extends BackendUsdPricedErc20Token {
     totalSupply: string;
     usdTotalSupply: number;
 }
 
-export interface BackendWhitelistedErc20Token
-    extends BackendUsdPricedErc20Token {
+export interface BackendWhitelistedErc20Token extends BackendUsdPricedErc20Token {
     address: Address;
     minimumRate: string;
 }

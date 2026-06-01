@@ -14,6 +14,9 @@ import {
 } from "@/src/commons";
 
 import styles from "./styles.module.css";
+import { getErc20Protocol } from "@/src/utils/erc20";
+import type { Protocol } from "@metrom-xyz/chains";
+import { FungibleAssetLogo } from "@/src/components/fungible-asset/fungible-asset-logo";
 
 interface ProtocolProps {
     campaign: Campaign;
@@ -89,9 +92,17 @@ export function Protocol({ campaign }: ProtocolProps) {
         );
     }
 
+    let fungibleAssetProtocol;
+    if (!protocol && campaign.target.type === TargetType.HoldFungibleAsset)
+        fungibleAssetProtocol = getErc20Protocol(campaign.target.asset);
+
+    const protocolName = protocol?.name || fungibleAssetProtocol?.name;
+    const holdFungibleAssetCampaign =
+        campaign.target.type === TargetType.HoldFungibleAsset;
+
     return (
         <div className={styles.root}>
-            {protocol && (
+            {protocolName && (
                 <Popover
                     ref={dexDetailsPopoverRef}
                     open={popoverOpen}
@@ -100,7 +111,7 @@ export function Protocol({ campaign }: ProtocolProps) {
                     placement="bottom"
                 >
                     <Typography weight="medium" size="sm">
-                        {protocol.name}
+                        {protocolName}
                     </Typography>
                 </Popover>
             )}
@@ -109,7 +120,15 @@ export function Protocol({ campaign }: ProtocolProps) {
                 onMouseEnter={handleDexDetailsPopoverOpen}
                 onMouseLeave={handleDexDetailsPopoverClose}
             >
-                <ProtocolLogo protocol={protocol} size="sm" />
+                {fungibleAssetProtocol && holdFungibleAssetCampaign ? (
+                    <FungibleAssetLogo
+                        size="sm"
+                        chainId={campaign.chainId}
+                        asset={campaign.target.asset}
+                    />
+                ) : (
+                    <ProtocolLogo protocol={protocol} size="sm" />
+                )}
             </div>
         </div>
     );

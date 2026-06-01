@@ -13,8 +13,8 @@ import {
     type AmmPool,
     type AaveV3Collateral,
     type LiquityV2Collateral,
-    type FungibleAssetInfo,
     type Erc4626Vault,
+    type Erc20Token,
 } from "@metrom-xyz/sdk";
 import {
     CampaignDetails,
@@ -31,12 +31,7 @@ import {
 import { getTranslations } from "next-intl/server";
 import { getChainData, getCrossVmChainData } from "./chain";
 import { ODYSSEY_STRATEGIES_NAME } from "../commons/odyssey";
-import { AmmPoolLiquidityCampaignPreviewPayload } from "../types/campaign/amm-pool-liquidity-campaign";
-import { LiquityV2CampaignPreviewPayload } from "../types/campaign/liquity-v2-campaign";
-import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
-import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
-import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-target-campaign";
-import { Erc4626VaultCampaignPreviewPayload } from "../types/campaign/erc4626-vault-campaign";
+import { getErc20Protocol } from "./erc20";
 
 // TODO: Should maybe avoid passing the t function as a parameter https://github.com/amannn/next-intl/issues/1704#issuecomment-2643211585.
 export function getCampaignName(
@@ -103,10 +98,10 @@ export function getCampaignName(
             });
         }
         case TargetType.HoldFungibleAsset: {
-            return t("campaignActions.holdFungibleAsset", {
-                name: campaign.target.asset.name,
-                symbol: campaign.target.asset.symbol,
-            });
+            return getHoldFungibleAssetCampaignPreviewName(
+                t,
+                campaign.target.asset,
+            );
         }
         case TargetType.JumperWhitelistedAmmPoolLiquidity: {
             return t("campaignActions.jumperWhitelistedAmmPoolLiquidity", {
@@ -283,12 +278,22 @@ export function getLiquityV2CampaignPreviewName(
 
 export function getHoldFungibleAssetCampaignPreviewName(
     t: TranslationsType<never>,
-    asset: FungibleAssetInfo,
+    asset: Erc20Token,
 ) {
-    return t("campaignActions.holdFungibleAsset", {
-        name: asset.name,
-        symbol: asset.symbol,
-    });
+    const protocol = getErc20Protocol(asset);
+
+    switch (asset.details?.type) {
+        case "lp":
+            return t("campaignActions.holdFungibleAsset.lp", {
+                dex: protocol?.name || "",
+                pool: `${asset.details.baseTokenSymbol}/${asset.details.quoteTokenSymbol}`,
+            });
+        default:
+            return t("campaignActions.holdFungibleAsset.default", {
+                name: asset.name,
+                symbol: asset.symbol,
+            });
+    }
 }
 
 export function getErc4626VaultCampaignPreviewName(
@@ -300,69 +305,6 @@ export function getErc4626VaultCampaignPreviewName(
         vault: vault.name,
         brand: brand,
     });
-}
-
-export function getCampaignPreviewName(
-    t: TranslationsType<never>,
-    payload: BaseCampaignPreviewPayload,
-): string {
-    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
-        return getAmmPoolLiquidityCampaignPreviewName(
-            t,
-            payload.kind,
-            payload.pool,
-        );
-    } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
-        const targetProtocol = getChainData(
-            payload.collateral.chainId,
-        )?.protocols.find(({ slug }) => slug === payload.brand.slug) as
-            | LiquityV2Protocol
-            | undefined;
-
-        const brand = payload.brand.name;
-        const debtToken = targetProtocol?.debtToken.symbol || "";
-        const token = payload.collateral.symbol;
-
-        switch (payload.kind) {
-            case CampaignKind.LiquityV2Debt: {
-                return t("campaignActions.borrow", {
-                    brand,
-                    debtToken,
-                    token,
-                });
-            }
-            case CampaignKind.LiquityV2StabilityPool: {
-                return t("campaignActions.depositStabilityPool", {
-                    brand,
-                    token,
-                });
-            }
-            default: {
-                return "-";
-            }
-        }
-    } else if (payload instanceof AaveV3CampaignPreviewPayload) {
-        return getAaveV3CampaignPreviewName(
-            t,
-            payload.kind,
-            payload.brand,
-            payload.collateral,
-        );
-    } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
-        return t("campaignActions.holdFungibleAsset", {
-            name: payload.asset.name,
-            symbol: payload.asset.symbol,
-        });
-    } else if (payload instanceof Erc4626VaultCampaignPreviewPayload) {
-        return t("campaignActions.erc4626Vault", {
-            vault: payload.vault.name,
-            brand: payload.brand.name,
-        });
-    } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
-        return t("campaignActions.empty");
-    } else {
-        return "-";
-    }
 }
 
 export async function getSocialPreviewCampaignName(

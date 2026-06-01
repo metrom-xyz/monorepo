@@ -1,0 +1,25 @@
+@reference "../../app.css";
+
+.xxs {
+    @apply size-4;
+}
+
+.xs {
+    @apply size-3.5 sm:size-5;
+}
+
+.sm {
+    @apply size-4 sm:size-6;
+}
+
+.base {
+    @apply size-5 sm:size-7;
+}
+
+.lg {
+    @apply size-6 sm:size-9;
+}
+
+.xl {
+    @apply size-8 sm:size-11;
+}

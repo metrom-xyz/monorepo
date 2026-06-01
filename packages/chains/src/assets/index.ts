@@ -2,6 +2,7 @@ export * from "./logos/bridges";
 export * from "./logos/chains";
 export * from "./logos/dexes";
 export * from "./logos/erc4626-vaults";
+export * from "./logos/generic";
 export * from "./logos/gmx-v1-liquidity";
 export * from "./logos/liquidity-platforms";
 export * from "./logos/liquidity-provider-deals";
