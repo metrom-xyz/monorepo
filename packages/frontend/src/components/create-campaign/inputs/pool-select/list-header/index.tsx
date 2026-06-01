@@ -1,16 +1,16 @@
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { Chip, Typography } from "@metrom-xyz/ui";
-import type { Erc20Token } from "@metrom-xyz/sdk";
 import { useCallback } from "react";
 import { useTranslations } from "next-intl";
+import type { BaseErc20Token } from "@metrom-xyz/chains";
 
 import styles from "./styles.module.css";
 
 interface ListHeaderProps {
     chainId?: number;
-    baseTokenFilter?: Erc20Token;
-    onBaseTokenChange?: (token?: Erc20Token) => void;
+    baseTokenFilter?: BaseErc20Token;
+    onBaseTokenChange?: (token?: BaseErc20Token) => void;
 }
 
 export function ListHeader({
@@ -22,7 +22,7 @@ export function ListHeader({
     const baseTokens = useBaseTokens(chainId);
 
     const getBaseTokenChangeHandler = useCallback(
-        (token: Erc20Token) => {
+        (token: BaseErc20Token) => {
             return () => {
                 let filter;
 

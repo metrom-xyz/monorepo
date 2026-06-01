@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import { SVGIcon } from "./common";
 import {
     AaveV3Market,
-    Erc20Token,
     SupportedAaveV3,
     SupportedDex,
     SupportedErc4626Vault,
@@ -15,6 +14,7 @@ import {
     SupportedYieldSeeker,
     TargetType,
 } from "@metrom-xyz/sdk";
+import { BaseErc20Token } from "./chains";
 
 export enum ProtocolType {
     Dex = "dex",
@@ -65,7 +65,7 @@ export interface LiquityV2Protocol extends ProtocolBase<
     SupportedLiquityV2,
     ProtocolType.LiquityV2
 > {
-    debtToken: Omit<Erc20Token, "details">;
+    debtToken: BaseErc20Token;
     actionUrls: Record<
         TargetType.LiquityV2Debt | TargetType.LiquityV2StabilityPool,
         string
