@@ -70,6 +70,7 @@ export function useClaimableFees(): UseClaimableFeesReturnValue {
                     name,
                     symbol,
                     usdPrice,
+                    details: null,
                 },
             };
 

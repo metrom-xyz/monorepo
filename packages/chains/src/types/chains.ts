@@ -8,6 +8,8 @@ import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts
 import { katana, linea } from "viem/chains";
 import { Form } from "./forms";
 
+export type BaseErc20Token = Omit<Erc20Token, "details">;
+
 export interface ChainData {
     id: number;
     type: ChainType;
@@ -19,7 +21,7 @@ export interface ChainData {
     icon: FunctionComponent<SVGIcon>;
     forms: Form[];
     protocols: Protocol[];
-    baseTokens: Omit<Erc20Token, "details">[];
+    baseTokens: BaseErc20Token[];
 }
 
 export enum SupportedDevelopmentMvmChain {
