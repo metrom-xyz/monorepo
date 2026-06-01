@@ -7,3 +7,7 @@
 .icon {
     @apply size-4 sm:size-5 text-primary col-span-1 rounded-full;
 }
+
+.logo {
+    @apply size-4 sm:size-5;
+}

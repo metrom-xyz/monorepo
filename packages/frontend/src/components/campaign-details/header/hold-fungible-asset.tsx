@@ -4,12 +4,12 @@ import type {
     TargetedNamedCampaign,
     CampaignDetails,
 } from "@/src/types/campaign/common";
-import { RemoteLogo } from "../../remote-logo";
 import { trackUmamiEvent } from "@/src/utils/umami";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getFungibleAssetExplorerLink } from "@/src/utils/explorer";
 import { Tags } from "./tags";
 import classNames from "classnames";
+import { RemoteLogo } from "../../remote-logo";
 
 import styles from "./styles.module.css";
 

@@ -2,7 +2,7 @@ import { useFungibleAssetInfo } from "@/src/hooks/useFungibleAssetInfo";
 import type { HoldFungibleAssetCampaignPayloadPart } from "@/src/types/campaign/hold-fungible-asset-campaign";
 import { isAddress } from "@/src/utils/address";
 import type { FungibleAssetInfo } from "@metrom-xyz/sdk";
-import { Popover, TextInput, Typography } from "@metrom-xyz/ui";
+import { Popover, TextInput } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
     useCallback,
@@ -12,12 +12,14 @@ import {
     type ChangeEvent,
 } from "react";
 import type { Address } from "viem";
-import { RemoteLogo } from "@/src/components/remote-logo";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { useFormSteps } from "@/src/context/form-steps";
 import type { LocalizedMessage } from "@/src/types/utils";
 import { SearchIcon } from "@/src/assets/search-icon";
 import { usePrevious } from "react-use";
+import { FungibleAsset } from "@/src/components/fungible-asset";
+import { FungibleAssetLogo } from "@/src/components/fungible-asset/fungible-asset-logo";
+import { getErc20Name } from "@/src/utils/erc20";
 
 import styles from "./styles.module.css";
 
@@ -112,15 +114,13 @@ export function FungibleAssetPicker({
         onChange({ asset: undefined });
     }, [onChange]);
 
-    const assetName = asset ? `${asset.symbol} ${asset.name}` : "";
-
     return (
         <>
             <div ref={setAnchor} className={styles.root}>
                 <TextInput
                     size="lg"
                     label={t("label")}
-                    value={assetAddress || assetName}
+                    value={assetAddress || getErc20Name(asset)}
                     disabled={disabled}
                     error={!!error}
                     errorText={error ? t(error) : ""}
@@ -130,10 +130,9 @@ export function FungibleAssetPicker({
                     onBlur={handleAssetOnBlur}
                     prefixElement={
                         asset && (
-                            <RemoteLogo
-                                size="xxs"
-                                chain={chainId}
-                                address={asset.address}
+                            <FungibleAssetLogo
+                                chainId={chainId}
+                                asset={asset}
                             />
                         )
                     }
@@ -160,15 +159,9 @@ export function FungibleAssetPicker({
                 className={styles.popover}
             >
                 <div className={styles.asset} onClick={handleAssetOnPick}>
-                    <RemoteLogo
-                        size="xxs"
-                        chain={chainId}
-                        address={assetInfo?.address}
-                    />
-                    <Typography>{assetInfo?.symbol}</Typography>
-                    <Typography size="sm" variant="tertiary">
-                        {assetInfo?.name}
-                    </Typography>
+                    {assetInfo && (
+                        <FungibleAsset chainId={chainId} asset={assetInfo} />
+                    )}
                 </div>
             </Popover>
         </>

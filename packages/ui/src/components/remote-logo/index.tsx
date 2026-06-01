@@ -16,6 +16,7 @@ export interface RemoteLogoProps {
     chain?: number;
     size?: RemoteLogoSize;
     defaultText?: string;
+    fallback?: FunctionComponent<SVGIcon>;
     className?: string;
     icon?: FunctionComponent<SVGIcon>;
 }
@@ -33,6 +34,7 @@ export const RemoteLogo = ({
     chain,
     size = "base",
     defaultText = "?",
+    fallback: Fallback,
     className,
     icon: Icon,
 }: RemoteLogoProps) => {
@@ -85,6 +87,14 @@ export const RemoteLogo = ({
                     onError={handleImageError}
                     className={classNames(styles.image, styles[size])}
                 />
+            </div>
+        );
+    }
+
+    if (Fallback) {
+        return (
+            <div className={classNames(styles.root, styles[size], className)}>
+                <Fallback className={classNames(styles.image, styles[size])} />
             </div>
         );
     }

@@ -65,7 +65,7 @@ export interface LiquityV2Protocol extends ProtocolBase<
     SupportedLiquityV2,
     ProtocolType.LiquityV2
 > {
-    debtToken: Erc20Token;
+    debtToken: Omit<Erc20Token, "details">;
     actionUrls: Record<
         TargetType.LiquityV2Debt | TargetType.LiquityV2StabilityPool,
         string

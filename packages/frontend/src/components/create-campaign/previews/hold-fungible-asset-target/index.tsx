@@ -1,10 +1,10 @@
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
-import { RemoteLogo } from "@/src/components/remote-logo";
 import { getHoldFungibleAssetCampaignPreviewName } from "@/src/utils/campaign";
 import { useChainData } from "@/src/hooks/useChainData";
 import type { HoldFungibleAssetCampaignPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
 import { useChainType } from "@/src/hooks/useChainType";
+import { FungibleAssetLogo } from "@/src/components/fungible-asset/fungible-asset-logo";
 
 import styles from "./styles.module.css";
 
@@ -39,10 +39,9 @@ export function HoldFungibleAssetTarget({ payload }: HoldFungibleTargetProps) {
             </Typography>
             <div className={styles.asset}>
                 <ChainLogo className={styles.chainIcon} />
-                <RemoteLogo
-                    size="xxs"
-                    chain={payload.chainId}
-                    address={payload.asset.address}
+                <FungibleAssetLogo
+                    chainId={payload.chainId}
+                    asset={payload.asset}
                 />
                 <Typography size="sm" weight="medium" noWrap truncate>
                     {getHoldFungibleAssetCampaignPreviewName(

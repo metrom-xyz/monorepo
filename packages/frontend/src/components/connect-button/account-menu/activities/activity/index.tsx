@@ -16,6 +16,8 @@ import { useMemo } from "react";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
 import classNames from "classnames";
 import { Action } from "@/src/components/campaigns/campaign/action";
+import { getErc20Protocol } from "@/src/utils/erc20";
+import { FungibleAssetLogo } from "@/src/components/fungible-asset/fungible-asset-logo";
 
 import styles from "./styles.module.css";
 
@@ -74,6 +76,16 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
         trackUmamiEvent("click-activity");
     }
 
+    let fungibleAssetProtocol;
+    if (
+        !campaignTargetProtocol &&
+        campaign?.target.type === TargetType.HoldFungibleAsset
+    )
+        fungibleAssetProtocol = getErc20Protocol(campaign.target.asset);
+
+    const holdFungibleAssetCampaign =
+        campaign?.target.type === TargetType.HoldFungibleAsset;
+
     const createCampaign = payload.type === "create-campaign";
 
     return (
@@ -97,10 +109,19 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                                 onClick={handleActivityOnClick}
                             >
                                 <div className={styles.details}>
-                                    <ProtocolLogo
-                                        size="xs"
-                                        protocol={campaignTargetProtocol}
-                                    />
+                                    {fungibleAssetProtocol &&
+                                    holdFungibleAssetCampaign ? (
+                                        <FungibleAssetLogo
+                                            size="sm"
+                                            chainId={campaign.chainId}
+                                            asset={campaign.target.asset}
+                                        />
+                                    ) : (
+                                        <ProtocolLogo
+                                            size="xs"
+                                            protocol={campaignTargetProtocol}
+                                        />
+                                    )}
                                     <Action
                                         campaign={campaign}
                                         nameSize="xs"

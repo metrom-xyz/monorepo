@@ -633,11 +633,11 @@
                 }
             },
             "fungibleAssetPicker": {
-                "label": "Token address",
+                "label": "Token",
                 "infoMessage": "Pick a specific fungible token to reward users who hold it.",
                 "errors": {
                     "notAnAddress": "Not a valid address",
-                    "notSupported": "Token not supported"
+                    "notSupported": "Token not supported. Contact us"
                 }
             },
             "erc4626VaultSelect": {
@@ -1002,7 +1002,10 @@
         "aaveV3NetSupplyBlocksBorrowing": "(Blocks borrowing <bold>{symbols}</bold>)",
         "aaveV3BridgeAndSupply": "Bridge and supply {token} on {brand}",
         "jumperWhitelistedAmmPoolLiquidity": "Bridge through Jumper and LP on {dex} {pool}",
-        "holdFungibleAsset": "Hold {name} ({symbol})",
+        "holdFungibleAsset": {
+            "default": "Hold {name} ({symbol})",
+            "lp": "LP on {dex} {pool}"
+        },
         "odysseyStrategy": "Odyssey {strategy} strategy on {asset}",
         "erc4626Vault": "Deposit to {vault} on {brand}",
         "empty": "Test campaign"
