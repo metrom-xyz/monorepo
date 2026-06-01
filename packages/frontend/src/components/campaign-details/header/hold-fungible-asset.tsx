@@ -9,7 +9,7 @@ import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { getFungibleAssetExplorerLink } from "@/src/utils/explorer";
 import { Tags } from "./tags";
 import classNames from "classnames";
-import { RemoteLogo } from "../../remote-logo";
+import { FungibleAssetLogo } from "../../fungible-asset/fungible-asset-logo";
 
 import styles from "./styles.module.css";
 
@@ -49,10 +49,10 @@ export function HoldFungibleAsset({ campaignDetails }: HoldFungibleAssetProps) {
                                 </Typography>
                             </InfoTooltip>
                         )}
-                        <RemoteLogo
+                        <FungibleAssetLogo
                             size="lg"
-                            address={target.asset.address}
-                            chain={target.chainId}
+                            asset={target.asset}
+                            chainId={target.chainId}
                         />
                     </div>
                     <div className={styles.name}>

@@ -125,6 +125,7 @@ export function Protocol({ campaign }: ProtocolProps) {
                         size="sm"
                         chainId={campaign.chainId}
                         asset={campaign.target.asset}
+                        forceProtocol
                     />
                 ) : (
                     <ProtocolLogo protocol={protocol} size="sm" />

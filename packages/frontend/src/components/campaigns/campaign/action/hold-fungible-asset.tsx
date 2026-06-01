@@ -6,6 +6,7 @@ import type {
 } from "@/src/types/campaign/common";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { ActionSizes } from ".";
+import { getErc20Protocol } from "@/src/utils/erc20";
 
 interface HoldFungibleAssetProps<
     T extends TargetType.HoldFungibleAsset,
@@ -24,6 +25,7 @@ export function HoldFungibleAsset<T extends TargetType.HoldFungibleAsset>({
                 size={logoSize}
                 address={campaign.target.asset.address}
                 chain={campaign.target.chainId}
+                fallback={getErc20Protocol(campaign.target.asset)?.icon}
             />
             <Typography size={nameSize} weight="medium" truncate>
                 {campaign.name}
