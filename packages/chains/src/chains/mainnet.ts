@@ -44,6 +44,12 @@ export const mainnetData: ChainData = {
         {
             active: true,
             partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
+            distributables: [DistributablesType.Tokens],
+        },
+        {
+            active: true,
+            partner: false,
             type: BaseCampaignType.Erc4626Vault,
             distributables: [DistributablesType.Tokens],
         },
