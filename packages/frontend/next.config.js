@@ -88,12 +88,23 @@ const nextConfig = {
             },
         ];
     },
-    // Redirect old campaign page links to use 'evm' as the default chain type
     async redirects() {
         return [
+            // Redirect old campaign page links to use 'evm' as the default chain type
             {
                 source: "/en/campaigns/:chain(\\d{1,})/:id",
                 destination: "/en/campaigns/evm/:chain/:id",
+                permanent: false,
+            },
+            // Prefix any non-localized path with the default locale (replaces next-intl middleware)
+            {
+                source: "/",
+                destination: "/en",
+                permanent: false,
+            },
+            {
+                source: "/:path((?!en$|en/|_next/|api/|.*\\.).+)",
+                destination: "/en/:path",
                 permanent: false,
             },
         ];

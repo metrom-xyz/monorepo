@@ -41,6 +41,21 @@ const nextConfig: NextConfig = {
             "@metrom-xyz/chains",
         ],
     },
+    async redirects() {
+        return [
+            // Prefix any non-localized path with the default locale (replaces next-intl middleware)
+            {
+                source: "/",
+                destination: "/en",
+                permanent: false,
+            },
+            {
+                source: "/:path((?!en$|en/|_next/|api/|.*\\.).+)",
+                destination: "/en/:path",
+                permanent: false,
+            },
+        ];
+    },
     async headers() {
         return [
             {
