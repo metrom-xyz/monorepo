@@ -4,45 +4,18 @@ import type { ReactNode } from "react";
 import { ENVIRONMENT } from "../commons/env";
 import { Environment } from "@metrom-xyz/sdk";
 
-export const SOLANA_WALLET_CONNECTORS: {
-    id: string;
-    name: string;
-    icon?: string;
-    homepage: string;
-}[] = [
-    {
-        id: "wallet-standard:phantom",
-        name: "Phantom",
-        homepage: "https://phantom.com/",
-    },
-    {
-        id: "wallet-standard:solflare",
-        name: "Solflare",
-        homepage: "https://www.solflare.com/",
-    },
-    {
-        id: "wallet-standard:metamask",
-        name: "MetaMask",
-        homepage: "https://metamask.io/",
-    },
-    {
-        id: "wallet-standard:brave-wallet",
-        name: "Brave Wallet",
-        homepage: "https://brave.com/wallet/",
-    },
-    {
-        id: "wallet-standard:walletconnect",
-        name: "WalletConnect",
-        homepage: "https://walletconnect.com/",
-    },
+export const SOLANA_WALLET_CONNECTORS_NAMES = [
+    "phantom",
+    "solflare",
+    "metamask",
+    "brave",
+    "walletconnect",
 ];
 
 const client = createClient({
     cluster: ENVIRONMENT === Environment.Production ? "mainnet" : "devnet",
     walletConnectors: autoDiscover({
-        filter: filterByNames(
-            ...SOLANA_WALLET_CONNECTORS.map((connector) => connector.name),
-        ),
+        filter: filterByNames(...SOLANA_WALLET_CONNECTORS_NAMES),
     }),
 });
 

@@ -3,7 +3,7 @@ import { useBaseTokens } from "@/src/hooks/useBaseTokens";
 import { Chip, Typography } from "@metrom-xyz/ui";
 import { useCallback } from "react";
 import { useTranslations } from "next-intl";
-import type { BaseErc20Token } from "@metrom-xyz/chains";
+import type { BaseErc20Token } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
