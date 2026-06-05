@@ -13,7 +13,7 @@ import { ChainType } from "@metrom-xyz/sdk";
 
 export const SOLANA_NETWORK_ID = {
     [Environment.Development]: {
-        "solana:testnet": solanaNetworkToId("testnet"),
+        "solana:devnet": solanaNetworkToId("devnet"),
     },
     [Environment.Production]: {
         "solana:mainnet": solanaNetworkToId("mainnet"),
@@ -24,8 +24,8 @@ export function solanaNetworkToId(network?: string): number {
     const fullNetwork = `solana:${network}`;
 
     switch (fullNetwork) {
-        case "solana:testnet": {
-            return SupportedChainSvm.Testnet;
+        case "solana:devnet": {
+            return SupportedChainSvm.Devnet;
         }
         case "solana:mainnet": {
             // FIXME: add mainnet id

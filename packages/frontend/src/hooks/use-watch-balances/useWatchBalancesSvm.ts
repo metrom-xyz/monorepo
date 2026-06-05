@@ -6,7 +6,7 @@ import type {
     UseWatchBalancesReturnValue,
 } from ".";
 import { useQuery } from "@tanstack/react-query";
-import { type Address, formatUnits } from "viem";
+import { formatUnits } from "@/src/utils/format";
 import { useWatchBlockNumber } from "../use-watch-block-number";
 import { useSolanaClient } from "@solana/react-hooks";
 
@@ -35,7 +35,7 @@ export function useWatchBalancesSvm<T extends UsdPricedErc20Token>({
                 number | undefined,
                 number | undefined,
                 T[] | undefined,
-                Address | undefined,
+                string | undefined,
             ];
 
             if (!chainId || !tokens || !address) return null;
@@ -50,7 +50,7 @@ export function useWatchBalancesSvm<T extends UsdPricedErc20Token>({
                 );
             } catch (error) {
                 console.error(
-                    `Could not fetch balances for whitelisted tokens: ${error}`,
+                    `Could not fetch balances for whitelisted Solana tokens: ${error}`,
                 );
                 throw error;
             }

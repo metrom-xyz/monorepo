@@ -127,7 +127,7 @@ export const SVM_CHAIN_DATA: {
     [Environment.Production]: Record<SupportedProductionSvmChain, ChainData>;
 } = {
     [Environment.Development]: {
-        [SupportedDevelopmentSvmChain.Testnet]: solanaDevelopmentData,
+        [SupportedDevelopmentSvmChain.Devnet]: solanaDevelopmentData,
     },
     [Environment.Production]: {
         // TODO: add production data

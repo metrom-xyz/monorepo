@@ -10,17 +10,17 @@ import { Address } from "viem";
 
 export const solanaDevelopmentData: ChainData = {
     active: true,
-    id: SupportedChain.Testnet,
+    id: SupportedChain.Devnet,
     type: ChainType.Svm,
-    name: "Solana Testnet",
-    slug: "solana:testnet",
+    name: "Solana Devnet",
+    slug: "solana:devnet",
     metromContract: {
         address: PROGRAM_ID.toString() as Address,
     },
     blockExplorers: {
         default: {
             name: "Solana Explorer",
-            url: "https://explorer.solana.com/",
+            url: "https://solscan.io",
         },
     },
     icon: SolanaLogo,
@@ -29,6 +29,12 @@ export const solanaDevelopmentData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
+            distributables: [DistributablesType.Tokens],
+        },
+        {
+            active: true,
+            partner: false,
+            type: BaseCampaignType.HoldFungibleAsset,
             distributables: [DistributablesType.Tokens],
         },
     ],

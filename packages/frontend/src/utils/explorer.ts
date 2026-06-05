@@ -2,10 +2,10 @@ import { SupportedChain } from "@metrom-xyz/contracts";
 import { type Hex, type Address } from "viem";
 import {
     chainIdToAptosNetwork,
+    chainIdToSolanaNetwork,
     getChainData,
     getCrossVmChainData,
 } from "./chain";
-import { APTOS } from "../commons/env";
 import { isAddressOnChainType } from "./address";
 import { ChainType } from "@metrom-xyz/sdk";
 
@@ -53,12 +53,24 @@ export function getTxExplorerLink(
 ): string | undefined {
     if (!chainId) return;
 
-    const explorer = getChainData(chainId)?.blockExplorers?.default;
+    const chainData = getChainData(chainId);
+    if (!chainData) return;
+
+    const explorer = chainData.blockExplorers?.default;
     if (!explorer) return;
 
-    if (APTOS) {
-        const network = chainIdToAptosNetwork(chainId);
-        return `${explorer.url}/txn/${hash}?network=${network}`;
+    switch (chainData.type) {
+        case ChainType.Evm:
+            return `${explorer.url}/tx/${hash}`;
+        case ChainType.Aptos: {
+            const network = chainIdToAptosNetwork(chainId);
+            return `${explorer.url}/txn/${hash}?network=${network}`;
+        }
+        case ChainType.Svm: {
+            const cluster = chainIdToSolanaNetwork(chainId)?.split(":")[1];
+            return `${explorer.url}/tx/${hash}?cluster=${cluster}`;
+        }
+        default:
+            return;
     }
-    return `${explorer.url}/tx/${hash}`;
 }
