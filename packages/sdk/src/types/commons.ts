@@ -42,6 +42,8 @@ export interface Erc20Token {
     details: Erc20TokenDetails;
 }
 
+export type BaseErc20Token = Omit<Erc20Token, "details">;
+
 export interface UsdPricedErc20Token extends Erc20Token {
     usdPrice: number;
 }

@@ -1,9 +1,9 @@
 import type { Hex } from "viem";
 import type {
     AmmPoolLiquidityType,
+    BaseErc20Token,
     Brand,
     ChainType,
-    Erc20Token,
 } from "./commons";
 import type { RestrictionType } from "./campaigns";
 import type { SupportedAmm, SupportedDex } from "src/commons";
@@ -19,7 +19,7 @@ export interface AmmPool {
     id: Hex;
     dex: Brand<SupportedDex>;
     amm: SupportedAmm;
-    tokens: Erc20Token[];
+    tokens: BaseErc20Token[];
     liquidityType: AmmPoolLiquidityType;
     liquidity: bigint;
     usdTvl: number;
@@ -32,7 +32,7 @@ export interface CampaignAmmPool {
     id: Hex;
     dex: Brand<SupportedDex>;
     amm: SupportedAmm;
-    tokens: Erc20Token[];
+    tokens: BaseErc20Token[];
     liquidityType: AmmPoolLiquidityType;
     fee?: number;
 }

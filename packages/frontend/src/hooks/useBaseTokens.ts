@@ -1,4 +1,4 @@
-import type { BaseErc20Token } from "@metrom-xyz/chains";
+import type { BaseErc20Token } from "@metrom-xyz/sdk";
 import { useChainData } from "./useChainData";
 
 export function useBaseTokens(chainId?: number): BaseErc20Token[] {
