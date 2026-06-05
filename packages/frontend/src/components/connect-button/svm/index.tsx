@@ -18,7 +18,6 @@ import Image from "next/image";
 import { trackUmamiEvent } from "@/src/utils/umami";
 import { solanaNetworkToId } from "@/src/utils/chain";
 import { useAccount } from "@/src/hooks/useAccount";
-import { SOLANA_WALLET_CONNECTORS } from "@/src/context/solana-adapter";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -158,37 +157,6 @@ export function ConnectButtonSvm({ customComponent }: ConnectButtonProps) {
                                 </Typography>
                             </button>
                         ))}
-                        {SOLANA_WALLET_CONNECTORS.map((walletConnector) => {
-                            if (
-                                connectors.find(
-                                    (connector) =>
-                                        connector.id === walletConnector.id,
-                                )
-                            )
-                                return null;
-
-                            return (
-                                <a
-                                    key={walletConnector.id}
-                                    href={walletConnector.homepage}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.walletButton}
-                                >
-                                    {walletConnector.icon && (
-                                        <Image
-                                            alt={walletConnector.name}
-                                            src={walletConnector.icon}
-                                            width={32}
-                                            height={32}
-                                        />
-                                    )}
-                                    <Typography weight="medium">
-                                        {walletConnector.name}
-                                    </Typography>
-                                </a>
-                            );
-                        })}
                     </div>
                 </Modal>
             </div>

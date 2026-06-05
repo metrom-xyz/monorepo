@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { SVGIcon } from "./common";
 import {
     AaveV3Market,
+    BaseErc20Token,
     SupportedAaveV3,
     SupportedDex,
     SupportedErc4626Vault,
@@ -14,7 +15,6 @@ import {
     SupportedYieldSeeker,
     TargetType,
 } from "@metrom-xyz/sdk";
-import { BaseErc20Token } from "./chains";
 
 export enum ProtocolType {
     Dex = "dex",
