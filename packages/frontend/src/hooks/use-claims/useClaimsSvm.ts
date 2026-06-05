@@ -4,15 +4,15 @@ import type { ClaimWithRemaining } from "@/src/types/campaign/common";
 import { useChainWithType } from "../useChainWithType";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSolanaClient, useWalletConnection } from "@solana/react-hooks";
-import {
-    type Address as AddressSvm,
-    getProgramDerivedAddress,
-    getAddressEncoder,
-    address,
-} from "@solana/kit";
+import { type Address as AddressSvm, getBase64Encoder } from "@solana/kit";
 import { METROM_API_CLIENT } from "@/src/commons";
-import { formatUnits, type Address } from "viem";
+import { formatUnits } from "viem";
 import { getChainData } from "@/src/utils/chain";
+import {
+    findUserClaimedRewardPda,
+    getClaimedRewardDecoder,
+} from "@metrom-xyz/programs-solana";
+import { useAccount } from "../useAccount";
 
 type QueryKey = [string, string | undefined];
 
@@ -20,12 +20,13 @@ export function useClaimsSvm({
     enabled = true,
 }: UseClaimsParams = {}): UseClaimsReturnValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>();
-    const [claimedRewardPdas, setClaimedRewardPdas] =
+    const [claimedPdas, setClaimedRewardPdas] =
         useState<AddressSvm<string>[]>();
 
     const queryClient = useQueryClient();
     const { wallet } = useWalletConnection();
     const client = useSolanaClient();
+    const { address } = useAccount();
     const { id } = useChainWithType();
 
     const {
@@ -40,7 +41,7 @@ export function useClaimsSvm({
 
             try {
                 const rawClaims = await METROM_API_CLIENT.fetchClaims({
-                    address: account as Address,
+                    address: account,
                 });
 
                 // TODO: filter by active chains? Probably not needed since we're only supporting Solana
@@ -68,30 +69,22 @@ export function useClaimsSvm({
                         const chainData = getChainData(rawClaim.chainId);
                         if (!chainData) return null;
 
-                        const { metromContract: metrom } = chainData;
-                        const [claimedRewardPDA] =
-                            await getProgramDerivedAddress({
-                                programAddress: address(metrom.address),
-                                seeds: [
-                                    "claimed_reward",
-                                    wallet.account.publicKey,
-                                    getAddressEncoder().encode(
-                                        address(rawClaim.campaignId),
-                                    ),
-                                ],
-                            });
+                        const claimedPda = await findUserClaimedRewardPda({
+                            signer: address as AddressSvm,
+                            campaign: rawClaim.campaignId as AddressSvm,
+                        });
 
-                        return claimedRewardPDA;
+                        return claimedPda[0];
                     }),
             );
 
             setClaimedRewardPdas(
-                pdas.filter((pda): pda is AddressSvm<string> => !!pda),
+                pdas.filter((pda): pda is AddressSvm => !!pda),
             );
         };
 
         void derive();
-    }, [id, rawClaims, wallet]);
+    }, [id, rawClaims, wallet, address]);
 
     const {
         data: claimedData,
@@ -99,22 +92,28 @@ export function useClaimsSvm({
         isLoading: loadingClaimed,
         isError: claimedErrored,
     } = useQuery({
-        queryKey: ["claimed-campaign-rewards", claimedRewardPdas],
+        queryKey: ["claimed-campaign-rewards", claimedPdas],
         queryFn: async ({ queryKey }) => {
-            const [, pdas] = queryKey as [string, typeof claimedRewardPdas];
+            const [, claimedAccounts] = queryKey as [
+                string,
+                typeof claimedPdas,
+            ];
 
-            if (!pdas) return null;
+            if (!claimedAccounts) return null;
 
             try {
                 const claimedRewardsAccounts = await client.runtime.rpc
-                    .getMultipleAccounts(pdas, { encoding: "base64" })
+                    .getMultipleAccounts(claimedAccounts, {
+                        encoding: "base64",
+                    })
                     .send();
 
                 return claimedRewardsAccounts.value.map((value) => {
-                    if (!value) return;
+                    if (!value) return 0n;
 
-                    const raw = Buffer.from(value.data[0], "base64");
-                    return raw.readBigUInt64LE(8);
+                    return getClaimedRewardDecoder().decode(
+                        getBase64Encoder().encode(value.data[0]),
+                    ).claimed;
                 });
             } catch (error) {
                 console.error(
@@ -126,7 +125,7 @@ export function useClaimsSvm({
         retryDelay: 1000,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: enabled && !!claimedRewardPdas,
+        enabled: enabled && !!claimedPdas,
     });
 
     useEffect(() => {
@@ -172,6 +171,7 @@ export function useClaimsSvm({
 
         setClaims(claims);
     }, [
+        address,
         claimedData,
         claimedError,
         claimedErrored,

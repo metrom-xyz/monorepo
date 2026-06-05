@@ -102,7 +102,7 @@ export function TokenReimbursementEvm({
                     />
                 ));
                 setRecovered(true);
-                onRecover(tokenReimbursements.token);
+                onRecover();
                 trackUmamiEvent("click-recover-single");
             } catch (error) {
                 if (
@@ -168,7 +168,7 @@ export function TokenReimbursementEvm({
                     />
                 ));
                 setRecovered(true);
-                onRecover(tokenReimbursements.token);
+                onRecover();
                 trackUmamiEvent("click-recover-single");
             } catch (error) {
                 console.warn("Could not recover", error);
