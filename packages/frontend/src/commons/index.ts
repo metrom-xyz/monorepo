@@ -94,7 +94,7 @@ export const SUPPORTED_CHAINS_SVM =
     ENVIRONMENT === Environment.Production
         ? // FIXME: add solana mainnet chain id
           []
-        : [SupportedSvm.Testnet];
+        : [SupportedSvm.Devnet];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 

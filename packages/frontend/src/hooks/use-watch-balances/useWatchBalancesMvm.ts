@@ -6,10 +6,11 @@ import type {
     UseWatchBalancesReturnValue,
 } from ".";
 import { useQuery } from "@tanstack/react-query";
-import { type Address, formatUnits } from "viem";
+import { type Address } from "viem";
 import { useClients } from "@aptos-labs/react";
 import { useWatchBlockNumber } from "../use-watch-block-number";
 import { chainIdToAptosNetwork } from "@/src/utils/chain";
+import { formatUnits } from "@/src/utils/format";
 
 const collator = new Intl.Collator();
 

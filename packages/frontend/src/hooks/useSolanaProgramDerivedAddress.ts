@@ -1,13 +1,7 @@
-import {
-    address,
-    getProgramDerivedAddress,
-    type Address,
-    type ReadonlyUint8Array,
-} from "@solana/kit";
+import { address, getProgramDerivedAddress, type Address } from "@solana/kit";
 import type { HookBaseParams } from "../types/hooks";
 import { useQuery } from "@tanstack/react-query";
-
-type Seed = ReadonlyUint8Array | string;
+import type { Seed } from "../types/solana";
 
 interface UseSolanaProgramDerivedAddressParams extends HookBaseParams {
     programId?: string;

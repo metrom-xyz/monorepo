@@ -7,8 +7,7 @@ import { useSolanaProgramDerivedAddress } from "./useSolanaProgramDerivedAddress
 import { useSolanaClient } from "@solana/react-hooks";
 import type { HookBaseParams } from "../types/hooks";
 import { useQuery } from "@tanstack/react-query";
-
-type Seed = ReadonlyUint8Array | string;
+import type { Seed } from "../types/solana";
 
 interface UseSolanaProgramAccountParams extends HookBaseParams {
     programId?: string;
@@ -35,7 +34,7 @@ export function useSolanaProgramAccount({
         enabled,
     });
 
-    const { data: accountInfoData, isLoading: loadingAccountInfo } = useQuery({
+    const { data: account, isLoading: loadingAccount } = useQuery({
         queryKey: [
             "program-derived-address-account-info",
             programId,
@@ -67,7 +66,7 @@ export function useSolanaProgramAccount({
     });
 
     return {
-        loading: loadingProgramDerivedAddress || loadingAccountInfo,
-        data: accountInfoData,
+        loading: loadingProgramDerivedAddress || loadingAccount,
+        data: account,
     };
 }

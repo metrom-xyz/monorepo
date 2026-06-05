@@ -20,7 +20,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
 import { Environment } from "@metrom-xyz/sdk";
-import AptosCoreProvider from "./aptos-core-provider";
+import AptosCoreProvider from "../context/aptos-core-provider";
 import { SolanaAdapterContextProvider } from "../context/solana-adapter";
 
 dayjs.extend(duration);

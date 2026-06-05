@@ -220,11 +220,11 @@ export interface FetchPoolParams extends ChainParams {
 }
 
 export interface FetchClaimsParams {
-    address: Address;
+    address: string;
 }
 
 export interface FetchReimbursementsParams {
-    address: Address;
+    address: string;
 }
 
 export type FetchWhitelistedTokensParams = ChainParams;

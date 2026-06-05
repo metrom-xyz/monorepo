@@ -4,7 +4,6 @@ import { useChainData } from "./useChainData";
 import { useAccount } from "./useAccount";
 import { useReadContracts } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { getU32Decoder } from "@solana/kit";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useViewModule } from "@aptos-labs/react";
 import { useMemo } from "react";
@@ -15,6 +14,7 @@ import { ChainType } from "@metrom-xyz/sdk";
 import { useSolanaProgramAccount } from "./useSolanaProgramAccount";
 import { useSolanaMetromProgramState } from "./useSolanaMetromProgramState";
 import { useWalletConnection } from "@solana/react-hooks";
+import { getFeeRebateDecoder } from "@metrom-xyz/programs-solana/client";
 
 export interface UseProtocolFeesParams extends HookBaseParams {
     chainId?: number;
@@ -135,9 +135,8 @@ export function useProtocolFees({
         if (chainType === ChainType.Svm && metromProgramState.data) {
             return {
                 fee: metromProgramState.data.fee,
-                // TODO: is rebate null if no rebate or 0?
                 feeRebate: rebateFeeSvm.data
-                    ? getU32Decoder().decode(rebateFeeSvm.data)
+                    ? getFeeRebateDecoder().decode(rebateFeeSvm.data).rebate
                     : 0,
             };
         }

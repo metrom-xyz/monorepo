@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { HookBaseParams } from "@/src/types/hooks";
 import { useSolanaClient } from "@solana/react-hooks";
 
@@ -8,7 +8,6 @@ export function useWatchBlockNumberSvm({
     enabled = true,
 }: HookBaseParams = {}) {
     const client = useSolanaClient();
-    const clientRef = useRef(client);
 
     const [blockNumber, setBlockNumber] = useState<bigint | undefined>();
 
@@ -16,7 +15,7 @@ export function useWatchBlockNumberSvm({
         if (!enabled) return;
 
         const fetchBlock = async () => {
-            const slot = await clientRef.current.runtime.rpc
+            const slot = await client.runtime.rpc
                 .getBlockHeight({ commitment: "confirmed" })
                 .send();
             setBlockNumber(slot);
@@ -31,7 +30,7 @@ export function useWatchBlockNumberSvm({
         return () => {
             clearInterval(interval);
         };
-    }, [enabled]);
+    }, [client, enabled]);
 
     return blockNumber;
 }

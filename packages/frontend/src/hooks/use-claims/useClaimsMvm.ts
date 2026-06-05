@@ -1,4 +1,4 @@
-import { formatUnits, type Address } from "viem";
+import { type Address } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,6 +13,7 @@ import {
 } from "@aptos-labs/ts-sdk";
 import { useClients } from "@aptos-labs/react";
 import { useChainWithType } from "../useChainWithType";
+import { formatUnits } from "@/src/utils/format";
 
 type QueryKey = [string, Address | undefined];
 

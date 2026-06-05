@@ -3,7 +3,6 @@ import {
     type OnChainAmount,
     type UsdPricedErc20Token,
 } from "@metrom-xyz/sdk";
-import { type Address } from "viem";
 import type { HookBaseParams } from "../../types/hooks";
 import { useWatchBalancesEvm } from "./useWatchBalancesEvm";
 import { useWatchBalancesMvm } from "./useWatchBalancesMvm";
@@ -17,7 +16,7 @@ export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
 
 export interface UseWatchBalancesParams<T> extends HookBaseParams {
     chainId?: number;
-    address?: Address;
+    address?: string;
     tokens?: T[];
 }
 
@@ -52,6 +51,8 @@ export function useWatchBalances<T extends UsdPricedErc20Token>(
         case ChainType.Svm:
             return balancesSvm;
         default:
-            throw new Error(`Unsupported chain type: ${chainType}`);
+            throw new Error(
+                `Unsupported chain type ${chainType} in useWatchBalances`,
+            );
     }
 }

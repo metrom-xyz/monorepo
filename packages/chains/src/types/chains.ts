@@ -63,7 +63,7 @@ export enum SupportedProductionEvmChain {
 }
 
 export enum SupportedDevelopmentSvmChain {
-    Testnet = SupportedChainSvm.Testnet,
+    Devnet = SupportedChainSvm.Devnet,
 }
 
 export enum SupportedProductionSvmChain {

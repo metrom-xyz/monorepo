@@ -9,7 +9,7 @@ const ALLOWED_FRAME_ANCESTORS = [
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https: https://verify.walletconnect.org  wss://relay.walletconnect.org wss://www.walletlink.org wss://api.testnet.solana.com wss://api.testnet.solana.com;
+    connect-src 'self' https: https://verify.walletconnect.org  wss://relay.walletconnect.org wss://www.walletlink.org wss://api.devnet.solana.com wss://api.devnet.solana.com wss://api.solana.com;
     frame-src 'self' https://verify.walletconnect.org;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.usefathom.com https://umami.metrom.xyz;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;

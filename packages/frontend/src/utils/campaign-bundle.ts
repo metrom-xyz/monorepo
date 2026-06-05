@@ -20,6 +20,7 @@ import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-targe
 import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
 import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
 import { Erc4626VaultCampaignPreviewPayload } from "../types/campaign/erc4626-vault-campaign";
+import { getAddressEncoder, type Address as AddressSvm } from "@solana/kit";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -140,6 +141,68 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
     }
 
     return serializer.toUint8Array();
+}
+
+export function buildCampaignDataBundleSvm(payload: CampaignPreviewPayload) {
+    // if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
+    //     return encodeAbiParameters(
+    //         [
+    //             {
+    //                 name: "poolAddress",
+    //                 type: isAddress(payload.pool.id) ? "address" : "bytes32",
+    //             },
+    //         ],
+    //         [payload.pool.id],
+    //     );
+    // else if (payload instanceof LiquityV2CampaignPreviewPayload) {
+    //     return encodeAbiParameters(
+    //         [
+    //             { name: "brand", type: "bytes32" },
+    //             { name: "collateral", type: "address" },
+    //         ],
+    //         [
+    //             stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
+    //             payload.collateral.address,
+    //         ],
+    //     );
+    // } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+    //     const blacklistedCollaterals =
+    //         payload.kind === CampaignKind.AaveV3NetSupply &&
+    //         payload.blacklistedCollaterals
+    //             ? payload.blacklistedCollaterals.map(({ address }) => address)
+    //             : [];
+
+    //     return encodeAbiParameters(
+    //         [
+    //             { name: "brand", type: "bytes32" },
+    //             { name: "market", type: "address" },
+    //             { name: "collateral", type: "address" },
+    //             { name: "blacklistedCollaterals", type: "address[]" },
+    //         ],
+    //         [
+    //             stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
+    //             payload.market.address,
+    //             payload.collateral.address,
+    //             blacklistedCollaterals,
+    //         ],
+    //     );
+    if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
+        return getAddressEncoder().encode(payload.asset.address as AddressSvm);
+    }
+    // } else if (payload instanceof Erc4626VaultCampaignPreviewPayload) {
+    //     return encodeAbiParameters(
+    //         [
+    //             { name: "brand", type: "bytes32" },
+    //             { name: "vault", type: "address" },
+    //         ],
+    //         [
+    //             stringToHex(payload.brand.slug).padEnd(66, "0") as Hex,
+    //             payload.vault.address,
+    //         ],
+    //     );
+    else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
+        return new Uint8Array(0);
+    } else return null;
 }
 
 export function buildSpecificationBundle(

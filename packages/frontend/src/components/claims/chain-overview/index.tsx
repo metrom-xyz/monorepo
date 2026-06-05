@@ -1,9 +1,11 @@
 import { Button, Skeleton, Card } from "@metrom-xyz/ui";
 import type { ChainWithRewardsData } from "..";
 import { useTranslations } from "next-intl";
-import { APTOS } from "@/src/commons/env";
 import { ChainOverviewEvm } from "./chain-overview-evm";
 import { ChainOverviewMvm } from "./chain-overview-mvm";
+import { useChainType } from "@/src/hooks/useChainType";
+import { ChainType } from "@metrom-xyz/sdk";
+import { ChainOverviewSvm } from "./chain-overview-svm";
 
 import styles from "./styles.module.css";
 
@@ -17,8 +19,18 @@ export interface ChainOverviewProps {
 }
 
 export function ChainOverview(props: ChainOverviewProps) {
-    if (APTOS) return <ChainOverviewMvm {...props} />;
-    return <ChainOverviewEvm {...props} />;
+    const chainType = useChainType();
+
+    switch (chainType) {
+        case ChainType.Evm:
+            return <ChainOverviewEvm {...props} />;
+        case ChainType.Aptos:
+            return <ChainOverviewMvm {...props} />;
+        case ChainType.Svm:
+            return <ChainOverviewSvm {...props} />;
+        default:
+            return null;
+    }
 }
 
 export function SkeletonChainOverview() {
