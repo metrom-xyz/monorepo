@@ -1,5 +1,5 @@
 import type { UsdPricedErc20Token } from "@metrom-xyz/sdk";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type {
     Erc20TokenWithBalance,
     UseWatchBalancesParams,
@@ -21,18 +21,20 @@ export function useWatchBalancesSvm<T extends UsdPricedErc20Token>({
     const blockNumber = useWatchBlockNumber();
     const client = useSolanaClient();
 
-    const { data: rewardTokenRawBalances, isLoading: loading } = useQuery({
+    const {
+        data: rewardTokenRawBalances,
+        isLoading: loading,
+        refetch,
+    } = useQuery({
         queryKey: [
             "watch-whitelisted-tokens-balances",
-            blockNumber,
             chainId,
             tokens,
             address,
         ],
         queryFn: async ({ queryKey }) => {
-            const [, , chainId, tokens, address] = queryKey as [
+            const [, chainId, tokens, address] = queryKey as [
                 string,
-                number | undefined,
                 number | undefined,
                 T[] | undefined,
                 string | undefined,
@@ -57,6 +59,11 @@ export function useWatchBalancesSvm<T extends UsdPricedErc20Token>({
         },
         enabled: !!tokens && !!address && enabled,
     });
+
+    useEffect(() => {
+        if (!enabled) return;
+        refetch();
+    }, [enabled, blockNumber, refetch]);
 
     const tokensWithBalance = useMemo(() => {
         if (!tokens) return [];
