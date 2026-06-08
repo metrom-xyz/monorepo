@@ -110,35 +110,7 @@ export function getCrossVmChainData(
 }
 
 export function getChainData(chainId: number): ChainData | undefined {
-    const chainType = getChainType();
-
-    switch (chainType) {
-        case ChainType.Evm:
-            return (
-                EVM_CHAIN_DATA[ENVIRONMENT] as ValidatedChainDataMap<number>
-            )[chainId];
-        case ChainType.Aptos: {
-            const network = chainIdToAptosNetwork(chainId);
-            if (!network)
-                throw new Error(`Unsupported Aptos chain id ${chainId}`);
-
-            return (
-                MVM_CHAIN_DATA[ENVIRONMENT] as ValidatedChainDataMap<string>
-            )[network];
-        }
-        case ChainType.Svm: {
-            if (!chainIdToSolanaNetwork(chainId))
-                throw new Error(`Unsupported Solana chain id ${chainId}`);
-
-            return (
-                SVM_CHAIN_DATA[ENVIRONMENT] as ValidatedChainDataMap<number>
-            )[chainId];
-        }
-        default:
-            throw new Error(
-                `Unsupported chain type and id: ${chainType}-${chainId}`,
-            );
-    }
+    return getCrossVmChainData(chainId, getChainType());
 }
 
 export function getChainDataBySlug(slug: string): ChainData | undefined {
@@ -157,6 +129,8 @@ export function getChainDataBySlug(slug: string): ChainData | undefined {
             return Object.values(SVM_CHAIN_DATA[ENVIRONMENT]).find(
                 (data) => data.slug === slug,
             );
+        default:
+            throw new Error(`Unsupported chain type: ${chainType}`);
     }
 }
 
