@@ -205,6 +205,7 @@ export function RewardsPickerTokens({
                     chainId={chainId}
                     tokens={tokens}
                     loading={loading}
+                    disabled={singleTokenCampaign}
                     value={token}
                     unavailables={value?.tokens}
                     onChange={setToken}
@@ -213,6 +214,7 @@ export function RewardsPickerTokens({
                     size="lg"
                     value={amount?.formattedValue}
                     placeholder="0"
+                    disabled={singleTokenCampaign}
                     allowNegative={false}
                     error={!!amountError}
                     errorText={amountError ? t(amountError) : undefined}

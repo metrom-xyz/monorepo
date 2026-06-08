@@ -19,6 +19,7 @@ interface RewardsPickerTokensSelectProps {
     unavailables?: WhitelistedErc20TokenAmount[];
     value?: SelectOption<string, RewardsPickerSelectOptionData>;
     loading?: boolean;
+    disabled?: boolean;
     className?: string;
     onChange: (
         value: SelectOption<string, RewardsPickerSelectOptionData>,
@@ -92,6 +93,7 @@ export function RewardsPickerTokensSelect({
     unavailables,
     value,
     loading,
+    disabled,
     className,
     onChange,
 }: RewardsPickerTokensSelectProps) {
@@ -135,7 +137,7 @@ export function RewardsPickerTokensSelect({
             label={label || t("label")}
             size="lg"
             loading={loading || loadingBalances}
-            disabled={!tokens}
+            disabled={disabled || !tokens}
             search
             options={options}
             value={value?.value as string}
