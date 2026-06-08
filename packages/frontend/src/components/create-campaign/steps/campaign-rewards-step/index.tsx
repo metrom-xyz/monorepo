@@ -23,8 +23,9 @@ import { InfoMessage } from "@/src/components/info-message";
 import { FormStepId } from "@/src/types/form";
 import { FixedAprPicker } from "../../inputs/fixed-apr-picker";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import { DistributablesType } from "@metrom-xyz/sdk";
+import { ChainType, DistributablesType } from "@metrom-xyz/sdk";
 import { AprPreviewChip } from "../../apr-preview-chip";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
@@ -69,6 +70,7 @@ export function CampaignRewardsStep({
     const [applied, setApplied] = useState(false);
 
     const t = useTranslations("newCampaign.form.rewards");
+    const chainType = useChainType();
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();
 
@@ -118,6 +120,14 @@ export function CampaignRewardsStep({
         >
             <FormStepSection
                 title={t("defineAssets")}
+                description={
+                    chainType === ChainType.Svm && (
+                        <InfoMessage
+                            weight="regular"
+                            text={t("singleRewardOnSolana")}
+                        />
+                    )
+                }
                 headerDecorator={
                     payload.distributables?.type ===
                     DistributablesType.Tokens ? (
