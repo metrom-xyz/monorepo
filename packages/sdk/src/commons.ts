@@ -20,6 +20,7 @@ export enum SupportedAmm {
     Hyperion = "hyperion",
     Thala = "thala",
     Stabull = "stabull",
+    Orca = "orca",
 }
 
 export enum SupportedDex {
@@ -45,6 +46,7 @@ export enum SupportedDex {
     Hyperion = "hyperion",
     Thala = "thala",
     Stabull = "stabull",
+    Orca = "orca",
 }
 
 export enum SupportedErc4626Vault {
