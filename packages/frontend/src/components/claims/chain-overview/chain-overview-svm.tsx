@@ -111,7 +111,7 @@ export function ChainOverviewSvm({
                             .deriveAssociatedTokenAddress(account);
 
                         const proof = reimbursement.proof.map((proof) =>
-                            getBase16Encoder().encode(proof),
+                            getBase16Encoder().encode(proof.slice(2)),
                         );
 
                         return await getRecoverRewardInstructionAsync({
@@ -133,7 +133,7 @@ export function ChainOverviewSvm({
                         .deriveAssociatedTokenAddress(account);
 
                     const proof = claim.proof.map((proof) =>
-                        getBase16Encoder().encode(proof),
+                        getBase16Encoder().encode(proof.slice(2)),
                     );
 
                     return await getClaimRewardInstructionAsync({

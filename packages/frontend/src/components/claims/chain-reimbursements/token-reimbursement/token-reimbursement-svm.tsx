@@ -81,7 +81,7 @@ export function TokenReimbursementSvm({
                             .deriveAssociatedTokenAddress(account);
 
                         const proof = reimbursement.proof.map((proof) =>
-                            getBase16Encoder().encode(proof),
+                            getBase16Encoder().encode(proof.slice(2)),
                         );
 
                         return await getRecoverRewardInstructionAsync({
