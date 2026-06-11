@@ -29,6 +29,7 @@
         "@reown/appkit": "1.8.18",
         "@reown/appkit-adapter-wagmi": "1.8.18",
         "@safe-global/safe-apps-sdk": "^9.1.0",
+        "@solana-program/token": "^0.13.0",
         "@solana/client": "^1.7.0",
         "@solana/kit": "^6.9.0",
         "@solana/react-hooks": "^1.4.1",

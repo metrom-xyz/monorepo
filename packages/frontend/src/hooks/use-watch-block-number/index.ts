@@ -3,7 +3,6 @@ import { useWatchBlockNumberEvm } from "./useWatchBlockNumberEvm";
 import { useWatchBlockNumberMvm } from "./useWatchBlockNumberMvm";
 import { useChainType } from "../useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
-import { useWatchBlockNumberSvm } from "./useWatchBlockNumberSvm";
 
 export function useWatchBlockNumber(params: HookBaseParams = {}) {
     const chainType = useChainType();
@@ -16,10 +15,6 @@ export function useWatchBlockNumber(params: HookBaseParams = {}) {
         ...params,
         enabled: chainType === ChainType.Aptos,
     });
-    const blockNumberSvm = useWatchBlockNumberSvm({
-        ...params,
-        enabled: chainType === ChainType.Svm,
-    });
 
     switch (chainType) {
         case ChainType.Evm:
@@ -27,7 +22,8 @@ export function useWatchBlockNumber(params: HookBaseParams = {}) {
         case ChainType.Aptos:
             return blockNumberMvm;
         case ChainType.Svm:
-            return blockNumberSvm;
+            // Not needed for Svm since we subscribe to the account changes to fetch updated token balances
+            return undefined;
         default:
             throw new Error(
                 `Unsupported chain type ${chainType} in useWatchBlockNumber`,
