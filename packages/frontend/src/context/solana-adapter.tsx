@@ -1,7 +1,7 @@
 import { autoDiscover, createClient, filterByNames } from "@solana/client";
 import { SolanaProvider } from "@solana/react-hooks";
 import type { ReactNode } from "react";
-import { ENVIRONMENT } from "../commons/env";
+import { ENVIRONMENT, SOLANA_DEVNET_HELIUS_RPC_API_KEY } from "../commons/env";
 import { Environment } from "@metrom-xyz/sdk";
 
 export const SOLANA_WALLET_CONNECTORS_NAMES = [
@@ -14,6 +14,7 @@ export const SOLANA_WALLET_CONNECTORS_NAMES = [
 
 const client = createClient({
     cluster: ENVIRONMENT === Environment.Production ? "mainnet" : "devnet",
+    rpc: `https://devnet.helius-rpc.com/?api-key=${SOLANA_DEVNET_HELIUS_RPC_API_KEY}`,
     walletConnectors: autoDiscover({
         filter: filterByNames(...SOLANA_WALLET_CONNECTORS_NAMES),
     }),
