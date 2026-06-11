@@ -1,47 +1,78 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { UseWatchBalanceParams, UseWatchBalanceReturnValue } from ".";
-import { useWatchBlockNumber } from "../use-watch-block-number";
 import { useSolanaClient } from "@solana/react-hooks";
-import { useQuery } from "@tanstack/react-query";
+import type { ClientWatchers } from "@solana/client";
 
 export function useWatchBalanceSvm({
     address,
     token,
     enabled = true,
 }: UseWatchBalanceParams = {}): UseWatchBalanceReturnValue {
-    const blockNumber = useWatchBlockNumber({ enabled });
     const client = useSolanaClient();
-
-    const {
-        data: balance,
-        isLoading: loading,
-        refetch,
-    } = useQuery({
-        queryKey: ["watch-token-balance", blockNumber, token, address, client],
-        queryFn: async () => {
-            if (!token || !address) return null;
-
-            try {
-                return await client
-                    .splToken({ mint: token })
-                    .fetchBalance(address);
-            } catch (error) {
-                console.error(
-                    `Could not fetch balance for whitelisted token: ${error}`,
-                );
-                throw error;
-            }
-        },
-        enabled: !!token && !!address && enabled,
-    });
+    const [balance, setBalance] = useState<bigint | undefined>();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (!enabled) return;
-        refetch();
-    }, [enabled, blockNumber, refetch]);
+        if (!enabled || !token || !address) {
+            setBalance(undefined);
+            return;
+        }
 
-    return {
-        balance: balance ? balance.amount : undefined,
-        loading,
-    };
+        let cancelled = false;
+        let subscription: ReturnType<ClientWatchers["watchAccount"]> | null =
+            null;
+
+        setBalance(undefined);
+        setLoading(true);
+
+        const exec = async () => {
+            const ataAddress = await client
+                .splToken({ mint: token })
+                .deriveAssociatedTokenAddress(address);
+
+            if (cancelled) return;
+
+            try {
+                const initial = await client
+                    .splToken({ mint: token })
+                    .fetchBalance(address);
+                if (!cancelled) setBalance(initial.amount);
+            } catch (error) {
+                console.error(
+                    `Could not fetch balance for Solana token: ${error}`,
+                );
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+
+            if (cancelled) return;
+
+            subscription = client.watchers.watchAccount(
+                { address: ataAddress },
+                async () => {
+                    if (cancelled) return;
+                    try {
+                        const b = await client
+                            .splToken({ mint: token })
+                            .fetchBalance(address);
+                        if (cancelled) return;
+                        setBalance(b.amount);
+                    } catch (error) {
+                        console.error(
+                            `Could not refetch balance for Solana token: ${error}`,
+                        );
+                    }
+                },
+            );
+        };
+
+        exec();
+
+        return () => {
+            cancelled = true;
+            subscription?.abort();
+        };
+    }, [enabled, token, address, client]);
+
+    return { balance, loading };
 }

@@ -25,6 +25,9 @@ export const SOLANA: boolean = process.env.NEXT_PUBLIC_SOLANA === "true";
 if (SOLANA && APTOS)
     throw new Error("Both NEXT_PUBLIC_APTOS and NEXT_PUBLIC_SOLANA provided");
 
+export const SOLANA_DEVNET_HELIUS_RPC_API_KEY: string | undefined =
+    process.env.NEXT_PUBLIC_SOLANA_DEVNET_HELIUS_RPC_API_KEY;
+
 export const APTOS_CLIENT_TESTNET_API_KEY: string | undefined =
     process.env.NEXT_PUBLIC_APTOS_CLIENT_TESTNET_API_KEY;
 export const APTOS_CLIENT_API_KEY: string | undefined =
