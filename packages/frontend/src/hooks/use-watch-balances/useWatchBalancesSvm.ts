@@ -1,16 +1,19 @@
 import type { UsdPricedErc20Token } from "@metrom-xyz/sdk";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type {
     Erc20TokenWithBalance,
     UseWatchBalancesParams,
     UseWatchBalancesReturnValue,
 } from ".";
-import { useQuery } from "@tanstack/react-query";
 import { formatUnits } from "@/src/utils/format";
-import { useWatchBlockNumber } from "../use-watch-block-number";
 import { useSolanaClient } from "@solana/react-hooks";
+import type { ClientWatchers } from "@solana/client";
+import { getBase64Encoder } from "@solana/kit";
+import { getTokenDecoder } from "@solana-program/token";
 
 const collator = new Intl.Collator();
+const base64Encoder = getBase64Encoder();
+const tokenDecoder = getTokenDecoder();
 
 export function useWatchBalancesSvm<T extends UsdPricedErc20Token>({
     chainId,
@@ -18,90 +21,121 @@ export function useWatchBalancesSvm<T extends UsdPricedErc20Token>({
     tokens,
     enabled = true,
 }: UseWatchBalancesParams<T> = {}): UseWatchBalancesReturnValue<T> {
-    const blockNumber = useWatchBlockNumber();
     const client = useSolanaClient();
-
-    const {
-        data: rewardTokenRawBalances,
-        isLoading: loading,
-        refetch,
-    } = useQuery({
-        queryKey: [
-            "watch-whitelisted-tokens-balances",
-            chainId,
-            tokens,
-            address,
-        ],
-        queryFn: async ({ queryKey }) => {
-            const [, chainId, tokens, address] = queryKey as [
-                string,
-                number | undefined,
-                T[] | undefined,
-                string | undefined,
-            ];
-
-            if (!chainId || !tokens || !address) return null;
-
-            try {
-                return await Promise.all(
-                    tokens.map((token) =>
-                        client
-                            .splToken({ mint: token.address })
-                            .fetchBalance(address),
-                    ),
-                );
-            } catch (error) {
-                console.error(
-                    `Could not fetch balances for whitelisted Solana tokens: ${error}`,
-                );
-                throw error;
-            }
-        },
-        enabled: !!tokens && !!address && enabled,
-    });
+    const [rawBalances, setRawBalances] = useState<bigint[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (!enabled) return;
-        refetch();
-    }, [enabled, blockNumber, refetch]);
+        if (!enabled || !tokens?.length || !address || !chainId) {
+            setRawBalances([]);
+            return;
+        }
+
+        let cancelled = false;
+        let subscriptions: ReturnType<ClientWatchers["watchAccount"]>[] = [];
+
+        setRawBalances([]);
+        setLoading(true);
+
+        const exec = async () => {
+            const ataAddresses = await Promise.all(
+                tokens.map((token) =>
+                    client
+                        .splToken({ mint: token.address })
+                        .deriveAssociatedTokenAddress(address),
+                ),
+            );
+
+            if (cancelled) return;
+
+            try {
+                const { value: accounts } = await client.runtime.rpc
+                    .getMultipleAccounts(ataAddresses, { encoding: "base64" })
+                    .send();
+
+                if (!cancelled) {
+                    const balances = accounts.map((account) =>
+                        account
+                            ? tokenDecoder.decode(
+                                  base64Encoder.encode(account.data[0]),
+                              ).amount
+                            : 0n,
+                    );
+
+                    setRawBalances(balances);
+                }
+            } catch (error) {
+                console.error(
+                    `Could not fetch balances for Solana tokens: ${error}`,
+                );
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+
+            if (cancelled) return;
+
+            const results = await Promise.allSettled(
+                ataAddresses.map((ataAddress, i) =>
+                    client.watchers.watchAccount(
+                        { address: ataAddress },
+                        async () => {
+                            if (cancelled) return;
+                            try {
+                                const balance = await client
+                                    .splToken({ mint: tokens[i].address })
+                                    .fetchBalance(address);
+                                if (cancelled) return;
+                                setRawBalances((prev) => {
+                                    const next = [...prev];
+                                    next[i] = balance.amount;
+                                    return next;
+                                });
+                            } catch (error) {
+                                console.error(
+                                    `Could not refetch balance for ${tokens[i].symbol}: ${error}`,
+                                );
+                            }
+                        },
+                    ),
+                ),
+            );
+
+            if (!cancelled) {
+                subscriptions = results
+                    .filter((r) => r.status === "fulfilled")
+                    .map((r) => r.value);
+            }
+        };
+
+        exec();
+
+        return () => {
+            cancelled = true;
+            subscriptions.forEach((sub) => sub.abort());
+        };
+    }, [enabled, chainId, address, tokens, client]);
 
     const tokensWithBalance = useMemo(() => {
         if (!tokens) return [];
 
-        if (
-            !rewardTokenRawBalances ||
-            rewardTokenRawBalances.length !== tokens.length
-        )
-            return tokens.map((token) => {
-                return {
-                    token,
-                    balance: null,
-                };
-            });
+        if (rawBalances.length !== tokens.length)
+            return tokens.map((token) => ({ token, balance: null }));
 
         return tokens.reduce(
             (accumulator: Erc20TokenWithBalance<T>[], token, i) => {
-                let balance = null;
-
-                const rawBalance = rewardTokenRawBalances[i].amount;
-                const formattedBalance = Number(
-                    formatUnits(rawBalance, token.decimals),
-                );
-                balance = {
-                    raw: rawBalance,
-                    formatted: formattedBalance,
-                };
-
+                const raw = rawBalances[i];
                 accumulator.push({
                     token,
-                    balance,
+                    balance: {
+                        raw,
+                        formatted: Number(formatUnits(raw, token.decimals)),
+                    },
                 });
-
                 return accumulator;
             },
             [],
         );
-    }, [rewardTokenRawBalances, tokens]);
+    }, [rawBalances, tokens]);
 
     const sortedTokensWithBalance = [...tokensWithBalance].sort((a, b) => {
         if (!a.balance && !b.balance)
