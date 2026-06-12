@@ -427,7 +427,7 @@ export class MetromApiClient {
     async fetchAmmPools(params: FetchPoolsParams): Promise<AmmPool[]> {
         const response = await fetch(
             new URL(
-                `v2/amm-pools/${params.chainType}/${params.chainId}/${params.dex}`,
+                `v2/amms/${params.chainType}/${params.chainId}/${params.dex}/pools`,
                 this.baseUrl,
             ),
         );
@@ -461,7 +461,7 @@ export class MetromApiClient {
     async fetchPool(params: FetchPoolParams): Promise<AmmPool | null> {
         const response = await fetch(
             new URL(
-                `v2/amm-pools/${params.chainType}/${params.chainId}/${params.id}`,
+                `v2/amms/${params.chainType}/${params.chainId}/pools/${params.id}`,
                 this.baseUrl,
             ),
         );
@@ -907,7 +907,7 @@ export class MetromApiClient {
         params: FetchLiquidityByAddressesParams,
     ): Promise<bigint> {
         const url = new URL(
-            `v2/amm-pools/${params.chainType}/${params.chainId}/${params.pool.id}/liquidities-by-addresses`,
+            `v2/amms/${params.chainType}/${params.chainId}/pools/${params.pool.id}/liquidities-by-addresses`,
             this.baseUrl,
         );
 
