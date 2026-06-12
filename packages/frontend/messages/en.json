@@ -540,7 +540,8 @@
             "startDatePicker": {
                 "label": "Start date",
                 "now": "Now",
-                "dateInThePast": "Date can't be in the past"
+                "dateInThePast": "Date can't be in the past",
+                "dateTooSoon": "Start date must be at least {duration} from now"
             },
             "weighting": {
                 "title": "Reward ratio",
