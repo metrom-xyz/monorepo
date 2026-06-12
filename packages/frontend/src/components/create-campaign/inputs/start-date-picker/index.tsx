@@ -5,7 +5,10 @@ import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
 import { DateTimePicker, TextInput, Popover, Chip } from "@metrom-xyz/ui";
-import { getClosestAvailableDateTime } from "../../../../utils/date";
+import {
+    getClosestAvailableDateTime,
+    START_DATE_BUFFER_HOURS,
+} from "../../../../utils/date";
 import { formatDateTime } from "@/src/utils/format";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 
@@ -41,19 +44,27 @@ export function StartDatePicker({
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (startDate?.isBefore(dayjs()))
-                setMinDate(getClosestAvailableDateTime(startDate));
+            setMinDate((prev) => {
+                const next = getClosestAvailableDateTime();
+                return prev?.isSame(next) ? prev : next;
+            });
         }, 1_000);
         return () => {
             clearInterval(interval);
         };
-    }, [startDate, minDate]);
+    }, []);
 
     useEffect(() => {
         if (!startDate || !minDate) return;
 
         let dateError = "";
-        if (startDate.isBefore(minDate)) dateError = t("dateInThePast");
+        if (startDate.isBefore(minDate)) {
+            const duration =
+                START_DATE_BUFFER_HOURS < 1
+                    ? `${START_DATE_BUFFER_HOURS * 60}m`
+                    : `${START_DATE_BUFFER_HOURS}h`;
+            dateError = t("dateTooSoon", { duration });
+        }
 
         onError(dateError);
         setDateError(dateError);
@@ -65,7 +76,7 @@ export function StartDatePicker({
 
     const handleDateNowOnClick = useCallback(() => {
         if (disabled) return;
-        onChange({ startDate: getClosestAvailableDateTime(dayjs()) });
+        onChange({ startDate: getClosestAvailableDateTime() });
     }, [disabled, onChange]);
 
     const handleDateOnChange = useCallback(
