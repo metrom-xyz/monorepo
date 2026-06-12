@@ -31,7 +31,10 @@ export const solanaDevelopmentData: ChainData = {
             active: true,
             partner: false,
             type: BaseCampaignType.AmmPoolLiquidity,
-            distributables: [DistributablesType.Tokens],
+            distributables: [
+                DistributablesType.Tokens,
+                DistributablesType.FixedPoints,
+            ],
         },
         {
             active: true,
