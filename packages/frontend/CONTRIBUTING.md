@@ -29,14 +29,18 @@ contents of `.env.example`.
 
 ### Environment variables
 
-| Name                                   | Description                                          | Required | Default |
-| -------------------------------------- | ---------------------------------------------------- | -------- | ------- |
-| `NEXT_PUBLIC_ENVIRONMENT`              | Metrom environment (`development` or `production`)   | ✅       | `-`     |
-| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | WalletConnect project ID                             | ✅       | `-`     |
-| `NEXT_PUBLIC_SAFE`                     | Whether to build the app as a Safe App               | ❌       | `false` |
-| `NEXT_PUBLIC_UMAMI_WEBSITE_ID`         | [Umami](https://umami.is/) webssite id for analytics | ❌       | `-`     |
-| `NEXT_PUBLIC_APTOS`                    | Whether to build the app with Aptos support          | ❌       | `false` |
-| `NEXT_PUBLIC_APTOS_CLIENT_API_KEY`     | API key to query Aptos indexer                       | ❌       | `-`     |
+| Name                                       | Description                                                | Required | Default |
+| ------------------------------------------ | ---------------------------------------------------------- | -------- | ------- |
+| `NEXT_PUBLIC_ENVIRONMENT`                  | Metrom environment (`development` or `production`)         | ✅       | `-`     |
+| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`     | WalletConnect project ID                                   | ✅       | `-`     |
+| `NEXT_PUBLIC_SAFE`                         | Whether to build the app as a Safe App                     | ❌       | `false` |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID`             | [Umami](https://umami.is/) website id for analytics        | ❌       | `-`     |
+| `NEXT_PUBLIC_APTOS`                        | Whether to build the app with Aptos support                | ❌       | `false` |
+| `NEXT_PUBLIC_APTOS_CLIENT_TESTNET_API_KEY` | API key to query the Aptos testnet indexer                 | ❌       | `-`     |
+| `NEXT_PUBLIC_APTOS_CLIENT_API_KEY`         | API key to query the Aptos mainnet indexer                 | ❌       | `-`     |
+| `NEXT_PUBLIC_SOLANA`                       | Whether to build the app with Solana support               | ❌       | `false` |
+| `NEXT_PUBLIC_SOLANA_HELIUS_RPC_API_KEY`    | [Helius](https://helius.dev/) RPC API key for Solana       | ❌       | `-`     |
+| `NEXT_PUBLIC_EXPERIMENTAL_CHAINS`          | Comma-separated list of chain IDs to unlock experimentally | ❌       | `-`     |
 
 ## Running the development server
 
