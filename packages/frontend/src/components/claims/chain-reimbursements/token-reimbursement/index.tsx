@@ -7,6 +7,7 @@ import { TokenReimbursementEvm } from "./token-reimbursement-evm";
 import { TokenReimbursementMvm } from "./token-reimbursement-mvm";
 import { useChainType } from "@/src/hooks/useChainType";
 import { TokenReimbursementSvm } from "./token-reimbursement-svm";
+import { TokenReimbursementSui } from "./token-reimbursement-sui";
 
 import styles from "./styles.module.css";
 
@@ -27,6 +28,8 @@ export function TokenReimbursement(props: TokenReimbursementProps) {
             return <TokenReimbursementMvm {...props} />;
         case ChainType.Svm:
             return <TokenReimbursementSvm {...props} />;
+        case ChainType.Sui:
+            return <TokenReimbursementSui {...props} />;
         default:
             return null;
     }

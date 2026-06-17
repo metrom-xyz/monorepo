@@ -21,9 +21,12 @@ export const UMAMI_WEBSITE_ID: string =
 
 export const APTOS: boolean = process.env.NEXT_PUBLIC_APTOS === "true";
 export const SOLANA: boolean = process.env.NEXT_PUBLIC_SOLANA === "true";
+export const SUI: boolean = process.env.NEXT_PUBLIC_SUI === "true";
 
-if (SOLANA && APTOS)
-    throw new Error("Both NEXT_PUBLIC_APTOS and NEXT_PUBLIC_SOLANA provided");
+if ([APTOS, SOLANA, SUI].filter(Boolean).length > 1)
+    throw new Error(
+        "Only one of NEXT_PUBLIC_APTOS, NEXT_PUBLIC_SOLANA, or NEXT_PUBLIC_SUI can be true",
+    );
 
 export const SOLANA_HELIUS_RPC_API_KEY: string | undefined =
     process.env.NEXT_PUBLIC_SOLANA_HELIUS_RPC_API_KEY;

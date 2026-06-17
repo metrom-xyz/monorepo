@@ -21,6 +21,8 @@ import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign
 import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
 import { Erc4626VaultCampaignPreviewPayload } from "../types/campaign/erc4626-vault-campaign";
 import { getAddressEncoder, type Address as AddressSvm } from "@solana/kit";
+import { fromHex } from "@mysten/sui/utils";
+import { bcs } from "@mysten/sui/bcs";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -191,6 +193,68 @@ export function buildCampaignDataBundleSvm(payload: CampaignPreviewPayload) {
     } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
         return new Uint8Array(0);
     } else return null;
+}
+
+export function buildCampaignDataBundleSui(payload: CampaignPreviewPayload) {
+    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
+        return fromHex(payload.pool.id);
+    else if (payload instanceof LiquityV2CampaignPreviewPayload) {
+        return new Uint8Array([
+            ...bcs.String.serialize(payload.brand.slug).toBytes(),
+            ...bcs.Address.serialize(payload.collateral.address).toBytes(),
+        ]);
+    } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+        const parts: Uint8Array[] = [];
+
+        if (payload.kind === CampaignKind.AaveV3BridgeAndSupply)
+            parts.push(
+                bcs.String.serialize(SupportedBridge.LayerZero).toBytes(),
+            );
+
+        parts.push(bcs.String.serialize(payload.brand.slug).toBytes());
+        parts.push(bcs.Address.serialize(payload.market.address).toBytes());
+        parts.push(bcs.Address.serialize(payload.collateral.address).toBytes());
+
+        if (
+            payload.boostingFactor &&
+            payload.kind === CampaignKind.AaveV3BridgeAndSupply
+        )
+            parts.push(
+                bcs.U32.serialize(
+                    Math.floor(payload.boostingFactor * 100 * 1_000_000),
+                ).toBytes(),
+            );
+
+        if (payload.kind === CampaignKind.AaveV3NetSupply) {
+            const blacklistedCollaterals = payload.blacklistedCollaterals || [];
+            parts.push(
+                bcs
+                    .vector(bcs.Address)
+                    .serialize(
+                        blacklistedCollaterals.map(({ address }) => address),
+                    )
+                    .toBytes(),
+            );
+        }
+
+        const totalLen = parts.reduce((sum, p) => sum + p.length, 0);
+        const result = new Uint8Array(totalLen);
+        let offset = 0;
+        for (const part of parts) {
+            result.set(part, offset);
+            offset += part.length;
+        }
+        return result;
+    } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
+        return bcs.Address.serialize(payload.asset.address).toBytes();
+    } else if (payload instanceof Erc4626VaultCampaignPreviewPayload) {
+        return new Uint8Array([
+            ...bcs.String.serialize(payload.brand.slug).toBytes(),
+            ...bcs.Address.serialize(payload.vault.address).toBytes(),
+        ]);
+    } else if (payload instanceof EmptyTargetCampaignPreviewPayload)
+        return new Uint8Array(0);
+    else return null;
 }
 
 export function buildSpecificationBundle(

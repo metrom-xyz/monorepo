@@ -8,6 +8,7 @@ import { useWatchBalancesEvm } from "./useWatchBalancesEvm";
 import { useWatchBalancesMvm } from "./useWatchBalancesMvm";
 import { useChainType } from "../useChainType";
 import { useWatchBalancesSvm } from "./useWatchBalancesSvm";
+import { useWatchBalancesSui } from "./useWatchBalancesSui";
 
 export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
     token: T;
@@ -42,6 +43,10 @@ export function useWatchBalances<T extends UsdPricedErc20Token>(
         ...params,
         enabled: chainType === ChainType.Svm,
     });
+    const balancesSui = useWatchBalancesSui({
+        ...params,
+        enabled: chainType === ChainType.Sui,
+    });
 
     switch (chainType) {
         case ChainType.Evm:
@@ -50,6 +55,8 @@ export function useWatchBalances<T extends UsdPricedErc20Token>(
             return balancesMvm;
         case ChainType.Svm:
             return balancesSvm;
+        case ChainType.Sui:
+            return balancesSui;
         default:
             throw new Error(
                 `Unsupported chain type ${chainType} in useWatchBalances`,

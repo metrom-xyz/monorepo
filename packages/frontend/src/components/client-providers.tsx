@@ -3,6 +3,7 @@
 import { type ReactNode } from "react";
 import { TokenIconsProvider } from "./token-icon-provider";
 import { Toaster } from "@metrom-xyz/ui";
+import dynamic from "next/dynamic";
 import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
 import { Network } from "@aptos-labs/ts-sdk";
 import dayjs from "dayjs";
@@ -58,6 +59,14 @@ const queryClient = new QueryClient({
     },
 });
 
+const SuiDAppKitClientProvider = dynamic(
+    () =>
+        import("../context/sui-provider").then(
+            (mod) => mod.SuiDAppKitClientProvider,
+        ),
+    { ssr: false },
+);
+
 export function ClientProviders({
     children,
 }: Readonly<{
@@ -65,31 +74,33 @@ export function ClientProviders({
 }>) {
     return (
         <QueryClientProvider client={queryClient}>
-            <SolanaAdapterContextProvider>
-                <AptosWalletAdapterProvider
-                    autoConnect={true}
-                    disableTelemetry={true}
-                    dappConfig={{
-                        network:
-                            ENVIRONMENT === Environment.Production
-                                ? Network.MAINNET
-                                : Network.TESTNET,
-                        aptosApiKeys: {
-                            mainnet: APTOS_CLIENT_API_KEY,
-                            testnet: APTOS_CLIENT_TESTNET_API_KEY,
-                        },
-                    }}
-                >
-                    <AptosCoreProvider>
-                        <ReownAppKitContextProvider>
-                            <TokenIconsProvider>
-                                <Toaster />
-                                {children}
-                            </TokenIconsProvider>
-                        </ReownAppKitContextProvider>
-                    </AptosCoreProvider>
-                </AptosWalletAdapterProvider>
-            </SolanaAdapterContextProvider>
+            <SuiDAppKitClientProvider>
+                <SolanaAdapterContextProvider>
+                    <AptosWalletAdapterProvider
+                        autoConnect={true}
+                        disableTelemetry={true}
+                        dappConfig={{
+                            network:
+                                ENVIRONMENT === Environment.Production
+                                    ? Network.MAINNET
+                                    : Network.TESTNET,
+                            aptosApiKeys: {
+                                mainnet: APTOS_CLIENT_API_KEY,
+                                testnet: APTOS_CLIENT_TESTNET_API_KEY,
+                            },
+                        }}
+                    >
+                        <AptosCoreProvider>
+                            <ReownAppKitContextProvider>
+                                <TokenIconsProvider>
+                                    <Toaster />
+                                    {children}
+                                </TokenIconsProvider>
+                            </ReownAppKitContextProvider>
+                        </AptosCoreProvider>
+                    </AptosWalletAdapterProvider>
+                </SolanaAdapterContextProvider>
+            </SuiDAppKitClientProvider>
         </QueryClientProvider>
     );
 }
