@@ -18,6 +18,17 @@ export const CHAIN_TYPE = APTOS ? ChainType.Aptos : ChainType.Evm;
 
 export const BASE_URL = "https://app.metrom.xyz";
 
+export const METROM_STATIC_BASE_URL =
+    "https://metrom-static.s3.us-east-1.amazonaws.com";
+
+export function getProjectIconUrl(slug: string) {
+    return `${METROM_STATIC_BASE_URL}/icons/${slug}.svg`;
+}
+
+export function getProjectIllustrationUrl(slug: string) {
+    return `${METROM_STATIC_BASE_URL}/illustrations/${slug}.svg`;
+}
+
 export const METROM_APTOS_BASE_URL =
     ENVIRONMENT === Environment.Production
         ? "https://aptos.metrom.xyz"

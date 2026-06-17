@@ -21,16 +21,14 @@ export function ProjectCampaignsTotals({
 
     return (
         <div className={styles.root}>
-            <div className={styles.tag}>
-                <Typography size="sm" className={styles.lightText}>
-                    {t.rich(short ? "campaignsShort" : "campaigns", {
-                        count: total,
-                        highlighted: (chunks) => (
-                            <span className={styles.mainText}>{chunks}</span>
-                        ),
-                    })}
-                </Typography>
-            </div>
+            <Typography size="sm" className={styles.lightText}>
+                {t.rich(short ? "campaignsShort" : "campaigns", {
+                    count: total,
+                    highlighted: (chunks) => (
+                        <span className={styles.mainText}>{chunks}</span>
+                    ),
+                })}
+            </Typography>
             <div
                 className={classNames(styles.activeChip, {
                     [styles.active]: !!active,

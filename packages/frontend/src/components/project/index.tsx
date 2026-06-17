@@ -2,9 +2,12 @@
 
 import { Header } from "./header";
 import { Intro } from "./intro";
-import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
-import { PROJECTS_METADATA } from "@/src/commons/projects";
-import { ProjectKind } from "@/src/types/project";
+import {
+    BackendCampaignType,
+    ChainType,
+    SupportedLiquidityProviderDeal,
+    type Project as ProjectType,
+} from "@metrom-xyz/sdk";
 import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
 import { Campaigns, type BackendCampaignTypeAndProjects } from "../campaigns";
 import { useMemo } from "react";
@@ -17,37 +20,26 @@ import { BackButton } from "../back-button";
 import styles from "./styles.module.css";
 
 interface ProjectProps {
-    project: string;
+    project: ProjectType;
 }
 
 export function Project({ project }: ProjectProps) {
-    const details = PROJECTS_METADATA[project];
+    const { slug, kind } = project;
 
-    const {
-        name,
-        kind,
-        protocol,
-        description,
-        url,
-        branding,
-        icon,
-        illustration,
-        intro,
-    } = details;
-
-    const Widget = PROJECTS_WIDGETS[project];
+    const Widget = PROJECTS_WIDGETS[slug];
 
     const optionalFilters: RawFilters = useMemo(() => {
         switch (kind) {
-            case ProjectKind.GenericProtocol:
-            case ProjectKind.PointsTracking:
+            case "generic-protocol":
+            case "points-tracking":
+            case "partner":
                 return {
                     chains: [],
                     statuses: [],
-                    protocols: [{ label: "", value: protocol }],
+                    protocols: [{ label: "", value: slug }],
                 };
-            case ProjectKind.LiquidityDeals: {
-                const [, chain] = project.split("-");
+            case "liquidity-deals": {
+                const [, chain] = slug.split("-");
                 const chainData = getChainDataBySlug(chain);
 
                 if (!chainData) {
@@ -66,16 +58,26 @@ export function Project({ project }: ProjectProps) {
                         },
                     ],
                     statuses: [],
-                    protocols: [{ label: "", value: protocol }],
+                    protocols: [
+                        {
+                            label: "",
+                            value: SupportedLiquidityProviderDeal.Turtle,
+                        },
+                    ],
                 };
             }
-            case ProjectKind.Chain:
+            case "chain":
+                if (
+                    project.chainType === undefined ||
+                    project.chainId === undefined
+                )
+                    return { chains: [], statuses: [], protocols: [] };
                 return {
                     chains: [
                         {
                             label: "",
                             query: "",
-                            value: `${details.chainType}_${details.chainId}`,
+                            value: `${project.chainType}_${project.chainId}`,
                         },
                     ],
                     statuses: [],
@@ -84,7 +86,7 @@ export function Project({ project }: ProjectProps) {
             default:
                 return { chains: [], statuses: [], protocols: [] };
         }
-    }, [details, kind, protocol, project]);
+    }, [project, slug, kind]);
 
     const { chainTypes, chainIds, protocols }: FilterParams = useMemo(() => {
         const { chains, statuses, protocols } = optionalFilters;
@@ -130,16 +132,8 @@ export function Project({ project }: ProjectProps) {
         <div className={styles.root}>
             <div className={styles.topContent}>
                 <BackButton />
-                <Header
-                    name={name}
-                    slug={project}
-                    url={url}
-                    description={description}
-                    branding={branding}
-                    icon={icon}
-                    illustration={illustration}
-                />
-                {intro && <Intro {...intro} />}
+                <Header project={project} />
+                {project.intro && <Intro {...project.intro} />}
                 {Widget && (
                     <div className={styles.widgets}>
                         <Widget />

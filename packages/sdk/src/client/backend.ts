@@ -1128,7 +1128,7 @@ export class MetromApiClient {
     async fetchProjects(
         params: FetchProjectsParams = { crossVm: true },
     ): Promise<Project[]> {
-        const url = new URL("v2/projects", this.baseUrl);
+        const url = new URL("v3/projects", this.baseUrl);
 
         const response = await fetch(url);
         if (!response.ok)
@@ -1157,6 +1157,8 @@ export class MetromApiClient {
                 } else if (params.chainType)
                     campaigns = project.campaigns[params.chainType];
                 else return null;
+
+                if (!campaigns) return null;
 
                 return { ...project, campaigns };
             })

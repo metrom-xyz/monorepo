@@ -1,8 +1,10 @@
-import { PROJECTS_METADATA } from "@/src/commons/projects";
 import { Project } from "@/src/components/project";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { METROM_API_CLIENT } from "@/src/commons";
+
+export const revalidate = 300;
 
 export interface Params {
     project: string;
@@ -23,21 +25,16 @@ export async function generateMetadata({ params }: ProjectPageProps) {
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-    const { locale, project } = await params;
+    const { locale, project: slug } = await params;
 
-    if (!routing.locales.includes(locale) || !PROJECTS_METADATA[project])
-        notFound();
+    if (!routing.locales.includes(locale)) notFound();
 
     setRequestLocale(locale);
 
-    return <Project project={project} />;
-}
+    const projects = await METROM_API_CLIENT.fetchProjects();
+    const project = projects.find((p) => p.slug === slug);
 
-export async function generateStaticParams() {
-    return routing.locales.flatMap((locale) =>
-        Object.keys(PROJECTS_METADATA).map((project) => ({
-            locale,
-            project,
-        })),
-    );
+    if (!project) notFound();
+
+    return <Project project={project} />;
 }

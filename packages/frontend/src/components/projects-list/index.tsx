@@ -1,7 +1,7 @@
 import { ProjectCard, SkeletonProjectCard } from "../project-card";
 import { useProjects } from "@/src/hooks/useProjects";
 import { LoadingBar } from "../loading-bar";
-import { PROJECTS_METADATA } from "@/src/commons/projects";
+import { getProjectIconUrl, getProjectIllustrationUrl } from "@/src/commons";
 import { useTranslations } from "next-intl";
 import { EmptyIcon } from "@/src/assets/empty-icon";
 import { Typography } from "@metrom-xyz/ui";
@@ -63,15 +63,11 @@ export function ProjectsList() {
                     </div>
                 ) : (
                     projects.map((project) => {
-                        const { slug } = project;
-
-                        const metadata = PROJECTS_METADATA[slug];
-                        if (!metadata) return null;
+                        const { slug, kind } = project;
 
                         let chains: ChainWithType[] = [];
 
-                        // handle protocol-chain keys, for turtle projects
-                        if (slug.includes("-"))
+                        if (kind === "liquidity-deals")
                             chains = getChainsForTurtleDeal(
                                 slug as SupportedTurtleDeal,
                                 chainType !== ChainType.Aptos,
@@ -82,21 +78,20 @@ export function ProjectsList() {
                                 chainType !== ChainType.Aptos,
                             );
 
-                        if (chains.length === 0) return null;
-
                         return (
                             <ProjectCard
                                 key={slug}
                                 href={`/projects/${slug}`}
-                                {...project}
                                 totalCampaigns={project.campaigns.total}
                                 activeCampaigns={project.campaigns.active}
-                                name={metadata.name}
-                                types={metadata.types}
+                                name={project.name}
+                                types={project.types}
                                 chains={chains}
-                                icon={metadata.icon}
-                                illustration={metadata.illustration}
-                                branding={metadata.branding}
+                                iconUrl={getProjectIconUrl(slug)}
+                                illustrationUrl={getProjectIllustrationUrl(
+                                    slug,
+                                )}
+                                branding={project.branding}
                             />
                         );
                     })
