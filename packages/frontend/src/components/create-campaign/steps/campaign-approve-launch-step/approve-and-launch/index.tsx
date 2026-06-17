@@ -5,6 +5,7 @@ import { ApproveAndDeployMvm } from "./approve-and-launch-mvm";
 import { useChainType } from "@/src/hooks/useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 import { ApproveAndDeploySvm } from "./approve-and-launch-svm";
+import { ApproveAndDeploySui } from "./approve-and-launch-sui";
 
 export interface ApproveAndLaunchProps {
     payload: CampaignPreviewPayload;
@@ -25,6 +26,8 @@ export function ApproveAndLaunch(props: ApproveAndLaunchProps) {
             return <ApproveAndDeployMvm {...props} />;
         case ChainType.Svm:
             return <ApproveAndDeploySvm {...props} />;
+        case ChainType.Sui:
+            return <ApproveAndDeploySui {...props} />;
         default:
             throw new Error(`Unsupported chain type: ${chainType}`);
     }

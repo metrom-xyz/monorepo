@@ -55,12 +55,15 @@ import {
     ChainData,
     SupportedDevelopmentEvmChain,
     SupportedDevelopmentMvmChain,
+    SupportedDevelopmentSuiChain,
     SupportedDevelopmentSvmChain,
     SupportedProductionEvmChain,
     SupportedProductionMvmChain,
+    SupportedProductionSuiChain,
     SupportedProductionSvmChain,
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
+import { suiTestnetData } from "./chains/sui-testnet";
 
 export {
     Environment,
@@ -135,7 +138,20 @@ export const SVM_CHAIN_DATA: {
     },
 };
 
-// Needed for wagmi context setup, not needed for MVM, SVM or SUI chains
+export const SUI_CHAIN_DATA: {
+    [Environment.Development]: Record<SupportedDevelopmentSuiChain, ChainData>;
+    [Environment.Production]: Record<SupportedProductionSuiChain, ChainData>;
+} = {
+    [Environment.Development]: {
+        [SupportedDevelopmentSuiChain.Testnet]: suiTestnetData,
+    },
+    [Environment.Production]: {
+        // TODO: add mainnet data
+        [SupportedProductionSuiChain.Mainnet]: suiTestnetData,
+    },
+};
+
+// Needed for wagmi context setup, not needed for MVM or SVM chains
 export const SUPPORTED_DEVELOPMENT_CHAINS: [Chain, ...Chain[]] = [
     baseSepolia,
     sepolia,

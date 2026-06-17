@@ -5,8 +5,9 @@ import {
     BASE_URL,
     METROM_APTOS_BASE_URL,
     METROM_SOLANA_BASE_URL,
+    METROM_SUI_BASE_URL,
 } from "@/src/commons";
-import { AptosLogo, EthLogo, SolanaLogo } from "@metrom-xyz/chains";
+import { AptosLogo, EthLogo, SolanaLogo, SuiLogo } from "@metrom-xyz/chains";
 import { Popover, Typography } from "@metrom-xyz/ui";
 import { useChainType } from "@/src/hooks/useChainType";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
@@ -37,6 +38,12 @@ const ECOSYSTEMS: {
         name: "Solana",
         type: ChainType.Svm,
         icon: SolanaLogo,
+    },
+    {
+        url: METROM_SUI_BASE_URL,
+        name: "Sui",
+        type: ChainType.Sui,
+        icon: SuiLogo,
     },
 ];
 
