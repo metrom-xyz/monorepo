@@ -1,6 +1,6 @@
 import { useChains } from "wagmi";
 import { getChainData, solanaNetworkToId } from "@/src/utils/chain";
-import { SUPPORTED_CHAINS_MVM } from "@/src/commons";
+import { SUPPORTED_CHAINS_MVM, SUPPORTED_CHAINS_SUI } from "@/src/commons";
 import { ChainType } from "@metrom-xyz/sdk";
 import type { ChainWithType } from "../types/chain";
 import { useChainType } from "./useChainType";
@@ -33,6 +33,11 @@ export function useActiveChains(): ChainWithType[] {
                     type: ChainType.Svm,
                 },
             ];
+        case ChainType.Sui:
+            return SUPPORTED_CHAINS_SUI.map((id) => ({
+                id,
+                type: ChainType.Sui,
+            }));
         default:
             throw new Error(
                 `Unsupported chain type ${chainType} in useActiveChains`,

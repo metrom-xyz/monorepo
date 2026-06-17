@@ -12,7 +12,7 @@ import {
     Popover,
     Typography,
 } from "@metrom-xyz/ui";
-import { useCampaignDurationLimits } from "@/src/hooks/useCampaignDurationLimits";
+import { useCampaignDurationLimits } from "@/src/hooks/use-campaign-duration-limits";
 import { formatDateTime } from "@/src/utils/format";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 import { BoldText } from "@/src/components/bold-text";
@@ -143,7 +143,7 @@ export function EndDatePicker({
                 <TextInput
                     size="lg"
                     label={t("label")}
-                    disabled={disabled}
+                    disabled={!limits || disabled}
                     focused={popover}
                     value={endDate ? formatDateTime(endDate) : ""}
                     onClick={handleInputOnClick}

@@ -6,6 +6,7 @@ import { ChainOverviewMvm } from "./chain-overview-mvm";
 import { useChainType } from "@/src/hooks/useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 import { ChainOverviewSvm } from "./chain-overview-svm";
+import { ChainOverviewSui } from "./chain-overview-sui";
 
 import styles from "./styles.module.css";
 
@@ -28,6 +29,8 @@ export function ChainOverview(props: ChainOverviewProps) {
             return <ChainOverviewMvm {...props} />;
         case ChainType.Svm:
             return <ChainOverviewSvm {...props} />;
+        case ChainType.Sui:
+            return <ChainOverviewSui {...props} />;
         default:
             return null;
     }

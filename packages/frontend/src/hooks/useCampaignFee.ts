@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useProtocolFees } from "./useProtocolFees";
+import { useProtocolFees } from "./use-protocol-fees";
 import type { CampaignPayloadDistributables } from "../types/campaign/common";
 import { FEE_UNIT } from "../commons";
 import { DistributablesType } from "@metrom-xyz/sdk";

@@ -4,6 +4,7 @@ export enum ChainType {
     Evm = "evm",
     Svm = "svm",
     Aptos = "aptos",
+    Sui = "sui",
 }
 
 export interface Brand<S> {
