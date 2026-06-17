@@ -15,6 +15,10 @@ interface MetromContract extends ChainContract {
     stateAddress?: Address;
 }
 
+interface MetromContract extends ChainContract {
+    stateAddress?: Address;
+}
+
 export interface ChainData {
     id: number;
     type: ChainType;
