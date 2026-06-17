@@ -155,7 +155,8 @@ export function useReimbursementsSvm({
             const recovered: Address[] = [];
             const claimed: Address[] = [];
 
-            if (!rawReimbursements || !address) return { recovered, claimed };
+            if (!enabled || !rawReimbursements || !address)
+                return { recovered, claimed };
 
             const filtered = rawReimbursements.filter(
                 (r) => r.chainId === chainId,
