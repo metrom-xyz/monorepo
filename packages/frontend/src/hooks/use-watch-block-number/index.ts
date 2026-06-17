@@ -24,6 +24,9 @@ export function useWatchBlockNumber(params: HookBaseParams = {}) {
         case ChainType.Svm:
             // Not needed for Svm since we subscribe to the account changes to fetch updated token balances
             return undefined;
+        case ChainType.Sui:
+            // Not needed for Sui since we use configure refetch intervals for balance queries
+            return undefined;
         default:
             throw new Error(
                 `Unsupported chain type ${chainType} in useWatchBlockNumber`,

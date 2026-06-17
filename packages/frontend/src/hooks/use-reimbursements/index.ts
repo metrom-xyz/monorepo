@@ -5,6 +5,7 @@ import type { ReimbursementsWithRemaining } from "@/src/types/campaign/common";
 import { useChainType } from "../useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useReimbursementsSvm } from "./useReimbursementsSvm";
+import { useReimbursementsSui } from "./useReimbursementsSui";
 
 export type UseReimbursementsParams = HookBaseParams;
 
@@ -31,6 +32,10 @@ export function useReimbursements(
         ...params,
         enabled: chainType === ChainType.Svm,
     });
+    const reimbursementsSui = useReimbursementsSui({
+        ...params,
+        enabled: chainType === ChainType.Sui,
+    });
 
     switch (chainType) {
         case ChainType.Evm:
@@ -39,6 +44,8 @@ export function useReimbursements(
             return reimbursementsMvm;
         case ChainType.Svm:
             return reimbursementsSvm;
+        case ChainType.Sui:
+            return reimbursementsSui;
         default:
             throw new Error(
                 `Unsupported chain type ${chainType} in useReimbursements`,

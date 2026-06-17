@@ -19,6 +19,7 @@ export * from "./scroll";
 export * from "./sei";
 export * from "./solana";
 export * from "./sonic";
+export * from "./sui";
 export * from "./swell";
 export * from "./taiko";
 export * from "./telos";

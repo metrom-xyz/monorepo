@@ -5,6 +5,7 @@ import { useWatchBalanceMvm } from "./useWatchBalanceMvm";
 import { useChainType } from "../useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useWatchBalanceSvm } from "./useWatchBalanceSvm";
+import { useWatchBalanceSui } from "./useWatchBalanceSui";
 
 export interface UseWatchBalanceParams extends HookBaseParams {
     address?: Address;
@@ -35,6 +36,10 @@ export function useWatchBalance(params: UseWatchBalanceParams = {}): {
         ...params,
         enabled: chainType === ChainType.Svm,
     });
+    const balanceSui = useWatchBalanceSui({
+        ...params,
+        enabled: chainType === ChainType.Sui,
+    });
 
     switch (chainType) {
         case ChainType.Evm:
@@ -43,6 +48,8 @@ export function useWatchBalance(params: UseWatchBalanceParams = {}): {
             return balanceMvm;
         case ChainType.Svm:
             return balanceSvm;
+        case ChainType.Sui:
+            return balanceSui;
         default:
             throw new Error(
                 `Unsupported chain type ${chainType} in useWatchBalance`,

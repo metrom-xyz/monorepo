@@ -4,7 +4,8 @@ import type { Address } from "viem";
 import { useChainType } from "./useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useWalletConnection, useSolanaClient } from "@solana/react-hooks";
-import { solanaNetworkToId } from "../utils/chain";
+import { useCurrentAccount, useCurrentNetwork } from "@mysten/dapp-kit-react";
+import { solanaNetworkToId, suiNetworkToId } from "../utils/chain";
 
 export interface UseAccountReturnValue {
     address?: Address;
@@ -18,6 +19,8 @@ export function useAccount(): UseAccountReturnValue {
     const accountMvm = useWallet();
     const accountSvm = useWalletConnection();
     const solanaClient = useSolanaClient();
+    const accountSui = useCurrentAccount();
+    const networkSui = useCurrentNetwork();
 
     switch (chainType) {
         case ChainType.Evm:
@@ -38,6 +41,12 @@ export function useAccount(): UseAccountReturnValue {
                 // Solana chain is controlled by the client configuration
                 chainId: solanaNetworkToId(solanaClient.config.cluster),
                 connected: accountSvm.connected,
+            };
+        case ChainType.Sui:
+            return {
+                address: accountSui?.address as Address,
+                chainId: suiNetworkToId(networkSui),
+                connected: !!accountSui,
             };
         default:
             throw new Error(

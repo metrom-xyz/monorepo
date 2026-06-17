@@ -13,6 +13,7 @@ import {
 import { NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
 import { SupportedChain as SupportedSvm } from "@metrom-xyz/programs-solana";
+import { SupportedChain as SupportedSui } from "@metrom-xyz/sui-contracts";
 
 export const BASE_URL = "https://app.metrom.xyz";
 
@@ -36,6 +37,11 @@ export const METROM_SOLANA_BASE_URL =
     ENVIRONMENT === Environment.Production
         ? "https://solana.metrom.xyz"
         : "https://solana.dev.metrom.xyz";
+
+export const METROM_SUI_BASE_URL =
+    ENVIRONMENT === Environment.Production
+        ? "https://sui.metrom.xyz"
+        : "https://sui.dev.metrom.xyz";
 
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 export const TURTLE_APP_EARN_URL = "https://app.turtle.xyz/earn/opportunities";
@@ -95,6 +101,12 @@ export const SUPPORTED_CHAINS_SVM =
         ? // FIXME: add solana mainnet chain id
           []
         : [SupportedSvm.Devnet];
+
+export const SUPPORTED_CHAINS_SUI =
+    ENVIRONMENT === Environment.Production
+        ? // FIXME: add sui mainnet chain id
+          []
+        : [SupportedSui.Testnet];
 
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 

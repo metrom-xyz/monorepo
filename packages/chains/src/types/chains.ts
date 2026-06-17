@@ -1,13 +1,18 @@
 import type { FunctionComponent } from "react";
-import type { ChainContract, Chain } from "viem";
+import type { ChainContract, Chain, Address } from "viem";
 import type { SVGIcon } from "./common";
 import type { ChainType, BaseErc20Token } from "@metrom-xyz/sdk";
 import type { Protocol } from "./protocol";
 import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
 import { SupportedChain as SupportedChainSvm } from "@metrom-xyz/programs-solana";
+import { SupportedChain as SupportedChainSui } from "@metrom-xyz/sui-contracts";
 import { katana, linea } from "viem/chains";
 import { Form } from "./forms";
+
+interface MetromContract extends ChainContract {
+    stateAddress?: Address;
+}
 
 export interface ChainData {
     id: number;
@@ -15,7 +20,7 @@ export interface ChainData {
     active: boolean;
     name: string;
     slug: string;
-    metromContract: ChainContract;
+    metromContract: MetromContract;
     blockExplorers: Chain["blockExplorers"] | null;
     icon: FunctionComponent<SVGIcon>;
     forms: Form[];
@@ -67,4 +72,13 @@ export enum SupportedDevelopmentSvmChain {
 export enum SupportedProductionSvmChain {
     // FIXME: add mainnet id
     Mainnet = 103,
+}
+
+export enum SupportedDevelopmentSuiChain {
+    Testnet = SupportedChainSui.Testnet,
+}
+
+export enum SupportedProductionSuiChain {
+    // FIXME: add mainnet id
+    Mainnet = 1,
 }
