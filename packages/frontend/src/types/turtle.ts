@@ -1,8 +1,3 @@
-import type { FunctionComponent } from "react";
-import type { SVGIcon } from "./common";
-import type { ChainWithType } from "./chain";
-import type { Branding } from "./project";
-
 export interface Token {
     address: string;
     name: string;
@@ -45,14 +40,14 @@ export interface TurtleDealsResponse {
     // metadata: TBD
 }
 
-export interface TurtleCampaign {
-    id: string;
-    chain: ChainWithType;
-    distributor: string;
-    name: string;
-    description: string;
-    url: string;
-    brand: Branding;
-    owner: string;
-    ownerLogo: FunctionComponent<SVGIcon>;
-}
+// export interface TurtleCampaign {
+//     id: string;
+//     chain: ChainWithType;
+//     distributor: string;
+//     name: string;
+//     description: string;
+//     url: string;
+//     brand: ProjectBranding;
+//     owner: string;
+//     ownerLogo: FunctionComponent<SVGIcon>;
+// }

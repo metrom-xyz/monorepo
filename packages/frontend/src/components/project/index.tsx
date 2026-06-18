@@ -5,8 +5,8 @@ import { Intro } from "./intro";
 import {
     BackendCampaignType,
     SupportedLiquidityProviderDeal,
-    type Project as ProjectType,
 } from "@metrom-xyz/sdk";
+import type { Project } from "@/src/types/project";
 import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
 import { Campaigns } from "../campaigns";
 import { useMemo } from "react";
@@ -17,7 +17,7 @@ import { BackButton } from "../back-button";
 import styles from "./styles.module.css";
 
 interface ProjectProps {
-    project: ProjectType;
+    project: Project;
 }
 
 export function Project({ project }: ProjectProps) {

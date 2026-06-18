@@ -3,12 +3,12 @@ import Image from "next/image";
 import { easeInOut, motion } from "motion/react";
 import Marquee from "react-fast-marquee";
 import { Theme, Typography } from "@metrom-xyz/ui";
-import type { Branding } from "@/src/types/project";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { useTheme } from "next-themes";
 import { ProjectCampaignsTotals } from "../project-campaigns-totals";
 import classNames from "classnames";
 import type { ChainWithType } from "@/src/types/chain";
+import type { ProjectBranding } from "@/src/types/project";
 
 import styles from "./styles.module.css";
 
@@ -19,7 +19,7 @@ interface ProjectCardProps {
     activeCampaigns: number;
     totalCampaigns: number;
     types: string[];
-    branding: Branding;
+    branding: ProjectBranding;
     iconUrl: string;
     illustrationUrl: string;
 }
@@ -40,7 +40,6 @@ export function ProjectCard({
     illustrationUrl,
 }: ProjectCardProps) {
     const { resolvedTheme } = useTheme();
-
     const contrastColor =
         resolvedTheme === Theme.Dark
             ? branding.contrast.dark

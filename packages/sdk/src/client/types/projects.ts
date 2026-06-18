@@ -9,11 +9,6 @@ export type ProjectKind =
 
 export interface ProjectBranding {
     main: string;
-    light: string;
-    contrast: {
-        light: string;
-        dark: string;
-    };
     iconBackground: string;
 }
 

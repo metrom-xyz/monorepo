@@ -17,6 +17,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { useChainType } from "@/src/hooks/useChainType";
 import type { ChainWithType } from "@/src/types/chain";
+import { generateBranding } from "@/src/utils/branding";
 
 import styles from "./styles.module.css";
 
@@ -25,7 +26,7 @@ export function ProjectsList() {
 
     const chainType = useChainType();
     const { loading, fetching, placeholderData, projects } = useProjects({
-        chainType: chainType === ChainType.Aptos ? chainType : undefined,
+        chainType: chainType !== ChainType.Evm ? chainType : undefined,
         crossVm: chainType === ChainType.Evm,
     });
 
@@ -78,6 +79,10 @@ export function ProjectsList() {
                                 chainType === ChainType.Evm,
                             );
 
+                        const branding = generateBranding(
+                            project.branding.main,
+                        );
+
                         return (
                             <ProjectCard
                                 key={slug}
@@ -91,7 +96,11 @@ export function ProjectsList() {
                                 illustrationUrl={getProjectIllustrationUrl(
                                     slug,
                                 )}
-                                branding={project.branding}
+                                branding={{
+                                    ...branding,
+                                    iconBackground:
+                                        project.branding.iconBackground,
+                                }}
                             />
                         );
                     })

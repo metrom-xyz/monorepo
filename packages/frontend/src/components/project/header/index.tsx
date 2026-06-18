@@ -2,7 +2,7 @@ import { Typography } from "@metrom-xyz/ui";
 import Image from "next/image";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
-import type { Project } from "@metrom-xyz/sdk";
+import type { Project } from "@/src/types/project";
 import { ProjectCampaignsTotals } from "../../project-campaigns-totals";
 import { getProjectIconUrl, getProjectIllustrationUrl } from "@/src/commons";
 
