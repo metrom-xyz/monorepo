@@ -39,15 +39,3 @@ export interface TurtleDealsResponse {
     // TODO: do we need the metadata here?
     // metadata: TBD
 }
-
-// export interface TurtleCampaign {
-//     id: string;
-//     chain: ChainWithType;
-//     distributor: string;
-//     name: string;
-//     description: string;
-//     url: string;
-//     brand: ProjectBranding;
-//     owner: string;
-//     ownerLogo: FunctionComponent<SVGIcon>;
-// }
