@@ -4,16 +4,13 @@ import { Header } from "./header";
 import { Intro } from "./intro";
 import {
     BackendCampaignType,
-    ChainType,
     SupportedLiquidityProviderDeal,
     type Project as ProjectType,
 } from "@metrom-xyz/sdk";
 import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
-import { Campaigns, type BackendCampaignTypeAndProjects } from "../campaigns";
+import { Campaigns } from "../campaigns";
 import { useMemo } from "react";
-import type { FilterParams, RawFilters } from "../campaigns-table/filters";
-import { useCampaignsCount } from "@/src/hooks/useCampaignsCount";
-import { APTOS } from "@/src/commons/env";
+import type { RawFilters } from "../campaigns-table/filters";
 import { getChainDataBySlug } from "@/src/utils/chain";
 import { BackButton } from "../back-button";
 
@@ -88,46 +85,6 @@ export function Project({ project }: ProjectProps) {
         }
     }, [project, slug, kind]);
 
-    const { chainTypes, chainIds, protocols }: FilterParams = useMemo(() => {
-        const { chains, statuses, protocols } = optionalFilters;
-
-        const chainTypes: ChainType[] = [];
-        const chainIds: string[] = [];
-        chains.forEach((chain) => {
-            const [chainType, chainId] = chain.value.split("_");
-            if (!chainTypes.includes(chainType as ChainType))
-                chainTypes.push(chainType as ChainType);
-            if (!chainIds.includes(chainId)) chainIds.push(chainId);
-        });
-
-        return {
-            chainIds: chainIds.map(Number),
-            protocols: protocols.map(({ value }) => value),
-            statuses: statuses.map(({ value }) => value),
-            chainTypes: APTOS
-                ? [ChainType.Aptos]
-                : chainTypes
-                  ? chainTypes
-                  : undefined,
-        };
-    }, [optionalFilters]);
-
-    const { loading, points, rewards } = useCampaignsCount({
-        chainTypes,
-        chainIds,
-        protocols,
-    });
-
-    const tabs = useMemo(() => {
-        if (loading || points === undefined || rewards === undefined) return [];
-
-        const activeTabs: BackendCampaignTypeAndProjects[] = [];
-        if (points > 0) activeTabs.push(BackendCampaignType.Points);
-        if (rewards > 0) activeTabs.push(BackendCampaignType.Rewards);
-
-        return activeTabs;
-    }, [loading, points, rewards]);
-
     return (
         <div className={styles.root}>
             <div className={styles.topContent}>
@@ -141,7 +98,7 @@ export function Project({ project }: ProjectProps) {
                 )}
             </div>
             <Campaigns
-                tabs={tabs}
+                tabs={[BackendCampaignType.Rewards, BackendCampaignType.Points]}
                 disableFilters
                 hideHeader
                 optionalFilters={optionalFilters}

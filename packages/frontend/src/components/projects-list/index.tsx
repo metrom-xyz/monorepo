@@ -70,12 +70,12 @@ export function ProjectsList() {
                         if (kind === "liquidity-deals")
                             chains = getChainsForTurtleDeal(
                                 slug as SupportedTurtleDeal,
-                                chainType !== ChainType.Aptos,
+                                chainType === ChainType.Evm,
                             );
                         else
                             chains = getChainsForProtocol(
                                 slug as SupportedProtocol,
-                                chainType !== ChainType.Aptos,
+                                chainType === ChainType.Evm,
                             );
 
                         return (

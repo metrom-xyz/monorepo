@@ -15,7 +15,9 @@ export interface ProjectPageProps {
     params: Promise<Params>;
 }
 
-export async function generateMetadata({ params }: ProjectPageProps) {
+export async function generateMetadata({
+    params,
+}: ProjectPageProps): Promise<{ title: string }> {
     const { project } = await params;
     const t = await getTranslations();
 
