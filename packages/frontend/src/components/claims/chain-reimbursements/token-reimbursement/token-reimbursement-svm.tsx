@@ -18,19 +18,15 @@ import {
 import { getRecoverRewardInstructionAsync } from "@metrom-xyz/programs-solana";
 import { createWalletTransactionSigner } from "@solana/client";
 import {
-    appendTransactionMessageInstructions,
     compileTransaction,
-    createTransactionMessage,
     getBase16Encoder,
     getBase64EncodedWireTransaction,
-    pipe,
-    setTransactionMessageFeePayerSigner,
-    setTransactionMessageLifetimeUsingBlockhash,
     signTransactionMessageWithSigners,
     type Address,
 } from "@solana/kit";
 import type { SolanaTxMessage } from "@/src/types/solana";
 import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
+import { buildSolanaTransactionBatches } from "@/src/utils/solana";
 
 import styles from "./styles.module.css";
 
@@ -42,7 +38,7 @@ export function TokenReimbursementSvm({
 }: TokenReimbursementProps) {
     const [recovering, setRecovering] = useState(false);
     const [recovered, setRecovered] = useState(false);
-    const [transaction, setTransaction] = useState<SolanaTxMessage>();
+    const [transactions, setTransactions] = useState<SolanaTxMessage[]>();
 
     const t = useTranslations("rewards.reimbursements");
     const { address: account } = useAccount();
@@ -52,9 +48,11 @@ export function TokenReimbursementSvm({
     const { waitForConfirmationAsync } = useSolanaTransactionSignature();
 
     const base64Wire = useMemo(() => {
-        if (!transaction) return undefined;
-        return getBase64EncodedWireTransaction(compileTransaction(transaction));
-    }, [transaction]);
+        if (!transactions || transactions.length === 0) return undefined;
+        return getBase64EncodedWireTransaction(
+            compileTransaction(transactions[0]),
+        );
+    }, [transactions]);
 
     const {
         data: simulatedRecover,
@@ -84,7 +82,7 @@ export function TokenReimbursementSvm({
                             getBase16Encoder().encode(proof.slice(2)),
                         );
 
-                        return await getRecoverRewardInstructionAsync({
+                        return getRecoverRewardInstructionAsync({
                             amount: reimbursement.amount.raw,
                             proof,
                             mint: reimbursement.token.address as Address,
@@ -96,18 +94,13 @@ export function TokenReimbursementSvm({
                 ),
             );
 
-            const txMessage = pipe(
-                createTransactionMessage({ version: 0 }),
-                (tx) => setTransactionMessageFeePayerSigner(signer, tx),
-                (tx) =>
-                    setTransactionMessageLifetimeUsingBlockhash(
-                        latestBlockhash.value,
-                        tx,
-                    ),
-                (tx) => appendTransactionMessageInstructions(instructions, tx),
+            setTransactions(
+                buildSolanaTransactionBatches({
+                    signer,
+                    blockHash: latestBlockhash.value,
+                    instructions,
+                }),
             );
-
-            setTransaction(txMessage);
         };
 
         void buildTransaction();
@@ -130,7 +123,7 @@ export function TokenReimbursementSvm({
 
     const handleStandardRecover = useCallback(() => {
         if (
-            !transaction ||
+            !transactions?.length ||
             !simulatedRecover ||
             simulateRecoverErrored ||
             simulatedRecover?.value.err
@@ -140,17 +133,19 @@ export function TokenReimbursementSvm({
         const recover = async () => {
             setRecovering(true);
             try {
-                const signedTx =
-                    await signTransactionMessageWithSigners(transaction);
+                for (const transaction of transactions) {
+                    const signedTransaction =
+                        await signTransactionMessageWithSigners(transaction);
 
-                const signature = await client.runtime.rpc
-                    .sendTransaction(
-                        getBase64EncodedWireTransaction(signedTx),
-                        { encoding: "base64" },
-                    )
-                    .send();
+                    const signature = await client.runtime.rpc
+                        .sendTransaction(
+                            getBase64EncodedWireTransaction(signedTransaction),
+                            { encoding: "base64" },
+                        )
+                        .send();
 
-                await waitForConfirmationAsync(signature);
+                    await waitForConfirmationAsync(signature);
+                }
 
                 toast.custom((toastId) => (
                     <RecoverSuccess
@@ -173,7 +168,7 @@ export function TokenReimbursementSvm({
 
         void recover();
     }, [
-        transaction,
+        transactions,
         simulatedRecover,
         simulateRecoverErrored,
         client.runtime.rpc,
@@ -214,6 +209,7 @@ export function TokenReimbursementSvm({
                 variant="secondary"
                 size="sm"
                 disabled={
+                    !transactions?.length ||
                     !simulatedRecover ||
                     simulateRecoverErrored ||
                     !!simulatedRecover?.value.err ||
