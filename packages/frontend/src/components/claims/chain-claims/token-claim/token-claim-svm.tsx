@@ -18,19 +18,15 @@ import {
 import { getClaimRewardInstructionAsync } from "@metrom-xyz/programs-solana";
 import { createWalletTransactionSigner } from "@solana/client";
 import {
-    appendTransactionMessageInstructions,
     compileTransaction,
-    createTransactionMessage,
     getBase16Encoder,
     getBase64EncodedWireTransaction,
-    pipe,
-    setTransactionMessageFeePayerSigner,
-    setTransactionMessageLifetimeUsingBlockhash,
     signTransactionMessageWithSigners,
     type Address,
 } from "@solana/kit";
 import type { SolanaTxMessage } from "@/src/types/solana";
 import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
+import { buildSolanaTransactionBatches } from "@/src/utils/solana";
 
 import styles from "./styles.module.css";
 
@@ -42,7 +38,7 @@ export function TokenClaimSvm({
 }: TokenClaimProps) {
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
-    const [transaction, setTransaction] = useState<SolanaTxMessage>();
+    const [transactions, setTransactions] = useState<SolanaTxMessage[]>();
 
     const t = useTranslations("rewards.claims");
     const { address: account } = useAccount();
@@ -52,9 +48,11 @@ export function TokenClaimSvm({
     const { waitForConfirmationAsync } = useSolanaTransactionSignature();
 
     const base64Wire = useMemo(() => {
-        if (!transaction) return undefined;
-        return getBase64EncodedWireTransaction(compileTransaction(transaction));
-    }, [transaction]);
+        if (!transactions || transactions.length === 0) return undefined;
+        return getBase64EncodedWireTransaction(
+            compileTransaction(transactions[0]),
+        );
+    }, [transactions]);
 
     const {
         data: simulatedClaim,
@@ -83,7 +81,7 @@ export function TokenClaimSvm({
                         getBase16Encoder().encode(proof.slice(2)),
                     );
 
-                    return await getClaimRewardInstructionAsync({
+                    return getClaimRewardInstructionAsync({
                         amount: claim.amount.raw,
                         proof,
                         mint: claim.token.address as Address,
@@ -94,18 +92,13 @@ export function TokenClaimSvm({
                 }),
             );
 
-            const txMessage = pipe(
-                createTransactionMessage({ version: 0 }),
-                (tx) => setTransactionMessageFeePayerSigner(signer, tx),
-                (tx) =>
-                    setTransactionMessageLifetimeUsingBlockhash(
-                        latestBlockhash.value,
-                        tx,
-                    ),
-                (tx) => appendTransactionMessageInstructions(instructions, tx),
-            );
+            const claimBatches = buildSolanaTransactionBatches({
+                signer,
+                blockHash: latestBlockhash.value,
+                instructions,
+            });
 
-            setTransaction(txMessage);
+            setTransactions(claimBatches);
         };
 
         void buildTransaction();
@@ -122,7 +115,7 @@ export function TokenClaimSvm({
 
     const handleStandardClaim = useCallback(() => {
         if (
-            !transaction ||
+            !transactions?.length ||
             !simulatedClaim ||
             simulateClaimErrored ||
             simulatedClaim?.value.err
@@ -132,17 +125,19 @@ export function TokenClaimSvm({
         const claim = async () => {
             setClaiming(true);
             try {
-                const signedTx =
-                    await signTransactionMessageWithSigners(transaction);
+                for (const transaction of transactions) {
+                    const signedTransaction =
+                        await signTransactionMessageWithSigners(transaction);
 
-                const signature = await client.runtime.rpc
-                    .sendTransaction(
-                        getBase64EncodedWireTransaction(signedTx),
-                        { encoding: "base64" },
-                    )
-                    .send();
+                    const signature = await client.runtime.rpc
+                        .sendTransaction(
+                            getBase64EncodedWireTransaction(signedTransaction),
+                            { encoding: "base64" },
+                        )
+                        .send();
 
-                await waitForConfirmationAsync(signature);
+                    await waitForConfirmationAsync(signature);
+                }
 
                 toast.custom((toastId) => (
                     <ClaimSuccess
@@ -165,7 +160,7 @@ export function TokenClaimSvm({
 
         void claim();
     }, [
-        transaction,
+        transactions,
         simulatedClaim,
         simulateClaimErrored,
         client.runtime.rpc,
@@ -206,6 +201,7 @@ export function TokenClaimSvm({
                 variant="secondary"
                 size="sm"
                 disabled={
+                    !transactions?.length ||
                     !simulatedClaim ||
                     simulateClaimErrored ||
                     !!simulatedClaim?.value.err ||
