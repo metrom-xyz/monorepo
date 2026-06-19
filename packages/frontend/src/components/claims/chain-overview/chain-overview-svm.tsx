@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Typography, Button, Card } from "@metrom-xyz/ui";
+import { Typography, Button, Card, Popover } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -13,14 +13,9 @@ import { formatUsdAmount } from "@/src/utils/format";
 import type { ChainOverviewProps } from ".";
 import type { SolanaTxMessage } from "@/src/types/solana";
 import {
-    appendTransactionMessageInstructions,
     compileTransaction,
-    createTransactionMessage,
     getBase16Encoder,
     getBase64EncodedWireTransaction,
-    pipe,
-    setTransactionMessageFeePayerSigner,
-    setTransactionMessageLifetimeUsingBlockhash,
     signTransactionMessageWithSigners,
     type Address,
 } from "@solana/kit";
@@ -37,6 +32,8 @@ import {
 } from "@metrom-xyz/programs-solana";
 import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
 
+import { buildSolanaTransactionBatches } from "@/src/utils/solana";
+
 import styles from "./styles.module.css";
 
 export function ChainOverviewSvm({
@@ -49,10 +46,17 @@ export function ChainOverviewSvm({
 }: ChainOverviewProps) {
     const [claiming, setClaiming] = useState(false);
     const [recovering, setRecovering] = useState(false);
-    const [recoverAllTransaction, setRecoverAllTransaction] =
-        useState<SolanaTxMessage>();
-    const [claimAllTransaction, setClaimAllTransaction] =
-        useState<SolanaTxMessage>();
+    const [recoverAllTransactions, setRecoverAllTransactions] =
+        useState<SolanaTxMessage[]>();
+    const [claimAllTransactions, setClaimAllTransactions] =
+        useState<SolanaTxMessage[]>();
+    const [recoverAllPopoverOpen, setRecoverAllPopoverOpen] = useState(false);
+    const [recoverAllAnchor, setRecoverAllAnchor] =
+        useState<HTMLDivElement | null>(null);
+    const [claimAllPopoverOpen, setClaimAllPopoverOpen] = useState(false);
+    const [claimAllAnchor, setClaimAllAnchor] = useState<HTMLDivElement | null>(
+        null,
+    );
 
     const t = useTranslations("rewards");
     const { address: account } = useAccount();
@@ -64,18 +68,18 @@ export function ChainOverviewSvm({
     const ChainIcon = chainWithRewardsData.chainData.icon;
 
     const recoverAllBase64Wire = useMemo(() => {
-        if (!recoverAllTransaction) return undefined;
+        if (!recoverAllTransactions?.[0]) return undefined;
         return getBase64EncodedWireTransaction(
-            compileTransaction(recoverAllTransaction),
+            compileTransaction(recoverAllTransactions[0]),
         );
-    }, [recoverAllTransaction]);
+    }, [recoverAllTransactions]);
 
     const claimAllBase64Wire = useMemo(() => {
-        if (!claimAllTransaction) return undefined;
+        if (!claimAllTransactions?.[0]) return undefined;
         return getBase64EncodedWireTransaction(
-            compileTransaction(claimAllTransaction),
+            compileTransaction(claimAllTransactions[0]),
         );
-    }, [claimAllTransaction]);
+    }, [claimAllTransactions]);
 
     const {
         data: simulatedRecoverAll,
@@ -114,7 +118,7 @@ export function ChainOverviewSvm({
                             getBase16Encoder().encode(proof.slice(2)),
                         );
 
-                        return await getRecoverRewardInstructionAsync({
+                        return getRecoverRewardInstructionAsync({
                             amount: reimbursement.amount.raw,
                             proof,
                             mint: reimbursement.token.address as Address,
@@ -136,7 +140,7 @@ export function ChainOverviewSvm({
                         getBase16Encoder().encode(proof.slice(2)),
                     );
 
-                    return await getClaimRewardInstructionAsync({
+                    return getClaimRewardInstructionAsync({
                         amount: claim.amount.raw,
                         proof,
                         mint: claim.token.address as Address,
@@ -147,35 +151,20 @@ export function ChainOverviewSvm({
                 }),
             );
 
-            const recoverTxMessage = pipe(
-                createTransactionMessage({ version: 0 }),
-                (tx) => setTransactionMessageFeePayerSigner(signer, tx),
-                (tx) =>
-                    setTransactionMessageLifetimeUsingBlockhash(
-                        latestBlockhash.value,
-                        tx,
-                    ),
-                (tx) =>
-                    appendTransactionMessageInstructions(
-                        recoverInstructions,
-                        tx,
-                    ),
-            );
+            const recoverBatches = buildSolanaTransactionBatches({
+                instructions: recoverInstructions,
+                signer,
+                blockHash: latestBlockhash.value,
+            });
 
-            const claimTxMessage = pipe(
-                createTransactionMessage({ version: 0 }),
-                (tx) => setTransactionMessageFeePayerSigner(signer, tx),
-                (tx) =>
-                    setTransactionMessageLifetimeUsingBlockhash(
-                        latestBlockhash.value,
-                        tx,
-                    ),
-                (tx) =>
-                    appendTransactionMessageInstructions(claimInstructions, tx),
-            );
+            const claimBatches = buildSolanaTransactionBatches({
+                instructions: claimInstructions,
+                signer,
+                blockHash: latestBlockhash.value,
+            });
 
-            setRecoverAllTransaction(recoverTxMessage);
-            setClaimAllTransaction(claimTxMessage);
+            setRecoverAllTransactions(recoverBatches);
+            setClaimAllTransactions(claimBatches);
         };
 
         void buildTransaction();
@@ -189,9 +178,25 @@ export function ChainOverviewSvm({
         if (onRecovering) onRecovering(recovering);
     }, [recovering, onRecovering]);
 
+    function handleRecoverAllPopoverOpen() {
+        setRecoverAllPopoverOpen(true);
+    }
+
+    function handleRecoverAllPopoverClose() {
+        setRecoverAllPopoverOpen(false);
+    }
+
+    function handleClaimAllPopoverOpen() {
+        setClaimAllPopoverOpen(true);
+    }
+
+    function handleClaimAllPopoverClose() {
+        setClaimAllPopoverOpen(false);
+    }
+
     const handleStandardRecoverAll = useCallback(() => {
         if (
-            !recoverAllTransaction ||
+            !recoverAllTransactions?.length ||
             !simulatedRecoverAll ||
             simulatedRecoverAllErrored ||
             simulatedRecoverAll?.value.err
@@ -201,20 +206,24 @@ export function ChainOverviewSvm({
         const recover = async () => {
             setRecovering(true);
             try {
-                const signedTx = await signTransactionMessageWithSigners(
-                    recoverAllTransaction,
-                );
-                const signature = await client.runtime.rpc
-                    .sendTransaction(
-                        getBase64EncodedWireTransaction(signedTx),
-                        { encoding: "base64" },
-                    )
-                    .send();
+                for (const transaction of recoverAllTransactions) {
+                    const signedTransaction =
+                        await signTransactionMessageWithSigners(transaction);
 
-                await waitForConfirmationAsync(signature);
+                    const signature = await client.runtime.rpc
+                        .sendTransaction(
+                            getBase64EncodedWireTransaction(signedTransaction),
+                            { encoding: "base64" },
+                        )
+                        .send();
 
-                toast.custom((toastId) => <RecoverSuccess toastId={toastId} />);
-                onRecoverAll();
+                    await waitForConfirmationAsync(signature);
+                    toast.custom((toastId) => (
+                        <RecoverSuccess toastId={toastId} />
+                    ));
+                    onRecoverAll();
+                }
+
                 trackUmamiEvent("click-recover-all");
             } catch (error) {
                 toast.custom((toastId) => <RecoverFail toastId={toastId} />);
@@ -225,7 +234,7 @@ export function ChainOverviewSvm({
         };
         void recover();
     }, [
-        recoverAllTransaction,
+        recoverAllTransactions,
         simulatedRecoverAll,
         simulatedRecoverAllErrored,
         client.runtime.rpc,
@@ -235,31 +244,34 @@ export function ChainOverviewSvm({
 
     const handleStandardClaimAll = useCallback(() => {
         if (
-            !claimAllTransaction ||
+            !claimAllTransactions?.length ||
             !simulatedClaimAll ||
             simulatedClaimAllErrored ||
-            !simulatedClaimAll?.value.err
+            simulatedClaimAll?.value.err
         )
             return;
 
         const claim = async () => {
             setClaiming(true);
             try {
-                const signedTx =
-                    await signTransactionMessageWithSigners(
-                        claimAllTransaction,
-                    );
-                const signature = await client.runtime.rpc
-                    .sendTransaction(
-                        getBase64EncodedWireTransaction(signedTx),
-                        { encoding: "base64" },
-                    )
-                    .send();
+                for (const transaction of claimAllTransactions) {
+                    const signedTransaction =
+                        await signTransactionMessageWithSigners(transaction);
 
-                await waitForConfirmationAsync(signature);
+                    const signature = await client.runtime.rpc
+                        .sendTransaction(
+                            getBase64EncodedWireTransaction(signedTransaction),
+                            { encoding: "base64" },
+                        )
+                        .send();
 
-                toast.custom((toastId) => <ClaimSuccess toastId={toastId} />);
-                onClaimAll();
+                    await waitForConfirmationAsync(signature);
+                    toast.custom((toastId) => (
+                        <ClaimSuccess toastId={toastId} />
+                    ));
+                    onClaimAll();
+                }
+
                 trackUmamiEvent("click-claim-all");
             } catch (error) {
                 toast.custom((toastId) => (
@@ -280,10 +292,15 @@ export function ChainOverviewSvm({
         simulatedClaimAllErrored,
         simulatedClaimAll,
         client.runtime.rpc,
-        claimAllTransaction,
+        claimAllTransactions,
         onClaimAll,
         waitForConfirmationAsync,
     ]);
+
+    const multipleRecoveries =
+        recoverAllTransactions && recoverAllTransactions.length > 1;
+    const multipleClaims =
+        claimAllTransactions && claimAllTransactions.length > 1;
 
     return (
         <Card className={classNames(styles.root, className)}>
@@ -300,42 +317,84 @@ export function ChainOverviewSvm({
             </div>
             <div className={styles.buttonsWrapper}>
                 {chainWithRewardsData.reimbursements.length > 0 && (
-                    <Button
-                        size="sm"
-                        disabled={
-                            !simulatedRecoverAll ||
-                            simulatedRecoverAllErrored ||
-                            !!simulatedRecoverAll?.value.err
-                        }
-                        loading={simulatingRecoverAll || recovering}
-                        iconPlacement="right"
-                        onClick={handleStandardRecoverAll}
+                    <div
+                        ref={setRecoverAllAnchor}
+                        onMouseEnter={handleRecoverAllPopoverOpen}
+                        onMouseLeave={handleRecoverAllPopoverClose}
                     >
-                        {simulatingRecoverAll
-                            ? t("reimbursements.loading")
-                            : recovering
-                              ? t("reimbursements.recoveringAll")
-                              : t("reimbursements.recoverAll")}
-                    </Button>
+                        {multipleRecoveries && (
+                            <Popover
+                                placement="top"
+                                anchor={recoverAllAnchor}
+                                open={recoverAllPopoverOpen}
+                                onOpenChange={setRecoverAllPopoverOpen}
+                                className={styles.popover}
+                            >
+                                <Typography size="sm">
+                                    {t("reimbursements.multipleTransactions", {
+                                        count: recoverAllTransactions.length,
+                                    })}
+                                </Typography>
+                            </Popover>
+                        )}
+                        <Button
+                            size="sm"
+                            disabled={
+                                !simulatedRecoverAll ||
+                                simulatedRecoverAllErrored ||
+                                !!simulatedRecoverAll?.value.err
+                            }
+                            loading={simulatingRecoverAll || recovering}
+                            iconPlacement="right"
+                            onClick={handleStandardRecoverAll}
+                        >
+                            {simulatingRecoverAll
+                                ? t("reimbursements.loading")
+                                : recovering
+                                  ? t("reimbursements.recoveringAll")
+                                  : t("reimbursements.recoverAll")}
+                        </Button>
+                    </div>
                 )}
                 {chainWithRewardsData.claims.length > 0 && (
-                    <Button
-                        size="sm"
-                        disabled={
-                            !simulatedClaimAll ||
-                            simulatedClaimAllErrored ||
-                            !!simulatedClaimAll?.value.err
-                        }
-                        loading={simulatingClaimAll || claiming}
-                        iconPlacement="right"
-                        onClick={handleStandardClaimAll}
+                    <div
+                        ref={setClaimAllAnchor}
+                        onMouseEnter={handleClaimAllPopoverOpen}
+                        onMouseLeave={handleClaimAllPopoverClose}
                     >
-                        {simulatingClaimAll
-                            ? t("claims.loading")
-                            : claiming
-                              ? t("claims.claimingAll")
-                              : t("claims.claimAll")}
-                    </Button>
+                        {multipleClaims && (
+                            <Popover
+                                placement="top"
+                                anchor={claimAllAnchor}
+                                open={claimAllPopoverOpen}
+                                onOpenChange={setClaimAllPopoverOpen}
+                                className={styles.popover}
+                            >
+                                <Typography size="sm">
+                                    {t("claims.multipleTransactions", {
+                                        count: claimAllTransactions.length,
+                                    })}
+                                </Typography>
+                            </Popover>
+                        )}
+                        <Button
+                            size="sm"
+                            disabled={
+                                !simulatedClaimAll ||
+                                simulatedClaimAllErrored ||
+                                !!simulatedClaimAll?.value.err
+                            }
+                            loading={simulatingClaimAll || claiming}
+                            iconPlacement="right"
+                            onClick={handleStandardClaimAll}
+                        >
+                            {simulatingClaimAll
+                                ? t("claims.loading")
+                                : claiming
+                                  ? t("claims.claimingAll")
+                                  : t("claims.claimAll")}
+                        </Button>
+                    </div>
                 )}
             </div>
         </Card>

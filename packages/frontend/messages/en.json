@@ -487,10 +487,14 @@
                 }
             },
             "partnerAction": {
-                "protocol": { "title": "Protocol" },
+                "protocol": {
+                    "title": "Protocol"
+                },
                 "action": {
                     "title": "Action",
-                    "list": { "bridge-and-supply": "Bridge and supply" }
+                    "list": {
+                        "bridge-and-supply": "Bridge and supply"
+                    }
                 }
             }
         },
@@ -909,7 +913,8 @@
                     "title": "Claim failed",
                     "message": "Something went wrong"
                 }
-            }
+            },
+            "multipleTransactions": "Claiming all will require approving {count} transactions in your wallet"
         },
         "reimbursements": {
             "title": "Reimbursements",
@@ -927,7 +932,8 @@
                     "title": "Recover failed",
                     "message": "Something went wrong"
                 }
-            }
+            },
+            "multipleTransactions": "Recovering all will require approving {count} transactions in your wallet"
         }
     },
     "reimbursements": {
