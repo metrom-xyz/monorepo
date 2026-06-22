@@ -44,8 +44,7 @@ export function useClaimsSvm({
                     address: account,
                 });
 
-                // TODO: filter by active chains? Probably not needed since we're only supporting Solana
-                return rawClaims;
+                return rawClaims.filter((claim) => claim.chainId === id);
             } catch (error) {
                 console.error(
                     `Could not fetch raw claims for address ${address}: ${error}`,
