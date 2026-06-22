@@ -7,7 +7,6 @@ import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import { useChainWithType } from "../useChainWithType";
 import { useSolanaClient } from "@solana/react-hooks";
 import {
-    findUserClaimedRewardPda,
     findUserReimbursedRewardPda,
     getClaimedRewardDecoder,
 } from "@metrom-xyz/programs-solana/client";
@@ -17,18 +16,12 @@ import { useAccount } from "../useAccount";
 
 type QueryKey = [string, Address | undefined];
 
-interface ClaimedRecoveredPda {
-    claimed: Address<string>;
-    recovered: Address<string>;
-}
-
 export function useReimbursementsSvm({
     enabled = true,
 }: UseReimbursementsParams = {}): UseReimbursementsReturnValue {
     const [reimbursements, setReimbursements] =
         useState<ReimbursementsWithRemaining[]>();
     const [recoveredPdas, setRecoveredPdas] = useState<Address[]>();
-    const [claimedPdas, setClaimedPdas] = useState<Address[]>();
 
     const queryClient = useQueryClient();
     const { address } = useAccount();
@@ -46,10 +39,14 @@ export function useReimbursementsSvm({
             if (!account) return null;
 
             try {
-                const rawClaims = await METROM_API_CLIENT.fetchReimbursements({
-                    address: account,
-                });
-                return rawClaims;
+                const rawReimbursements =
+                    await METROM_API_CLIENT.fetchReimbursements({
+                        address: account,
+                    });
+
+                return rawReimbursements.filter(
+                    (reimbursement) => reimbursement.chainId === chainId,
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw reimbursements for address ${account}: ${error}`,
@@ -106,105 +103,41 @@ export function useReimbursementsSvm({
         enabled: !!recoveredPdas && enabled,
     });
 
-    const {
-        data: claimedData,
-        error: claimedError,
-        isError: claimedErrored,
-        isLoading: loadingClaimed,
-    } = useQuery({
-        queryKey: ["claimed-campaign-reimbursements", claimedPdas],
-        queryFn: async ({ queryKey }) => {
-            const [, claimedAccounts] = queryKey as [
-                string,
-                typeof claimedPdas,
-            ];
-
-            if (!claimedAccounts) return null;
-
-            try {
-                const accounts = await client.runtime.rpc
-                    .getMultipleAccounts(claimedAccounts, {
-                        encoding: "base64",
-                    })
-                    .send();
-
-                return accounts.value.map((value) => {
-                    // FIXME: if there's no value is it because the account doesn't exist, or because it exists but has no data?
-                    // Should we handle this differently?
-                    if (!value) return 0n;
-
-                    return getClaimedRewardDecoder().decode(
-                        getBase64Encoder().encode(value.data[0]),
-                    ).claimed;
-                });
-            } catch (error) {
-                console.error(
-                    `Could not fetch claimed campaign reimbursements: ${error}`,
-                );
-                throw error;
-            }
-        },
-        retryDelay: 1000,
-        refetchOnWindowFocus: false,
-        staleTime: 60000,
-        enabled: !!claimedPdas && enabled,
-    });
-
     useEffect(() => {
         const fetchReimbursements = async () => {
-            const recovered: Address[] = [];
-            const claimed: Address[] = [];
-
-            if (!enabled || !rawReimbursements || !address)
-                return { recovered, claimed };
-
-            const filtered = rawReimbursements.filter(
-                (r) => r.chainId === chainId,
-            );
+            if (!enabled || !rawReimbursements || !address) return;
 
             const pdas = await Promise.all(
-                filtered.map(async (rawReimbursement) => {
+                rawReimbursements.map(async (rawReimbursement) => {
                     const chainData = getChainData(rawReimbursement.chainId);
                     if (!chainData || !address) return null;
-
-                    const claimedPda = await findUserClaimedRewardPda({
-                        signer: address as Address,
-                        campaign: rawReimbursement.campaignId as Address,
-                    });
 
                     const recoveredPda = await findUserReimbursedRewardPda({
                         signer: address as Address,
                         campaign: rawReimbursement.campaignId as Address,
                     });
 
-                    return {
-                        claimed: claimedPda[0],
-                        recovered: recoveredPda[0],
-                    };
+                    return recoveredPda[0];
                 }),
             );
 
-            const validPdas = pdas.filter(
-                (pda): pda is ClaimedRecoveredPda => !!pda,
-            );
-            setRecoveredPdas(validPdas.map((p) => p.recovered));
-            setClaimedPdas(validPdas.map((p) => p.claimed));
+            setRecoveredPdas(pdas.filter((pda): pda is Address => !!pda));
         };
 
         void fetchReimbursements();
-    }, [address, rawReimbursements, chainId]);
+    }, [address, rawReimbursements, enabled]);
 
     useEffect(() => {
         if (!address) return;
-        if (reimbursementsErrored || recoveredErrored || claimedErrored) {
+        if (reimbursementsErrored || recoveredErrored) {
             console.error(
-                `Could not fetch reimbursed data for address ${address}: ${recoveredError} ${claimedError}`,
+                `Could not fetch reimbursed data for address ${address}: ${recoveredError}`,
             );
             setReimbursements([]);
             return;
         }
-        if (loadingReimbursements || loadingRecovered || loadingClaimed) return;
-        if (!rawReimbursements || !recoveredData || !claimedData) {
+        if (loadingReimbursements || loadingRecovered) return;
+        if (!rawReimbursements || !recoveredData) {
             setReimbursements([]);
             return;
         }
@@ -212,11 +145,12 @@ export function useReimbursementsSvm({
         const reimbursements: ReimbursementsWithRemaining[] = [];
         for (let i = 0; i < recoveredData.length; i++) {
             const rawRecovered = recoveredData[i];
-            const rawClaimed = claimedData[i];
             const rawReimbursement = rawReimbursements[i];
 
-            const rawRemaining =
-                rawReimbursement.amount.raw - rawRecovered - rawClaimed;
+            // On Solana, reward claims and reimbursement recoveries use separate
+            // PDAs, so the remaining reimbursement is only reduced by what has
+            // already been recovered, not by reward claims.
+            const rawRemaining = rawReimbursement.amount.raw - rawRecovered;
 
             const formattedRemaining = Number(
                 formatUnits(rawRemaining, rawReimbursement.token.decimals),
@@ -245,10 +179,6 @@ export function useReimbursementsSvm({
         loadingRecovered,
         loadingReimbursements,
         rawReimbursements,
-        claimedData,
-        loadingClaimed,
-        claimedErrored,
-        claimedError,
         reimbursementsErrored,
     ]);
 
@@ -258,15 +188,10 @@ export function useReimbursementsSvm({
         await queryClient.invalidateQueries({
             queryKey: ["recovered-campaign-reimbursements"],
         });
-        await queryClient.invalidateQueries({
-            queryKey: ["claimed-campaign-reimbursements"],
-        });
     }, [queryClient]);
 
     return {
-        loading:
-            (loadingReimbursements || loadingClaimed || loadingRecovered) &&
-            !reimbursements,
+        loading: (loadingReimbursements || loadingRecovered) && !reimbursements,
         invalidate,
         reimbursements,
     };
