@@ -99,7 +99,6 @@ export function Activity({ chainId, transaction, payload }: ActivityProps) {
                 <Typography weight="medium" size="xs">
                     {title}
                 </Typography>
-                <ArrowRightIcon className={styles.arrow} />
             </div>
             <div className={styles.rightContent}>
                 {createCampaign ? (
