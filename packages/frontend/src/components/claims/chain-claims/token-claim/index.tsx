@@ -3,7 +3,7 @@ import { Button, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { TokenClaims } from "..";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import { ChainType, type Erc20Token } from "@metrom-xyz/sdk";
+import { ChainType } from "@metrom-xyz/sdk";
 import { TokenClaimEvm } from "./token-claim-evm";
 import { TokenClaimMvm } from "./token-claim-mvm";
 import { useChainType } from "@/src/hooks/useChainType";
@@ -15,7 +15,7 @@ export interface TokenClaimProps {
     chainId: number;
     tokenClaims: TokenClaims;
     claimingAll?: boolean;
-    onClaim: (token: Erc20Token) => void;
+    onClaim: () => void;
 }
 
 export function TokenClaim(props: TokenClaimProps) {

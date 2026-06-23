@@ -100,7 +100,7 @@ export function TokenClaimEvm({
                     />
                 ));
                 setClaimed(true);
-                onClaim(tokenClaims.token);
+                onClaim();
                 trackUmamiEvent("click-claim-single");
             } catch (error) {
                 if (
@@ -162,7 +162,7 @@ export function TokenClaimEvm({
                     />
                 ));
                 setClaimed(true);
-                onClaim(tokenClaims.token);
+                onClaim();
                 trackUmamiEvent("click-claim-single");
             } catch (error) {
                 console.warn("Could not claim", error);
