@@ -1,4 +1,4 @@
-||Ethereum|Base|
-|---|---|---|
-|[Yearn](https://yearn.fi/)|●|●|
-|[Arche](https://arche.money/)|●|○|
+||Ethereum|Base|Arbitrum One|
+|---|---|---|---|
+|[Yearn](https://yearn.fi/)|●|●|●|
+|[Arche](https://arche.money/)|●|○|●|
