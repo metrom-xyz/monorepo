@@ -132,7 +132,7 @@ export function TokenClaimSvm({
                     />
                 ));
                 setClaimed(true);
-                onClaim(tokenClaims.token);
+                onClaim();
                 trackUmamiEvent("click-claim-single");
             } catch (error) {
                 toast.custom((toastId) => <ClaimFail toastId={toastId} />);
