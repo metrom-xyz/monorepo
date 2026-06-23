@@ -145,6 +145,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Thala]: "Thala",
     [SupportedDex.Stabull]: "Stabull",
     [SupportedDex.Orca]: "Orca",
+    [SupportedDex.Cetus]: "Cetus",  
 };
 
 const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
