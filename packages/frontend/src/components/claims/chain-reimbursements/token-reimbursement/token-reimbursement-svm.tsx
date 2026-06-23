@@ -11,22 +11,20 @@ import { RecoverFail } from "../../notification/recover-fail";
 import type { TokenReimbursementProps } from ".";
 import {
     useLatestBlockhash,
-    useSimulateTransaction,
     useSolanaClient,
     useWalletConnection,
 } from "@solana/react-hooks";
 import { getRecoverRewardInstructionAsync } from "@metrom-xyz/programs-solana";
 import { createWalletTransactionSigner } from "@solana/client";
 import {
-    compileTransaction,
     getBase16Encoder,
     getBase64EncodedWireTransaction,
     signTransactionMessageWithSigners,
     type Address,
+    type Instruction,
 } from "@solana/kit";
-import type { SolanaTxMessage } from "@/src/types/solana";
 import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
-import { buildSolanaTransactionBatches } from "@/src/utils/solana";
+import { useSimulateSolanaTransactions } from "@/src/hooks/useSimulateSolanaTransactions";
 
 import styles from "./styles.module.css";
 
@@ -38,7 +36,7 @@ export function TokenReimbursementSvm({
 }: TokenReimbursementProps) {
     const [recovering, setRecovering] = useState(false);
     const [recovered, setRecovered] = useState(false);
-    const [transactions, setTransactions] = useState<SolanaTxMessage[]>();
+    const [instructions, setInstructions] = useState<Instruction[]>();
 
     const t = useTranslations("rewards.reimbursements");
     const { address: account } = useAccount();
@@ -47,20 +45,6 @@ export function TokenReimbursementSvm({
     const { data: latestBlockhash } = useLatestBlockhash();
     const { waitForConfirmationAsync } = useSolanaTransactionSignature();
 
-    const base64Wire = useMemo(() => {
-        if (!transactions || transactions.length === 0) return undefined;
-        return getBase64EncodedWireTransaction(
-            compileTransaction(transactions[0]),
-        );
-    }, [transactions]);
-
-    const {
-        data: simulatedRecover,
-        isLoading: simulatingRecover,
-        isError: simulateRecoverErrored,
-        error: simulateRecoverError,
-    } = useSimulateTransaction(base64Wire, { config: { encoding: "base64" } });
-
     const signer = useMemo(
         () =>
             wallet ? createWalletTransactionSigner(wallet).signer : undefined,
@@ -68,67 +52,61 @@ export function TokenReimbursementSvm({
     );
 
     useEffect(() => {
-        if (!signer || !latestBlockhash?.value || !account) return;
+        if (!signer || !account) return;
 
-        const buildTransaction = async () => {
-            const instructions = await Promise.all(
-                tokenReimbursements.reimbursements.map(
-                    async (reimbursement) => {
-                        const receiverTokenAccount = await client
-                            .splToken({ mint: reimbursement.token.address })
-                            .deriveAssociatedTokenAddress(account);
+        let cancelled = false;
 
-                        const proof = reimbursement.proof.map((proof) =>
-                            getBase16Encoder().encode(proof.slice(2)),
-                        );
+        const buildInstructions = async () => {
+            setInstructions(undefined);
 
-                        return getRecoverRewardInstructionAsync({
-                            amount: reimbursement.amount.raw,
-                            proof,
-                            mint: reimbursement.token.address as Address,
-                            campaign: reimbursement.campaignId as Address,
-                            receiverTokenAccount,
-                            signer,
-                        });
-                    },
-                ),
-            );
+            try {
+                const built = await Promise.all(
+                    tokenReimbursements.reimbursements.map(
+                        async (reimbursement) => {
+                            const receiverTokenAccount = await client
+                                .splToken({ mint: reimbursement.token.address })
+                                .deriveAssociatedTokenAddress(account);
 
-            setTransactions(
-                buildSolanaTransactionBatches({
-                    signer,
-                    blockHash: latestBlockhash.value,
-                    instructions,
-                }),
-            );
+                            const proof = reimbursement.proof.map((proof) =>
+                                getBase16Encoder().encode(proof.slice(2)),
+                            );
+
+                            return getRecoverRewardInstructionAsync({
+                                amount: reimbursement.amount.raw,
+                                proof,
+                                mint: reimbursement.token.address as Address,
+                                campaign: reimbursement.campaignId as Address,
+                                receiverTokenAccount,
+                                signer,
+                            });
+                        },
+                    ),
+                );
+
+                if (!cancelled) setInstructions(built);
+            } catch (error) {
+                console.warn("Error building recover instructions", error);
+            }
         };
 
-        void buildTransaction();
-    }, [
-        signer,
-        account,
-        latestBlockhash,
-        client,
-        tokenReimbursements.reimbursements,
-    ]);
+        void buildInstructions();
+        return () => {
+            cancelled = true;
+        };
+    }, [signer, account, client, tokenReimbursements.reimbursements]);
 
-    useEffect(() => {
-        if (
-            !simulatingRecover &&
-            simulatedRecover &&
-            simulatedRecover.value.err
-        )
-            console.warn(`Recover simulation failed`, simulatedRecover);
-    }, [simulatingRecover, simulatedRecover, simulateRecoverError]);
+    const {
+        transactions,
+        simulating: simulatingRecover,
+        errored: simulateRecoverErrored,
+    } = useSimulateSolanaTransactions({
+        instructions,
+        signer,
+        blockHash: latestBlockhash?.value,
+    });
 
     const handleStandardRecover = useCallback(() => {
-        if (
-            !transactions?.length ||
-            !simulatedRecover ||
-            simulateRecoverErrored ||
-            simulatedRecover?.value.err
-        )
-            return;
+        if (!transactions?.length || simulateRecoverErrored) return;
 
         const recover = async () => {
             setRecovering(true);
@@ -169,7 +147,6 @@ export function TokenReimbursementSvm({
         void recover();
     }, [
         transactions,
-        simulatedRecover,
         simulateRecoverErrored,
         client.runtime.rpc,
         waitForConfirmationAsync,
@@ -210,9 +187,7 @@ export function TokenReimbursementSvm({
                 size="sm"
                 disabled={
                     !transactions?.length ||
-                    !simulatedRecover ||
                     simulateRecoverErrored ||
-                    !!simulatedRecover?.value.err ||
                     recovered ||
                     recoveringAll
                 }

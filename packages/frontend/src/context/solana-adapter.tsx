@@ -15,7 +15,6 @@ export const SOLANA_WALLET_CONNECTORS_NAMES = [
 const client = createClient({
     cluster: ENVIRONMENT === Environment.Production ? "mainnet" : "devnet",
     rpc: `https://${ENVIRONMENT === Environment.Production ? "mainnet" : "devnet"}.helius-rpc.com/?api-key=${SOLANA_HELIUS_RPC_API_KEY}`,
-
     walletConnectors: autoDiscover({
         filter: filterByNames(...SOLANA_WALLET_CONNECTORS_NAMES),
     }),

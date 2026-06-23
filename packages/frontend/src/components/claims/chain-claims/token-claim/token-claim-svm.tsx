@@ -11,22 +11,20 @@ import { ClaimFail } from "../../notification/claim-fail";
 import type { TokenClaimProps } from ".";
 import {
     useLatestBlockhash,
-    useSimulateTransaction,
     useSolanaClient,
     useWalletConnection,
 } from "@solana/react-hooks";
 import { getClaimRewardInstructionAsync } from "@metrom-xyz/programs-solana";
 import { createWalletTransactionSigner } from "@solana/client";
 import {
-    compileTransaction,
     getBase16Encoder,
     getBase64EncodedWireTransaction,
     signTransactionMessageWithSigners,
     type Address,
+    type Instruction,
 } from "@solana/kit";
-import type { SolanaTxMessage } from "@/src/types/solana";
 import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
-import { buildSolanaTransactionBatches } from "@/src/utils/solana";
+import { useSimulateSolanaTransactions } from "@/src/hooks/useSimulateSolanaTransactions";
 
 import styles from "./styles.module.css";
 
@@ -38,7 +36,7 @@ export function TokenClaimSvm({
 }: TokenClaimProps) {
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
-    const [transactions, setTransactions] = useState<SolanaTxMessage[]>();
+    const [instructions, setInstructions] = useState<Instruction[]>();
 
     const t = useTranslations("rewards.claims");
     const { address: account } = useAccount();
@@ -47,20 +45,6 @@ export function TokenClaimSvm({
     const { data: latestBlockhash } = useLatestBlockhash();
     const { waitForConfirmationAsync } = useSolanaTransactionSignature();
 
-    const base64Wire = useMemo(() => {
-        if (!transactions || transactions.length === 0) return undefined;
-        return getBase64EncodedWireTransaction(
-            compileTransaction(transactions[0]),
-        );
-    }, [transactions]);
-
-    const {
-        data: simulatedClaim,
-        isLoading: simulatingClaim,
-        isError: simulateClaimErrored,
-        error: simulateClaimError,
-    } = useSimulateTransaction(base64Wire, { config: { encoding: "base64" } });
-
     const signer = useMemo(
         () =>
             wallet ? createWalletTransactionSigner(wallet).signer : undefined,
@@ -68,59 +52,59 @@ export function TokenClaimSvm({
     );
 
     useEffect(() => {
-        if (!signer || !latestBlockhash?.value || !account) return;
+        if (!signer || !account) return;
 
-        const buildTransaction = async () => {
-            const instructions = await Promise.all(
-                tokenClaims.claims.map(async (claim) => {
-                    const receiverTokenAccount = await client
-                        .splToken({ mint: claim.token.address })
-                        .deriveAssociatedTokenAddress(account);
+        let cancelled = false;
 
-                    const proof = claim.proof.map((proof) =>
-                        getBase16Encoder().encode(proof.slice(2)),
-                    );
+        const buildInstructions = async () => {
+            setInstructions(undefined);
 
-                    return getClaimRewardInstructionAsync({
-                        amount: claim.amount.raw,
-                        proof,
-                        mint: claim.token.address as Address,
-                        campaign: claim.campaignId as Address,
-                        receiverTokenAccount,
-                        signer,
-                    });
-                }),
-            );
+            try {
+                const built = await Promise.all(
+                    tokenClaims.claims.map(async (claim) => {
+                        const receiverTokenAccount = await client
+                            .splToken({ mint: claim.token.address })
+                            .deriveAssociatedTokenAddress(account);
 
-            const claimBatches = buildSolanaTransactionBatches({
-                signer,
-                blockHash: latestBlockhash.value,
-                instructions,
-            });
+                        const proof = claim.proof.map((proof) =>
+                            getBase16Encoder().encode(proof.slice(2)),
+                        );
 
-            setTransactions(claimBatches);
+                        return getClaimRewardInstructionAsync({
+                            amount: claim.amount.raw,
+                            proof,
+                            mint: claim.token.address as Address,
+                            campaign: claim.campaignId as Address,
+                            receiverTokenAccount,
+                            signer,
+                        });
+                    }),
+                );
+
+                if (!cancelled) setInstructions(built);
+            } catch (error) {
+                console.warn("Error building claim instructions", error);
+            }
         };
 
-        void buildTransaction();
-    }, [signer, account, latestBlockhash, client, tokenClaims.claims]);
+        void buildInstructions();
+        return () => {
+            cancelled = true;
+        };
+    }, [signer, account, client, tokenClaims.claims]);
 
-    useEffect(() => {
-        if (!simulatingClaim && simulatedClaim && simulatedClaim.value.err)
-            console.warn(
-                `Claim simulation failed`,
-                simulatedClaim,
-                simulateClaimError,
-            );
-    }, [simulatingClaim, simulatedClaim, simulateClaimError]);
+    const {
+        transactions,
+        simulating: simulatingClaim,
+        errored: simulateClaimErrored,
+    } = useSimulateSolanaTransactions({
+        instructions,
+        signer,
+        blockHash: latestBlockhash?.value,
+    });
 
     const handleStandardClaim = useCallback(() => {
-        if (
-            !transactions?.length ||
-            !simulatedClaim ||
-            simulateClaimErrored ||
-            simulatedClaim?.value.err
-        )
-            return;
+        if (!transactions?.length || simulateClaimErrored) return;
 
         const claim = async () => {
             setClaiming(true);
@@ -161,7 +145,6 @@ export function TokenClaimSvm({
         void claim();
     }, [
         transactions,
-        simulatedClaim,
         simulateClaimErrored,
         client.runtime.rpc,
         waitForConfirmationAsync,
@@ -202,9 +185,7 @@ export function TokenClaimSvm({
                 size="sm"
                 disabled={
                     !transactions?.length ||
-                    !simulatedClaim ||
                     simulateClaimErrored ||
-                    !!simulatedClaim?.value.err ||
                     claimed ||
                     claimingAll
                 }
