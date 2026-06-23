@@ -21,6 +21,7 @@ export enum SupportedAmm {
     Thala = "thala",
     Stabull = "stabull",
     Orca = "orca",
+    Cetus = "cetus",
 }
 
 export enum SupportedDex {
@@ -47,6 +48,7 @@ export enum SupportedDex {
     Thala = "thala",
     Stabull = "stabull",
     Orca = "orca",
+    Cetus = "cetus",
 }
 
 export enum SupportedErc4626Vault {
