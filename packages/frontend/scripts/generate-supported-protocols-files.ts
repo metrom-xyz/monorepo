@@ -2,6 +2,8 @@ import {
     EVM_CHAIN_DATA,
     MVM_CHAIN_DATA,
     ProtocolType,
+    SUI_CHAIN_DATA,
+    SVM_CHAIN_DATA,
     type ChainData,
 } from "@metrom-xyz/chains";
 import {
@@ -38,6 +40,7 @@ const DEX_HOMEPAGE: Record<SupportedDex, string> = {
     [SupportedDex.Thala]: "https://www.thala.fi/",
     [SupportedDex.Stabull]: "https://app.stabull.finance/",
     [SupportedDex.Orca]: "https://app.orca.so/",
+    [SupportedDex.Cetus]: "https://app.cetus.zone/",
 };
 
 const LIQUITY_V2_HOMEPAGES: Record<SupportedLiquityV2, string> = {
@@ -89,6 +92,8 @@ type Supported = Record<string, Record<string, boolean>>;
 function getActiveChains() {
     return Object.values(EVM_CHAIN_DATA[Environment.Production])
         .concat(Object.values(MVM_CHAIN_DATA[Environment.Production]))
+        .concat(Object.values(SVM_CHAIN_DATA[Environment.Production]))
+        .concat(Object.values(SUI_CHAIN_DATA[Environment.Production]))
         .filter(({ protocols }) => protocols.some(({ active }) => active));
 }
 

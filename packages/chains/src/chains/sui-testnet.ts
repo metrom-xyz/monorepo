@@ -2,10 +2,12 @@ import {
     BaseCampaignType,
     ChainType,
     DistributablesType,
+    SupportedDex,
 } from "@metrom-xyz/sdk";
 import { ChainData } from "../types/chains";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/sui-contracts";
-import { SuiLogo } from "../assets";
+import { CetusLogo, SuiLogo } from "../assets";
+import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
 
 export const suiTestnetData: ChainData = {
     active: true,
@@ -37,6 +39,19 @@ export const suiTestnetData: ChainData = {
             ],
         },
     ],
-    protocols: [],
+    protocols: [
+        {
+            active: true,
+            type: ProtocolType.Dex,
+            slug: SupportedDex.Cetus,
+            logo: CetusLogo,
+            name: "Cetus",
+            depositUrl: {
+                type: AmmPoolDepositUrlType.PathPoolAddress,
+                template: "https://app.cetus.zone/clmm?poolAddress={pool}",
+            },
+            supportsFetchAllPools: true,
+        },
+    ],
     baseTokens: [],
 };
