@@ -11,17 +11,15 @@ import { RecoverSuccess } from "../notification/recover-success";
 import { RecoverFail } from "../notification/recover-fail";
 import { formatUsdAmount } from "@/src/utils/format";
 import type { ChainOverviewProps } from ".";
-import type { SolanaTxMessage } from "@/src/types/solana";
 import {
-    compileTransaction,
     getBase16Encoder,
     getBase64EncodedWireTransaction,
     signTransactionMessageWithSigners,
     type Address,
+    type Instruction,
 } from "@solana/kit";
 import {
     useLatestBlockhash,
-    useSimulateTransaction,
     useSolanaClient,
     useWalletConnection,
 } from "@solana/react-hooks";
@@ -31,8 +29,7 @@ import {
     getRecoverRewardInstructionAsync,
 } from "@metrom-xyz/programs-solana";
 import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
-
-import { buildSolanaTransactionBatches } from "@/src/utils/solana";
+import { useSimulateSolanaTransactions } from "@/src/hooks/useSimulateSolanaTransactions";
 
 import styles from "./styles.module.css";
 
@@ -46,10 +43,9 @@ export function ChainOverviewSvm({
 }: ChainOverviewProps) {
     const [claiming, setClaiming] = useState(false);
     const [recovering, setRecovering] = useState(false);
-    const [recoverAllTransactions, setRecoverAllTransactions] =
-        useState<SolanaTxMessage[]>();
-    const [claimAllTransactions, setClaimAllTransactions] =
-        useState<SolanaTxMessage[]>();
+    const [recoverInstructions, setRecoverInstructions] =
+        useState<Instruction[]>();
+    const [claimInstructions, setClaimInstructions] = useState<Instruction[]>();
     const [recoverAllPopoverOpen, setRecoverAllPopoverOpen] = useState(false);
     const [recoverAllAnchor, setRecoverAllAnchor] =
         useState<HTMLDivElement | null>(null);
@@ -67,36 +63,6 @@ export function ChainOverviewSvm({
 
     const ChainIcon = chainWithRewardsData.chainData.icon;
 
-    const recoverAllBase64Wire = useMemo(() => {
-        if (!recoverAllTransactions?.[0]) return undefined;
-        return getBase64EncodedWireTransaction(
-            compileTransaction(recoverAllTransactions[0]),
-        );
-    }, [recoverAllTransactions]);
-
-    const claimAllBase64Wire = useMemo(() => {
-        if (!claimAllTransactions?.[0]) return undefined;
-        return getBase64EncodedWireTransaction(
-            compileTransaction(claimAllTransactions[0]),
-        );
-    }, [claimAllTransactions]);
-
-    const {
-        data: simulatedRecoverAll,
-        isLoading: simulatingRecoverAll,
-        isError: simulatedRecoverAllErrored,
-    } = useSimulateTransaction(recoverAllBase64Wire, {
-        config: { encoding: "base64" },
-    });
-
-    const {
-        data: simulatedClaimAll,
-        isLoading: simulatingClaimAll,
-        isError: simulatedClaimAllErrored,
-    } = useSimulateTransaction(claimAllBase64Wire, {
-        config: { encoding: "base64" },
-    });
-
     const signer = useMemo(
         () =>
             wallet ? createWalletTransactionSigner(wallet).signer : undefined,
@@ -104,71 +70,112 @@ export function ChainOverviewSvm({
     );
 
     useEffect(() => {
-        if (!signer || !latestBlockhash?.value || !account) return;
+        if (!signer || !account) return;
 
-        const buildTransaction = async () => {
-            const recoverInstructions = await Promise.all(
-                chainWithRewardsData.reimbursements.map(
-                    async (reimbursement) => {
+        let cancelled = false;
+
+        const buildRecoverInstructions = async () => {
+            setRecoverInstructions(undefined);
+
+            try {
+                const built = await Promise.all(
+                    chainWithRewardsData.reimbursements.map(
+                        async (reimbursement) => {
+                            const receiverTokenAccount = await client
+                                .splToken({
+                                    mint: reimbursement.token.address,
+                                })
+                                .deriveAssociatedTokenAddress(account);
+
+                            const proof = reimbursement.proof.map((proof) =>
+                                getBase16Encoder().encode(proof.slice(2)),
+                            );
+
+                            return getRecoverRewardInstructionAsync({
+                                amount: reimbursement.amount.raw,
+                                proof,
+                                mint: reimbursement.token.address as Address,
+                                campaign: reimbursement.campaignId as Address,
+                                receiverTokenAccount,
+                                signer,
+                            });
+                        },
+                    ),
+                );
+
+                if (!cancelled) setRecoverInstructions(built);
+            } catch (error) {
+                console.warn("Error building recover instructions", error);
+            }
+        };
+
+        void buildRecoverInstructions();
+        return () => {
+            cancelled = true;
+        };
+    }, [signer, account, client, chainWithRewardsData.reimbursements]);
+
+    useEffect(() => {
+        if (!signer || !account) return;
+
+        let cancelled = false;
+
+        const buildClaimInstructions = async () => {
+            setClaimInstructions(undefined);
+            try {
+                const built = await Promise.all(
+                    chainWithRewardsData.claims.map(async (claim) => {
                         const receiverTokenAccount = await client
-                            .splToken({ mint: reimbursement.token.address })
+                            .splToken({ mint: claim.token.address })
                             .deriveAssociatedTokenAddress(account);
 
-                        const proof = reimbursement.proof.map((proof) =>
+                        const proof = claim.proof.map((proof) =>
                             getBase16Encoder().encode(proof.slice(2)),
                         );
 
-                        return getRecoverRewardInstructionAsync({
-                            amount: reimbursement.amount.raw,
+                        return getClaimRewardInstructionAsync({
+                            amount: claim.amount.raw,
                             proof,
-                            mint: reimbursement.token.address as Address,
-                            campaign: reimbursement.campaignId as Address,
+                            mint: claim.token.address as Address,
+                            campaign: claim.campaignId as Address,
                             receiverTokenAccount,
                             signer,
                         });
-                    },
-                ),
-            );
-
-            const claimInstructions = await Promise.all(
-                chainWithRewardsData.claims.map(async (claim) => {
-                    const receiverTokenAccount = await client
-                        .splToken({ mint: claim.token.address })
-                        .deriveAssociatedTokenAddress(account);
-
-                    const proof = claim.proof.map((proof) =>
-                        getBase16Encoder().encode(proof.slice(2)),
-                    );
-
-                    return getClaimRewardInstructionAsync({
-                        amount: claim.amount.raw,
-                        proof,
-                        mint: claim.token.address as Address,
-                        campaign: claim.campaignId as Address,
-                        receiverTokenAccount,
-                        signer,
-                    });
-                }),
-            );
-
-            const recoverBatches = buildSolanaTransactionBatches({
-                instructions: recoverInstructions,
-                signer,
-                blockHash: latestBlockhash.value,
-            });
-
-            const claimBatches = buildSolanaTransactionBatches({
-                instructions: claimInstructions,
-                signer,
-                blockHash: latestBlockhash.value,
-            });
-
-            setRecoverAllTransactions(recoverBatches);
-            setClaimAllTransactions(claimBatches);
+                    }),
+                );
+                if (!cancelled) setClaimInstructions(built);
+            } catch (error) {
+                console.warn("Error building claim instructions", error);
+            }
         };
 
-        void buildTransaction();
-    }, [signer, account, latestBlockhash, client, chainWithRewardsData]);
+        void buildClaimInstructions();
+        return () => {
+            cancelled = true;
+        };
+    }, [signer, account, client, chainWithRewardsData.claims]);
+
+    const {
+        transactions: recoverAllTransactions,
+        simulating: simulatingRecoverAll,
+        errored: simulateRecoverAllErrored,
+    } = useSimulateSolanaTransactions({
+        instructions: recoverInstructions,
+        signer,
+        blockHash: latestBlockhash?.value,
+        enabled: chainWithRewardsData.reimbursements.length > 0,
+    });
+
+    const {
+        transactions: claimAllTransactions,
+        simulating: simulatingClaimAll,
+        errored: simulateClaimAllErrored,
+    } = useSimulateSolanaTransactions({
+        instructions: claimInstructions,
+        signer,
+        blockHash: latestBlockhash?.value,
+        enabled: chainWithRewardsData.claims.length > 0,
+    });
 
     useEffect(() => {
         if (onClaiming) onClaiming(claiming);
@@ -195,12 +202,7 @@ export function ChainOverviewSvm({
     }
 
     const handleStandardRecoverAll = useCallback(() => {
-        if (
-            !recoverAllTransactions?.length ||
-            !simulatedRecoverAll ||
-            simulatedRecoverAllErrored ||
-            simulatedRecoverAll?.value.err
-        )
+        if (!recoverAllTransactions?.length || simulateRecoverAllErrored)
             return;
 
         const recover = async () => {
@@ -235,21 +237,14 @@ export function ChainOverviewSvm({
         void recover();
     }, [
         recoverAllTransactions,
-        simulatedRecoverAll,
-        simulatedRecoverAllErrored,
+        simulateRecoverAllErrored,
         client.runtime.rpc,
         onRecoverAll,
         waitForConfirmationAsync,
     ]);
 
     const handleStandardClaimAll = useCallback(() => {
-        if (
-            !claimAllTransactions?.length ||
-            !simulatedClaimAll ||
-            simulatedClaimAllErrored ||
-            simulatedClaimAll?.value.err
-        )
-            return;
+        if (!claimAllTransactions?.length || simulateClaimAllErrored) return;
 
         const claim = async () => {
             setClaiming(true);
@@ -289,8 +284,7 @@ export function ChainOverviewSvm({
         void claim();
     }, [
         t,
-        simulatedClaimAllErrored,
-        simulatedClaimAll,
+        simulateClaimAllErrored,
         client.runtime.rpc,
         claimAllTransactions,
         onClaimAll,
@@ -340,9 +334,8 @@ export function ChainOverviewSvm({
                         <Button
                             size="sm"
                             disabled={
-                                !simulatedRecoverAll ||
-                                simulatedRecoverAllErrored ||
-                                !!simulatedRecoverAll?.value.err
+                                !recoverAllTransactions?.length ||
+                                simulateRecoverAllErrored
                             }
                             loading={simulatingRecoverAll || recovering}
                             iconPlacement="right"
@@ -380,9 +373,8 @@ export function ChainOverviewSvm({
                         <Button
                             size="sm"
                             disabled={
-                                !simulatedClaimAll ||
-                                simulatedClaimAllErrored ||
-                                !!simulatedClaimAll?.value.err
+                                !claimAllTransactions?.length ||
+                                simulateClaimAllErrored
                             }
                             loading={simulatingClaimAll || claiming}
                             iconPlacement="right"
