@@ -50,7 +50,7 @@ export const suiTestnetData: ChainData = {
                 type: AmmPoolDepositUrlType.PathPoolAddress,
                 template: "https://app.cetus.zone/clmm?poolAddress={pool}",
             },
-            supportsFetchAllPools: false,
+            supportsFetchAllPools: true,
         },
     ],
     baseTokens: [],
