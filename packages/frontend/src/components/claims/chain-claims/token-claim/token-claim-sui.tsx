@@ -43,7 +43,11 @@ export function TokenClaimSui({
         const build = async () => {
             setTransaction(undefined);
 
-            if (!chainData || !account || !chainData.metromContract.stateAddress)
+            if (
+                !chainData ||
+                !account ||
+                !chainData.metromContract.stateAddress
+            )
                 return;
 
             const tx = new Transaction();
@@ -117,7 +121,7 @@ export function TokenClaimSui({
                     />
                 ));
                 setClaimed(true);
-                onClaim(tokenClaims.token);
+                onClaim();
                 trackUmamiEvent("click-claim-single");
             } catch (error) {
                 toast.custom((toastId) => <ClaimFail toastId={toastId} />);
