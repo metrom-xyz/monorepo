@@ -3,6 +3,7 @@ import { AccountAddress } from "@aptos-labs/ts-sdk";
 import { ChainType } from "@metrom-xyz/sdk";
 import { isAddress as isAddressSvm } from "@solana/kit";
 import { getChainType } from "./chain";
+import { isValidSuiAddress } from "@mysten/sui/utils";
 
 export function shortenAddress(address?: string, long?: boolean) {
     if (!address) return "";
@@ -51,18 +52,7 @@ function hslToHex(hsl: { h: number; s: number; l: number }): string {
 
 export function isAddress(address: string): boolean {
     const chainType = getChainType();
-
-    switch (chainType) {
-        case ChainType.Evm:
-            return isAddressViem(address);
-        case ChainType.Aptos:
-            return AccountAddress.isValid({ input: address, strict: true })
-                .valid;
-        case ChainType.Svm:
-            return isAddressSvm(address);
-        default:
-            return false;
-    }
+    return isAddressOnChainType(address, chainType);
 }
 
 export function isAddressOnChainType(
@@ -77,6 +67,8 @@ export function isAddressOnChainType(
                 .valid;
         case ChainType.Svm:
             return isAddressSvm(address);
+        case ChainType.Sui:
+            return isValidSuiAddress(address);
         default:
             return false;
     }
