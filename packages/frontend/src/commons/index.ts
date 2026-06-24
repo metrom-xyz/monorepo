@@ -1,4 +1,5 @@
 import {
+    ChainType,
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
@@ -50,6 +51,12 @@ export const TURTLE_REFERRAL_CODE = "METROM";
 export const YIELDSEEKER_APP_BASE_URL = "https://beta.yieldseeker.xyz";
 export const YIELDSEEKER_REFERRAL_CODE = "TRENCHES";
 export const YIELDSEEKER_BONUS_PERCENTAGE = 12;
+
+// Campaign types that only allow a single token to be added as reward in the creation form
+export const SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES: ChainType[] = [
+    ChainType.Svm,
+    ChainType.Sui,
+];
 
 export const ARCHE_ARUSD_VAULT_ADDRESSES = [
     "0x33ffc177a7278ff84aab314a036bc7b799b7cc15", // mainnet

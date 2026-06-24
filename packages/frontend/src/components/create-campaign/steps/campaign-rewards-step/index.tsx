@@ -23,8 +23,10 @@ import { InfoMessage } from "@/src/components/info-message";
 import { FormStepId } from "@/src/types/form";
 import { FixedAprPicker } from "../../inputs/fixed-apr-picker";
 import type { AmmPoolLiquidityCampaignPayload } from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import { ChainType, DistributablesType } from "@metrom-xyz/sdk";
+import { DistributablesType } from "@metrom-xyz/sdk";
 import { AprPreviewChip } from "../../apr-preview-chip";
+import { SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES } from "@/src/commons";
+import { useChainData } from "@/src/hooks/useChainData";
 import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
@@ -71,6 +73,7 @@ export function CampaignRewardsStep({
 
     const t = useTranslations("newCampaign.form.rewards");
     const chainType = useChainType();
+    const chainData = useChainData({ chainId });
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();
 
@@ -121,10 +124,12 @@ export function CampaignRewardsStep({
             <FormStepSection
                 title={t("defineAssets")}
                 description={
-                    chainType === ChainType.Svm && (
+                    SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES.includes(chainType) && (
                         <InfoMessage
                             weight="regular"
-                            text={t("singleRewardOnSolana")}
+                            text={t("singleRewardOnSolana", {
+                                chainType: chainData?.name || "",
+                            })}
                         />
                     )
                 }
