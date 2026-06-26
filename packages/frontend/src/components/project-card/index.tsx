@@ -1,15 +1,14 @@
 import { Link } from "@/src/i18n/routing";
-import type { SVGIcon } from "@/src/types/common";
-import { type FunctionComponent } from "react";
+import Image from "next/image";
 import { easeInOut, motion } from "motion/react";
 import Marquee from "react-fast-marquee";
 import { Theme, Typography } from "@metrom-xyz/ui";
-import type { Branding } from "@/src/types/project";
 import { getCrossVmChainData } from "@/src/utils/chain";
 import { useTheme } from "next-themes";
 import { ProjectCampaignsTotals } from "../project-campaigns-totals";
 import classNames from "classnames";
 import type { ChainWithType } from "@/src/types/chain";
+import type { ProjectBranding } from "@/src/types/project";
 
 import styles from "./styles.module.css";
 
@@ -20,9 +19,9 @@ interface ProjectCardProps {
     activeCampaigns: number;
     totalCampaigns: number;
     types: string[];
-    branding: Branding;
-    icon: FunctionComponent<SVGIcon>;
-    illustration: FunctionComponent<SVGIcon>;
+    branding: ProjectBranding;
+    iconUrl: string;
+    illustrationUrl: string;
 }
 
 const CHAINS_MARQUEE_LIMIT = 3;
@@ -37,11 +36,10 @@ export function ProjectCard({
     activeCampaigns,
     totalCampaigns,
     branding,
-    icon: Icon,
-    illustration: Illustration,
+    iconUrl,
+    illustrationUrl,
 }: ProjectCardProps) {
     const { resolvedTheme } = useTheme();
-
     const contrastColor =
         resolvedTheme === Theme.Dark
             ? branding.contrast.dark
@@ -73,7 +71,13 @@ export function ProjectCard({
                         }}
                         className={styles.illustration}
                     >
-                        {!!Illustration && <Illustration />}
+                        <Image
+                            src={illustrationUrl}
+                            alt={`${name} illustration`}
+                            fill
+                            unoptimized
+                            loading="eager"
+                        />
                     </motion.div>
                     <div className={styles.types}>
                         {types.map((type) => (
@@ -94,8 +98,13 @@ export function ProjectCard({
                             className={styles.projectIconWrapper}
                             style={{ backgroundColor: branding.iconBackground }}
                         >
-                            <Icon
-                                style={{ color: branding.main }}
+                            <Image
+                                src={iconUrl}
+                                alt={`${name} icon`}
+                                width={36}
+                                height={36}
+                                unoptimized
+                                loading="eager"
                                 className={styles.projectIcon}
                             />
                         </div>
@@ -115,14 +124,14 @@ export function ProjectCard({
                         </div>
                     </div>
                 </div>
-                <div className={styles.chains}>
-                    <Marquee
-                        play={chains.length > CHAINS_MARQUEE_LIMIT}
-                        speed={20}
-                        gradient={chains.length > CHAINS_MARQUEE_LIMIT}
-                        gradientColor={contrastColor}
-                        gradientWidth={24}
-                    >
+                <Marquee
+                    play={chains.length > CHAINS_MARQUEE_LIMIT}
+                    speed={20}
+                    gradient={chains.length > CHAINS_MARQUEE_LIMIT}
+                    gradientColor={contrastColor}
+                    gradientWidth={24}
+                >
+                    <div className={styles.chains}>
                         {chains.map((chain) => {
                             const chainData = getCrossVmChainData(
                                 chain.id,
@@ -144,8 +153,8 @@ export function ProjectCard({
                                 </div>
                             );
                         })}
-                    </Marquee>
-                </div>
+                    </div>
+                </Marquee>
             </motion.div>
         </MotionLink>
     );

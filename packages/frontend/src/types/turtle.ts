@@ -1,8 +1,3 @@
-import type { FunctionComponent } from "react";
-import type { SVGIcon } from "./common";
-import type { ChainWithType } from "./chain";
-import type { Branding } from "./project";
-
 export interface Token {
     address: string;
     name: string;
@@ -43,16 +38,4 @@ export interface TurtleDealsResponse {
     deals: TurtleDeal[];
     // TODO: do we need the metadata here?
     // metadata: TBD
-}
-
-export interface TurtleCampaign {
-    id: string;
-    chain: ChainWithType;
-    distributor: string;
-    name: string;
-    description: string;
-    url: string;
-    brand: Branding;
-    owner: string;
-    ownerLogo: FunctionComponent<SVGIcon>;
 }

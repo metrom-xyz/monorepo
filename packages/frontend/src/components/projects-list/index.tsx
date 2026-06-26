@@ -1,7 +1,7 @@
 import { ProjectCard, SkeletonProjectCard } from "../project-card";
 import { useProjects } from "@/src/hooks/useProjects";
 import { LoadingBar } from "../loading-bar";
-import { PROJECTS_METADATA } from "@/src/commons/projects";
+import { getProjectIconUrl, getProjectIllustrationUrl } from "@/src/commons";
 import { useTranslations } from "next-intl";
 import { EmptyIcon } from "@/src/assets/empty-icon";
 import { Typography } from "@metrom-xyz/ui";
@@ -17,6 +17,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { useChainType } from "@/src/hooks/useChainType";
 import type { ChainWithType } from "@/src/types/chain";
+import { generateBranding } from "@/src/utils/branding";
 
 import styles from "./styles.module.css";
 
@@ -25,7 +26,7 @@ export function ProjectsList() {
 
     const chainType = useChainType();
     const { loading, fetching, placeholderData, projects } = useProjects({
-        chainType: chainType === ChainType.Aptos ? chainType : undefined,
+        chainType: chainType !== ChainType.Evm ? chainType : undefined,
         crossVm: chainType === ChainType.Evm,
     });
 
@@ -63,40 +64,43 @@ export function ProjectsList() {
                     </div>
                 ) : (
                     projects.map((project) => {
-                        const { slug } = project;
-
-                        const metadata = PROJECTS_METADATA[slug];
-                        if (!metadata) return null;
+                        const { slug, kind } = project;
 
                         let chains: ChainWithType[] = [];
 
-                        // handle protocol-chain keys, for turtle projects
-                        if (slug.includes("-"))
+                        if (kind === "liquidity-deals")
                             chains = getChainsForTurtleDeal(
                                 slug as SupportedTurtleDeal,
-                                chainType !== ChainType.Aptos,
+                                chainType === ChainType.Evm,
                             );
                         else
                             chains = getChainsForProtocol(
                                 slug as SupportedProtocol,
-                                chainType !== ChainType.Aptos,
+                                chainType === ChainType.Evm,
                             );
 
-                        if (chains.length === 0) return null;
+                        const branding = generateBranding(
+                            project.branding.main,
+                        );
 
                         return (
                             <ProjectCard
                                 key={slug}
                                 href={`/projects/${slug}`}
-                                {...project}
                                 totalCampaigns={project.campaigns.total}
                                 activeCampaigns={project.campaigns.active}
-                                name={metadata.name}
-                                types={metadata.types}
+                                name={project.name}
+                                types={project.types}
                                 chains={chains}
-                                icon={metadata.icon}
-                                illustration={metadata.illustration}
-                                branding={metadata.branding}
+                                iconUrl={getProjectIconUrl(slug)}
+                                illustrationUrl={getProjectIllustrationUrl(
+                                    slug,
+                                )}
+                                branding={{
+                                    ...branding,
+                                    iconBackground:
+                                        project.branding.iconBackground,
+                                }}
                             />
                         );
                     })

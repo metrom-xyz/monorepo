@@ -4,10 +4,6 @@
     @apply w-full flex items-center gap-2;
 }
 
-.tag {
-    @apply h-7 w-fit border border-neutral-950 flex items-center px-1.5 rounded-lg;
-}
-
 .mainText {
     @apply text-gray-900 dark:text-neutral-950;
 }
@@ -17,7 +13,7 @@
 }
 
 .activeChip {
-    @apply h-7 flex items-center gap-1 bg-[#00000033] backdrop-blur-md rounded-lg px-1.5;
+    @apply h-6 flex items-center gap-1 bg-[#00000033] backdrop-blur-md rounded-lg px-1.5;
 }
 
 .activeChip.active {

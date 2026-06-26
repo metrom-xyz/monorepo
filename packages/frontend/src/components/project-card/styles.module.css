@@ -45,7 +45,7 @@
 }
 
 .projectIconWrapper {
-    @apply flex items-center justify-center rounded-full w-12 h-12;
+    @apply flex items-center justify-center rounded-full w-14 h-14;
 }
 
 .projectIcon {
@@ -53,7 +53,7 @@
 }
 
 .headerData {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-1;
 }
 
 .mainText {
@@ -65,7 +65,7 @@
 }
 
 .chains {
-    @apply w-full flex gap-0.5 px-5 py-2 overflow-x-auto;
+    @apply w-full flex gap-2 px-5 py-2 overflow-x-auto;
 }
 
 .chainChip {

@@ -2,52 +2,41 @@
 
 import { Header } from "./header";
 import { Intro } from "./intro";
-import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
-import { PROJECTS_METADATA } from "@/src/commons/projects";
-import { ProjectKind } from "@/src/types/project";
+import {
+    BackendCampaignType,
+    SupportedLiquidityProviderDeal,
+} from "@metrom-xyz/sdk";
+import type { Project } from "@/src/types/project";
 import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
-import { Campaigns, type BackendCampaignTypeAndProjects } from "../campaigns";
+import { Campaigns } from "../campaigns";
 import { useMemo } from "react";
-import type { FilterParams, RawFilters } from "../campaigns-table/filters";
-import { useCampaignsCount } from "@/src/hooks/useCampaignsCount";
-import { APTOS } from "@/src/commons/env";
+import type { RawFilters } from "../campaigns-table/filters";
 import { getChainDataBySlug } from "@/src/utils/chain";
 import { BackButton } from "../back-button";
 
 import styles from "./styles.module.css";
 
 interface ProjectProps {
-    project: string;
+    project: Project;
 }
 
 export function Project({ project }: ProjectProps) {
-    const details = PROJECTS_METADATA[project];
+    const { slug, kind } = project;
 
-    const {
-        name,
-        kind,
-        protocol,
-        description,
-        url,
-        branding,
-        icon,
-        illustration,
-        intro,
-    } = details;
-
-    const Widget = PROJECTS_WIDGETS[project];
+    const Widget = PROJECTS_WIDGETS[slug];
 
     const optionalFilters: RawFilters = useMemo(() => {
         switch (kind) {
-            case ProjectKind.GenericProtocol:
-            case ProjectKind.PointsTracking:
+            case "generic-protocol":
+            case "points-tracking":
+            case "partner":
                 return {
                     chains: [],
                     statuses: [],
-                    protocols: [{ label: "", value: protocol }],
+                    protocols: [{ label: "", value: slug }],
                 };
-            case ProjectKind.LiquidityDeals: {
-                const [, chain] = project.split("-");
+            case "liquidity-deals": {
+                const [, chain] = slug.split("-");
                 const chainData = getChainDataBySlug(chain);
 
                 if (!chainData) {
@@ -66,16 +55,26 @@ export function Project({ project }: ProjectProps) {
                         },
                     ],
                     statuses: [],
-                    protocols: [{ label: "", value: protocol }],
+                    protocols: [
+                        {
+                            label: "",
+                            value: SupportedLiquidityProviderDeal.Turtle,
+                        },
+                    ],
                 };
             }
-            case ProjectKind.Chain:
+            case "chain":
+                if (
+                    project.chainType === undefined ||
+                    project.chainId === undefined
+                )
+                    return { chains: [], statuses: [], protocols: [] };
                 return {
                     chains: [
                         {
                             label: "",
                             query: "",
-                            value: `${details.chainType}_${details.chainId}`,
+                            value: `${project.chainType}_${project.chainId}`,
                         },
                     ],
                     statuses: [],
@@ -84,62 +83,14 @@ export function Project({ project }: ProjectProps) {
             default:
                 return { chains: [], statuses: [], protocols: [] };
         }
-    }, [details, kind, protocol, project]);
-
-    const { chainTypes, chainIds, protocols }: FilterParams = useMemo(() => {
-        const { chains, statuses, protocols } = optionalFilters;
-
-        const chainTypes: ChainType[] = [];
-        const chainIds: string[] = [];
-        chains.forEach((chain) => {
-            const [chainType, chainId] = chain.value.split("_");
-            if (!chainTypes.includes(chainType as ChainType))
-                chainTypes.push(chainType as ChainType);
-            if (!chainIds.includes(chainId)) chainIds.push(chainId);
-        });
-
-        return {
-            chainIds: chainIds.map(Number),
-            protocols: protocols.map(({ value }) => value),
-            statuses: statuses.map(({ value }) => value),
-            chainTypes: APTOS
-                ? [ChainType.Aptos]
-                : chainTypes
-                  ? chainTypes
-                  : undefined,
-        };
-    }, [optionalFilters]);
-
-    const { loading, points, rewards } = useCampaignsCount({
-        chainTypes,
-        chainIds,
-        protocols,
-    });
-
-    const tabs = useMemo(() => {
-        if (loading || points === undefined || rewards === undefined) return [];
-
-        const activeTabs: BackendCampaignTypeAndProjects[] = [];
-        if (points > 0) activeTabs.push(BackendCampaignType.Points);
-        if (rewards > 0) activeTabs.push(BackendCampaignType.Rewards);
-
-        return activeTabs;
-    }, [loading, points, rewards]);
+    }, [project, slug, kind]);
 
     return (
         <div className={styles.root}>
             <div className={styles.topContent}>
                 <BackButton />
-                <Header
-                    name={name}
-                    slug={project}
-                    url={url}
-                    description={description}
-                    branding={branding}
-                    icon={icon}
-                    illustration={illustration}
-                />
-                {intro && <Intro {...intro} />}
+                <Header project={project} />
+                {project.intro && <Intro {...project.intro} />}
                 {Widget && (
                     <div className={styles.widgets}>
                         <Widget />
@@ -147,7 +98,7 @@ export function Project({ project }: ProjectProps) {
                 )}
             </div>
             <Campaigns
-                tabs={tabs}
+                tabs={[BackendCampaignType.Rewards, BackendCampaignType.Points]}
                 disableFilters
                 hideHeader
                 optionalFilters={optionalFilters}

@@ -1,43 +1,24 @@
-import type { SVGIcon } from "@/src/types/common";
-import type { FunctionComponent } from "react";
 import { Typography } from "@metrom-xyz/ui";
+import Image from "next/image";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
-import type { Branding } from "@/src/types/project";
-import { useProject } from "@/src/hooks/useProject";
-import { PROJECTS_METADATA } from "@/src/commons/projects";
-import {
-    ProjectCampaignsTotals,
-    SekeletonProjectCampaignsTotals,
-} from "../../project-campaigns-totals";
+import type { Project } from "@/src/types/project";
+import { ProjectCampaignsTotals } from "../../project-campaigns-totals";
+import { getProjectIconUrl, getProjectIllustrationUrl } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
 interface HeaderProps {
-    name: string;
-    slug: string;
-    description: string;
-    branding: Branding;
-    url: string;
-    icon: FunctionComponent<SVGIcon>;
-    illustration?: FunctionComponent<SVGIcon>;
+    project: Project;
 }
 
-export function Header({
-    name,
-    slug,
-    description,
-    branding,
-    url,
-    icon: Icon,
-    illustration: Illustration,
-}: HeaderProps) {
+export function Header({ project }: HeaderProps) {
     const t = useTranslations("projectPage.header");
 
-    const { project, loading } = useProject({ slug });
-
-    const metadata = PROJECTS_METADATA[slug];
-    if (!metadata) return null;
+    const { slug, name, description, url, branding, types, campaigns } =
+        project;
+    const iconUrl = getProjectIconUrl(slug);
+    const illustrationUrl = getProjectIllustrationUrl(slug);
 
     return (
         <div
@@ -46,13 +27,26 @@ export function Header({
             }}
             className={styles.root}
         >
-            {!!Illustration && <Illustration className={styles.illustration} />}
+            <Image
+                src={illustrationUrl}
+                alt={`${name} illustration`}
+                width={308}
+                height={195}
+                unoptimized
+                loading="eager"
+                className={styles.illustration}
+            />
             <div
                 className={styles.projectIconWrapper}
                 style={{ backgroundColor: branding.iconBackground }}
             >
-                <Icon
-                    style={{ color: metadata.branding.main }}
+                <Image
+                    src={iconUrl}
+                    alt={`${name} icon`}
+                    width={56}
+                    height={56}
+                    unoptimized
+                    loading="eager"
                     className={styles.projectIcon}
                 />
             </div>
@@ -66,9 +60,9 @@ export function Header({
                         {t("title", { protocol: name })}
                     </Typography>
                     <div className={styles.rightTitle}>
-                        {metadata.types.length > 0 && (
+                        {types.length > 0 && (
                             <div className={styles.types}>
-                                {metadata.types.map((type) => (
+                                {types.map((type) => (
                                     <div key={type} className={styles.type}>
                                         <Typography
                                             size="xs"
@@ -104,14 +98,10 @@ export function Header({
                 <Typography weight="medium" className={styles.mainText}>
                     {description}
                 </Typography>
-                {loading || !project ? (
-                    <SekeletonProjectCampaignsTotals />
-                ) : (
-                    <ProjectCampaignsTotals
-                        total={project.campaigns.total}
-                        active={project.campaigns.active}
-                    />
-                )}
+                <ProjectCampaignsTotals
+                    total={campaigns.total}
+                    active={campaigns.active}
+                />
             </div>
         </div>
     );
