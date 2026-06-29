@@ -16,11 +16,7 @@ import {
     type SelectOption,
 } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import {
-    ChainType,
-    DistributablesType,
-    type Erc20Token,
-} from "@metrom-xyz/sdk";
+import { DistributablesType, type Erc20Token } from "@metrom-xyz/sdk";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import { type Address } from "viem";
 import { trackUmamiEvent } from "@/src/utils/umami";
@@ -31,6 +27,7 @@ import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { formatUnits, parseUnits } from "@/src/utils/format";
 import type { FormSteps } from "@/src/context/form-steps";
 import { useChainType } from "@/src/hooks/useChainType";
+import { SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES } from "@/src/commons";
 
 import styles from "./styles.module.css";
 
@@ -192,9 +189,9 @@ export function RewardsPickerTokens({
         [],
     );
 
-    // In Solana only one token can be added as reward
+    // Some chain types only allow one token to be added as a reward
     const singleTokenCampaign =
-        chainType === ChainType.Svm &&
+        SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES.includes(chainType) &&
         value?.tokens &&
         value.tokens.length >= 1;
 

@@ -8,6 +8,7 @@ import { TokenClaimEvm } from "./token-claim-evm";
 import { TokenClaimMvm } from "./token-claim-mvm";
 import { useChainType } from "@/src/hooks/useChainType";
 import { TokenClaimSvm } from "./token-claim-svm";
+import { TokenClaimSui } from "./token-claim-sui";
 
 import styles from "./styles.module.css";
 
@@ -28,6 +29,8 @@ export function TokenClaim(props: TokenClaimProps) {
             return <TokenClaimMvm {...props} />;
         case ChainType.Svm:
             return <TokenClaimSvm {...props} />;
+        case ChainType.Sui:
+            return <TokenClaimSui {...props} />;
         default:
             return null;
     }

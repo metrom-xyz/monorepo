@@ -6,7 +6,7 @@ import type { NumberFormatValues } from "react-number-format";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { InfoTooltip, NumberInput, Popover, Typography } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
-import { useProtocolFees } from "@/src/hooks/useProtocolFees";
+import { useProtocolFees } from "@/src/hooks/use-protocol-fees";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useRewardTokens } from "@/src/hooks/useRewardTokens";
 import { useWatchBalances } from "@/src/hooks/use-watch-balances";

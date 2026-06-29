@@ -21,6 +21,7 @@ export { lightlinkPhoenixData } from "./lightlink-phoenix";
 export { lumiaData } from "./lumia";
 export { mainnetData } from "./mainnet";
 export { seiData } from "./sei";
+export { suiTestnetData } from "./sui-testnet";
 export { megaethData } from "./megaeth";
 export { lineaData } from "./linea";
 export { bscData } from "./bsc";

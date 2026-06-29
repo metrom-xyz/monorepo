@@ -1,3 +1,4 @@
+import { ChainType } from "@metrom-xyz/sdk";
 import dayjs, { Dayjs } from "dayjs";
 import numeral from "numeral";
 import {
@@ -8,8 +9,8 @@ import {
     formatUnits as formatUnitsMvm,
     parseUnits as parseUnitsMvm,
 } from "@aptos-labs/js-pro";
+import { parseToUnits } from "@mysten/sui/utils";
 import { getChainType } from "./chain";
-import { ChainType } from "@metrom-xyz/sdk";
 
 const HIDE_DECIMALS_AMOUNT_CUTOFF = 1000;
 const HUMANIZE_AMOUNT_CUTOFF = 100_000;
@@ -132,6 +133,7 @@ export function formatUnits(value: bigint, decimals: number) {
             return formatUnitsEvm(value, decimals);
         case ChainType.Aptos:
         case ChainType.Svm:
+        case ChainType.Sui:
             // The implementation is basically the same, it just divides a number by a given exponent of base 10
             // and formats it into a string representation of the number
             return formatUnitsMvm(value, decimals);
@@ -151,6 +153,8 @@ export function parseUnits(value: string, decimals: number) {
             // The implementation is basically the same, it just multiplies a string representation of a number
             // by a given exponent of base 10 and returns a bigint
             return parseUnitsMvm(value, decimals);
+        case ChainType.Sui:
+            return parseToUnits(value, decimals);
         default:
             throw new Error(`Unsupported chain type: ${chainType}`);
     }

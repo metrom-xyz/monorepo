@@ -1,0 +1,41 @@
+@reference "../../../app.css";
+
+.root {
+    @apply w-full;
+}
+
+.modal {
+    @apply h-auto
+        flex
+        flex-col
+        sm:min-w-[360px]
+        rounded-4xl
+        border
+        surface-primary
+        border-gray-300
+        dark:border-neutral-800
+        overflow-hidden;
+}
+
+.title {
+    @apply w-full flex items-center justify-between px-7 py-5;
+}
+
+.closeIcon {
+    @apply text-primary size-3 cursor-pointer;
+}
+
+.walletButton {
+    @apply w-full
+        flex
+        items-center
+        px-7
+        py-4
+        surface-primary
+        gap-3
+        surface-primary-hover
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}

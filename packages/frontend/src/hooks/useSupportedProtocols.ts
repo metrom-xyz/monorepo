@@ -2,6 +2,7 @@ import {
     EVM_CHAIN_DATA,
     MVM_CHAIN_DATA,
     SVM_CHAIN_DATA,
+    SUI_CHAIN_DATA,
     type ProtocolBase,
 } from "@metrom-xyz/chains";
 import { ENVIRONMENT } from "../commons/env";
@@ -19,6 +20,7 @@ export function useSupportedProtocols({
     const protocolsEvm: Record<string, ProtocolBase> = {};
     const protocolsMvm: Record<string, ProtocolBase> = {};
     const protocolsSvm: Record<string, ProtocolBase> = {};
+    const protocolsSui: Record<string, ProtocolBase> = {};
 
     Object.entries(MVM_CHAIN_DATA[ENVIRONMENT]).forEach(([, chainData]) => {
         for (const protocol of chainData.protocols) {
@@ -41,11 +43,19 @@ export function useSupportedProtocols({
         }
     });
 
+    Object.entries(SUI_CHAIN_DATA[ENVIRONMENT]).forEach(([, chainData]) => {
+        for (const protocol of chainData.protocols) {
+            if (!protocolsSui[protocol.slug])
+                protocolsSui[protocol.slug] = protocol;
+        }
+    });
+
     if (crossVm)
         return [
             ...Object.values(protocolsEvm),
             ...Object.values(protocolsMvm),
             ...Object.values(protocolsSvm),
+            ...Object.values(protocolsSui),
         ];
 
     switch (chainType) {
@@ -55,6 +65,8 @@ export function useSupportedProtocols({
             return Object.values(protocolsMvm);
         case ChainType.Svm:
             return Object.values(protocolsSvm);
+        case ChainType.Sui:
+            return Object.values(protocolsSui);
         default:
             throw new Error(
                 `Unsupported chain type ${chainType} in useSupportedProtocols`,

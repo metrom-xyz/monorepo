@@ -1,4 +1,5 @@
 import {
+    ChainType,
     Environment,
     METROM_API_CLIENT as METROM_API_CLIENTS,
     SupportedAmm,
@@ -13,6 +14,7 @@ import {
 import { NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
 import { SupportedChain as SupportedSvm } from "@metrom-xyz/programs-solana";
+import { SupportedChain as SupportedSui } from "@metrom-xyz/sui-contracts";
 
 export const BASE_URL = "https://app.metrom.xyz";
 
@@ -37,6 +39,11 @@ export const METROM_SOLANA_BASE_URL =
         ? "https://solana.metrom.xyz"
         : "https://solana.dev.metrom.xyz";
 
+export const METROM_SUI_BASE_URL =
+    ENVIRONMENT === Environment.Production
+        ? "https://sui.metrom.xyz"
+        : "https://sui.dev.metrom.xyz";
+
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 export const TURTLE_APP_EARN_URL = "https://app.turtle.xyz/earn/opportunities";
 export const TURTLE_REFERRAL_CODE = "METROM";
@@ -44,6 +51,12 @@ export const TURTLE_REFERRAL_CODE = "METROM";
 export const YIELDSEEKER_APP_BASE_URL = "https://beta.yieldseeker.xyz";
 export const YIELDSEEKER_REFERRAL_CODE = "TRENCHES";
 export const YIELDSEEKER_BONUS_PERCENTAGE = 12;
+
+// Campaign types that only allow a single token to be added as reward in the creation form
+export const SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES: ChainType[] = [
+    ChainType.Svm,
+    ChainType.Sui,
+];
 
 export const ARCHE_ARUSD_VAULT_ADDRESSES = [
     "0x33ffc177a7278ff84aab314a036bc7b799b7cc15", // mainnet
@@ -96,6 +109,12 @@ export const SUPPORTED_CHAINS_SVM =
           []
         : [SupportedSvm.Devnet];
 
+export const SUPPORTED_CHAINS_SUI =
+    ENVIRONMENT === Environment.Production
+        ? // FIXME: add sui mainnet chain id
+          []
+        : [SupportedSui.Testnet];
+
 export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/token-icons/refs/heads/main/${ENVIRONMENT === Environment.Production ? "mainnet" : "testnet"}-icons.json`;
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
@@ -114,6 +133,7 @@ export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
     [SupportedAmm.Thala]: true,
     [SupportedAmm.Stabull]: false,
     [SupportedAmm.Orca]: true,
+    [SupportedAmm.Cetus]: true,
 };
 
 export const AMM_SUPPORTS_TOKENS_RATIO: Record<SupportedAmm, boolean> = {
@@ -132,6 +152,7 @@ export const AMM_SUPPORTS_TOKENS_RATIO: Record<SupportedAmm, boolean> = {
     [SupportedAmm.Thala]: true,
     [SupportedAmm.Stabull]: false,
     [SupportedAmm.Orca]: true,
+    [SupportedAmm.Cetus]: true,
 };
 
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45

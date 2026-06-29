@@ -21,4 +21,5 @@ minimumReleaseAgeExclude:
   - "@metrom-xyz/contracts"
   - "@metrom-xyz/aptos-contracts"
   - "@metrom-xyz/programs-solana"
+  - "@metrom-xyz/sui-contracts"
 blockExoticSubdeps: true
