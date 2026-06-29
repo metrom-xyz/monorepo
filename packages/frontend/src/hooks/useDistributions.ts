@@ -9,7 +9,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { ENVIRONMENT } from "../commons/env";
 import { useCampaignDetails } from "./useCampaignDetails";
-import { type Address, type Hex, formatUnits } from "viem";
+import { type Address, type Hex } from "viem";
 import type { SupportedChain } from "@metrom-xyz/contracts";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type {
@@ -21,6 +21,7 @@ import type {
     ProcessedDistribution,
     TokenMap,
 } from "../types/distributions";
+import { formatUnits } from "../utils/format";
 
 export interface UseDistributionsParams extends HookBaseParams {
     chainId?: SupportedChain;
@@ -51,7 +52,11 @@ export function useDistributions({
 }: UseDistributionsParams): UseDistributionsReturnValue {
     const [completed, setCompleted] = useState(0);
 
-    const { campaignDetails: campaign } = useCampaignDetails({ id: campaignId, chainId, chainType });
+    const { campaignDetails: campaign } = useCampaignDetails({
+        id: campaignId,
+        chainId,
+        chainType,
+    });
 
     const {
         data: hashes,

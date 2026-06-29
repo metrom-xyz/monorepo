@@ -109,7 +109,7 @@ export function TokenReimbursementMvm({
                     />
                 ));
                 setRecovered(true);
-                onRecover(tokenReimbursements.token);
+                onRecover();
                 trackUmamiEvent("click-recover-single");
             } catch (error) {
                 toast.custom((toastId) => <RecoverFail toastId={toastId} />);

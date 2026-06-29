@@ -16,7 +16,11 @@ import {
     type SelectOption,
 } from "@metrom-xyz/ui";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { DistributablesType, type Erc20Token } from "@metrom-xyz/sdk";
+import {
+    ChainType,
+    DistributablesType,
+    type Erc20Token,
+} from "@metrom-xyz/sdk";
 import type { WhitelistedErc20TokenAmount } from "@/src/types/common";
 import { type Address } from "viem";
 import { trackUmamiEvent } from "@/src/utils/umami";
@@ -26,6 +30,7 @@ import { useAccount } from "@/src/hooks/useAccount";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { formatUnits, parseUnits } from "@/src/utils/format";
 import type { FormSteps } from "@/src/context/form-steps";
+import { useChainType } from "@/src/hooks/useChainType";
 
 import styles from "./styles.module.css";
 
@@ -57,6 +62,7 @@ export function RewardsPickerTokens({
 
     const t = useTranslations("newCampaign.inputs.rewardsPicker");
     const { tokens, loading } = useRewardTokens({ chainId });
+    const chainType = useChainType();
     const { address } = useAccount();
     const { balance: rewardTokenBalance } = useWatchBalance({
         chainId,
@@ -186,6 +192,12 @@ export function RewardsPickerTokens({
         [],
     );
 
+    // In Solana only one token can be added as reward
+    const singleTokenCampaign =
+        chainType === ChainType.Svm &&
+        value?.tokens &&
+        value.tokens.length >= 1;
+
     return (
         <div className={styles.root}>
             <div className={styles.inputs}>
@@ -193,6 +205,7 @@ export function RewardsPickerTokens({
                     chainId={chainId}
                     tokens={tokens}
                     loading={loading}
+                    disabled={singleTokenCampaign}
                     value={token}
                     unavailables={value?.tokens}
                     onChange={setToken}
@@ -201,6 +214,7 @@ export function RewardsPickerTokens({
                     size="lg"
                     value={amount?.formattedValue}
                     placeholder="0"
+                    disabled={singleTokenCampaign}
                     allowNegative={false}
                     error={!!amountError}
                     errorText={amountError ? t(amountError) : undefined}
@@ -210,6 +224,7 @@ export function RewardsPickerTokens({
                             disabled={
                                 !token ||
                                 !amount?.formattedValue ||
+                                singleTokenCampaign ||
                                 !!amountError
                             }
                             icon={ArrowRightIcon}

@@ -10,6 +10,7 @@ export * from "./hydrex";
 export * from "./izumi";
 export * from "./lithos";
 export * from "./morphex";
+export * from "./orca";
 export * from "./quickswap";
 export * from "./stabull";
 export * from "./swapsicle";

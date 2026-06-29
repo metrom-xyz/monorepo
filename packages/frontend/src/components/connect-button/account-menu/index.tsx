@@ -20,13 +20,13 @@ import styles from "./styles.module.css";
 
 export interface Balance {
     symbol: string;
-    amount: number;
+    amount?: number | string;
 }
 
 interface AccountMenuProps {
     className?: string;
     chainId: number;
-    account: Address;
+    account: string;
     balance?: Balance;
     open?: boolean;
     onClose: () => void;
@@ -173,9 +173,12 @@ export function AccountMenu({
                                                         weight="medium"
                                                         size="sm"
                                                     >
-                                                        {formatAmount({
-                                                            amount: balance.amount,
-                                                        })}
+                                                        {typeof balance.amount ===
+                                                        "number"
+                                                            ? formatAmount({
+                                                                  amount: balance.amount,
+                                                              })
+                                                            : balance.amount}
                                                     </Typography>
                                                 </>
                                             ) : (

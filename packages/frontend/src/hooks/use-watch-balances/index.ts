@@ -1,9 +1,13 @@
-import type { OnChainAmount, UsdPricedErc20Token } from "@metrom-xyz/sdk";
-import { type Address } from "viem";
+import {
+    ChainType,
+    type OnChainAmount,
+    type UsdPricedErc20Token,
+} from "@metrom-xyz/sdk";
 import type { HookBaseParams } from "../../types/hooks";
-import { APTOS } from "@/src/commons/env";
 import { useWatchBalancesEvm } from "./useWatchBalancesEvm";
 import { useWatchBalancesMvm } from "./useWatchBalancesMvm";
+import { useChainType } from "../useChainType";
+import { useWatchBalancesSvm } from "./useWatchBalancesSvm";
 
 export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
     token: T;
@@ -12,7 +16,7 @@ export interface Erc20TokenWithBalance<T extends UsdPricedErc20Token> {
 
 export interface UseWatchBalancesParams<T> extends HookBaseParams {
     chainId?: number;
-    address?: Address;
+    address?: string;
     tokens?: T[];
 }
 
@@ -24,9 +28,31 @@ export interface UseWatchBalancesReturnValue<T extends UsdPricedErc20Token> {
 export function useWatchBalances<T extends UsdPricedErc20Token>(
     params: UseWatchBalancesParams<T> = {},
 ): UseWatchBalancesReturnValue<T> {
-    const balancesEvm = useWatchBalancesEvm({ ...params, enabled: !APTOS });
-    const balancesMvm = useWatchBalancesMvm({ ...params, enabled: APTOS });
+    const chainType = useChainType();
 
-    if (APTOS) return balancesMvm;
-    return balancesEvm;
+    const balancesEvm = useWatchBalancesEvm({
+        ...params,
+        enabled: chainType === ChainType.Evm,
+    });
+    const balancesMvm = useWatchBalancesMvm({
+        ...params,
+        enabled: chainType === ChainType.Aptos,
+    });
+    const balancesSvm = useWatchBalancesSvm({
+        ...params,
+        enabled: chainType === ChainType.Svm,
+    });
+
+    switch (chainType) {
+        case ChainType.Evm:
+            return balancesEvm;
+        case ChainType.Aptos:
+            return balancesMvm;
+        case ChainType.Svm:
+            return balancesSvm;
+        default:
+            throw new Error(
+                `Unsupported chain type ${chainType} in useWatchBalances`,
+            );
+    }
 }

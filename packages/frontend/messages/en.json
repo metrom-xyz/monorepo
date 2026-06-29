@@ -3,6 +3,7 @@
         "discover": "Discover",
         "newCampaign": "New campaign",
         "claims": "Claims",
+        "ecosystem": "Ecosystem",
         "connect": "Connect"
     },
     "wallets": {
@@ -274,6 +275,7 @@
                 "fixedAprDescription": "Automatically adjusts reward token distribution to USD price to keep APR fixed in USD terms for LPs. Set the desired APR and add the previewed token amount as reward.",
                 "defineRestrictions": "Define who can earn rewards",
                 "defineRestrictionDescription": "You can block unwanted addresses or allow only eligible ones. Zero and dead addresses are excluded by default.",
+                "singleRewardOnSolana": "Only one reward token is allowed for campaigns on Solana.",
                 "next": "Next"
             },
             "kpi": {
@@ -485,10 +487,14 @@
                 }
             },
             "partnerAction": {
-                "protocol": { "title": "Protocol" },
+                "protocol": {
+                    "title": "Protocol"
+                },
                 "action": {
                     "title": "Action",
-                    "list": { "bridge-and-supply": "Bridge and supply" }
+                    "list": {
+                        "bridge-and-supply": "Bridge and supply"
+                    }
                 }
             }
         },
@@ -538,7 +544,8 @@
             "startDatePicker": {
                 "label": "Start date",
                 "now": "Now",
-                "dateInThePast": "Date can't be in the past"
+                "dateInThePast": "Date can't be in the past",
+                "dateTooSoon": "Start date must be at least {duration} from now"
             },
             "weighting": {
                 "title": "Reward ratio",
@@ -906,7 +913,8 @@
                     "title": "Claim failed",
                     "message": "Something went wrong"
                 }
-            }
+            },
+            "multipleTransactions": "Claiming all will require approving {count} transactions in your wallet"
         },
         "reimbursements": {
             "title": "Reimbursements",
@@ -924,7 +932,8 @@
                     "title": "Recover failed",
                     "message": "Something went wrong"
                 }
-            }
+            },
+            "multipleTransactions": "Recovering all will require approving {count} transactions in your wallet"
         }
     },
     "reimbursements": {

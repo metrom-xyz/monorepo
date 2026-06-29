@@ -20,6 +20,7 @@ import { EmptyTargetCampaignPreviewPayload } from "../types/campaign/empty-targe
 import { AaveV3CampaignPreviewPayload } from "../types/campaign/aave-v3-campaign";
 import { HoldFungibleAssetCampaignPreviewPayload } from "../types/campaign/hold-fungible-asset-campaign";
 import { Erc4626VaultCampaignPreviewPayload } from "../types/campaign/erc4626-vault-campaign";
+import { getAddressEncoder, type Address as AddressSvm } from "@solana/kit";
 
 export function buildCampaignDataBundleEvm(payload: CampaignPreviewPayload) {
     if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload)
@@ -140,6 +141,56 @@ export function buildCampaignDataBundleMvm(payload: CampaignPreviewPayload) {
     }
 
     return serializer.toUint8Array();
+}
+
+export function buildCampaignDataBundleSvm(payload: CampaignPreviewPayload) {
+    // const slugEncoder = fixEncoderSize(getUtf8Encoder(), 32);
+
+    if (payload instanceof AmmPoolLiquidityCampaignPreviewPayload) {
+        return getAddressEncoder().encode(payload.pool.id as AddressSvm);
+        // TODO: add support and test other campaign types on SVM
+        // } else if (payload instanceof LiquityV2CampaignPreviewPayload) {
+        //     return mergeBytes([
+        //         slugEncoder.encode(payload.brand.slug) as Uint8Array,
+        //         getAddressEncoder().encode(
+        //             payload.collateral.address as AddressSvm,
+        //         ) as Uint8Array,
+        //     ]);
+        // } else if (payload instanceof AaveV3CampaignPreviewPayload) {
+        //     const blacklistedCollaterals =
+        //         payload.kind === CampaignKind.AaveV3NetSupply &&
+        //         payload.blacklistedCollaterals
+        //             ? payload.blacklistedCollaterals
+        //             : [];
+
+        //     return mergeBytes([
+        //         slugEncoder.encode(payload.brand.slug) as Uint8Array,
+        //         getAddressEncoder().encode(
+        //             payload.market.address as AddressSvm,
+        //         ) as Uint8Array,
+        //         getAddressEncoder().encode(
+        //             payload.collateral.address as AddressSvm,
+        //         ) as Uint8Array,
+        //         getU32Encoder().encode(blacklistedCollaterals.length) as Uint8Array,
+        //         ...blacklistedCollaterals.map(
+        //             ({ address }) =>
+        //                 getAddressEncoder().encode(
+        //                     address as AddressSvm,
+        //                 ) as Uint8Array,
+        //         ),
+        //     ]);
+        // } else if (payload instanceof HoldFungibleAssetCampaignPreviewPayload) {
+        //     return getAddressEncoder().encode(payload.asset.address as AddressSvm);
+        // } else if (payload instanceof Erc4626VaultCampaignPreviewPayload) {
+        //     return mergeBytes([
+        //         slugEncoder.encode(payload.brand.slug) as Uint8Array,
+        //         getAddressEncoder().encode(
+        //             payload.vault.address as AddressSvm,
+        //         ) as Uint8Array,
+        //     ]);
+    } else if (payload instanceof EmptyTargetCampaignPreviewPayload) {
+        return new Uint8Array(0);
+    } else return null;
 }
 
 export function buildSpecificationBundle(

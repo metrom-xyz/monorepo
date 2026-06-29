@@ -3,10 +3,11 @@ import { Button, Skeleton, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import type { TokenClaims } from "..";
 import { RemoteLogo } from "@/src/components/remote-logo";
-import type { Erc20Token } from "@metrom-xyz/sdk";
-import { APTOS } from "@/src/commons/env";
+import { ChainType } from "@metrom-xyz/sdk";
 import { TokenClaimEvm } from "./token-claim-evm";
 import { TokenClaimMvm } from "./token-claim-mvm";
+import { useChainType } from "@/src/hooks/useChainType";
+import { TokenClaimSvm } from "./token-claim-svm";
 
 import styles from "./styles.module.css";
 
@@ -14,12 +15,22 @@ export interface TokenClaimProps {
     chainId: number;
     tokenClaims: TokenClaims;
     claimingAll?: boolean;
-    onClaim: (token: Erc20Token) => void;
+    onClaim: () => void;
 }
 
 export function TokenClaim(props: TokenClaimProps) {
-    if (APTOS) return <TokenClaimMvm {...props} />;
-    return <TokenClaimEvm {...props} />;
+    const chainType = useChainType();
+
+    switch (chainType) {
+        case ChainType.Evm:
+            return <TokenClaimEvm {...props} />;
+        case ChainType.Aptos:
+            return <TokenClaimMvm {...props} />;
+        case ChainType.Svm:
+            return <TokenClaimSvm {...props} />;
+        default:
+            return null;
+    }
 }
 
 export function SkeletonTokenClaim() {

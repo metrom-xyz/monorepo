@@ -143,6 +143,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Hyperion]: "Hyperion",
     [SupportedDex.Thala]: "Thala",
     [SupportedDex.Stabull]: "Stabull",
+    [SupportedDex.Orca]: "Orca",
 };
 
 const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
@@ -220,11 +221,11 @@ export interface FetchPoolParams extends ChainParams {
 }
 
 export interface FetchClaimsParams {
-    address: Address;
+    address: string;
 }
 
 export interface FetchReimbursementsParams {
-    address: Address;
+    address: string;
 }
 
 export type FetchWhitelistedTokensParams = ChainParams;

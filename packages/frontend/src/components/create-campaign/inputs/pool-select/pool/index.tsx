@@ -1,13 +1,13 @@
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import { Typography } from "@metrom-xyz/ui";
 import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
-import type { Erc20Token } from "@metrom-xyz/sdk";
+import type { BaseErc20Token } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 
 interface PoolProps {
     chainId: number;
-    tokens: Erc20Token[];
+    tokens: BaseErc20Token[];
     label: string;
     usdTvl: number;
     fee?: number;

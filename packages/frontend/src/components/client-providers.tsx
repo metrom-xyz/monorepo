@@ -20,7 +20,8 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
 import { Environment } from "@metrom-xyz/sdk";
-import AptosCoreProvider from "./aptos-core-provider";
+import AptosCoreProvider from "../context/aptos-core-provider";
+import { SolanaAdapterContextProvider } from "../context/solana-adapter";
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
@@ -64,29 +65,31 @@ export function ClientProviders({
 }>) {
     return (
         <QueryClientProvider client={queryClient}>
-            <AptosWalletAdapterProvider
-                autoConnect={true}
-                disableTelemetry={true}
-                dappConfig={{
-                    network:
-                        ENVIRONMENT === Environment.Production
-                            ? Network.MAINNET
-                            : Network.TESTNET,
-                    aptosApiKeys: {
-                        mainnet: APTOS_CLIENT_API_KEY,
-                        testnet: APTOS_CLIENT_TESTNET_API_KEY,
-                    },
-                }}
-            >
-                <AptosCoreProvider>
-                    <ReownAppKitContextProvider>
-                        <TokenIconsProvider>
-                            <Toaster />
-                            {children}
-                        </TokenIconsProvider>
-                    </ReownAppKitContextProvider>
-                </AptosCoreProvider>
-            </AptosWalletAdapterProvider>
+            <SolanaAdapterContextProvider>
+                <AptosWalletAdapterProvider
+                    autoConnect={true}
+                    disableTelemetry={true}
+                    dappConfig={{
+                        network:
+                            ENVIRONMENT === Environment.Production
+                                ? Network.MAINNET
+                                : Network.TESTNET,
+                        aptosApiKeys: {
+                            mainnet: APTOS_CLIENT_API_KEY,
+                            testnet: APTOS_CLIENT_TESTNET_API_KEY,
+                        },
+                    }}
+                >
+                    <AptosCoreProvider>
+                        <ReownAppKitContextProvider>
+                            <TokenIconsProvider>
+                                <Toaster />
+                                {children}
+                            </TokenIconsProvider>
+                        </ReownAppKitContextProvider>
+                    </AptosCoreProvider>
+                </AptosWalletAdapterProvider>
+            </SolanaAdapterContextProvider>
         </QueryClientProvider>
     );
 }

@@ -37,6 +37,7 @@ const DEX_HOMEPAGE: Record<SupportedDex, string> = {
     [SupportedDex.Hyperion]: "https://hyperion.xyz/",
     [SupportedDex.Thala]: "https://www.thala.fi/",
     [SupportedDex.Stabull]: "https://app.stabull.finance/",
+    [SupportedDex.Orca]: "https://app.orca.so/",
 };
 
 const LIQUITY_V2_HOMEPAGES: Record<SupportedLiquityV2, string> = {

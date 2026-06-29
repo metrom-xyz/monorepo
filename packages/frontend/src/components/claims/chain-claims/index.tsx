@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { type Erc20Token, type UsdPricedErc20Token } from "@metrom-xyz/sdk";
+import { type UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import { type Address } from "viem";
 import { SkeletonTokenClaim, TokenClaim } from "./token-claim";
@@ -12,7 +12,7 @@ import styles from "./token-claim/styles.module.css";
 
 type ChainOverviewProps = {
     claimingAll?: boolean;
-    onClaim: (token: Erc20Token) => void;
+    onClaim: () => void;
 } & Omit<
     ChainWithRewardsData,
     "reimbursements" | "chainData" | "totalUsdValue"

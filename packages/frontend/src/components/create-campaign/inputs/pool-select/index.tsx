@@ -1,8 +1,8 @@
 import { useChainType } from "@/src/hooks/useChainType";
 import { usePools } from "@/src/hooks/usePools";
 import type { AmmPoolLiquidityCampaignPayloadPart } from "@/src/types/campaign/amm-pool-liquidity-campaign";
-import type { BaseErc20Token, DexProtocol } from "@metrom-xyz/chains";
-import type { AmmPool, Erc20Token } from "@metrom-xyz/sdk";
+import type { DexProtocol } from "@metrom-xyz/chains";
+import type { BaseErc20Token, AmmPool } from "@metrom-xyz/sdk";
 import { Select, Skeleton, type SelectOption } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -27,7 +27,7 @@ interface PoolSelectProps {
 
 interface OptionData {
     chainId: number;
-    tokens: Erc20Token[];
+    tokens: BaseErc20Token[];
     usdTvl: number;
     fee?: number;
 }

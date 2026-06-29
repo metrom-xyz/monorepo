@@ -126,3 +126,6 @@ generated
 build
 
 .turbo
+.claude
+skills-lock.json
+.agents

@@ -2,6 +2,7 @@ import type { Address } from "viem";
 
 export enum ChainType {
     Evm = "evm",
+    Svm = "svm",
     Aptos = "aptos",
 }
 
@@ -40,6 +41,8 @@ export interface Erc20Token {
     name: string;
     details: Erc20TokenDetails;
 }
+
+export type BaseErc20Token = Omit<Erc20Token, "details">;
 
 export interface UsdPricedErc20Token extends Erc20Token {
     usdPrice: number;

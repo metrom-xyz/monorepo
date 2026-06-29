@@ -3,15 +3,48 @@ import {
     MVM_CHAIN_DATA,
     Environment,
     type ChainData,
-    SupportedDevelopmentEvmChain,
-    SupportedProductionEvmChain,
-    SupportedDevelopmentMvmChain,
-    SupportedProductionMvmChain,
+    SVM_CHAIN_DATA,
 } from "@metrom-xyz/chains";
-import { APTOS, ENVIRONMENT } from "../commons/env";
+import { APTOS, ENVIRONMENT, SOLANA } from "../commons/env";
 import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
+import { SupportedChain as SupportedChainSvm } from "@metrom-xyz/programs-solana";
 import { ChainType } from "@metrom-xyz/sdk";
+
+export const SOLANA_NETWORK_ID = {
+    [Environment.Development]: {
+        "solana:devnet": solanaNetworkToId("devnet"),
+    },
+    [Environment.Production]: {
+        "solana:mainnet": solanaNetworkToId("mainnet"),
+    },
+};
+
+export function solanaNetworkToId(network?: string): number {
+    const fullNetwork = `solana:${network}`;
+
+    switch (fullNetwork) {
+        case "solana:devnet": {
+            return SupportedChainSvm.Devnet;
+        }
+        case "solana:mainnet": {
+            // FIXME: add mainnet id
+            return 103;
+        }
+        default: {
+            throw new Error(`Unsupported solana network ${network}`);
+        }
+    }
+}
+
+export function chainIdToSolanaNetwork(chainId?: number): string | null {
+    const chain = Object.entries(SOLANA_NETWORK_ID[ENVIRONMENT]).find(
+        ([, id]) => chainId === id,
+    );
+
+    if (!chain) return null;
+    return chain[0];
+}
 
 export const APTOS_NETWORK_ID = {
     [Environment.Development]: {
@@ -38,124 +71,71 @@ export function chainIdToAptosNetwork(
     return chain[0] as SupportedChainMvm;
 }
 
+type ValidatedChainDataMap<C extends string | number> = Record<
+    C,
+    ChainData | undefined
+>;
+
 export function getCrossVmChainData(
     chainId: number,
     chainType: ChainType,
 ): ChainData | undefined {
-    let chainData: ChainData | undefined;
+    switch (chainType) {
+        case ChainType.Evm:
+            return (
+                EVM_CHAIN_DATA[ENVIRONMENT] as ValidatedChainDataMap<number>
+            )[chainId];
+        case ChainType.Aptos: {
+            const network = chainIdToAptosNetwork(chainId);
+            if (!network)
+                throw new Error(`Unsupported Aptos chain id ${chainId}`);
 
-    switch (ENVIRONMENT) {
-        case Environment.Development: {
-            chainData =
-                chainType === ChainType.Aptos
-                    ? MVM_CHAIN_DATA[Environment.Development][
-                          chainIdToAptosNetwork(
-                              chainId,
-                          ) as unknown as SupportedDevelopmentMvmChain
-                      ]
-                    : EVM_CHAIN_DATA[Environment.Development][
-                          chainId as SupportedDevelopmentEvmChain
-                      ];
+            return (
+                MVM_CHAIN_DATA[ENVIRONMENT] as ValidatedChainDataMap<string>
+            )[network];
+        }
+        case ChainType.Svm: {
+            if (!chainIdToSolanaNetwork(chainId))
+                throw new Error(`Unsupported Solana chain id ${chainId}`);
 
-            break;
+            return (
+                SVM_CHAIN_DATA[ENVIRONMENT] as ValidatedChainDataMap<number>
+            )[chainId];
         }
-        case Environment.Production: {
-            chainData =
-                chainType === ChainType.Aptos
-                    ? MVM_CHAIN_DATA[Environment.Production][
-                          chainIdToAptosNetwork(
-                              chainId,
-                          ) as unknown as SupportedProductionMvmChain
-                      ]
-                    : EVM_CHAIN_DATA[Environment.Production][
-                          chainId as SupportedProductionEvmChain
-                      ];
-
-            break;
-        }
-        default: {
-            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
-        }
+        default:
+            throw new Error(
+                `Unsupported chain type and id: ${chainType}-${chainId}`,
+            );
     }
-
-    return chainData;
 }
 
 export function getChainData(chainId: number): ChainData | undefined {
-    let chainData: ChainData | undefined;
-
-    switch (ENVIRONMENT) {
-        case Environment.Development: {
-            if (APTOS)
-                chainData =
-                    MVM_CHAIN_DATA[Environment.Development][
-                        chainIdToAptosNetwork(
-                            chainId,
-                        ) as unknown as SupportedDevelopmentMvmChain
-                    ];
-            else
-                chainData =
-                    EVM_CHAIN_DATA[Environment.Development][
-                        chainId as SupportedDevelopmentEvmChain
-                    ];
-
-            break;
-        }
-        case Environment.Production: {
-            if (APTOS)
-                chainData =
-                    MVM_CHAIN_DATA[Environment.Production][
-                        chainIdToAptosNetwork(
-                            chainId,
-                        ) as unknown as SupportedProductionMvmChain
-                    ];
-            else
-                chainData =
-                    EVM_CHAIN_DATA[Environment.Production][
-                        chainId as SupportedProductionEvmChain
-                    ];
-
-            break;
-        }
-        default: {
-            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
-        }
-    }
-
-    return chainData;
+    return getCrossVmChainData(chainId, getChainType());
 }
 
 export function getChainDataBySlug(slug: string): ChainData | undefined {
-    let chainData: ChainData | undefined;
+    const chainType = getChainType();
 
-    switch (ENVIRONMENT) {
-        case Environment.Development: {
-            if (APTOS)
-                chainData = Object.values(
-                    MVM_CHAIN_DATA[Environment.Development],
-                ).find((data) => data.slug === slug);
-            else
-                chainData = Object.values(
-                    EVM_CHAIN_DATA[Environment.Development],
-                ).find((data) => data.slug === slug);
-            break;
-        }
-        case Environment.Production: {
-            if (APTOS)
-                chainData = Object.values(
-                    MVM_CHAIN_DATA[Environment.Production],
-                ).find((data) => data.slug === slug);
-            else
-                chainData = Object.values(
-                    EVM_CHAIN_DATA[Environment.Production],
-                ).find((data) => data.slug === slug);
-
-            break;
-        }
-        default: {
-            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
-        }
+    switch (chainType) {
+        case ChainType.Evm:
+            return Object.values(EVM_CHAIN_DATA[ENVIRONMENT]).find(
+                (data) => data.slug === slug,
+            );
+        case ChainType.Aptos:
+            return Object.values(MVM_CHAIN_DATA[ENVIRONMENT]).find(
+                (data) => data.slug === slug,
+            );
+        case ChainType.Svm:
+            return Object.values(SVM_CHAIN_DATA[ENVIRONMENT]).find(
+                (data) => data.slug === slug,
+            );
+        default:
+            throw new Error(`Unsupported chain type: ${chainType}`);
     }
+}
 
-    return chainData;
+export function getChainType() {
+    if (APTOS) return ChainType.Aptos;
+    if (SOLANA) return ChainType.Svm;
+    return ChainType.Evm;
 }

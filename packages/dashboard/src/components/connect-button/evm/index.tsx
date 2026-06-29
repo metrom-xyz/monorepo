@@ -4,11 +4,11 @@ import { Button } from "@metrom-xyz/ui";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "react-use";
 import { useTranslations } from "next-intl";
-import { type Address } from "blo";
 import { AccountMenu } from "../account-menu";
 import classNames from "classnames";
 import { AnimatePresence, motion } from "motion/react";
 import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
+import { type Address } from "viem";
 import { toast } from "sonner";
 import { SafeConnectedNotification } from "../safe-connected-notification";
 import {
