@@ -22,7 +22,7 @@ export function useWatchBalance(params: UseWatchBalanceParams = {}): {
     balance?: bigint;
     loading: boolean;
 } {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const balanceEvm = useWatchBalanceEvm({
         ...params,

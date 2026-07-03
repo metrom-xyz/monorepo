@@ -7,7 +7,7 @@ import { useChainType } from "./useChainType";
 import { useSolanaClient } from "@solana/react-hooks";
 
 export function useActiveChains(): ChainWithType[] {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const evmChains = useChains();
     const solanaClient = useSolanaClient();
 

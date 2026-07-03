@@ -6,7 +6,7 @@ import { useChainType } from "./useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function useAccountAvatar(params: UseEnsAvatarParameters) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const config = useConfig();
 
     const data = useQuery({

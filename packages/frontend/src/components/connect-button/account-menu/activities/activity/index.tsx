@@ -26,7 +26,7 @@ interface ActivityProps extends Activity {
 }
 
 export function Activity({ chainId, transaction, payload }: ActivityProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const t = useTranslations("accountMenu.activities");
 
     const { campaignDetails: campaign, loading } = useCampaignDetails({

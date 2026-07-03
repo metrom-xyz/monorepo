@@ -124,7 +124,7 @@ export function CampaignsTable({
     onClearFilters,
 }: CampaignsTableProps) {
     const t = useTranslations("allCampaigns");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -229,8 +229,7 @@ export function CampaignsTable({
                 chainIds: chainIds.map(Number),
                 protocols: protocols.map(({ value }) => value),
                 statuses: statuses.map(({ value }) => value),
-                chainTypes:
-                    chainType === ChainType.Evm ? chainTypes : [chainType],
+                chainTypes: [chainType],
             };
         }, [chainType, debouncedRawFilters]);
 

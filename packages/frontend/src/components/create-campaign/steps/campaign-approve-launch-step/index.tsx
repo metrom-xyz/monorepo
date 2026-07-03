@@ -40,7 +40,7 @@ export function CampaignApproveLaunchStep({
     const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
 
     const t = useTranslations("newCampaign.form.approveLaunch");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { connected } = useAccount();
     const { errors, activeStepId } = useFormSteps();
     const { campaignFee, loading: loadingCampaignFee } = useCampaignFee({

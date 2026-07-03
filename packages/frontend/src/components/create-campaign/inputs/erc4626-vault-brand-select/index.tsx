@@ -49,7 +49,7 @@ export function Erc4626VaultBrandSelect({
     onChange,
 }: Erc4626VaultBrandSelectProps) {
     const t = useTranslations("newCampaign.inputs");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const erc4626Vaults = useProtocolsInChain({
         chainId,
         chainType,

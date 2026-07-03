@@ -88,7 +88,7 @@ export function PoolSelect({
     >(undefined);
 
     const t = useTranslations("newCampaign.inputs.poolSelect");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { pools, loading } = usePools({
         chainId,
         chainType,

@@ -33,7 +33,7 @@ interface AaveV3FormPreviewProps {
 export function AaveV3FormPreview({ payload, errors }: AaveV3FormPreviewProps) {
     const globalT = useTranslations();
     const t = useTranslations("newCampaign.formPreview");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const {
         loading: loadingCollateralUsdNetSupply,

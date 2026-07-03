@@ -18,6 +18,7 @@ import {
     APTOS_CLIENT_TESTNET_API_KEY,
     ENVIRONMENT,
 } from "../commons/env";
+import { ChainTypeProvider } from "../context/chain-type";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { hashFn } from "wagmi/query";
 import { Environment } from "@metrom-xyz/sdk";
@@ -74,33 +75,35 @@ export function ClientProviders({
 }>) {
     return (
         <QueryClientProvider client={queryClient}>
-            <SuiDAppKitClientProvider>
-                <SolanaAdapterContextProvider>
-                    <AptosWalletAdapterProvider
-                        autoConnect={true}
-                        disableTelemetry={true}
-                        dappConfig={{
-                            network:
-                                ENVIRONMENT === Environment.Production
-                                    ? Network.MAINNET
-                                    : Network.TESTNET,
-                            aptosApiKeys: {
-                                mainnet: APTOS_CLIENT_API_KEY,
-                                testnet: APTOS_CLIENT_TESTNET_API_KEY,
-                            },
-                        }}
-                    >
-                        <AptosCoreProvider>
-                            <ReownAppKitContextProvider>
-                                <TokenIconsProvider>
-                                    <Toaster />
-                                    {children}
-                                </TokenIconsProvider>
-                            </ReownAppKitContextProvider>
-                        </AptosCoreProvider>
-                    </AptosWalletAdapterProvider>
-                </SolanaAdapterContextProvider>
-            </SuiDAppKitClientProvider>
+            <ChainTypeProvider>
+                <SuiDAppKitClientProvider>
+                    <SolanaAdapterContextProvider>
+                        <AptosWalletAdapterProvider
+                            autoConnect={false}
+                            disableTelemetry={true}
+                            dappConfig={{
+                                network:
+                                    ENVIRONMENT === Environment.Production
+                                        ? Network.MAINNET
+                                        : Network.TESTNET,
+                                aptosApiKeys: {
+                                    mainnet: APTOS_CLIENT_API_KEY,
+                                    testnet: APTOS_CLIENT_TESTNET_API_KEY,
+                                },
+                            }}
+                        >
+                            <AptosCoreProvider>
+                                <ReownAppKitContextProvider>
+                                    <TokenIconsProvider>
+                                        <Toaster />
+                                        {children}
+                                    </TokenIconsProvider>
+                                </ReownAppKitContextProvider>
+                            </AptosCoreProvider>
+                        </AptosWalletAdapterProvider>
+                    </SolanaAdapterContextProvider>
+                </SuiDAppKitClientProvider>
+            </ChainTypeProvider>
         </QueryClientProvider>
     );
 }

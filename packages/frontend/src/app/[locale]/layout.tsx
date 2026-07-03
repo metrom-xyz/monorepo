@@ -7,7 +7,7 @@ import "../../app.css";
 import type { Metadata } from "next";
 import { type ReactNode } from "react";
 import { setRequestLocale } from "next-intl/server";
-import { ClientProviders } from "../../components/client-providers";
+import { ClientProvidersDynamic } from "../../components/client-providers-dynamic";
 import { routing, type Locale } from "@/src/i18n/routing";
 import { notFound } from "next/navigation";
 import { Layout as AppLayout } from "../../components/layout";
@@ -71,9 +71,9 @@ export default async function Layout({ children, params }: LayoutParams) {
             <body>
                 <NextIntlClientProvider>
                     <ThemeProvider attribute={"data-theme"}>
-                        <ClientProviders>
+                        <ClientProvidersDynamic>
                             <AppLayout>{children}</AppLayout>
-                        </ClientProviders>
+                        </ClientProvidersDynamic>
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

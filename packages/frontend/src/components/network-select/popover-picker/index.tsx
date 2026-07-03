@@ -35,7 +35,7 @@ export function PopoverPicker({
     onChange,
     onOpen,
 }: PopoverPickerProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { width } = useWindowSize();
 
     function getOnChangeHandler(chainId: number) {
