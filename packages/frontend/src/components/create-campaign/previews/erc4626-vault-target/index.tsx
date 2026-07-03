@@ -15,7 +15,7 @@ interface Erc4626VaultTargetProps {
 export function Erc4626VaultTarget({ payload }: Erc4626VaultTargetProps) {
     const globalT = useTranslations();
     const t = useTranslations("newCampaign.formPreview");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const chainData = useChainData({
         chainId: payload?.chainId,
         chainType,

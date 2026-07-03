@@ -14,7 +14,7 @@ export interface UseAccountReturnValue {
 }
 
 export function useAccount(): UseAccountReturnValue {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const accountEvm = useAccountWagmi();
     const accountMvm = useWallet();
     const accountSvm = useWalletConnection();

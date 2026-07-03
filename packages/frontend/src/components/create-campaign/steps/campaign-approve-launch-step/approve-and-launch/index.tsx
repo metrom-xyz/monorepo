@@ -17,7 +17,7 @@ export interface ApproveAndLaunchProps {
 }
 
 export function ApproveAndLaunch(props: ApproveAndLaunchProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     switch (chainType) {
         case ChainType.Evm:

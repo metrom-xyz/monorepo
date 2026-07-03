@@ -7,7 +7,7 @@ import { ChainType } from "@metrom-xyz/sdk";
 
 export function useAccountName(params: UseEnsNameParameters) {
     const config = useConfig();
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const data = useQuery({
         queryKey: ["account-name", params.address],

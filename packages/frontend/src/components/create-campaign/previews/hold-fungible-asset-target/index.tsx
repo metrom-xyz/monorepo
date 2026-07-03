@@ -15,7 +15,7 @@ interface HoldFungibleTargetProps {
 export function HoldFungibleAssetTarget({ payload }: HoldFungibleTargetProps) {
     const globalT = useTranslations();
     const t = useTranslations("newCampaign.formPreview");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const chainData = useChainData({
         chainId: payload?.chainId,
         chainType,

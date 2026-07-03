@@ -32,7 +32,7 @@ export function DrawerPicker({
     onChange,
     onClose,
 }: DrawerPickerProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { width } = useWindowSize();
 
     function getOnChangeHandler(chainId: number) {

@@ -18,7 +18,7 @@ export function AaveV3MarketSelect({
     value,
     onChange,
 }: AaveV3MarketSelectProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const chainData = useChainData({ chainId, chainType, crossVm: true });
 
     const markets = useMemo(() => {

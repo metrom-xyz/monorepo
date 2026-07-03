@@ -4,7 +4,7 @@ import { useChainType } from "@/src/hooks/useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function NetworkSelect() {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     switch (chainType) {
         case ChainType.Evm:

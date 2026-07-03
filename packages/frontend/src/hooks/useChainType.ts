@@ -1,5 +1,1 @@
-import { getChainType } from "../utils/chain";
-
-export function useChainType() {
-    return getChainType();
-}
+export { useChainType } from "../context/chain-type";

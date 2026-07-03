@@ -20,7 +20,7 @@ export function useRewardTokens({
     loading: boolean;
     tokens: RewardToken[] | undefined;
 } {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const { data: tokens, isPending: loading } = useQuery({
         queryKey: ["reward-tokens", chainId, chainType],

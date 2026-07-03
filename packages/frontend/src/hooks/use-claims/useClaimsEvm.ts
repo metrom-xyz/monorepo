@@ -8,8 +8,9 @@ import type { ClaimWithRemaining } from "../../types/campaign/common";
 import { getChainData } from "../../utils/chain";
 import { readContracts } from "@wagmi/core";
 import type { UseClaimsParams, UseClaimsReturnValue } from ".";
+import { ChainType } from "@metrom-xyz/sdk";
 
-type QueryKey = [string, Address | undefined];
+type QueryKey = [string, ChainType, Address | undefined];
 
 export function useClaimsEvm({
     enabled = true,
@@ -26,9 +27,9 @@ export function useClaimsEvm({
         isError: claimsErrored,
         isLoading: loadingClaims,
     } = useQuery({
-        queryKey: ["claims", address],
+        queryKey: ["claims", ChainType.Evm, address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as QueryKey;
+            const [, , account] = queryKey as QueryKey;
             if (!account) return null;
 
             try {
@@ -36,8 +37,10 @@ export function useClaimsEvm({
                     address: account,
                 });
 
-                return rawClaims.filter(({ chainId }) =>
-                    supportedChains.find(({ id }) => id === chainId),
+                return rawClaims.filter(
+                    ({ chainId, chainType }) =>
+                        chainType === ChainType.Evm &&
+                        supportedChains.find(({ id }) => id === chainId),
                 );
             } catch (error) {
                 console.error(
@@ -80,9 +83,9 @@ export function useClaimsEvm({
         isLoading: loadingClaimed,
         isError: claimedError,
     } = useQuery({
-        queryKey: ["claimed-campaign-rewards", claimedContracts],
+        queryKey: ["claimed-campaign-rewards", ChainType.Evm, claimedContracts],
         queryFn: async ({ queryKey }) => {
-            const [, contracts] = queryKey as [string, typeof claimedContracts];
+            const [, , contracts] = queryKey as [string, ChainType, typeof claimedContracts];
 
             if (!contracts) return null;
 
@@ -101,7 +104,7 @@ export function useClaimsEvm({
         retryDelay: 1000,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!claimedContracts,
+        enabled: enabled && !!claimedContracts,
     });
 
     useEffect(() => {
@@ -157,7 +160,7 @@ export function useClaimsEvm({
     // after a successful claim.
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["claimed-campaign-rewards"],
+            queryKey: ["claimed-campaign-rewards", ChainType.Evm],
         });
     }, [queryClient]);
 

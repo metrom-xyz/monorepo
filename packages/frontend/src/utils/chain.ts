@@ -6,7 +6,7 @@ import {
     SVM_CHAIN_DATA,
     SUI_CHAIN_DATA,
 } from "@metrom-xyz/chains";
-import { APTOS, ENVIRONMENT, SOLANA, SUI } from "../commons/env";
+import { ENVIRONMENT } from "../commons/env";
 import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
 import { SupportedChain as SupportedChainSvm } from "@metrom-xyz/programs-solana";
@@ -221,8 +221,9 @@ export function getChainDataBySlug(slug: string): ChainData | undefined {
 }
 
 export function getChainType(): ChainType {
-    if (APTOS) return ChainType.Aptos;
-    if (SOLANA) return ChainType.Svm;
-    if (SUI) return ChainType.Sui;
-    return ChainType.Evm;
+    if (typeof window === "undefined") return ChainType.Evm;
+    const stored = localStorage.getItem("metrom.chainType");
+    return Object.values(ChainType).includes(stored as ChainType)
+        ? (stored as ChainType)
+        : ChainType.Evm;
 }

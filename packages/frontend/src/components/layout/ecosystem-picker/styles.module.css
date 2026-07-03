@@ -4,8 +4,16 @@
     @apply p-0 overflow-hidden;
 }
 
-.link {
-    @apply flex items-center gap-1 h-9 px-2 py-2.5 cursor-pointer surface-secondary-hover transition-colors duration-200 ease-in-out;
+.button {
+    @apply w-full flex items-center gap-1 h-9 px-2 py-2.5 cursor-pointer surface-secondary-hover transition-colors duration-200 ease-in-out;
+}
+
+.active {
+    @apply bg-gray-50 dark:bg-neutral-700;
+}
+
+.active > p {
+    @apply font-medium;
 }
 
 .trigger {
