@@ -8,7 +8,7 @@ import {
     type ProtocolBase,
 } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
 
 import styles from "./styles.module.css";

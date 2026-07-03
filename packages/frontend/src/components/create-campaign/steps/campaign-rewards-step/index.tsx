@@ -27,7 +27,7 @@ import { DistributablesType } from "@metrom-xyz/sdk";
 import { AprPreviewChip } from "../../apr-preview-chip";
 import { SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES } from "@/src/commons";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 
 import styles from "./styles.module.css";
 

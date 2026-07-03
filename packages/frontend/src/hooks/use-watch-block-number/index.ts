@@ -1,7 +1,7 @@
 import type { HookBaseParams } from "@/src/types/hooks";
 import { useWatchBlockNumberEvm } from "./useWatchBlockNumberEvm";
 import { useWatchBlockNumberMvm } from "./useWatchBlockNumberMvm";
-import { useChainType } from "../useChainType";
+import { useChainType } from "../../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function useWatchBlockNumber(params: HookBaseParams = {}) {

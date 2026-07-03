@@ -3,16 +3,7 @@ import { MobileDrawer, Typography } from "@metrom-xyz/ui";
 import { RemoveScroll } from "react-remove-scroll";
 import { useWindowSize } from "react-use";
 import { getCrossVmChainData } from "@/src/utils/chain";
-import {
-    METROM_APTOS_BASE_URL,
-    METROM_SOLANA_BASE_URL,
-    SUPPORTED_CHAINS_MVM,
-    SUPPORTED_CHAINS_SVM,
-} from "@/src/commons";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import type { ChainWithType } from "@/src/types/chain";
-import { useChainType } from "@/src/hooks/useChainType";
-import { ChainType } from "@metrom-xyz/sdk";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
@@ -32,7 +23,6 @@ export function DrawerPicker({
     onChange,
     onClose,
 }: DrawerPickerProps) {
-    const { chainType } = useChainType();
     const { width } = useWindowSize();
 
     function getOnChangeHandler(chainId: number) {
@@ -48,62 +38,6 @@ export function DrawerPicker({
                 <div className={styles.networksWrapper}>
                     {chains.map(({ id, type }) => {
                         const chainData = getCrossVmChainData(id, type);
-
-                        if (
-                            chainType !== ChainType.Aptos &&
-                            SUPPORTED_CHAINS_MVM.includes(id)
-                        )
-                            return (
-                                <a
-                                    key={id}
-                                    href={METROM_APTOS_BASE_URL}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.row}
-                                >
-                                    {chainData?.icon && (
-                                        <chainData.icon
-                                            className={commonStyles.icon}
-                                        />
-                                    )}
-                                    <Typography size="xl">
-                                        {chainData?.name}
-                                    </Typography>
-                                    <ArrowRightIcon
-                                        className={
-                                            commonStyles.externalLinkIcon
-                                        }
-                                    />
-                                </a>
-                            );
-
-                        if (
-                            chainType !== ChainType.Svm &&
-                            SUPPORTED_CHAINS_SVM.includes(id)
-                        )
-                            return (
-                                <a
-                                    key={id}
-                                    href={METROM_SOLANA_BASE_URL}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.row}
-                                >
-                                    {chainData?.icon && (
-                                        <chainData.icon
-                                            className={commonStyles.icon}
-                                        />
-                                    )}
-                                    <Typography size="xl">
-                                        {chainData?.name}
-                                    </Typography>
-                                    <ArrowRightIcon
-                                        className={
-                                            commonStyles.externalLinkIcon
-                                        }
-                                    />
-                                </a>
-                            );
 
                         return (
                             <div

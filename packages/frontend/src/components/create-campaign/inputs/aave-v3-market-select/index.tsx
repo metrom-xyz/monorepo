@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import type { AaveV3CampaignPayloadPart } from "@/src/types/campaign/aave-v3-campaign";
 import { useChainData } from "@/src/hooks/useChainData";
 import { ProtocolType, type AaveV3Protocol } from "@metrom-xyz/chains";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import type { AaveV3Market } from "@metrom-xyz/sdk";
 
 interface AaveV3MarketSelectProps {

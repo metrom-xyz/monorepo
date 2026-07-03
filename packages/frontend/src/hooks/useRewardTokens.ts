@@ -3,7 +3,7 @@ import { METROM_API_CLIENT } from "../commons";
 import type { ChainType, RewardToken } from "@metrom-xyz/sdk";
 import { useQuery } from "@tanstack/react-query";
 import type { HookBaseParams } from "../types/hooks";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 
 interface UseRewardTokensParams extends HookBaseParams {
     chainId?: number;

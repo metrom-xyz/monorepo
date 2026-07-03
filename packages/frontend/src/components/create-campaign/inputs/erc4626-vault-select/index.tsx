@@ -1,4 +1,4 @@
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import type { Erc4626VaultCampaignPayloadPart } from "@/src/types/campaign/erc4626-vault-campaign";
 import type { Erc4626Vault } from "@metrom-xyz/sdk";
 import {

@@ -3,7 +3,7 @@ import { Chip, Skeleton, Typography } from "@metrom-xyz/ui";
 import type { AaveV3CampaignPayloadPart } from "@/src/types/campaign/aave-v3-campaign";
 import { type AaveV3Protocol } from "@metrom-xyz/chains";
 import type { AaveV3Collateral, AaveV3Market } from "@metrom-xyz/sdk";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { useAaveV3Collaterals } from "@/src/hooks/useAaveV3Collaterals";
 

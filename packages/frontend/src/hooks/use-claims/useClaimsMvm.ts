@@ -43,8 +43,6 @@ export function useClaimsMvm({
                     address: account,
                 });
 
-                // Also filter by known chain ids so that the claimed
-                // payloads below stay index-aligned with the raw claims
                 return rawClaims.filter(
                     ({ chainId, chainType }) =>
                         chainType === ChainType.Aptos &&

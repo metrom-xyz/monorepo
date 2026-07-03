@@ -5,7 +5,7 @@ import { getCrossVmChainData } from "../utils/chain";
 import { useTranslations } from "next-intl";
 import { useChainsWithTypes } from "./useChainsWithTypes";
 import { useSupportedProtocols } from "./useSupportedProtocols";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 
 export interface ChainFilterOption {
     label: string;

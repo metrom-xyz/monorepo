@@ -2,7 +2,7 @@ import { useReimbursementsEvm } from "./useReimbursementsEvm";
 import { useReimbursementsMvm } from "./useReimbursementsMvm";
 import type { HookBaseParams } from "@/src/types/hooks";
 import type { ReimbursementsWithRemaining } from "@/src/types/campaign/common";
-import { useChainType } from "../useChainType";
+import { useChainType } from "../../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useReimbursementsSvm } from "./useReimbursementsSvm";
 import { useReimbursementsSui } from "./useReimbursementsSui";

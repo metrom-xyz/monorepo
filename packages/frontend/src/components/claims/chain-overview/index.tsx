@@ -3,7 +3,7 @@ import type { ChainWithRewardsData } from "..";
 import { useTranslations } from "next-intl";
 import { ChainOverviewEvm } from "./chain-overview-evm";
 import { ChainOverviewMvm } from "./chain-overview-mvm";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 import { ChainOverviewSvm } from "./chain-overview-svm";
 import { ChainOverviewSui } from "./chain-overview-sui";

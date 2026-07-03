@@ -1,4 +1,4 @@
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { usePools } from "@/src/hooks/usePools";
 import type { AmmPoolLiquidityCampaignPayloadPart } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import type { DexProtocol } from "@metrom-xyz/chains";
