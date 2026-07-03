@@ -9,7 +9,7 @@ import {
 } from "react";
 import { AptosLogo, EthLogo, SolanaLogo, SuiLogo } from "@metrom-xyz/chains";
 import { Popover, Typography } from "@metrom-xyz/ui";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { usePathname, useRouter } from "@/src/i18n/routing";
 import classNames from "classnames";
 

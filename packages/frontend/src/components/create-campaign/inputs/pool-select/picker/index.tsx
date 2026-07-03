@@ -15,7 +15,7 @@ import type { AmmPool } from "@metrom-xyz/sdk";
 import { isAddress } from "@/src/utils/address";
 import type { DexProtocol } from "@metrom-xyz/chains";
 import { Pool } from "../pool";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import type { FormSteps } from "@/src/context/form-steps";

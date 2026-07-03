@@ -49,9 +49,7 @@ export function useReimbursementsMvm({
                     await METROM_API_CLIENT.fetchReimbursements({
                         address: account,
                     });
-                // Also filter by known chain ids so that the recovered and
-                // claimed payloads below stay index-aligned with the raw
-                // reimbursements
+
                 return rawReimbursements.filter(
                     ({ chainId, chainType }) =>
                         chainType === ChainType.Aptos &&

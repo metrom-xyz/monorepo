@@ -4,7 +4,7 @@ import { type Erc4626VaultProtocol, ProtocolType } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
 import { useCallback, useEffect, useMemo, type FunctionComponent } from "react";
 import type { Erc4626VaultCampaignPayloadPart } from "@/src/types/campaign/erc4626-vault-campaign";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import type { SVGIcon } from "@/src/types/common";
 import { usePrevious } from "react-use";
 

@@ -2,7 +2,7 @@ import { type CampaignPreviewPayload } from "@/src/types/campaign/common";
 import type { Hex } from "viem";
 import { ApproveAndDeployEvm } from "./approve-and-launch-evm";
 import { ApproveAndDeployMvm } from "./approve-and-launch-mvm";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 import { ApproveAndDeploySvm } from "./approve-and-launch-svm";
 import { ApproveAndDeploySui } from "./approve-and-launch-sui";

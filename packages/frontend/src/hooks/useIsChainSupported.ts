@@ -7,7 +7,7 @@ import {
     chainIdToSolanaNetwork,
     chainIdToSuiNetwork,
 } from "@/src/utils/chain";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useWalletConnection } from "@solana/react-hooks";
 import { useCurrentAccount } from "@mysten/dapp-kit-react";

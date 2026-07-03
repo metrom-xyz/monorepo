@@ -21,7 +21,7 @@ import {
     URL_ENABLED_CAMPAIGNS_FILTERS,
     type BackendCampaignTypeAndProjects,
 } from "../campaigns";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 
 import styles from "./styles.module.css";
 

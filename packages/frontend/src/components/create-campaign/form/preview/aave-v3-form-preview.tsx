@@ -18,7 +18,7 @@ import { formatUsdAmount } from "@/src/utils/format";
 import { getAaveV3UsdTarget } from "@/src/utils/aave-v3";
 import { Rewards } from "../../previews/rewards";
 import { useAaveV3CollateralUsdNetSupply } from "@/src/hooks/useAaveV3CollateralUsdNetSupply";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { CampaignKind } from "@metrom-xyz/sdk";
 import { AAVE_V3_REQUIRED_PAYLOAD_KEYS } from "../aave-v3-form/aave-v3-basics-step";
 import { Kpi } from "../../previews/kpi";

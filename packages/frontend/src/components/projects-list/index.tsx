@@ -15,7 +15,7 @@ import {
     SupportedTurtleDeal,
     type SupportedProtocol,
 } from "@metrom-xyz/sdk";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import type { ChainWithType } from "@/src/types/chain";
 import { generateBranding } from "@/src/utils/branding";
 

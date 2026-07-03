@@ -1,7 +1,7 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useAccount as useAccountWagmi } from "wagmi";
 import type { Address } from "viem";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useWalletConnection, useSolanaClient } from "@solana/react-hooks";
 import { useCurrentAccount, useCurrentNetwork } from "@mysten/dapp-kit-react";
