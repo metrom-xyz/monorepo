@@ -6,7 +6,7 @@ import { Skeleton, Typography } from "@metrom-xyz/ui";
 import { formatUsdAmount } from "@/src/utils/format";
 import { useFormSteps } from "@/src/context/form-steps";
 import { useCampaignFee } from "@/src/hooks/useCampaignFee";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { ChainType, SERVICE_URLS, type Specification } from "@metrom-xyz/sdk";
 import { InfoMessage } from "@/src/components/info-message";
 import { zeroHash, type Hex } from "viem";

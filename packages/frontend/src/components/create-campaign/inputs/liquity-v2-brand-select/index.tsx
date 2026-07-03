@@ -7,7 +7,7 @@ import {
     type ProtocolBase,
 } from "@metrom-xyz/chains";
 import { useProtocolsInChain } from "@/src/hooks/useProtocolsInChain";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { ProtocolLogo } from "@/src/components/protocol-logo";
 import type { LiquityV2CampaignPayloadPart } from "@/src/types/campaign/liquity-v2-campaign";
 

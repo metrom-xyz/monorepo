@@ -5,7 +5,7 @@ import { Nav } from "./nav";
 import { Footer } from "./footer";
 import { useAccount as useAccountEvm, useDisconnect } from "wagmi";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { useWalletConnection } from "@solana/react-hooks";
 import { useCurrentAccount, useDAppKit } from "@mysten/dapp-kit-react";
 import { usePrevious } from "react-use";

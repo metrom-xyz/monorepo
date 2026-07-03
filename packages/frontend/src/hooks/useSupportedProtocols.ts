@@ -7,7 +7,7 @@ import {
 } from "@metrom-xyz/chains";
 import { ENVIRONMENT } from "../commons/env";
 import type { HookCrossVmParams } from "../types/hooks";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 
 type UseSupportedProtocolsParams = HookCrossVmParams;

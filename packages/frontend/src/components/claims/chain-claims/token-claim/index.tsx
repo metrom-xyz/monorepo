@@ -6,7 +6,7 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ChainType } from "@metrom-xyz/sdk";
 import { TokenClaimEvm } from "./token-claim-evm";
 import { TokenClaimMvm } from "./token-claim-mvm";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { TokenClaimSvm } from "./token-claim-svm";
 import { TokenClaimSui } from "./token-claim-sui";
 

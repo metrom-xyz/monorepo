@@ -3,7 +3,7 @@ import { ConnectButtonEvm } from "./evm";
 import type { ReactElement } from "react";
 import { ConnectButtonSvm } from "./svm";
 import { ConnectButtonSui } from "./sui";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export interface ConnectButtonProps {

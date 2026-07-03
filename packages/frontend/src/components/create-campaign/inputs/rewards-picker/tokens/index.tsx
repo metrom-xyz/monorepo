@@ -26,7 +26,7 @@ import { useAccount } from "@/src/hooks/useAccount";
 import { useWatchBalance } from "@/src/hooks/use-watch-balance";
 import { formatUnits, parseUnits } from "@/src/utils/format";
 import type { FormSteps } from "@/src/context/form-steps";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { SINGLE_REWARD_CAMPAIGN_CHAIN_TYPES } from "@/src/commons";
 
 import styles from "./styles.module.css";

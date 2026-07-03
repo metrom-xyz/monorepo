@@ -43,8 +43,6 @@ export function useReimbursementsSvm({
                         address: account,
                     });
 
-                // Also filter by known chain ids so that the recovered
-                // PDAs below stay index-aligned with the raw reimbursements
                 return rawReimbursements.filter(
                     ({ chainId, chainType }) =>
                         chainType === ChainType.Svm &&

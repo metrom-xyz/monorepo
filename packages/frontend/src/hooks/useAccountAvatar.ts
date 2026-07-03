@@ -2,7 +2,7 @@ import { type UseEnsAvatarParameters } from "wagmi";
 import { useConfig } from "wagmi";
 import { getEnsAvatar } from "@wagmi/core";
 import { useQuery } from "@tanstack/react-query";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function useAccountAvatar(params: UseEnsAvatarParameters) {

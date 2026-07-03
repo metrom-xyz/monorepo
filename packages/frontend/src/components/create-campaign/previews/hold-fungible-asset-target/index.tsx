@@ -3,7 +3,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { getHoldFungibleAssetCampaignPreviewName } from "@/src/utils/campaign";
 import { useChainData } from "@/src/hooks/useChainData";
 import type { HoldFungibleAssetCampaignPayload } from "@/src/types/campaign/hold-fungible-asset-campaign";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { FungibleAssetLogo } from "@/src/components/fungible-asset/fungible-asset-logo";
 
 import styles from "./styles.module.css";

@@ -8,7 +8,7 @@ import {
 } from "@metrom-xyz/ui";
 import type { AaveV3CampaignPayloadPart } from "@/src/types/campaign/aave-v3-campaign";
 import { type AaveV3Protocol } from "@metrom-xyz/chains";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { useAaveV3Collaterals } from "@/src/hooks/useAaveV3Collaterals";
 import {
     type AaveV3Collateral,
