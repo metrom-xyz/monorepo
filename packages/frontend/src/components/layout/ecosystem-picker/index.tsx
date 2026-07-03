@@ -1,46 +1,41 @@
 import { ChainType } from "@metrom-xyz/sdk";
 import type { SVGIcon } from "@/src/types/common";
-import { useRef, useState, type FunctionComponent } from "react";
 import {
-    BASE_URL,
-    METROM_APTOS_BASE_URL,
-    METROM_SOLANA_BASE_URL,
-    METROM_SUI_BASE_URL,
-} from "@/src/commons";
+    startTransition,
+    useCallback,
+    useRef,
+    useState,
+    type FunctionComponent,
+} from "react";
 import { AptosLogo, EthLogo, SolanaLogo, SuiLogo } from "@metrom-xyz/chains";
 import { Popover, Typography } from "@metrom-xyz/ui";
 import { useChainType } from "@/src/hooks/useChainType";
-import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/src/i18n/routing";
+import classNames from "classnames";
 
 import styles from "./styles.module.css";
 
 const ECOSYSTEMS: {
-    url: string;
     name: string;
     type: ChainType;
     icon: FunctionComponent<SVGIcon>;
 }[] = [
     {
-        url: BASE_URL,
         name: "EVM",
         type: ChainType.Evm,
         icon: EthLogo,
     },
     {
-        url: METROM_APTOS_BASE_URL,
         name: "Aptos",
         type: ChainType.Aptos,
         icon: AptosLogo,
     },
     {
-        url: METROM_SOLANA_BASE_URL,
         name: "Solana",
         type: ChainType.Svm,
         icon: SolanaLogo,
     },
     {
-        url: METROM_SUI_BASE_URL,
         name: "Sui",
         type: ChainType.Sui,
         icon: SuiLogo,
@@ -51,13 +46,31 @@ export function EcosystemPicker() {
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
     const [open, setOpen] = useState(false);
 
-    const t = useTranslations("navigation");
-    const chainType = useChainType();
+    const { chainType, setChainType } = useChainType();
+    const pathname = usePathname();
+    const router = useRouter();
     const popoverRef = useRef<HTMLDivElement>(null);
 
     function handlePopoverOnOpen() {
         setOpen(true);
     }
+
+    const getOnChangeHandler = useCallback(
+        (type: ChainType) => {
+            return () => {
+                if (pathname.startsWith("/campaigns/create")) {
+                    router.replace("/campaigns/create");
+                    startTransition(() => setChainType(type));
+                } else {
+                    setChainType(type);
+                }
+                setOpen(false);
+            };
+        },
+        [setChainType, pathname, router],
+    );
+
+    const selected = ECOSYSTEMS.find(({ type }) => type === chainType);
 
     return (
         <div className={styles.root}>
@@ -71,23 +84,18 @@ export function EcosystemPicker() {
                 onOpenChange={setOpen}
                 className={styles.popover}
             >
-                {ECOSYSTEMS.map(({ url, name, type, icon: Icon }) => {
-                    if (type === chainType) return null;
-
+                {ECOSYSTEMS.map(({ name, type, icon: Icon }) => {
                     return (
-                        <a
+                        <button
                             key={name}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.link}
+                            onClick={getOnChangeHandler(type)}
+                            className={classNames(styles.button, {
+                                [styles.active]: type === chainType,
+                            })}
                         >
                             <Icon className={styles.logo} />
                             <Typography weight="medium">{name}</Typography>
-                            <ArrowRightIcon
-                                className={styles.externalLinkIcon}
-                            />
-                        </a>
+                        </button>
                     );
                 })}
             </Popover>
@@ -96,7 +104,14 @@ export function EcosystemPicker() {
                 onClick={handlePopoverOnOpen}
                 className={styles.trigger}
             >
-                <Typography weight="medium">{t("ecosystem")}</Typography>
+                {selected && (
+                    <>
+                        <selected.icon className={styles.logo} />
+                        <Typography weight="medium">
+                            {selected?.name}
+                        </Typography>
+                    </>
+                )}
             </div>
         </div>
     );

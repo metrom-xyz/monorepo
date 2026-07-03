@@ -91,7 +91,7 @@ export function AaveV3CollateralSelect({
 }: AaveV3CollateralSelectProps) {
     const t = useTranslations("newCampaign.inputs");
 
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { loading, collaterals } = useAaveV3Collaterals({
         chainId,
         chainType,

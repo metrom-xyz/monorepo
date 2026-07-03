@@ -3,7 +3,7 @@ import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
-import { getChainData } from "../../utils/chain";
+import { chainIdToAptosNetwork, getChainData } from "../../utils/chain";
 import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import {
@@ -12,15 +12,15 @@ import {
     AccountAddress,
 } from "@aptos-labs/ts-sdk";
 import { useClients } from "@aptos-labs/react";
-import { useChainWithType } from "../useChainWithType";
 import { formatUnits } from "@/src/utils/format";
+import { ChainType } from "@metrom-xyz/sdk";
 
 interface Payloads {
     recovered: InputViewFunctionData[];
     claimed: InputViewFunctionData[];
 }
 
-type QueryKey = [string, Address | undefined];
+type QueryKey = [string, ChainType, Address | undefined];
 
 export function useReimbursementsMvm({
     enabled = true,
@@ -30,7 +30,6 @@ export function useReimbursementsMvm({
 
     const queryClient = useQueryClient();
     const { account } = useWallet();
-    const { id } = useChainWithType();
     const { aptos } = useClients();
 
     const address = account?.address.toStringLong();
@@ -40,16 +39,24 @@ export function useReimbursementsMvm({
         isError: reimbursementsErrored,
         isLoading: loadingReimbursements,
     } = useQuery({
-        queryKey: ["reimbursements", address],
+        queryKey: ["reimbursements", ChainType.Aptos, address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as QueryKey;
+            const [, , account] = queryKey as QueryKey;
             if (!account) return null;
 
             try {
-                const rawClaims = await METROM_API_CLIENT.fetchReimbursements({
-                    address: account,
-                });
-                return rawClaims;
+                const rawReimbursements =
+                    await METROM_API_CLIENT.fetchReimbursements({
+                        address: account,
+                    });
+                // Also filter by known chain ids so that the recovered and
+                // claimed payloads below stay index-aligned with the raw
+                // reimbursements
+                return rawReimbursements.filter(
+                    ({ chainId, chainType }) =>
+                        chainType === ChainType.Aptos &&
+                        !!chainIdToAptosNetwork(chainId),
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw reimbursements for address ${account}: ${error}`,
@@ -62,46 +69,43 @@ export function useReimbursementsMvm({
         enabled: enabled && !!address,
     });
 
-    const { claimed, recovered }: Payloads = useMemo(() => {
+    const payloads: Payloads | undefined = useMemo(() => {
+        if (!rawReimbursements || !address) return undefined;
+
         const recovered: InputViewFunctionData[] = [];
         const claimed: InputViewFunctionData[] = [];
 
-        if (!rawReimbursements) return { recovered, claimed };
+        rawReimbursements.forEach((rawReimbursement) => {
+            const chainData = getChainData(rawReimbursement.chainId);
+            if (!chainData) return;
 
-        rawReimbursements
-            // Filter claims by the connected Aptos chain
-            .filter((rawReimbursement) => rawReimbursement.chainId === id)
-            .forEach((rawReimbursement) => {
-                const chainData = getChainData(rawReimbursement.chainId);
-                if (!chainData || !address) return null;
+            const { metromContract: metrom } = chainData;
+            const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
 
-                const { metromContract: metrom } = chainData;
-                const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
-
-                recovered.push({
-                    function: moveFunction,
-                    functionArguments: [
-                        AccountAddress.fromString(
-                            rawReimbursement.campaignId,
-                        ).bcsToBytes(),
-                        rawReimbursement.token.address,
-                        AccountAddress.from("0x0").toStringLong(),
-                    ],
-                });
-                claimed.push({
-                    function: moveFunction,
-                    functionArguments: [
-                        AccountAddress.fromString(
-                            rawReimbursement.campaignId,
-                        ).bcsToBytes(),
-                        rawReimbursement.token.address,
-                        address,
-                    ],
-                });
+            recovered.push({
+                function: moveFunction,
+                functionArguments: [
+                    AccountAddress.fromString(
+                        rawReimbursement.campaignId,
+                    ).bcsToBytes(),
+                    rawReimbursement.token.address,
+                    AccountAddress.from("0x0").toStringLong(),
+                ],
             });
+            claimed.push({
+                function: moveFunction,
+                functionArguments: [
+                    AccountAddress.fromString(
+                        rawReimbursement.campaignId,
+                    ).bcsToBytes(),
+                    rawReimbursement.token.address,
+                    address,
+                ],
+            });
+        });
 
-        return { recovered, claimed } as Payloads;
-    }, [address, rawReimbursements, id]);
+        return { recovered, claimed };
+    }, [address, rawReimbursements]);
 
     // reimbursements recovered are assigned to the zero address,
     // so we have to fetch them separately
@@ -111,11 +115,16 @@ export function useReimbursementsMvm({
         isError: recoveredErrored,
         isLoading: loadingRecovered,
     } = useQuery({
-        queryKey: ["recovered-campaign-reimbursements", recovered],
+        queryKey: [
+            "recovered-campaign-reimbursements",
+            ChainType.Aptos,
+            payloads?.recovered,
+        ],
         queryFn: async ({ queryKey }) => {
-            const [, recoveredPayloads] = queryKey as [
+            const [, , recoveredPayloads] = queryKey as [
                 string,
-                typeof recovered,
+                ChainType,
+                InputViewFunctionData[] | undefined,
             ];
 
             if (!recoveredPayloads) return null;
@@ -134,7 +143,7 @@ export function useReimbursementsMvm({
         retryDelay: 1000,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!recovered && enabled,
+        enabled: enabled && !!payloads,
     });
 
     const {
@@ -143,9 +152,17 @@ export function useReimbursementsMvm({
         isError: claimedErrored,
         isLoading: loadingClaimed,
     } = useQuery({
-        queryKey: ["claimed-campaign-reimbursements", claimed],
+        queryKey: [
+            "claimed-campaign-reimbursements",
+            ChainType.Aptos,
+            payloads?.claimed,
+        ],
         queryFn: async ({ queryKey }) => {
-            const [, claimedPayloads] = queryKey as [string, typeof claimed];
+            const [, , claimedPayloads] = queryKey as [
+                string,
+                ChainType,
+                InputViewFunctionData[] | undefined,
+            ];
 
             if (!claimedPayloads) return null;
 
@@ -163,7 +180,7 @@ export function useReimbursementsMvm({
         retryDelay: 1000,
         refetchOnWindowFocus: false,
         staleTime: 60000,
-        enabled: !!claimed && enabled,
+        enabled: enabled && !!payloads,
     });
 
     useEffect(() => {
@@ -230,10 +247,10 @@ export function useReimbursementsMvm({
     // after a successful recovery.
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["recovered-campaign-reimbursements"],
+            queryKey: ["recovered-campaign-reimbursements", ChainType.Aptos],
         });
         await queryClient.invalidateQueries({
-            queryKey: ["claimed-campaign-reimbursements"],
+            queryKey: ["claimed-campaign-reimbursements", ChainType.Aptos],
         });
     }, [queryClient]);
 

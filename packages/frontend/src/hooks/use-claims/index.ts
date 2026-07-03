@@ -16,7 +16,7 @@ export interface UseClaimsReturnValue {
 }
 
 export function useClaims(params: UseClaimsParams = {}): UseClaimsReturnValue {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const claimsEvm = useClaimsEvm({
         ...params,
@@ -30,7 +30,6 @@ export function useClaims(params: UseClaimsParams = {}): UseClaimsReturnValue {
         ...params,
         enabled: chainType === ChainType.Svm,
     });
-
     const claimsSui = useClaimsSui({
         ...params,
         enabled: chainType === ChainType.Sui,

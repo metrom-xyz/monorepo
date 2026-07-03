@@ -59,7 +59,7 @@ export function RewardsPickerTokens({
 
     const t = useTranslations("newCampaign.inputs.rewardsPicker");
     const { tokens, loading } = useRewardTokens({ chainId });
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { address } = useAccount();
     const { balance: rewardTokenBalance } = useWatchBalance({
         chainId,

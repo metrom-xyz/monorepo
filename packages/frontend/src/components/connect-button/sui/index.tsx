@@ -28,6 +28,7 @@ const SUI_UNIT = 1_000_000_000;
 
 export function ConnectButtonSui({ customComponent }: ConnectButtonProps) {
     const [open, setOpen] = useState(false);
+    const [connecting, setConnecting] = useState<string | undefined>();
     const [accountMenu, setAccountMenu] = useState(false);
 
     const t = useTranslations();
@@ -70,10 +71,13 @@ export function ConnectButtonSui({ customComponent }: ConnectButtonProps) {
         (wallet: UiWallet) => {
             return async () => {
                 try {
+                    setConnecting(wallet.name);
                     await dAppKit.connectWallet({ wallet });
                     setOpen(false);
                 } catch (error) {
                     console.error(`Could not connect: ${error}`);
+                } finally {
+                    setConnecting(undefined);
                 }
             };
         },
@@ -157,6 +161,7 @@ export function ConnectButtonSui({ customComponent }: ConnectButtonProps) {
                         {wallets.map((wallet) => (
                             <button
                                 key={wallet.name}
+                                disabled={connecting === wallet.name}
                                 onClick={getOnConnectHandler(wallet)}
                                 className={styles.walletButton}
                             >

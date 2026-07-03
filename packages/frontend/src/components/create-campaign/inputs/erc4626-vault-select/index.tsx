@@ -84,7 +84,7 @@ export function Erc4626VaultSelect({
     onChange,
 }: Erc4626VaultSelectProps) {
     const t = useTranslations("newCampaign.inputs.erc4626VaultSelect");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { vaults, loading } = useErc4626Vaults({
         chainId,
         chainType,

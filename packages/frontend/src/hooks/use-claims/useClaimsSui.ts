@@ -10,9 +10,10 @@ import { Transaction } from "@mysten/sui/transactions";
 import { bcs } from "@mysten/sui/bcs";
 import { fromHex } from "@mysten/sui/utils";
 import { useAccount } from "../useAccount";
+import { ChainType } from "@metrom-xyz/sdk";
 import { formatUnits } from "@/src/utils/format";
 
-type ClaimsQueryKey = [string, string | undefined];
+type ClaimsQueryKey = [string, ChainType, string | undefined];
 
 export function useClaimsSui({
     enabled = true,
@@ -28,15 +29,18 @@ export function useClaimsSui({
         isError: claimsErrored,
         isLoading: loadingClaims,
     } = useQuery({
-        queryKey: ["claims", address],
+        queryKey: ["claims", ChainType.Sui, address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as ClaimsQueryKey;
+            const [, , account] = queryKey as ClaimsQueryKey;
             if (!account) return null;
 
             try {
-                return await METROM_API_CLIENT.fetchClaims({
+                const allClaims = await METROM_API_CLIENT.fetchClaims({
                     address: account,
                 });
+                return allClaims.filter(
+                    ({ chainType }) => chainType === ChainType.Sui,
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw claims for address ${account}: ${error}`,
@@ -55,7 +59,7 @@ export function useClaimsSui({
         isLoading: loadingClaimed,
         isError: claimedErrored,
     } = useQuery({
-        queryKey: ["claimed-campaign-rewards", address, rawClaims],
+        queryKey: ["claimed-campaign-rewards", ChainType.Sui, address, rawClaims],
         queryFn: async () => {
             if (!rawClaims || !address) return null;
 
@@ -176,7 +180,7 @@ export function useClaimsSui({
 
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["claimed-campaign-rewards"],
+            queryKey: ["claimed-campaign-rewards", ChainType.Sui],
         });
     }, [queryClient]);
 

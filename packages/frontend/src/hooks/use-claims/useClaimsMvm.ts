@@ -3,7 +3,7 @@ import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ClaimWithRemaining } from "../../types/campaign/common";
-import { getChainData } from "../../utils/chain";
+import { chainIdToAptosNetwork, getChainData } from "../../utils/chain";
 import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import {
@@ -12,10 +12,10 @@ import {
     AccountAddress,
 } from "@aptos-labs/ts-sdk";
 import { useClients } from "@aptos-labs/react";
-import { useChainWithType } from "../useChainWithType";
+import { ChainType } from "@metrom-xyz/sdk";
 import { formatUnits } from "@/src/utils/format";
 
-type QueryKey = [string, Address | undefined];
+type QueryKey = [string, ChainType, Address | undefined];
 
 export function useClaimsMvm({
     enabled = true,
@@ -24,7 +24,6 @@ export function useClaimsMvm({
 
     const queryClient = useQueryClient();
     const { account } = useWallet();
-    const { id } = useChainWithType();
     const { aptos } = useClients();
 
     const address = account?.address.toStringLong();
@@ -34,9 +33,9 @@ export function useClaimsMvm({
         isError: claimsErrored,
         isLoading: loadingClaims,
     } = useQuery({
-        queryKey: ["claims", address],
+        queryKey: ["claims", ChainType.Aptos, address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as QueryKey;
+            const [, , account] = queryKey as QueryKey;
             if (!account) return null;
 
             try {
@@ -44,8 +43,13 @@ export function useClaimsMvm({
                     address: account,
                 });
 
-                // TODO: filter by active chains? Probably not needed since we're only supporting Aptos
-                return rawClaims;
+                // Also filter by known chain ids so that the claimed
+                // payloads below stay index-aligned with the raw claims
+                return rawClaims.filter(
+                    ({ chainId, chainType }) =>
+                        chainType === ChainType.Aptos &&
+                        !!chainIdToAptosNetwork(chainId),
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw claims for address ${address}: ${error}`,
@@ -61,31 +65,27 @@ export function useClaimsMvm({
     const claimedPayloads: InputViewFunctionData[] | undefined = useMemo(() => {
         if (!rawClaims) return undefined;
 
-        return (
-            rawClaims
-                // Filter claims by the connected Aptos chain
-                .filter((rawClaim) => rawClaim.chainId === id)
-                .map((rawClaim) => {
-                    const chainData = getChainData(rawClaim.chainId);
-                    if (!chainData || !address) return null;
+        return rawClaims
+            .map((rawClaim) => {
+                const chainData = getChainData(rawClaim.chainId);
+                if (!chainData || !address) return null;
 
-                    const { metromContract: metrom } = chainData;
-                    const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
+                const { metromContract: metrom } = chainData;
+                const moveFunction: MoveFunctionId = `${metrom.address}::metrom::claimed_campaign_reward`;
 
-                    return {
-                        function: moveFunction,
-                        functionArguments: [
-                            AccountAddress.fromString(
-                                rawClaim.campaignId,
-                            ).bcsToBytes(),
-                            rawClaim.token.address,
-                            address,
-                        ],
-                    };
-                })
-                .filter((claim) => !!claim)
-        );
-    }, [address, rawClaims, id]);
+                return {
+                    function: moveFunction,
+                    functionArguments: [
+                        AccountAddress.fromString(
+                            rawClaim.campaignId,
+                        ).bcsToBytes(),
+                        rawClaim.token.address,
+                        address,
+                    ],
+                };
+            })
+            .filter((claim) => !!claim);
+    }, [address, rawClaims]);
 
     const {
         data: claimedData,
@@ -93,9 +93,9 @@ export function useClaimsMvm({
         isLoading: loadingClaimed,
         isError: claimedErrored,
     } = useQuery({
-        queryKey: ["claimed-campaign-rewards", claimedPayloads],
+        queryKey: ["claimed-campaign-rewards", ChainType.Aptos, claimedPayloads],
         queryFn: async ({ queryKey }) => {
-            const [, payloads] = queryKey as [string, typeof claimedPayloads];
+            const [, , payloads] = queryKey as [string, ChainType, typeof claimedPayloads];
 
             if (!payloads) return null;
 
@@ -169,7 +169,7 @@ export function useClaimsMvm({
     // after a successful claim.
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["claimed-campaign-rewards"],
+            queryKey: ["claimed-campaign-rewards", ChainType.Aptos],
         });
     }, [queryClient]);
 

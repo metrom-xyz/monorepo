@@ -18,7 +18,7 @@ export interface UseReimbursementsReturnValue {
 export function useReimbursements(
     params: UseReimbursementsParams = {},
 ): UseReimbursementsReturnValue {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const reimbursementsEvm = useReimbursementsEvm({
         ...params,

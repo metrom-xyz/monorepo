@@ -29,7 +29,7 @@ export interface UseWatchBalancesReturnValue<T extends UsdPricedErc20Token> {
 export function useWatchBalances<T extends UsdPricedErc20Token>(
     params: UseWatchBalancesParams<T> = {},
 ): UseWatchBalancesReturnValue<T> {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const balancesEvm = useWatchBalancesEvm({
         ...params,

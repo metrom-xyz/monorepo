@@ -15,7 +15,7 @@ type UseSupportedProtocolsParams = HookCrossVmParams;
 export function useSupportedProtocols({
     crossVm = false,
 }: UseSupportedProtocolsParams = {}): ProtocolBase[] {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const protocolsEvm: Record<string, ProtocolBase> = {};
     const protocolsMvm: Record<string, ProtocolBase> = {};

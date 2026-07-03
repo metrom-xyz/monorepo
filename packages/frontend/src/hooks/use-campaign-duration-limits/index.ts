@@ -21,7 +21,7 @@ export interface UseCampaignDurationReturnValue {
 export function useCampaignDurationLimits(
     params: UseCampaignDurationLimitsParams = {},
 ): UseCampaignDurationReturnValue {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const limitsEvm = useCampaignDurationLimitsEvm({
         ...params,

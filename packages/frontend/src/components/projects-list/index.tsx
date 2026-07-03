@@ -24,7 +24,7 @@ import styles from "./styles.module.css";
 export function ProjectsList() {
     const t = useTranslations("allCampaigns.projects");
 
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { loading, fetching, placeholderData, projects } = useProjects({
         chainType: chainType !== ChainType.Evm ? chainType : undefined,
         crossVm: chainType === ChainType.Evm,

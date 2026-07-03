@@ -20,7 +20,7 @@ export interface ChainOverviewProps {
 }
 
 export function ChainOverview(props: ChainOverviewProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     switch (chainType) {
         case ChainType.Evm:

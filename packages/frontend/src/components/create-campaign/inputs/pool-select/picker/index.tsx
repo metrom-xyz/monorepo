@@ -49,7 +49,7 @@ export function Picker({
     const popoverRef = useRef<HTMLDivElement>(null);
 
     const t = useTranslations("newCampaign.inputs.poolSelect");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { pool: importedPool, loading: loadingImportedPool } = usePool({
         chainId,
         chainType,

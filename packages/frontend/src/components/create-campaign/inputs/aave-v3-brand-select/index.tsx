@@ -55,7 +55,7 @@ export function AaveV3BrandSelect({
 }: AaveV3BrandSelectProps) {
     const t = useTranslations("newCampaign.inputs");
 
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const brands = useProtocolsInChain({
         chainId,
         chainType,

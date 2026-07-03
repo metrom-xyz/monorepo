@@ -1,4 +1,4 @@
-import { useAccount, useConfig } from "wagmi";
+import { useAccount, useChains, useConfig } from "wagmi";
 import { formatUnits, type Address, zeroAddress } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -8,6 +8,7 @@ import type { HookBaseParams } from "../../types/hooks";
 import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
 import { getChainData } from "../../utils/chain";
 import { readContracts } from "@wagmi/core";
+import { ChainType } from "@metrom-xyz/sdk";
 
 type UseReimbursementsParams = HookBaseParams;
 
@@ -17,7 +18,7 @@ interface UseReimbursementsReturnValue {
     reimbursements?: ReimbursementsWithRemaining[];
 }
 
-type QueryKey = [string, Address | undefined];
+type QueryKey = [string, ChainType, Address | undefined];
 
 export function useReimbursementsEvm({
     enabled = true,
@@ -26,6 +27,7 @@ export function useReimbursementsEvm({
         useState<ReimbursementsWithRemaining[]>();
 
     const config = useConfig();
+    const supportedChains = useChains();
     const queryClient = useQueryClient();
     const { address } = useAccount();
 
@@ -34,16 +36,21 @@ export function useReimbursementsEvm({
         isError: reimbursementsErrored,
         isLoading: loadingReimbursements,
     } = useQuery({
-        queryKey: ["reimbursements", address],
+        queryKey: ["reimbursements", ChainType.Evm, address],
         queryFn: async ({ queryKey }) => {
-            const [, address] = queryKey as QueryKey;
+            const [, , address] = queryKey as QueryKey;
             if (!address) return null;
 
             try {
-                const rawClaims = await METROM_API_CLIENT.fetchReimbursements({
-                    address,
-                });
-                return rawClaims;
+                const rawReimbursements =
+                    await METROM_API_CLIENT.fetchReimbursements({
+                        address,
+                    });
+                return rawReimbursements.filter(
+                    ({ chainId, chainType }) =>
+                        chainType === ChainType.Evm &&
+                        supportedChains.find(({ id }) => id === chainId),
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw reimbursements for address ${address}: ${error}`,
@@ -110,10 +117,11 @@ export function useReimbursementsEvm({
         isError: recoveredErrored,
         isLoading: loadingRecovered,
     } = useQuery({
-        queryKey: ["recovered-campaign-reimbursements", recoveredContracts],
+        queryKey: ["recovered-campaign-reimbursements", ChainType.Evm, recoveredContracts],
         queryFn: async ({ queryKey }) => {
-            const [, contracts] = queryKey as [
+            const [, , contracts] = queryKey as [
                 string,
+                ChainType,
                 typeof recoveredContracts,
             ];
 
@@ -143,9 +151,9 @@ export function useReimbursementsEvm({
         isError: claimedErrored,
         isLoading: loadingClaimed,
     } = useQuery({
-        queryKey: ["claimed-campaign-reimbursements", claimedContracts],
+        queryKey: ["claimed-campaign-reimbursements", ChainType.Evm, claimedContracts],
         queryFn: async ({ queryKey }) => {
-            const [, contracts] = queryKey as [string, typeof claimedContracts];
+            const [, , contracts] = queryKey as [string, ChainType, typeof claimedContracts];
 
             if (!contracts) return null;
 
@@ -228,10 +236,10 @@ export function useReimbursementsEvm({
     // after a successful recovery.
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["recovered-campaign-reimbursements"],
+            queryKey: ["recovered-campaign-reimbursements", ChainType.Evm],
         });
         await queryClient.invalidateQueries({
-            queryKey: ["claimed-campaign-reimbursements"],
+            queryKey: ["claimed-campaign-reimbursements", ChainType.Evm],
         });
     }, [queryClient]);
 

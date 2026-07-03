@@ -20,7 +20,7 @@ export interface TokenClaimProps {
 }
 
 export function TokenClaim(props: TokenClaimProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     switch (chainType) {
         case ChainType.Evm:

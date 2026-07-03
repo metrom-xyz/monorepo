@@ -1,4 +1,4 @@
-import { ChainType, Status } from "@metrom-xyz/sdk";
+import { Status } from "@metrom-xyz/sdk";
 import type { SelectOption } from "@metrom-xyz/ui";
 import { useMemo } from "react";
 import { getCrossVmChainData } from "../utils/chain";
@@ -15,13 +15,11 @@ export interface ChainFilterOption {
 
 export function useCampaignsFiltersOptions() {
     const t = useTranslations("allCampaigns.filters");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const supportedChains = useChainsWithTypes({
-        chainType: chainType === ChainType.Aptos ? ChainType.Aptos : undefined,
+        chainType,
     });
-    const supportedProtocols = useSupportedProtocols({
-        crossVm: chainType !== ChainType.Aptos,
-    });
+    const supportedProtocols = useSupportedProtocols();
 
     const statusOptions: SelectOption<Status>[] = useMemo(
         () => [

@@ -12,7 +12,7 @@ import { useChainType } from "./useChainType";
 import { useCurrentNetwork } from "@mysten/dapp-kit-react";
 
 export function useChainWithType(): ChainWithType {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const chainIdEvm = useChainIdWagmi();
     const networkMvm = useNetwork();
     const solanaClient = useSolanaClient();

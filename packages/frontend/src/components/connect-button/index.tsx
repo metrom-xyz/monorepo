@@ -11,7 +11,7 @@ export interface ConnectButtonProps {
 }
 
 export function ConnectButton(props: ConnectButtonProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     switch (chainType) {
         case ChainType.Evm:
