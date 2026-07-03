@@ -28,22 +28,6 @@ export function getProjectIconUrl(slug: string) {
 export function getProjectIllustrationUrl(slug: string) {
     return `${METROM_STATIC_BASE_URL}/illustrations/${slug}.svg`;
 }
-
-export const METROM_APTOS_BASE_URL =
-    ENVIRONMENT === Environment.Production
-        ? "https://aptos.metrom.xyz"
-        : "https://aptos.dev.metrom.xyz";
-
-export const METROM_SOLANA_BASE_URL =
-    ENVIRONMENT === Environment.Production
-        ? "https://solana.metrom.xyz"
-        : "https://solana.dev.metrom.xyz";
-
-export const METROM_SUI_BASE_URL =
-    ENVIRONMENT === Environment.Production
-        ? "https://sui.metrom.xyz"
-        : "https://sui.dev.metrom.xyz";
-
 export const TURTLE_API_BASE_URL = "https://earn.turtle.vision";
 export const TURTLE_APP_EARN_URL = "https://app.turtle.xyz/earn/opportunities";
 export const TURTLE_REFERRAL_CODE = "METROM";

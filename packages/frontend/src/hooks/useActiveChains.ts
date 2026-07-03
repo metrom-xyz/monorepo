@@ -3,7 +3,7 @@ import { getChainData, solanaNetworkToId } from "@/src/utils/chain";
 import { SUPPORTED_CHAINS_MVM, SUPPORTED_CHAINS_SUI } from "@/src/commons";
 import { ChainType } from "@metrom-xyz/sdk";
 import type { ChainWithType } from "../types/chain";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 import { useSolanaClient } from "@solana/react-hooks";
 
 export function useActiveChains(): ChainWithType[] {

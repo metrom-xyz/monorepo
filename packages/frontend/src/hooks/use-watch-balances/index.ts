@@ -6,7 +6,7 @@ import {
 import type { HookBaseParams } from "../../types/hooks";
 import { useWatchBalancesEvm } from "./useWatchBalancesEvm";
 import { useWatchBalancesMvm } from "./useWatchBalancesMvm";
-import { useChainType } from "../useChainType";
+import { useChainType } from "../../context/chain-type";
 import { useWatchBalancesSvm } from "./useWatchBalancesSvm";
 import { useWatchBalancesSui } from "./useWatchBalancesSui";
 

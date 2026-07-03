@@ -42,8 +42,6 @@ export function useClaimsSvm({
                     address: account,
                 });
 
-                // Also filter by known chain ids so that the claimed
-                // PDAs below stay index-aligned with the raw claims
                 return rawClaims.filter(
                     ({ chainId, chainType }) =>
                         chainType === ChainType.Svm &&

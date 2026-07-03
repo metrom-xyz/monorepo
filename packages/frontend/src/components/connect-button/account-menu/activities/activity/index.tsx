@@ -17,7 +17,7 @@ import classNames from "classnames";
 import { Action } from "@/src/components/campaigns/campaign/action";
 import { getErc20Protocol } from "@/src/utils/erc20";
 import { FungibleAssetLogo } from "@/src/components/fungible-asset/fungible-asset-logo";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 
 import styles from "./styles.module.css";
 

@@ -2,7 +2,7 @@ import { useClaimsEvm } from "./useClaimsEvm";
 import { useClaimsMvm } from "./useClaimsMvm";
 import type { HookBaseParams } from "@/src/types/hooks";
 import type { ClaimWithRemaining } from "@/src/types/campaign/common";
-import { useChainType } from "../useChainType";
+import { useChainType } from "../../context/chain-type";
 import { useClaimsSvm } from "./useClaimsSvm";
 import { useClaimsSui } from "./useClaimsSui";
 import { ChainType } from "@metrom-xyz/sdk";

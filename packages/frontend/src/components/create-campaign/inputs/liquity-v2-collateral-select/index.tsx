@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Select, Typography, type SelectOption } from "@metrom-xyz/ui";
 import { type LiquityV2Protocol } from "@metrom-xyz/chains";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { CampaignKind, type LiquityV2Collateral } from "@metrom-xyz/sdk";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { Address } from "viem";

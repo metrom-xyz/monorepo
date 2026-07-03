@@ -1,6 +1,6 @@
 import { NetworkSelectMvm } from "./network-select-mvm";
 import { NetworkSelectEvm } from "./network-select-evm";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function NetworkSelect() {

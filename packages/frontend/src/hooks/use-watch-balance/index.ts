@@ -2,7 +2,7 @@ import { type Address } from "viem";
 import type { HookBaseParams } from "../../types/hooks";
 import { useWatchBalanceEvm } from "./useWatchBalanceEvm";
 import { useWatchBalanceMvm } from "./useWatchBalanceMvm";
-import { useChainType } from "../useChainType";
+import { useChainType } from "../../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useWatchBalanceSvm } from "./useWatchBalanceSvm";
 import { useWatchBalanceSui } from "./useWatchBalanceSui";

@@ -5,7 +5,7 @@ import { RemoteLogo } from "@/src/components/remote-logo";
 import { ChainType } from "@metrom-xyz/sdk";
 import { TokenReimbursementEvm } from "./token-reimbursement-evm";
 import { TokenReimbursementMvm } from "./token-reimbursement-mvm";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import { TokenReimbursementSvm } from "./token-reimbursement-svm";
 import { TokenReimbursementSui } from "./token-reimbursement-sui";
 

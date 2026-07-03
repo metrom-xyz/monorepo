@@ -8,7 +8,7 @@ import {
 import type { ChainWithType } from "../types/chain";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useSolanaClient } from "@solana/react-hooks";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 import { useCurrentNetwork } from "@mysten/dapp-kit-react";
 
 export function useChainWithType(): ChainWithType {

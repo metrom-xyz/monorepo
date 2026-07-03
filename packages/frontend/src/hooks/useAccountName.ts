@@ -2,7 +2,7 @@ import { type UseEnsNameParameters } from "wagmi";
 import { useConfig } from "wagmi";
 import { getEnsName } from "@wagmi/core";
 import { useQuery } from "@tanstack/react-query";
-import { useChainType } from "./useChainType";
+import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function useAccountName(params: UseEnsNameParameters) {

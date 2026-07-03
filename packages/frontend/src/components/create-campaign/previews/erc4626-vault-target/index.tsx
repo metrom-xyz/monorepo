@@ -3,7 +3,7 @@ import { Typography } from "@metrom-xyz/ui";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import { getErc4626VaultCampaignPreviewName } from "@/src/utils/campaign";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useChainType } from "@/src/hooks/useChainType";
+import { useChainType } from "@/src/context/chain-type";
 import type { Erc4626VaultCampaignPayload } from "@/src/types/campaign/erc4626-vault-campaign";
 
 import styles from "./styles.module.css";
