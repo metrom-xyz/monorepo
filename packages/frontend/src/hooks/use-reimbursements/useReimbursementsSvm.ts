@@ -2,9 +2,8 @@ import { METROM_API_CLIENT } from "../../commons";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
-import { getChainData } from "../../utils/chain";
+import { chainIdToSolanaNetwork, getChainData } from "../../utils/chain";
 import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
-import { useChainWithType } from "../useChainWithType";
 import { useSolanaClient } from "@solana/react-hooks";
 import {
     findUserReimbursedRewardPda,
@@ -13,8 +12,9 @@ import {
 import { getBase64Encoder, type Address } from "@solana/kit";
 import { formatUnits } from "@/src/utils/format";
 import { useAccount } from "../useAccount";
+import { ChainType } from "@metrom-xyz/sdk";
 
-type QueryKey = [string, Address | undefined];
+type QueryKey = [string, ChainType, Address | undefined];
 
 export function useReimbursementsSvm({
     enabled = true,
@@ -26,16 +26,15 @@ export function useReimbursementsSvm({
     const queryClient = useQueryClient();
     const { address } = useAccount();
     const client = useSolanaClient();
-    const { id: chainId } = useChainWithType();
 
     const {
         data: rawReimbursements,
         isError: reimbursementsErrored,
         isLoading: loadingReimbursements,
     } = useQuery({
-        queryKey: ["reimbursements", address],
+        queryKey: ["reimbursements", ChainType.Svm, address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as QueryKey;
+            const [, , account] = queryKey as QueryKey;
             if (!account) return null;
 
             try {
@@ -44,8 +43,12 @@ export function useReimbursementsSvm({
                         address: account,
                     });
 
+                // Also filter by known chain ids so that the recovered
+                // PDAs below stay index-aligned with the raw reimbursements
                 return rawReimbursements.filter(
-                    (reimbursement) => reimbursement.chainId === chainId,
+                    ({ chainId, chainType }) =>
+                        chainType === ChainType.Svm &&
+                        !!chainIdToSolanaNetwork(chainId),
                 );
             } catch (error) {
                 console.error(
@@ -65,10 +68,11 @@ export function useReimbursementsSvm({
         isError: recoveredErrored,
         isLoading: loadingRecovered,
     } = useQuery({
-        queryKey: ["recovered-campaign-reimbursements", recoveredPdas],
+        queryKey: ["recovered-campaign-reimbursements", ChainType.Svm, recoveredPdas],
         queryFn: async ({ queryKey }) => {
-            const [, recoveredAccounts] = queryKey as [
+            const [, , recoveredAccounts] = queryKey as [
                 string,
+                ChainType,
                 typeof recoveredPdas,
             ];
 
@@ -128,6 +132,10 @@ export function useReimbursementsSvm({
     }, [address, rawReimbursements, enabled]);
 
     useEffect(() => {
+        if (!enabled) {
+            setReimbursements([]);
+            return;
+        }
         if (!address) return;
         if (reimbursementsErrored || recoveredErrored) {
             console.error(
@@ -172,6 +180,7 @@ export function useReimbursementsSvm({
 
         setReimbursements(reimbursements);
     }, [
+        enabled,
         address,
         recoveredData,
         recoveredError,
@@ -186,7 +195,7 @@ export function useReimbursementsSvm({
     // after a successful recovery.
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["recovered-campaign-reimbursements"],
+            queryKey: ["recovered-campaign-reimbursements", ChainType.Svm],
         });
     }, [queryClient]);
 

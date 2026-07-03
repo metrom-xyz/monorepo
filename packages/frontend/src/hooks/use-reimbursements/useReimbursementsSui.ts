@@ -11,11 +11,12 @@ import { bcs } from "@mysten/sui/bcs";
 import { fromHex } from "@mysten/sui/utils";
 import { useAccount } from "../useAccount";
 import { formatUnits } from "../../utils/format";
+import { ChainType } from "@metrom-xyz/sdk";
 
 const SUI_ZERO_ADDRESS =
     "0x0000000000000000000000000000000000000000000000000000000000000000";
 
-type ReimbursementsQueryKey = [string, string | undefined];
+type ReimbursementsQueryKey = [string, ChainType, string | undefined];
 
 export function useReimbursementsSui({
     enabled = true,
@@ -32,15 +33,19 @@ export function useReimbursementsSui({
         isError: reimbursementsErrored,
         isLoading: loadingReimbursements,
     } = useQuery({
-        queryKey: ["reimbursements", address],
+        queryKey: ["reimbursements", ChainType.Sui, address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as ReimbursementsQueryKey;
+            const [, , account] = queryKey as ReimbursementsQueryKey;
             if (!account) return null;
 
             try {
-                return await METROM_API_CLIENT.fetchReimbursements({
-                    address: account,
-                });
+                const rawReimbursements =
+                    await METROM_API_CLIENT.fetchReimbursements({
+                        address: account,
+                    });
+                return rawReimbursements.filter(
+                    ({ chainType }) => chainType === ChainType.Sui,
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw reimbursements for address ${account}: ${error}`,
@@ -59,7 +64,7 @@ export function useReimbursementsSui({
         isLoading: loadingReimbursementData,
         isError: reimbursementDataErrored,
     } = useQuery({
-        queryKey: ["reimbursements-data-sui", address, rawReimbursements],
+        queryKey: ["reimbursements-data-sui", ChainType.Sui, address, rawReimbursements],
         queryFn: async () => {
             if (!rawReimbursements || !address) return null;
 
@@ -217,7 +222,7 @@ export function useReimbursementsSui({
 
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["reimbursements-data-sui"],
+            queryKey: ["reimbursements-data-sui", ChainType.Sui],
         });
     }, [queryClient]);
 

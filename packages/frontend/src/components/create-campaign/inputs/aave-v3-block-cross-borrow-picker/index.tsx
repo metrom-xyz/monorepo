@@ -26,7 +26,7 @@ export function AaveV3BlockCrossBorrowPicker({
     value,
     onChange,
 }: AaveV3BlockCrossBorrowPickerProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { loading, collaterals } = useAaveV3Collaterals({
         chainId,
         chainType,

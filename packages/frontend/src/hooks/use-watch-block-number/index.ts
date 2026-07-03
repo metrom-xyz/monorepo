@@ -5,7 +5,7 @@ import { useChainType } from "../useChainType";
 import { ChainType } from "@metrom-xyz/sdk";
 
 export function useWatchBlockNumber(params: HookBaseParams = {}) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const blockNumberEvm = useWatchBlockNumberEvm({
         ...params,

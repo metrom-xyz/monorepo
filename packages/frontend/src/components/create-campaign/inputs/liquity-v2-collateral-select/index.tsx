@@ -67,7 +67,7 @@ export function LiquityV2CollateralSelect({
 }: LiquityV2CollateralSelectProps) {
     const t = useTranslations("newCampaign.inputs");
 
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const { loading, collaterals } = useLiquityV2Collaterals({
         chainId,
         chainType,

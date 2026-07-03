@@ -19,7 +19,7 @@ export interface TokenReimbursementProps {
 }
 
 export function TokenReimbursement(props: TokenReimbursementProps) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     switch (chainType) {
         case ChainType.Evm:

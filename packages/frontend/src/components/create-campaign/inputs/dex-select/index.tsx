@@ -49,7 +49,7 @@ export function DexSelect({
     onChange,
 }: DexSelectProps) {
     const t = useTranslations("newCampaign.inputs");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const dexes = useProtocolsInChain({
         chainId,
         chainType,

@@ -39,3 +39,11 @@
         duration-200
         ease-in-out;
 }
+
+.walletButton:disabled {
+    @apply text-gray-500
+        dark:text-neutral-500
+        bg-gray-800
+        dark:bg-neutral-700
+        cursor-not-allowed;
+}

@@ -1,42 +1,40 @@
 import { useCallback, useEffect, useState } from "react";
 import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import type { ClaimWithRemaining } from "@/src/types/campaign/common";
-import { useChainWithType } from "../useChainWithType";
+import { ChainType } from "@metrom-xyz/sdk";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSolanaClient, useWalletConnection } from "@solana/react-hooks";
 import { type Address as AddressSvm, getBase64Encoder } from "@solana/kit";
 import { METROM_API_CLIENT } from "@/src/commons";
 import { formatUnits } from "viem";
-import { getChainData } from "@/src/utils/chain";
+import { chainIdToSolanaNetwork, getChainData } from "@/src/utils/chain";
 import {
     findUserClaimedRewardPda,
     getClaimedRewardDecoder,
 } from "@metrom-xyz/programs-solana";
 import { useAccount } from "../useAccount";
 
-type QueryKey = [string, string | undefined];
+type QueryKey = [string, ChainType, string | undefined];
 
 export function useClaimsSvm({
     enabled = true,
 }: UseClaimsParams = {}): UseClaimsReturnValue {
     const [claims, setClaims] = useState<ClaimWithRemaining[]>();
-    const [claimedPdas, setClaimedRewardPdas] =
-        useState<AddressSvm<string>[]>();
+    const [claimedPdas, setClaimedPdas] = useState<AddressSvm<string>[]>();
 
     const queryClient = useQueryClient();
     const { wallet } = useWalletConnection();
     const client = useSolanaClient();
     const { address } = useAccount();
-    const { id } = useChainWithType();
 
     const {
         data: rawClaims,
         isError: claimsErrored,
         isLoading: loadingClaims,
     } = useQuery({
-        queryKey: ["claims", address],
+        queryKey: ["claims", ChainType.Svm, address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as QueryKey;
+            const [, , account] = queryKey as QueryKey;
             if (!account) return null;
 
             try {
@@ -44,7 +42,13 @@ export function useClaimsSvm({
                     address: account,
                 });
 
-                return rawClaims.filter((claim) => claim.chainId === id);
+                // Also filter by known chain ids so that the claimed
+                // PDAs below stay index-aligned with the raw claims
+                return rawClaims.filter(
+                    ({ chainId, chainType }) =>
+                        chainType === ChainType.Svm &&
+                        !!chainIdToSolanaNetwork(chainId),
+                );
             } catch (error) {
                 console.error(
                     `Could not fetch raw claims for address ${address}: ${error}`,
@@ -58,32 +62,32 @@ export function useClaimsSvm({
     });
 
     useEffect(() => {
+        if (!enabled) {
+            setClaimedPdas(undefined);
+            return;
+        }
         if (!wallet || !rawClaims) return;
 
         const derive = async () => {
             const pdas = await Promise.all(
-                rawClaims
-                    .filter((rawClaim) => rawClaim.chainId === id)
-                    .map(async (rawClaim) => {
-                        const chainData = getChainData(rawClaim.chainId);
-                        if (!chainData) return null;
+                rawClaims.map(async (rawClaim) => {
+                    const chainData = getChainData(rawClaim.chainId);
+                    if (!chainData) return null;
 
-                        const claimedPda = await findUserClaimedRewardPda({
-                            signer: address as AddressSvm,
-                            campaign: rawClaim.campaignId as AddressSvm,
-                        });
+                    const claimedPda = await findUserClaimedRewardPda({
+                        signer: address as AddressSvm,
+                        campaign: rawClaim.campaignId as AddressSvm,
+                    });
 
-                        return claimedPda[0];
-                    }),
+                    return claimedPda[0];
+                }),
             );
 
-            setClaimedRewardPdas(
-                pdas.filter((pda): pda is AddressSvm => !!pda),
-            );
+            setClaimedPdas(pdas.filter((pda): pda is AddressSvm => !!pda));
         };
 
         void derive();
-    }, [id, rawClaims, wallet, address]);
+    }, [enabled, rawClaims, wallet, address]);
 
     const {
         data: claimedData,
@@ -91,10 +95,11 @@ export function useClaimsSvm({
         isLoading: loadingClaimed,
         isError: claimedErrored,
     } = useQuery({
-        queryKey: ["claimed-campaign-rewards", claimedPdas],
+        queryKey: ["claimed-campaign-rewards", ChainType.Svm, claimedPdas],
         queryFn: async ({ queryKey }) => {
-            const [, claimedAccounts] = queryKey as [
+            const [, , claimedAccounts] = queryKey as [
                 string,
+                ChainType,
                 typeof claimedPdas,
             ];
 
@@ -128,6 +133,10 @@ export function useClaimsSvm({
     });
 
     useEffect(() => {
+        if (!enabled) {
+            setClaims([]);
+            return;
+        }
         if (!address) return;
         if (claimsErrored || claimedErrored) {
             console.error(
@@ -170,6 +179,7 @@ export function useClaimsSvm({
 
         setClaims(claims);
     }, [
+        enabled,
         address,
         claimedData,
         claimedError,
@@ -184,7 +194,7 @@ export function useClaimsSvm({
     // after a successful claim.
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({
-            queryKey: ["claimed-campaign-rewards"],
+            queryKey: ["claimed-campaign-rewards", ChainType.Svm],
         });
     }, [queryClient]);
 

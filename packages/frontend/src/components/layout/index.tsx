@@ -3,10 +3,11 @@
 import { useEffect, type ReactNode } from "react";
 import { Nav } from "./nav";
 import { Footer } from "./footer";
-import { useDisconnect } from "wagmi";
+import { useAccount as useAccountEvm, useDisconnect } from "wagmi";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useChainType } from "@/src/hooks/useChainType";
 import { useWalletConnection } from "@solana/react-hooks";
+import { useCurrentAccount, useDAppKit } from "@mysten/dapp-kit-react";
 import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
@@ -16,10 +17,14 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-    const chainType = useChainType();
-    const { disconnect: disconnectMvm } = useWallet();
+    const { chainType } = useChainType();
+    const { isConnected: connectedEvm } = useAccountEvm();
     const { disconnect: disconnectEvm } = useDisconnect();
-    const { disconnect: disconnectSvm } = useWalletConnection();
+    const { connected: connectedMvm, disconnect: disconnectMvm } = useWallet();
+    const { connected: connectedSvm, disconnect: disconnectSvm } =
+        useWalletConnection();
+    const suiAccount = useCurrentAccount();
+    const suiDappKit = useDAppKit();
 
     const prevChainType = usePrevious(chainType);
 
@@ -27,10 +32,22 @@ export function Layout({ children }: LayoutProps) {
     useEffect(() => {
         if (prevChainType === chainType) return;
 
-        disconnectEvm();
-        disconnectMvm();
-        disconnectSvm();
-    }, [prevChainType, chainType, disconnectEvm, disconnectMvm, disconnectSvm]);
+        if (connectedEvm) disconnectEvm();
+        if (connectedMvm) disconnectMvm();
+        if (connectedSvm) void disconnectSvm();
+        if (suiAccount) void suiDappKit.disconnectWallet();
+    }, [
+        prevChainType,
+        chainType,
+        connectedEvm,
+        disconnectEvm,
+        connectedMvm,
+        disconnectMvm,
+        connectedSvm,
+        disconnectSvm,
+        suiAccount,
+        suiDappKit,
+    ]);
 
     return (
         <div className={styles.layout}>

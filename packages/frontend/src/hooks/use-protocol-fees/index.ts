@@ -19,7 +19,7 @@ export interface UseProtocolFeesReturnValue {
 export function useProtocolFees(
     params: UseProtocolFeesParams = {},
 ): UseProtocolFeesReturnValue {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
 
     const feesEvm = useProtocolFeesEvm({
         ...params,

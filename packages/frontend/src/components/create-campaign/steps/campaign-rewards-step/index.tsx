@@ -72,7 +72,7 @@ export function CampaignRewardsStep({
     const [applied, setApplied] = useState(false);
 
     const t = useTranslations("newCampaign.form.rewards");
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const chainData = useChainData({ chainId });
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();

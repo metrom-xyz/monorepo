@@ -17,7 +17,7 @@ export interface UseIsChainSupportedParams extends HookBaseParams {
 }
 
 export function useIsChainSupported({ chainId }: UseIsChainSupportedParams) {
-    const chainType = useChainType();
+    const { chainType } = useChainType();
     const accountEvm = useAccount();
     const accountMvm = useWallet();
     const accountSvm = useWalletConnection();
