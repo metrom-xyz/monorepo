@@ -1,5 +1,6 @@
 import { Popover, Skeleton, Typography } from "@metrom-xyz/ui";
 import {
+    SupportedAfxVault,
     SupportedErc4626Vault,
     SupportedLiquidityProviderDeal,
     TargetType,
@@ -54,6 +55,12 @@ export function Protocol({ campaign }: ProtocolProps) {
                     protocol.slug ===
                     (campaign.target
                         .type as unknown as SupportedLiquidityProviderDeal)
+                );
+            }
+            case TargetType.Afx: {
+                return (
+                    protocol.slug ===
+                    (campaign.target.type as unknown as SupportedAfxVault)
                 );
             }
             case TargetType.YieldSeeker: {

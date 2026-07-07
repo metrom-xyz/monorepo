@@ -1,5 +1,6 @@
 import type {
     AaveV3Protocol,
+    AfxVaultProtocol,
     DexProtocol,
     Erc4626VaultProtocol,
     GmxV1LiquidityProtocol,
@@ -23,14 +24,14 @@ export interface ProtocolByType {
     [ProtocolType.YieldSeeker]: YieldSeekerProtocol;
     [ProtocolType.Odyssey]: OdysseyProtocol;
     [ProtocolType.Erc4626Vault]: Erc4626VaultProtocol;
+    [ProtocolType.AfxVault]: AfxVaultProtocol;
 }
 
 export type ProtocolsInChain<T extends ProtocolType | undefined> =
     T extends ProtocolType ? readonly ProtocolByType[T][] : readonly Protocol[];
 
 interface UseProtocolsInChainParams<T extends ProtocolType | undefined>
-    extends HookBaseParams,
-        HookCrossVmParams {
+    extends HookBaseParams, HookCrossVmParams {
     chainId?: number;
     chainType?: ChainType;
     active?: boolean;

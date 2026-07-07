@@ -3,6 +3,7 @@ import { SVGIcon } from "./common";
 import {
     AaveV3Market,
     SupportedAaveV3,
+    SupportedAfxVault,
     SupportedDex,
     SupportedErc4626Vault,
     SupportedGmxV1,
@@ -22,6 +23,7 @@ export enum ProtocolType {
     LiquityV2 = "liquity-v2",
     AaveV3 = "aave-v3",
     LiquidityProviderDeal = "liquidity-provider-deal",
+    AfxVault = "afx-vault",
     YieldSeeker = "yield-seeker",
     Odyssey = "odyssey",
     Erc4626Vault = "erc-4626-vault",
@@ -113,6 +115,11 @@ export interface Erc4626VaultProtocol extends ProtocolBase<
     vaultUrl: string;
 }
 
+export type AfxVaultProtocol = ProtocolBase<
+    SupportedAfxVault,
+    ProtocolType.AfxVault
+>;
+
 export type Protocol =
     | DexProtocol
     | GmxV1LiquidityProtocol
@@ -121,4 +128,5 @@ export type Protocol =
     | LiquidityProviderDeal
     | YieldSeekerProtocol
     | OdysseyProtocol
-    | Erc4626VaultProtocol;
+    | Erc4626VaultProtocol
+    | AfxVaultProtocol;

@@ -18,7 +18,11 @@ import {
 import { type Campaign } from "@/src/types/campaign/common";
 import { formatUsdAmount } from "@/src/utils/format";
 import { Points } from "./points";
-import { TURTLE_APP_EARN_URL, TURTLE_REFERRAL_CODE } from "@/src/commons";
+import {
+    AFX_APP_BASE_URL,
+    TURTLE_APP_EARN_URL,
+    TURTLE_REFERRAL_CODE,
+} from "@/src/commons";
 import { YieldSeeker } from "./yield-seeker";
 import { CampaignStatus } from "../../campaign-status";
 
@@ -39,17 +43,34 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
         DistributablesType.NoDistributables,
     );
     const turtleCampaign = campaign.isTargeting(TargetType.Turtle);
+    const afxCampaign = campaign.isTargeting(TargetType.Afx);
     const yieldseekerCampaign = campaign.isTargeting(TargetType.YieldSeeker);
 
-    const linkProps = campaign.isTargeting(TargetType.Turtle)
-        ? {
-              href: `${TURTLE_APP_EARN_URL}/${campaign.target.opportunityId}?ref=${TURTLE_REFERRAL_CODE}`,
-              target: "_blank",
-              rel: "noopener noreferrer",
-          }
-        : {
-              href: `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`,
-          };
+    let linkProps;
+    switch (campaign.target.type) {
+        case TargetType.Turtle: {
+            linkProps = {
+                href: `${TURTLE_APP_EARN_URL}/${campaign.target.opportunityId}?ref=${TURTLE_REFERRAL_CODE}`,
+                target: "_blank",
+                rel: "noopener noreferrer",
+            };
+            break;
+        }
+        case TargetType.Afx: {
+            linkProps = {
+                href: `${AFX_APP_BASE_URL}/vaults/${campaign.target.vaultAddress}`,
+                target: "_blank",
+                rel: "noopener noreferrer",
+            };
+            break;
+        }
+        default: {
+            linkProps = {
+                href: `/campaigns/${campaign.chainType}/${campaign.chainId}/${campaign.id}`,
+            };
+            break;
+        }
+    }
 
     if (yieldseekerCampaign)
         return <YieldSeeker type={type} campaign={campaign} />;
@@ -64,7 +85,7 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                     from={campaign.from}
                     to={campaign.to}
                     status={campaign.status}
-                    hideDuration={turtleCampaign}
+                    hideDuration={turtleCampaign || afxCampaign}
                 />
                 {type === BackendCampaignType.Rewards && (
                     <Apr apr={campaign.apr} kpi={campaign.hasKpi} />

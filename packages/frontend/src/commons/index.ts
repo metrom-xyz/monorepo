@@ -42,6 +42,9 @@ export const YIELDSEEKER_APP_BASE_URL = "https://beta.yieldseeker.xyz";
 export const YIELDSEEKER_REFERRAL_CODE = "TRENCHES";
 export const YIELDSEEKER_BONUS_PERCENTAGE = 12;
 
+export const AFX_APP_BASE_URL = "https://app.afx.xyz";
+export const ARBITRUM_USDC = "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8";
+
 export const ARCHE_ARUSD_VAULT_ADDRESSES = [
     "0x33ffc177a7278ff84aab314a036bc7b799b7cc15", // mainnet
     "0xfc8b4e2f2773BEDcD14bE22951144a5C7f863Fad", // arbitrum
