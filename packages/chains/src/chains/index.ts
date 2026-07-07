@@ -1,3 +1,4 @@
+export { afxData } from "./afx";
 export { aptosData } from "./aptos";
 export { aptosTestnetData } from "./aptos-testnet";
 export { arbitrumData } from "./arbitrum";

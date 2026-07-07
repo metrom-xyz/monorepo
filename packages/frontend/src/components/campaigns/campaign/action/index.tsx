@@ -10,6 +10,7 @@ import { DistributablesType, TargetType } from "@metrom-xyz/sdk";
 import { AmmPoolLiquidity } from "./amm-pool-liquidity";
 import type { Campaign } from "@/src/types/campaign/common";
 import { LiquityV2 } from "./liquity-v2";
+import { AfxVault } from "./afx-vault";
 import { AaveV3 } from "./aave-v3";
 import { Empty } from "./empty";
 import { HoldFungibleAsset } from "./hold-fungible-asset";
@@ -73,6 +74,8 @@ export function Action({
 
     const erc4626Vault = campaign.isTargeting(TargetType.Erc4626Vault);
 
+    const afxVault = campaign.isTargeting(TargetType.Afx);
+
     const empty = campaign.isTargeting(TargetType.Empty);
 
     const dynamicPoints = campaign.isDistributing(
@@ -97,6 +100,7 @@ export function Action({
             {yieldSeeker && <YieldSeeker campaign={campaign} {...sizes} />}
             {odyssey && <Odyssey campaign={campaign} {...sizes} />}
             {erc4626Vault && <Erc4626Vault campaign={campaign} {...sizes} />}
+            {afxVault && <AfxVault campaign={campaign} {...sizes} />}
             {dynamicPoints && liquityV2 && (
                 <DynamicPointsBoostChip
                     protocol={campaign.target.brand.slug}

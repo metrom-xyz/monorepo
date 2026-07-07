@@ -69,6 +69,7 @@ export enum TargetType {
     YieldSeeker = "yield-seeker",
     Odyssey = "odyssey",
     Erc4626Vault = "erc4626-vault",
+    Afx = "afx",
 }
 
 export type AmmPoolLiquidityTargetType =
@@ -189,6 +190,13 @@ export interface Erc4626VaultTarget extends BaseTarget {
     vault: Erc4626Vault;
 }
 
+export interface AfxVaultTarget extends BaseTarget {
+    type: TargetType.Afx;
+    vaultAddress: string;
+    name: string;
+    managementFee: number;
+}
+
 export type YieldSeekerTarget = BaseTarget & {
     type: "yield-seeker";
 };
@@ -209,7 +217,8 @@ export type CampaignTarget =
     | AmmPoolNetSwapVolumeTarget
     | YieldSeekerTarget
     | OdysseyTarget
-    | Erc4626VaultTarget;
+    | Erc4626VaultTarget
+    | AfxVaultTarget;
 
 export interface TokenDistributable {
     token: UsdPricedErc20Token;
@@ -425,9 +434,11 @@ export interface BaseTargetedCampaign<T extends TargetType> {
                                 ? OdysseyTarget
                                 : T extends TargetType.Erc4626Vault
                                   ? Erc4626VaultTarget
-                                  : T extends TargetType.Empty
-                                    ? EmptyTarget
-                                    : never;
+                                  : T extends TargetType.Afx
+                                    ? AfxVaultTarget
+                                    : T extends TargetType.Empty
+                                      ? EmptyTarget
+                                      : never;
 }
 
 export type TargetedCampaign<T extends TargetType> = BaseTargetedCampaign<T> &

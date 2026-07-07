@@ -58,6 +58,7 @@ import {
     CampaignItemDetails,
     CampaignItem,
     type Erc4626VaultTarget,
+    type AfxVaultTarget,
 } from "../types/campaigns";
 import {
     ChainType,
@@ -1558,6 +1559,13 @@ function processCampaignTarget(
                     slug: campaign.target.brand,
                     name: ERC4626_VAULT_PLATFORM_NAME[campaign.target.brand],
                 },
+            };
+            break;
+        }
+        case "afx": {
+            target = <AfxVaultTarget>{
+                ...campaign.target,
+                type: TargetType.Afx,
             };
             break;
         }

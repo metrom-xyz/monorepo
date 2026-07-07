@@ -7,6 +7,7 @@ import { SupportedChain as SupportedChainEvm } from "@metrom-xyz/contracts";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
 import { katana, linea } from "viem/chains";
 import { Form } from "./forms";
+import { afxData } from "../chains";
 
 export type BaseErc20Token = Omit<Erc20Token, "details">;
 
@@ -35,6 +36,7 @@ export enum SupportedProductionMvmChain {
 export enum SupportedDevelopmentEvmChain {
     Sepolia = SupportedChainEvm.Sepolia,
     BaseSepolia = SupportedChainEvm.BaseSepolia,
+    Afx = afxData.id,
 }
 
 export enum SupportedProductionEvmChain {
@@ -59,4 +61,6 @@ export enum SupportedProductionEvmChain {
     // These are required for Turtle campaigns
     Katana = katana.id,
     Linea = linea.id,
+    // Needed for AFX vaults
+    Afx = afxData.id,
 }

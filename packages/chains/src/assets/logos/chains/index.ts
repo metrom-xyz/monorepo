@@ -1,3 +1,4 @@
+export * from "./afx";
 export * from "./aptos";
 export * from "./arbitrum";
 export * from "./base";

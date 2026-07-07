@@ -91,6 +91,13 @@ export interface BackendErc4626VaultTarget extends BaseTarget {
     vault: BackendErc4626Vault;
 }
 
+export interface BackendAfxVaultTarget extends BaseTarget {
+    type: "afx";
+    vaultAddress: string;
+    name: string;
+    managementFee: number;
+}
+
 export interface BackendTurtleIncentive {
     id: string;
     name: string;
@@ -202,7 +209,8 @@ export interface BackendBaseCampaign {
         | BackendAmmPoolNetSwapVolumeTarget
         | BackendYieldSeekerTarget
         | BackendOdysseyTarget
-        | BackendErc4626VaultTarget;
+        | BackendErc4626VaultTarget
+        | BackendAfxVaultTarget;
     usdTvl?: number;
     apr?: number;
 }

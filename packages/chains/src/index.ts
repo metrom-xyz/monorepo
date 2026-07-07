@@ -48,6 +48,7 @@ import {
     bscData,
     aptosTestnetData,
     aptosData,
+    afxData,
 } from "./chains";
 import {
     ChainData,
@@ -79,6 +80,7 @@ export const EVM_CHAIN_DATA: {
     [Environment.Development]: {
         [SupportedDevelopmentEvmChain.BaseSepolia]: baseSepoliaData,
         [SupportedDevelopmentEvmChain.Sepolia]: sepoliaData,
+        [SupportedDevelopmentEvmChain.Afx]: afxData,
     },
     [Environment.Production]: {
         [SupportedProductionEvmChain.ArbitrumOne]: arbitrumData,
@@ -101,6 +103,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.Saga]: sagaData,
         [SupportedProductionEvmChain.MegaEth]: megaethData,
         [SupportedProductionEvmChain.Bsc]: bscData,
+        [SupportedProductionEvmChain.Afx]: afxData,
     },
 };
 

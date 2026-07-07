@@ -111,7 +111,8 @@ export function getCampaignName(
                     .join("/"),
             });
         }
-        case TargetType.Turtle: {
+        case TargetType.Turtle:
+        case TargetType.Afx: {
             return campaign.target.name;
         }
         case TargetType.YieldSeeker: {
