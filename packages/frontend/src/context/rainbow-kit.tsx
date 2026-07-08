@@ -46,9 +46,14 @@ const EVM_WALLETS = [
     injectedWallet,
 ];
 
-export const EVM_WALLETS_IDS = EVM_WALLETS.map(
-    (wallet) => wallet.name.split("Wallet")[0],
-);
+// Wallet ids as defined by RainbowKit, must match EVM_WALLETS.
+export const EVM_WALLETS_IDS = [
+    "frame",
+    "metaMask",
+    "base",
+    "walletConnect",
+    "injected",
+];
 
 // In SAFE (iframe) mode the app only ever connects through the Safe
 // connector and WALLETCONNECT_PROJECT_ID may be unset, in which case
