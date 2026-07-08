@@ -14,7 +14,7 @@ const cspHeader = `
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.usefathom.com https://umami.metrom.xyz;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src * data: blob:;
-    font-src 'self' https://fonts.gstatic.com https://fonts.reown.com;
+    font-src 'self' https://fonts.gstatic.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
@@ -29,8 +29,7 @@ const nextConfig = {
     },
     experimental: {
         optimizePackageImports: [
-            "@reown/appkit",
-            "@reown/appkit-adapter-wagmi",
+            "@rainbow-me/rainbowkit",
             "wagmi",
             "viem",
             "@wagmi/core",

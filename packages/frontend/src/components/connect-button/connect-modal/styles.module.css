@@ -1,14 +1,10 @@
 @reference "../../../app.css";
 
-.root {
-    @apply w-full;
-}
-
 .modal {
-    @apply h-auto
-        flex
+    @apply flex
         flex-col
         sm:min-w-[360px]
+        h-[600px]
         rounded-4xl
         border
         surface-primary
@@ -25,29 +21,36 @@
     @apply text-primary size-3 cursor-pointer;
 }
 
-.walletItem {
-    @apply flex items-center justify-between;
+.ecosystems {
+    @apply w-full flex gap-2 px-7 pb-4;
 }
 
-.walletButton {
-    @apply w-full
-        flex
+.ecosystemButton {
+    @apply flex
+        flex-1
+        flex-col
         items-center
-        justify-between
-        px-7
-        py-4
+        gap-1
+        rounded-xl
+        p-2
+        border
+        border-transparent
+        cursor-pointer
         surface-primary
         surface-primary-hover
-        cursor-pointer
         transition-colors
         duration-200
         ease-in-out;
 }
 
-.leftContent {
-    @apply flex items-center gap-3;
+.ecosystemButtonActive {
+    @apply border-gray-300 dark:border-neutral-800;
 }
 
-.walletIcon {
-    @apply size-8;
+.ecosystemTabIcon :global(.icon) {
+    @apply size-5 text-primary;
+}
+
+.walletsList {
+    @apply overflow-y-auto;
 }

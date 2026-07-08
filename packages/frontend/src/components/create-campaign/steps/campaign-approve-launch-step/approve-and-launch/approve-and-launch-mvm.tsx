@@ -22,7 +22,7 @@ import {
     U64,
     type InputGenerateTransactionPayloadData,
 } from "@aptos-labs/ts-sdk";
-import { ConnectButtonMvm } from "@/src/components/connect-button/mvm";
+import { ConnectButton } from "@/src/components/connect-button";
 import { WalletIcon } from "@/src/assets/wallet-icon";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { chainIdToAptosNetwork } from "@/src/utils/chain";
@@ -190,7 +190,7 @@ export function ApproveAndDeployMvm({
     if (!connected)
         return (
             <div className={styles.buttonsWrapper}>
-                <ConnectButtonMvm
+                <ConnectButton
                     customComponent={
                         <Button
                             icon={WalletIcon}

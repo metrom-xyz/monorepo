@@ -1,54 +1,19 @@
 import { ChainType } from "@metrom-xyz/sdk";
-import type { SVGIcon } from "@/src/types/common";
-import {
-    startTransition,
-    useCallback,
-    useRef,
-    useState,
-    type FunctionComponent,
-} from "react";
-import { AptosLogo, EthLogo, SolanaLogo, SuiLogo } from "@metrom-xyz/chains";
+import { useCallback, useRef, useState } from "react";
 import { Popover, Typography } from "@metrom-xyz/ui";
 import { useChainType } from "@/src/context/chain-type";
-import { usePathname, useRouter } from "@/src/i18n/routing";
+import { useSwitchEcosystem } from "@/src/hooks/useSwitchEcosystem";
+import { ECOSYSTEMS } from "@/src/commons/ecosystems";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
-
-const ECOSYSTEMS: {
-    name: string;
-    type: ChainType;
-    icon: FunctionComponent<SVGIcon>;
-}[] = [
-    {
-        name: "EVM",
-        type: ChainType.Evm,
-        icon: EthLogo,
-    },
-    {
-        name: "Aptos",
-        type: ChainType.Aptos,
-        icon: AptosLogo,
-    },
-    {
-        name: "Solana",
-        type: ChainType.Svm,
-        icon: SolanaLogo,
-    },
-    {
-        name: "Sui",
-        type: ChainType.Sui,
-        icon: SuiLogo,
-    },
-];
 
 export function EcosystemPicker() {
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
     const [open, setOpen] = useState(false);
 
-    const { chainType, setChainType } = useChainType();
-    const pathname = usePathname();
-    const router = useRouter();
+    const { chainType } = useChainType();
+    const switchEcosystem = useSwitchEcosystem();
     const popoverRef = useRef<HTMLDivElement>(null);
 
     function handlePopoverOnOpen() {
@@ -58,16 +23,11 @@ export function EcosystemPicker() {
     const getOnChangeHandler = useCallback(
         (type: ChainType) => {
             return () => {
-                if (pathname.startsWith("/campaigns/create")) {
-                    router.replace("/campaigns/create");
-                    startTransition(() => setChainType(type));
-                } else {
-                    setChainType(type);
-                }
+                switchEcosystem(type);
                 setOpen(false);
             };
         },
-        [setChainType, pathname, router],
+        [switchEcosystem],
     );
 
     const selected = ECOSYSTEMS.find(({ type }) => type === chainType);

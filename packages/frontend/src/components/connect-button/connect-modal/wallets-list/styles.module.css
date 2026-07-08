@@ -1,0 +1,39 @@
+@reference "../../../../app.css";
+
+.walletItem {
+    @apply flex items-center justify-between;
+}
+
+.walletButton {
+    @apply w-full
+        flex
+        justify-between
+        items-center
+        px-7
+        py-4
+        surface-primary
+        gap-3
+        surface-primary-hover
+        cursor-pointer
+        transition-colors
+        duration-200
+        ease-in-out;
+}
+
+.walletButton:disabled {
+    @apply bg-gray-200
+        dark:bg-neutral-800
+        cursor-not-allowed;
+}
+
+.leftContent {
+    @apply flex items-center gap-3;
+}
+
+.walletIcon {
+    @apply size-8;
+}
+
+.spinnerIcon {
+    @apply animate-spin;
+}

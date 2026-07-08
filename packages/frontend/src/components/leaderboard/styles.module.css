@@ -76,6 +76,7 @@
 .row {
     @apply w-full
         grid
+        min-h-[3.313rem]
         grid-cols-[0.8fr_1fr_0.9fr]
         md:grid-cols-3
         items-center
