@@ -9,7 +9,6 @@ import { formatPercentage } from "@/src/utils/format";
 import { PointsBreakdown } from "../points-breakdown";
 import type { Rank } from "@/src/types/campaign/common";
 import { useWindowSize } from "react-use";
-import { useAppKit } from "@reown/appkit/react";
 import { type Restrictions, RestrictionType } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import type { Address } from "viem";
@@ -41,7 +40,6 @@ export function PersonalRank({
 
     const { width } = useWindowSize();
     const { address: connectedAddress } = useAccount();
-    const { open } = useAppKit();
 
     const restricted = useMemo(() => {
         if (!connectedAddress || !restrictions) return false;
@@ -53,10 +51,6 @@ export function PersonalRank({
 
     const blacklist = restrictions?.type === RestrictionType.Blacklist;
     const whitelist = restrictions?.type === RestrictionType.Whitelist;
-
-    async function handleOnConnect() {
-        await open();
-    }
 
     if (loading)
         return (
@@ -76,10 +70,7 @@ export function PersonalRank({
             <div className={styles.root}>
                 <ConnectButton
                     customComponent={
-                        <div
-                            onClick={handleOnConnect}
-                            className={styles.connectWallet}
-                        >
+                        <div className={styles.connectWallet}>
                             <Typography weight="medium">
                                 {t("connect")}
                             </Typography>

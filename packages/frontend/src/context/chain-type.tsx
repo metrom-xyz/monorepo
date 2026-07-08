@@ -10,11 +10,17 @@ import {
 } from "react";
 
 const STORAGE_KEY = "metrom.chainType";
+const LAST_WALLET_STORAGE_KEY_PREFIX = "metrom.lastWallet.";
 const VALID_CHAIN_TYPES = new Set(Object.values(ChainType));
 
 const ChainTypeContext = createContext<{
     chainType: ChainType;
     setChainType: (t: ChainType) => void;
+    getLastWallet: (t: ChainType) => string | null;
+    setLastWallet: (t: ChainType, id: string) => void;
+    clearLastWallet: (t: ChainType) => void;
+    autoConnecting: boolean;
+    setAutoConnecting: (autoConnecting: boolean) => void;
 } | null>(null);
 
 export function ChainTypeProvider({ children }: { children: ReactNode }) {
@@ -26,13 +32,46 @@ export function ChainTypeProvider({ children }: { children: ReactNode }) {
             : ChainType.Evm;
     });
 
-    const setChainType = useCallback((t: ChainType) => {
-        localStorage.setItem(STORAGE_KEY, t);
-        setChainTypeState(t);
+    const [autoConnecting, setAutoConnecting] = useState(false);
+
+    // The last connected wallet identity per ecosystem, so
+    // it can be silently reconnected when switching back to that ecosystem.
+    const getLastWallet = useCallback((type: ChainType) => {
+        return localStorage.getItem(`${LAST_WALLET_STORAGE_KEY_PREFIX}${type}`);
+    }, []);
+
+    const setChainType = useCallback(
+        (type: ChainType) => {
+            if (type === chainType) return;
+
+            localStorage.setItem(STORAGE_KEY, type);
+
+            setAutoConnecting(!!getLastWallet(type));
+            setChainTypeState(type);
+        },
+        [chainType, getLastWallet],
+    );
+
+    const setLastWallet = useCallback((t: ChainType, id: string) => {
+        localStorage.setItem(`${LAST_WALLET_STORAGE_KEY_PREFIX}${t}`, id);
+    }, []);
+
+    const clearLastWallet = useCallback((t: ChainType) => {
+        localStorage.removeItem(`${LAST_WALLET_STORAGE_KEY_PREFIX}${t}`);
     }, []);
 
     return (
-        <ChainTypeContext value={{ chainType, setChainType }}>
+        <ChainTypeContext
+            value={{
+                chainType,
+                setChainType,
+                getLastWallet,
+                setLastWallet,
+                clearLastWallet,
+                autoConnecting,
+                setAutoConnecting,
+            }}
+        >
             {children}
         </ChainTypeContext>
     );

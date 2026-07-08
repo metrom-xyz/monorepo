@@ -1,0 +1,5 @@
+@reference "../../app.css";
+
+.walletIcon {
+    @apply size-8;
+}

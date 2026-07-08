@@ -12,7 +12,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import updateLocale from "dayjs/plugin/updateLocale";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import { ReownAppKitContextProvider } from "../context/reown-app-kit";
+import { RainbowKitContextProvider } from "../context/rainbow-kit";
 import {
     APTOS_CLIENT_API_KEY,
     APTOS_CLIENT_TESTNET_API_KEY,
@@ -93,12 +93,12 @@ export function ClientProviders({
                             }}
                         >
                             <AptosCoreProvider>
-                                <ReownAppKitContextProvider>
+                                <RainbowKitContextProvider>
                                     <TokenIconsProvider>
                                         <Toaster />
                                         {children}
                                     </TokenIconsProvider>
-                                </ReownAppKitContextProvider>
+                                </RainbowKitContextProvider>
                             </AptosCoreProvider>
                         </AptosWalletAdapterProvider>
                     </SolanaAdapterContextProvider>

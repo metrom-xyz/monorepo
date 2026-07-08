@@ -41,7 +41,7 @@ import { trackUmamiEvent } from "@/src/utils/umami";
 import { getCreateRewardsCampaignInstructionAsync } from "@metrom-xyz/programs-solana/client";
 import type { SolanaTxMessage } from "@/src/types/solana";
 import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
-import { ConnectButtonSvm } from "@/src/components/connect-button/svm";
+import { ConnectButton } from "@/src/components/connect-button";
 
 import styles from "./styles.module.css";
 
@@ -270,7 +270,7 @@ export function ApproveAndDeploySvm({
     if (!connected)
         return (
             <div className={styles.buttonsWrapper}>
-                <ConnectButtonSvm
+                <ConnectButton
                     customComponent={
                         <Button
                             icon={WalletIcon}

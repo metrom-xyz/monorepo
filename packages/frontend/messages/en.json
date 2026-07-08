@@ -6,7 +6,8 @@
         "connect": "Connect"
     },
     "wallets": {
-        "title": "Connect wallet"
+        "title": "Connect wallet",
+        "safe": "Safe"
     },
     "footer": {
         "support": "Support",

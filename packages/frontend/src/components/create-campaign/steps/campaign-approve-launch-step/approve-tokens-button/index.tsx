@@ -7,7 +7,8 @@ import { ApproveTokens } from "./approve-tokens";
 import type { Erc20TokenAmountWithAllowance } from "@/src/types/campaign/common";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
 import { useChainData } from "@/src/hooks/useChainData";
-import { useAppKit } from "@reown/appkit/react";
+import { ConnectModal } from "@/src/components/connect-button/connect-modal";
+import { useState } from "react";
 import type { Address } from "viem";
 import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 
@@ -28,24 +29,35 @@ export function ApproveTokensButton({
 }: ApproveTokensButtonProps) {
     const t = useTranslations("newCampaign.form.approveLaunch");
     const chainId = useChainId();
-    const { open } = useAppKit();
     const chainData = useChainData({ chainId });
     const { address: connectedAddress } = useAccount();
 
-    async function handleOnConnect() {
-        await open();
+    const [connectModalOpen, setConnectModalOpen] = useState(false);
+
+    function handleConnectModalOpen() {
+        setConnectModalOpen(true);
+    }
+
+    function handleConnectModalClose() {
+        setConnectModalOpen(false);
     }
 
     if (!connectedAddress)
         return (
-            <Button
-                icon={WalletIcon}
-                iconPlacement="right"
-                onClick={handleOnConnect}
-                className={{ root: styles.button }}
-            >
-                {t("connectWallet")}
-            </Button>
+            <>
+                <Button
+                    icon={WalletIcon}
+                    iconPlacement="right"
+                    onClick={handleConnectModalOpen}
+                    className={{ root: styles.button }}
+                >
+                    {t("connectWallet")}
+                </Button>
+                <ConnectModal
+                    open={connectModalOpen}
+                    onDismiss={handleConnectModalClose}
+                />
+            </>
         );
 
     return (
