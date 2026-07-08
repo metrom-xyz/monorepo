@@ -22,7 +22,7 @@ import {
     createPointsCampaign,
 } from "@metrom-xyz/sui-contracts/client";
 import { trackUmamiEvent } from "@/src/utils/umami";
-import { ConnectButtonSui } from "@/src/components/connect-button/sui";
+import { ConnectButton } from "@/src/components/connect-button";
 import styles from "./styles.module.css";
 import { fromHex } from "@mysten/sui/utils";
 
@@ -199,7 +199,7 @@ export function ApproveAndDeploySui({
     if (!account) {
         return (
             <div className={styles.buttonsWrapper}>
-                <ConnectButtonSui
+                <ConnectButton
                     customComponent={
                         <Button
                             icon={WalletIcon}

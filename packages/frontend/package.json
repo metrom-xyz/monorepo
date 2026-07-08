@@ -29,8 +29,7 @@
         "@mysten/dapp-kit-react": "^2.0.3",
         "@mysten/sui": "^2.17.0",
         "@next/eslint-plugin-next": "^15.5.4",
-        "@reown/appkit": "1.8.18",
-        "@reown/appkit-adapter-wagmi": "1.8.18",
+        "@rainbow-me/rainbowkit": "^2.2.11",
         "@safe-global/safe-apps-sdk": "^9.1.0",
         "@solana-program/token": "^0.14.0",
         "@solana/client": "^1.7.0",
@@ -84,5 +83,10 @@
         "tsx": "^4.21.0",
         "typescript": "^5.9.3",
         "typescript-eslint": "^8.55.0"
+    },
+    "pnpm": {
+        "overrides": {
+            "qr": "0.5.5"
+        }
     }
 }
