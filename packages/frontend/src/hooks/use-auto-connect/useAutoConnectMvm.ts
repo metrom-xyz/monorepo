@@ -27,5 +27,5 @@ export function useAutoConnectMvm() {
             console.warn(`Could not auto-connect Aptos wallet: ${error}`);
             clearLastWallet(ChainType.Aptos);
         }
-    }, [connected, connect, wallets, getLastWallet, clearLastWallet]);
+    }, [wallets, connected, connect, getLastWallet, clearLastWallet]);
 }
