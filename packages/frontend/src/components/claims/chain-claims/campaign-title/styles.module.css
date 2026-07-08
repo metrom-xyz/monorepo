@@ -1,0 +1,5 @@
+@reference "../../../../app.css";
+
+.root {
+    @apply flex flex-col sm:flex-row sm:items-center gap-2;
+}
