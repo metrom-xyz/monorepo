@@ -85,41 +85,6 @@ export function chainIdToSolanaNetwork(chainId?: number): string | null {
     return chain[0];
 }
 
-export const SOLANA_NETWORK_ID = {
-    [Environment.Development]: {
-        "solana:testnet": solanaNetworkToId("testnet"),
-    },
-    [Environment.Production]: {
-        "solana:mainnet": solanaNetworkToId("mainnet"),
-    },
-};
-
-export function solanaNetworkToId(network?: string): number {
-    const fullNetwork = `solana:${network}`;
-
-    switch (fullNetwork) {
-        case "solana:testnet": {
-            return SupportedChainSvm.Testnet;
-        }
-        case "solana:mainnet": {
-            // FIXME: add mainnet id
-            return 103;
-        }
-        default: {
-            throw new Error(`Unsupported solana network ${network}`);
-        }
-    }
-}
-
-export function chainIdToSolanaNetwork(chainId?: number): string | null {
-    const chain = Object.entries(SOLANA_NETWORK_ID[ENVIRONMENT]).find(
-        ([, id]) => chainId === id,
-    );
-
-    if (!chain) return null;
-    return chain[0];
-}
-
 export const APTOS_NETWORK_ID = {
     [Environment.Development]: {
         [Network.MAINNET]: NetworkToChainId[Network.MAINNET],
