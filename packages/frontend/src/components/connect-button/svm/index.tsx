@@ -28,7 +28,11 @@ export function ConnectButtonSvm() {
     const solanaClient = useSolanaClient();
 
     const balance: Balance | undefined = useMemo(() => {
-        if (rawBalance.lamports === null) return undefined;
+        if (rawBalance.lamports === null)
+            return {
+                symbol: "SOL",
+                amount: "0",
+            };
 
         return {
             symbol: "SOL",
