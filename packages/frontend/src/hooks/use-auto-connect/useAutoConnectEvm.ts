@@ -8,7 +8,7 @@ import { useChainType } from "../../context/chain-type";
 export function useAutoConnectEvm() {
     const config = useConfig();
     const { isConnected, connector } = useAccount();
-    const { getLastWallet, setLastWallet } = useChainType();
+    const { getLastWallet, setLastWallet, clearLastWallet } = useChainType();
 
     useEffect(() => {
         if (SAFE) return;
@@ -35,6 +35,7 @@ export function useAutoConnectEvm() {
             await connect(config, { connector });
         } catch (error) {
             console.warn(`Could not auto-connect EVM wallet: ${error}`);
+            clearLastWallet(ChainType.Evm);
         }
-    }, [config, getLastWallet]);
+    }, [config, getLastWallet, clearLastWallet]);
 }
