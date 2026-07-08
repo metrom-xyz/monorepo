@@ -32,5 +32,5 @@ export function useAutoConnectSvm() {
             console.warn(`Could not auto-connect Solana wallet: ${error}`);
             clearLastWallet(ChainType.Svm);
         }
-    }, [connected, connect, connectors, getLastWallet, clearLastWallet]);
+    }, [connectors, connected, connect, getLastWallet, clearLastWallet]);
 }
