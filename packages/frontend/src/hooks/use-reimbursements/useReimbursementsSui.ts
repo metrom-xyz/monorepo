@@ -64,15 +64,17 @@ export function useReimbursementsSui({
         isLoading: loadingReimbursementData,
         isError: reimbursementDataErrored,
     } = useQuery({
-        queryKey: ["reimbursements-data-sui", ChainType.Sui, address, rawReimbursements],
+        queryKey: [
+            "reimbursements-data-sui",
+            ChainType.Sui,
+            address,
+            rawReimbursements,
+        ],
         queryFn: async () => {
             if (!rawReimbursements || !address) return null;
 
             const txRecovered = new Transaction();
             txRecovered.setSender(address);
-
-            const txClaimed = new Transaction();
-            txClaimed.setSender(address);
 
             const includedIndices: number[] = [];
 
@@ -99,35 +101,17 @@ export function useReimbursementsSui({
                         account: SUI_ZERO_ADDRESS,
                     },
                 })(txRecovered);
-
-                claimedCampaignReward({
-                    package: chainData.metromContract.address,
-                    arguments: {
-                        state: chainData.metromContract.stateAddress,
-                        id: campaignIdBytes,
-                        token: txClaimed.pure.string(addressWithoutPrefix),
-                        account: address,
-                    },
-                })(txClaimed);
             }
 
             const recovered = rawReimbursements.map(() => 0n);
-            const claimed = rawReimbursements.map(() => 0n);
 
-            if (includedIndices.length === 0) return { recovered, claimed };
+            if (includedIndices.length === 0) return { recovered };
 
-            const [resultRecovered, resultClaimed] = await Promise.all([
-                client.simulateTransaction({
-                    transaction: txRecovered,
-                    checksEnabled: false,
-                    include: { commandResults: true },
-                }),
-                client.simulateTransaction({
-                    transaction: txClaimed,
-                    checksEnabled: false,
-                    include: { commandResults: true },
-                }),
-            ]);
+            const resultRecovered = await client.simulateTransaction({
+                transaction: txRecovered,
+                checksEnabled: false,
+                include: { commandResults: true },
+            });
 
             resultRecovered.commandResults.forEach((result, i) => {
                 const reimbursementIndex = includedIndices[i];
@@ -141,19 +125,7 @@ export function useReimbursementsSui({
                 );
             });
 
-            resultClaimed.commandResults.forEach((result, i) => {
-                const reimbursementIndex = includedIndices[i];
-                if (reimbursementIndex === undefined) return;
-
-                const output = result.returnValues[0];
-                if (!output || !output.bcs) return;
-
-                claimed[reimbursementIndex] = BigInt(
-                    bcs.u64().parse(output.bcs),
-                );
-            });
-
-            return { recovered, claimed };
+            return { recovered };
         },
         retryDelay: 1000,
         refetchOnWindowFocus: false,
@@ -183,13 +155,16 @@ export function useReimbursementsSui({
             return;
         }
 
-        const { recovered, claimed } = reimbursementData;
+        const { recovered } = reimbursementData;
 
         const reimbursements: ReimbursementsWithRemaining[] = [];
         for (let i = 0; i < rawReimbursements.length; i++) {
             const rawReimbursement = rawReimbursements[i];
-            const rawRemaining =
-                rawReimbursement.amount.raw - recovered[i] - claimed[i];
+
+            // The contract only tracks recovered rewards (under the zero
+            // address): the owner's own claims never reduce the
+            // recoverable amount.
+            const rawRemaining = rawReimbursement.amount.raw - recovered[i];
             const formattedRemaining = Number(
                 formatUnits(rawRemaining, rawReimbursement.token.decimals),
             );
