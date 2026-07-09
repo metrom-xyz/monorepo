@@ -238,8 +238,14 @@ export function AverageDistributionChart({
                         startAngle={90}
                         endAngle={450}
                         minAngle={5}
-                        shape={(props) => (
-                            <PieCell {...props} onPopoverChange={setPopover} />
+                        shape={({ type, ...rest }) => (
+                            <PieCell
+                                {...rest}
+                                type={
+                                    type as AverageDistributionChartData["type"]
+                                }
+                                onPopoverChange={setPopover}
+                            />
                         )}
                     />
                     <Tooltip

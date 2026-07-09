@@ -2,29 +2,26 @@ import { formatPercentage, formatUsdAmount } from "@/src/utils/format";
 import styles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { Typography, type TypographySize } from "@metrom-xyz/ui";
-import { ReferenceLine } from "recharts";
-import { CHART_MARGINS, type DistributedAreaDataPoint } from "..";
 import {
-    getChartAxisScale,
+    ReferenceLine,
+    useYAxisScale,
+    type TooltipContentProps,
+} from "recharts";
+import { type DistributedAreaDataPoint } from "..";
+import {
     getDistributableRewardsPercentage,
     getReachedGoalPercentage,
 } from "@/src/utils/kpi";
 import classNames from "classnames";
 
-interface TooltipProps {
-    active?: boolean;
-    payload?: [
-        {
-            payload: DistributedAreaDataPoint;
-        },
-    ];
+type KpiTooltipContentProps = TooltipContentProps & {
     size?: TypographySize;
     targetValueName: string;
     lowerUsdTarget: number;
     upperUsdTarget: number;
     totalRewardsUsd: number;
     minimumPayouPercentage?: number;
-}
+};
 
 export function TooltipContent({
     active,
@@ -35,12 +32,13 @@ export function TooltipContent({
     upperUsdTarget,
     totalRewardsUsd,
     minimumPayouPercentage,
-}: TooltipProps) {
+}: KpiTooltipContentProps) {
     const t = useTranslations("simulationChart.tooltip");
 
     if (!active || !payload || !payload.length) return null;
 
-    const { targetUsdValue, aprPercentage } = payload[0].payload;
+    const { targetUsdValue, aprPercentage }: DistributedAreaDataPoint =
+        payload[0].payload;
 
     return (
         <div className={styles.root}>
@@ -123,23 +121,16 @@ export function TooltipContent({
 }
 
 interface TooltipCursorProps {
-    totalRewardsUsd: number;
-    height?: number;
-    payload?: [
-        {
-            payload: DistributedAreaDataPoint;
-        },
-    ];
+    payload?: {
+        payload: DistributedAreaDataPoint;
+    }[];
     points?: { x: number; y: number }[];
 }
 
-export function TooltipCursor({
-    totalRewardsUsd,
-    height,
-    payload,
-    points,
-}: TooltipCursorProps) {
-    if (!payload || !payload.length || !points || !height) return null;
+export function TooltipCursor({ payload, points }: TooltipCursorProps) {
+    const yScale = useYAxisScale();
+
+    if (!payload || !payload.length || !points || !yScale) return null;
 
     const {
         targetUsdValue,
@@ -149,16 +140,12 @@ export function TooltipCursor({
     } = payload[0].payload;
     const reward = currentlyDistributing || currentlyNotDistributing;
 
-    // ReferenceDot cannot be used because it lacks access to Recharts' internal scale functions.
-    // Instead, we use a standard SVG circle element. This requires manually calculating the Y position
-    // based on the chart scale, while the X position can directly use the value from the data points.
-    // This also takes into account the chart top margin.
-    const cyRewards =
-        getChartAxisScale(reward, 0, totalRewardsUsd, height, 0) +
-        CHART_MARGINS.top;
-    const cyApr =
-        getChartAxisScale(aprLinePoint!, 0, totalRewardsUsd, height, 0) +
-        CHART_MARGINS.top;
+    // ReferenceDot cannot be used to position the circles in the cursor, so
+    // we use standard SVG circle elements, resolving the Y positions through
+    // the recharts Y axis scale, while the X position can directly use the
+    // value from the data points.
+    const cyRewards = yScale(reward);
+    const cyApr = aprLinePoint !== undefined ? yScale(aprLinePoint) : undefined;
 
     return (
         <>
@@ -180,7 +167,7 @@ export function TooltipCursor({
                 ]}
                 className={styles.referenceLine}
             />
-            {cyRewards && (
+            {cyRewards !== undefined && (
                 <circle
                     cx={points[0].x}
                     cy={cyRewards}
@@ -189,7 +176,7 @@ export function TooltipCursor({
                     className={styles.referenceCircle}
                 />
             )}
-            {cyApr && (
+            {cyApr !== undefined && (
                 <circle
                     cx={points[0].x}
                     cy={cyApr}
