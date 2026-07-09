@@ -18,7 +18,7 @@ import {
 } from "@mysten/dapp-kit-react";
 import { Transaction } from "@mysten/sui/transactions";
 import { recoverRewards } from "@metrom-xyz/sui-contracts/client";
-import { fromHex } from "@mysten/sui/utils";
+import { fromBase64, fromHex } from "@mysten/sui/utils";
 
 import styles from "./styles.module.css";
 
@@ -105,13 +105,20 @@ export function TokenReimbursementSui({
         const recover = async () => {
             setRecovering(true);
             try {
-                const result = await dAppKit.signAndExecuteTransaction({
+                const { bytes, signature } = await dAppKit.signTransaction({
                     transaction,
+                });
+
+                const result = await client.executeTransaction({
+                    transaction: fromBase64(bytes),
+                    signatures: [signature],
                 });
 
                 if (result.$kind === "FailedTransaction") {
                     console.warn("Recover transaction failed");
-                    toast.custom((toastId) => <RecoverFail toastId={toastId} />);
+                    toast.custom((toastId) => (
+                        <RecoverFail toastId={toastId} />
+                    ));
                     return;
                 }
 
