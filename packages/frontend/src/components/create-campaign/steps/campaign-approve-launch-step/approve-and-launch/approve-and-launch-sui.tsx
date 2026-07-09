@@ -24,7 +24,7 @@ import {
 import { trackUmamiEvent } from "@/src/utils/umami";
 import { ConnectButton } from "@/src/components/connect-button";
 import styles from "./styles.module.css";
-import { fromHex } from "@mysten/sui/utils";
+import { fromBase64, fromHex } from "@mysten/sui/utils";
 
 export function ApproveAndDeploySui({
     payload,
@@ -161,8 +161,13 @@ export function ApproveAndDeploySui({
         const deploy = async () => {
             setDeploying(true);
             try {
-                const result = await dAppKit.signAndExecuteTransaction({
+                const { bytes, signature } = await dAppKit.signTransaction({
                     transaction,
+                });
+
+                const result = await client.executeTransaction({
+                    transaction: fromBase64(bytes),
+                    signatures: [signature],
                 });
 
                 if (result.$kind === "FailedTransaction") {
