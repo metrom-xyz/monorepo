@@ -18,7 +18,7 @@ import {
 } from "@mysten/dapp-kit-react";
 import { Transaction } from "@mysten/sui/transactions";
 import { claimRewards } from "@metrom-xyz/sui-contracts/client";
-import { fromHex } from "@mysten/sui/utils";
+import { fromBase64, fromHex } from "@mysten/sui/utils";
 
 import styles from "./styles.module.css";
 
@@ -98,8 +98,13 @@ export function TokenClaimSui({
         const claim = async () => {
             setClaiming(true);
             try {
-                const result = await dAppKit.signAndExecuteTransaction({
+                const { bytes, signature } = await dAppKit.signTransaction({
                     transaction,
+                });
+
+                const result = await client.executeTransaction({
+                    transaction: fromBase64(bytes),
+                    signatures: [signature],
                 });
 
                 if (result.$kind === "FailedTransaction") {
