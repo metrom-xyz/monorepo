@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useXAxisScale } from "recharts";
 import { formatUsdAmount } from "@/src/utils/format";
 import { isChartAxisTickActive } from "@/src/utils/kpi";
 import classNames from "classnames";
@@ -10,9 +11,6 @@ interface TvlTickProps {
     targetUsdValue: number;
     lowerUsdTarget: number;
     upperUsdTarget: number;
-    poolTvlScale?: number;
-    lowerBoundScale?: number;
-    upperBoundScale?: number;
     payload?: {
         value?: number;
     };
@@ -30,9 +28,6 @@ export function TvlTick({
     targetUsdValue,
     lowerUsdTarget,
     upperUsdTarget,
-    poolTvlScale,
-    lowerBoundScale,
-    upperBoundScale,
     payload,
     index,
     y,
@@ -40,6 +35,11 @@ export function TvlTick({
     complex,
 }: TvlTickProps) {
     const t = useTranslations("simulationChart");
+    const xScale = useXAxisScale();
+
+    const poolTvlScale = xScale?.(targetUsdValue);
+    const lowerBoundScale = xScale?.(lowerUsdTarget);
+    const upperBoundScale = xScale?.(upperUsdTarget);
 
     const textAnchor = useMemo(() => {
         if (
