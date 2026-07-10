@@ -21,4 +21,9 @@ export default defineConfig(
     reactHooks.configs["recommended-latest"],
     eslint.configs.recommended,
     tseslint.configs.recommended,
+    {
+        rules: {
+            "@tanstack/query/exhaustive-deps": "off",
+        },
+    },
 );

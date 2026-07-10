@@ -27,9 +27,9 @@ export function AfxLogo(props: SVGIcon) {
                     y2="114.976"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#03C4A7" />
-                    <stop offset="0.480769" stop-color="#46DF75" />
-                    <stop offset="1" stop-color="#8EFD40" />
+                    <stop stopColor="#03C4A7" />
+                    <stop offset="0.480769" stopColor="#46DF75" />
+                    <stop offset="1" stopColor="#8EFD40" />
                 </linearGradient>
             </defs>
         </svg>

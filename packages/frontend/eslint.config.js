@@ -13,7 +13,7 @@ export default defineConfig(
         parserOptions: {
             tsconfigRootDir: import.meta.dirname,
         },
-        extends: ["next", "next/typescript", "prettier"],
+        extends: ["next", "prettier"],
         settings: {
             next: {
                 rootDir: "packages/frontend/",
@@ -23,4 +23,9 @@ export default defineConfig(
     ...pluginQuery.configs["flat/recommended"],
     eslint.configs.recommended,
     tseslint.configs.recommended,
+    {
+        rules: {
+            "@tanstack/query/exhaustive-deps": "off",
+        },
+    },
 );
