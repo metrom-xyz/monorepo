@@ -131,6 +131,8 @@ export function Campaigns({
             });
         }
 
+        if (params.toString() === searchParams.toString()) return;
+
         router.replace(`${pathname}?${params.toString()}`, {
             scroll: false,
         });
