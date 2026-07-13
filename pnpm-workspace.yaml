@@ -3,7 +3,40 @@ packages:
   - subgraphs/*
 
 catalog:
+  "@eslint/eslintrc": ^3.3.5
+  "@eslint/js": ^9.39.2
+  "@graphprotocol/graph-cli": ^0.98.1
+  "@graphprotocol/graph-ts": 0.38.1
+  "@tanstack/eslint-plugin-query": ^5.101.2
+  "@tanstack/react-query": ^5.101.2
+  "@types/mustache": ^4.2.6
+  "@types/node": ^24.3.1
+  "@types/react": ^19.2.17
+  "@types/react-dom": ^19.2.3
+  classnames: ^2.5.1
+  dayjs: ^1.11.21
+  eslint: ^9.39.2
+  eslint-config-next: 16.2.10
+  eslint-config-prettier: ^10.1.8
+  eslint-config-turbo: ^2.10.3
+  eslint-plugin-prettier: ^5.5.6
+  eslint-plugin-react-hooks: ^5.2.0
+  globals: ^16.3.0
+  motion: ^12.42.2
+  mustache: ^4.2.0
+  prettier: ^3.9.4
+  react: ^19.2.7
+  react-dom: ^19.2.7
+  react-remove-scroll: ^2.7.2
+  react-use: ^17.6.1
+  sonner: ^2.0.7
+  tailwindcss: ^4.3.2
+  tsx: ^4.23.0
   typescript: ^6.0.3
+  typescript-eslint: ^8.62.1
+  viem: ^2.54.6
+  vite: ^7.3.1
+  wagmi: ^2.19.5
 
 allowBuilds:
   "@parcel/watcher": false
@@ -19,7 +52,7 @@ allowBuilds:
   utf-8-validate: false
   workerd: false
 
-minimumReleaseAge: 5760 # 7 days in minutes
+minimumReleaseAge: 5760 # 4 days in minutes
 minimumReleaseAgeExclude:
   - "@metrom-xyz/contracts"
   - "@metrom-xyz/aptos-contracts"
