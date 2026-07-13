@@ -20,8 +20,8 @@ const cspHeader = `
 `;
 
 const nextConfig: NextConfig = {
-    eslint: {
-        ignoreDuringBuilds: true,
+    reactCompiler: {
+        compilationMode: "infer",
     },
     experimental: {
         optimizePackageImports: [

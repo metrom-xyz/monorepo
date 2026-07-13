@@ -174,6 +174,10 @@ export function CampaignsTable({
         optionalFilters,
     ]);
 
+    const [rawFilters, setRawFilters] = useState<RawFilters>(initialFilters);
+    const [debouncedRawFilters, setDebouncedRawFilters] =
+        useState<RawFilters>(initialFilters);
+
     const handleClearFilters = useCallback(() => {
         if (optionalFilters && disableFilters) return;
 
@@ -193,10 +197,6 @@ export function CampaignsTable({
 
         if (onClearFilters) onClearFilters();
     }, [disableFilters, optionalFilters, onClearFilters]);
-
-    const [rawFilters, setRawFilters] = useState<RawFilters>(initialFilters);
-    const [debouncedRawFilters, setDebouncedRawFilters] =
-        useState<RawFilters>(initialFilters);
 
     useEffect(() => {
         // Avoid clearing the filters the first time, otherwise the query params

@@ -61,8 +61,9 @@ export function MobileFilters({
     );
     const [drawer, setDrawer] = useState(false);
     const [selectOpen, setSelectOpen] = useState(false);
+    const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
-    const drawerRef = useRef<HTMLInputElement>(null);
+    const drawerRef = useRef<HTMLDivElement>(null);
 
     useClickAway(drawerRef, () => {
         setDrawer(false);
@@ -113,7 +114,13 @@ export function MobileFilters({
     }, [protocols, statuses, chains, onFiltersChange]);
 
     return (
-        <div ref={drawerRef} className={styles.root}>
+        <div
+            ref={(node) => {
+                drawerRef.current = node;
+                setContainer(node);
+            }}
+            className={styles.root}
+        >
             <Button
                 variant="secondary"
                 border={false}
@@ -198,7 +205,7 @@ export function MobileFilters({
                     </div>
                     {protocolOptions && (
                         <MultiSelect
-                            portalContainer={drawerRef.current}
+                            portalContainer={container}
                             search
                             options={protocolOptions}
                             values={protocols}
@@ -215,7 +222,7 @@ export function MobileFilters({
                     <div className={styles.dividier} />
                     {chainOptions && (
                         <MultiSelect
-                            portalContainer={drawerRef.current}
+                            portalContainer={container}
                             search
                             options={chainOptions}
                             values={chains}

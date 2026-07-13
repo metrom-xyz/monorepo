@@ -17,6 +17,7 @@ import styles from "./styles.module.css";
 export function NetworkSelectEvm() {
     const [wrapper, setWrapper] = useState<HTMLDivElement | null>(null);
     const [pickerOpen, setPickerOpen] = useState(false);
+    const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
     const rootRef = useRef<HTMLDivElement>(null);
 
@@ -74,7 +75,12 @@ export function NetworkSelectEvm() {
     }
 
     return (
-        <div ref={rootRef}>
+        <div
+            ref={(node) => {
+                rootRef.current = node;
+                setContainer(node);
+            }}
+        >
             <div
                 ref={setWrapper}
                 onClick={handleNetworkPickerOnToggle}
@@ -96,7 +102,7 @@ export function NetworkSelectEvm() {
             </div>
             <PopoverPicker
                 anchor={wrapper}
-                container={rootRef.current}
+                container={container}
                 chains={chains}
                 open={pickerOpen}
                 value={selectedChainId}
