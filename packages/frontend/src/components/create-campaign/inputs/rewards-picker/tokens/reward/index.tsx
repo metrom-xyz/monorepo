@@ -54,6 +54,7 @@ export function Reward({
         value: value.amount.formatted.toString(),
     });
     const [editingAmount, setEditingAmount] = useState(false);
+    const [inputWidth, setInputWidth] = useState<number>();
 
     const [amountPopover, setAmountPopover] = useState(false);
     const [amountPopoverAnchor, setAmountPopoverAnchor] =
@@ -87,6 +88,7 @@ export function Reward({
     useEffect(() => {
         if (!format || !hiddenSpanRef.current) return;
         hiddenSpanRef.current.textContent = format(inputAmount.formattedValue);
+        setInputWidth(hiddenSpanRef.current.offsetWidth);
     }, [inputAmount.formattedValue, format]);
 
     useEffect(() => {
@@ -124,6 +126,7 @@ export function Reward({
 
             setInputAmount(value);
             hiddenSpanRef.current.textContent = format(value.formattedValue);
+            setInputWidth(hiddenSpanRef.current.offsetWidth);
         },
         [format],
     );
@@ -214,7 +217,10 @@ export function Reward({
                         onMouseEnter={handleAmountPopoverOpen}
                         onMouseLeave={handleAmountPopoverClose}
                         style={{
-                            width: `${hiddenSpanRef?.current?.offsetWidth}px`,
+                            width:
+                                inputWidth !== undefined
+                                    ? `${inputWidth}px`
+                                    : undefined,
                         }}
                         className={classNames(styles.input, {
                             [styles.editing]: editingAmount,

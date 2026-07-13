@@ -39,7 +39,6 @@
         "@metrom-xyz/graph-cli": "workspace:*"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "catalog:",
         "@eslint/js": "catalog:",
         "@metrom-xyz/contracts": "^0.56.0",
         "@types/mustache": "catalog:",

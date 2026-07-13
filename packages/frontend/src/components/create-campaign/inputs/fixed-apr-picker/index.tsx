@@ -135,7 +135,7 @@ export function FixedAprPicker({
             value?.apr,
         );
 
-        let rewardToken: WhitelistedErc20Token | null = null;
+        let rewardToken: WhitelistedErc20Token;
         if (!address) rewardToken = rewardTokens[0];
         else {
             rewardToken =

@@ -3,7 +3,7 @@ import { formatUnits, type Address, type Hex } from "viem";
 import { OnChainAmount, type Claim } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useMetromClient } from "./useMetromClient";
 import { QueryOptions, type QueryResult } from "../types";
@@ -25,7 +25,6 @@ type QueryKey = [string, Hex];
 
 /** https://docs.metrom.xyz/react-library/use-claims */
 export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
-    const [claims, setClaims] = useState<ClaimWithRemaining[] | undefined>();
     const metromClient = useMetromClient();
 
     const {
@@ -86,11 +85,8 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
         },
     });
 
-    useEffect(() => {
-        if (!rawClaims || !claimedData) {
-            setClaims([]);
-            return;
-        }
+    const claims = useMemo(() => {
+        if (!rawClaims || !claimedData) return [];
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
@@ -113,7 +109,7 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
             }
         }
 
-        setClaims(claims);
+        return claims;
     }, [claimedData, rawClaims]);
 
     return {

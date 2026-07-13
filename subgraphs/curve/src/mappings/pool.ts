@@ -84,6 +84,7 @@ function handleLiquidityChange(
 
     let pool = getOrCreatePool(event.address, null, basePoolAddress);
 
+    // eslint-disable-next-line no-useless-assignment
     let liquidityDelta = BI_0;
     if (liquiditySupply !== null) {
         liquidityDelta = liquiditySupply.minus(pool.liquidity);

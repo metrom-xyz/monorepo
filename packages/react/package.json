@@ -30,7 +30,7 @@
         "wagmi": "catalog:"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "catalog:",
+        "eslint-config-prettier": "catalog:",
         "@eslint/js": "catalog:",
         "@tanstack/eslint-plugin-query": "catalog:",
         "@tanstack/react-query": "catalog:",
@@ -46,7 +46,7 @@
         "typescript-eslint": "catalog:",
         "viem": "catalog:",
         "vite": "catalog:",
-        "vite-plugin-dts": "^4.5.4",
+        "vite-plugin-dts": "^5.0.3",
         "wagmi": "catalog:"
     },
     "files": [

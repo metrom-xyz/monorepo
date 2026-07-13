@@ -1,4 +1,4 @@
-import type { UsdPricedErc20Token } from "@metrom-xyz/sdk";
+import type { OnChainAmount, UsdPricedErc20Token } from "@metrom-xyz/sdk";
 import { useMemo } from "react";
 import type {
     Erc20TokenWithBalance,
@@ -76,15 +76,13 @@ export function useWatchBalancesSui<T extends UsdPricedErc20Token>({
 
         return tokens.reduce(
             (accumulator: Erc20TokenWithBalance<T>[], token, i) => {
-                let balance = null;
-
                 const rawBalance = BigInt(
                     rewardTokenRawBalances[i].balance.balance,
                 );
                 const formattedBalance = Number(
                     formatUnits(rawBalance, token.decimals),
                 );
-                balance = {
+                const balance: OnChainAmount = {
                     raw: rawBalance,
                     formatted: formattedBalance,
                 };

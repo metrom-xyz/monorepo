@@ -31,7 +31,6 @@
     },
     "devDependencies": {
         "@coral-xyz/anchor": "^0.32.1",
-        "@eslint/eslintrc": "catalog:",
         "@eslint/js": "catalog:",
         "@types/node": "catalog:",
         "@types/react": "catalog:",
@@ -47,6 +46,6 @@
         "typescript-eslint": "catalog:",
         "viem": "catalog:",
         "vite": "catalog:",
-        "vite-plugin-dts": "^4.5.4"
+        "vite-plugin-dts": "^5.0.3"
     }
 }
