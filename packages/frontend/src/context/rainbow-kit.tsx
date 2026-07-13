@@ -82,6 +82,7 @@ export const wagmiConfig = createConfig({
     // TODO: override base default RPC? It's rate limited https://docs.base.org/base-chain/quickstart/connecting-to-base#base-mainnet
     transports,
     connectors,
+    ssr: true,
 });
 
 // Required for ENS resolution hooks, since the dapp doesn't support mainnet,

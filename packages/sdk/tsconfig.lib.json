@@ -12,7 +12,6 @@
         "skipLibCheck": true,
         "verbatimModuleSyntax": true,
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.lib.tsbuildinfo",
-        "baseUrl": ".",
         "rootDir": "src",
         "lib": ["DOM", "ESNext"],
         "noEmit": false,

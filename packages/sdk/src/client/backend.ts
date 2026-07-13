@@ -102,17 +102,17 @@ import type {
 } from "./types/initialized-ticks";
 import { tickToScaledPrice, unix } from "../utils";
 import type { BackendLiquityV2CollateralsResponse } from "./types/liquity-v2";
-import type { LiquityV2Collateral } from "src/types/liquity-v2";
+import type { LiquityV2Collateral } from "../types/liquity-v2";
 import type { AaveV3Collateral } from "../types/aave-v3";
 import type {
     BackendAaveV3CollateralsResponse,
     BackendAaveV3CollateralUsdNetSupplyResponse,
 } from "./types/aave-v3";
-import type { FungibleAssetInfo } from "src/types/fungible-asset";
+import type { FungibleAssetInfo } from "../types/fungible-asset";
 import type { BackendFungibleAssetResponse } from "./types/fungible-asset";
-import type { AmmPool, CampaignAmmPool } from "src/types/pools";
+import type { AmmPool, CampaignAmmPool } from "../types/pools";
 import type { BackendProjectsResponse } from "./types/projects";
-import type { Project } from "src/types/projects";
+import type { Project } from "../types/projects";
 import type { Erc4626Vault } from "../types/erc4626-vault";
 import type { BackendErc4626VaultResponse } from "./types/erc4626-vault";
 

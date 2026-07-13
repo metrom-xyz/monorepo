@@ -2,9 +2,10 @@ import { Typography } from "@metrom-xyz/ui";
 import Image from "next/image";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useTranslations } from "next-intl";
-import type { Project } from "@/src/types/project";
 import { ProjectCampaignsTotals } from "../../project-campaigns-totals";
 import { getProjectIconUrl, getProjectIllustrationUrl } from "@/src/commons";
+import type { Project } from "@metrom-xyz/sdk";
+import { generateBranding } from "@/src/utils/branding";
 
 import styles from "./styles.module.css";
 
@@ -15,10 +16,10 @@ interface HeaderProps {
 export function Header({ project }: HeaderProps) {
     const t = useTranslations("projectPage.header");
 
-    const { slug, name, description, url, branding, types, campaigns } =
-        project;
+    const { slug, name, description, url, types, campaigns } = project;
     const iconUrl = getProjectIconUrl(slug);
     const illustrationUrl = getProjectIllustrationUrl(slug);
+    const branding = generateBranding(project.branding.main);
 
     return (
         <div
@@ -38,7 +39,7 @@ export function Header({ project }: HeaderProps) {
             />
             <div
                 className={styles.projectIconWrapper}
-                style={{ backgroundColor: branding.iconBackground }}
+                style={{ backgroundColor: project.branding.iconBackground }}
             >
                 <Image
                     src={iconUrl}

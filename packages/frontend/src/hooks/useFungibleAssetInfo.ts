@@ -52,7 +52,7 @@ export function useFungibleAssetInfo({
     });
 
     return {
-        info,
+        info: info || null,
         errored,
         loading,
     };
