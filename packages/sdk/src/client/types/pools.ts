@@ -1,7 +1,7 @@
 import type { Address, Hex } from "viem";
 import type { BackendErc20Token } from "./commons";
-import type { SupportedAmm, SupportedDex } from "src/commons";
-import type { AmmPoolLiquidityType } from "src/types/commons";
+import type { SupportedAmm, SupportedDex } from "../../commons";
+import type { AmmPoolLiquidityType } from "../../types/commons";
 
 export interface BackendPoolsResponse {
     tokens: Record<Address, BackendErc20Token>;

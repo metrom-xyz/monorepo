@@ -1,7 +1,7 @@
 import type { Address, Hex } from "viem";
 import type { BackendErc20Token } from "./commons";
-import type { Specification } from "src/types/campaigns";
-import type { ChainType, Erc20Token } from "src/types/commons";
+import type { Specification } from "../../types/campaigns";
+import type { ChainType, Erc20Token } from "../../types/commons";
 import type { BackendCampaignAmmPool } from "./pools";
 import type {
     SupportedAaveV3,
@@ -11,7 +11,7 @@ import type {
     SupportedOdyssey,
     SupportedOdysseyStrategy,
     SupportedPointsBooster,
-} from "src/commons";
+} from "../../commons";
 import type { BackendErc4626Vault } from "./erc4626-vault";
 
 export interface BaseTarget {

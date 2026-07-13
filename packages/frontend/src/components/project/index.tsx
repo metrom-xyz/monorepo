@@ -5,8 +5,8 @@ import { Intro } from "./intro";
 import {
     BackendCampaignType,
     SupportedLiquidityProviderDeal,
+    type Project,
 } from "@metrom-xyz/sdk";
-import type { Project } from "@/src/types/project";
 import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
 import { Campaigns } from "../campaigns";
 import { useMemo } from "react";
