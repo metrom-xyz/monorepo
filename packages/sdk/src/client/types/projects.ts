@@ -1,4 +1,4 @@
-import type { ChainType } from "src/types/commons";
+import type { ChainType } from "../../types/commons";
 
 export type ProjectKind =
     | "generic-protocol"

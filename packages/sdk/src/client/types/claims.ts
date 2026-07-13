@@ -1,5 +1,5 @@
 import type { Address, Hex } from "viem";
-import type { ChainType } from "src/types/commons";
+import type { ChainType } from "../../types/commons";
 import type { BackendResolvedPricedTokensRegistry } from "./commons";
 
 export interface BackendClaim {

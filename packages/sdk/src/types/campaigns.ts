@@ -16,7 +16,7 @@ import type {
     SupportedOdyssey,
     SupportedOdysseyStrategy,
     SupportedPointsBooster,
-} from "src/commons";
+} from "../commons";
 import type { AmmPool, CampaignAmmPool } from "./pools";
 import type { Erc4626Vault } from "./erc4626-vault";
 

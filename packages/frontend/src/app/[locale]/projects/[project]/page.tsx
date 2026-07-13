@@ -34,7 +34,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     setRequestLocale(locale);
 
     const projects = await METROM_API_CLIENT.fetchProjects();
-    const project = projects.find((p) => p.slug === slug);
+    const project = projects.find((project) => project.slug === slug);
 
     if (!project) notFound();
 

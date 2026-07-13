@@ -6,7 +6,7 @@ import type {
     ChainType,
 } from "./commons";
 import type { RestrictionType } from "./campaigns";
-import type { SupportedAmm, SupportedDex } from "src/commons";
+import type { SupportedAmm, SupportedDex } from "../commons";
 
 export interface LiquidityByAddresses {
     type: RestrictionType;
