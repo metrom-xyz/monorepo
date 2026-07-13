@@ -15,15 +15,15 @@
         "format": "eslint --fix ."
     },
     "devDependencies": {
-        "@eslint/js": "^9.34.0",
+        "@eslint/js": "catalog:",
         "@metrom-xyz/sdk": "workspace:*",
-        "@types/node": "^24.3.1",
-        "eslint": "^9.34.0",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-prettier": "^5.5.6",
-        "globals": "^16.3.0",
-        "prettier": "^3.9.4",
-        "vite": "^7.1.4"
+        "@types/node": "catalog:",
+        "eslint": "catalog:",
+        "eslint-config-prettier": "catalog:",
+        "eslint-plugin-prettier": "catalog:",
+        "globals": "catalog:",
+        "prettier": "catalog:",
+        "vite": "catalog:"
     },
     "dependencies": {
         "chalk": "^5.6.0",
