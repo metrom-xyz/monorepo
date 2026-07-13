@@ -27,6 +27,7 @@ interface LayoutParams {
 }
 
 export const metadata: Metadata = {
+    metadataBase: new URL(BASE_URL),
     title: "Distribute incentives based on outcomes",
     description:
         "Metrom helps protocols to create and launch their campaigns, while incentives get distributed based on the outcomes set through KPIs.",

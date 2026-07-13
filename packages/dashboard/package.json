@@ -4,11 +4,11 @@
     "version": "0.1.2",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
-        "build": "next build --turbopack",
+        "dev": "next dev",
+        "build": "next build",
         "start": "next start",
-        "lint": "next lint",
-        "format": "next lint --fix"
+        "lint": "pnpm eslint",
+        "format": "pnpm eslint --fix"
     },
     "dependencies": {
         "@aptos-labs/js-pro": "^0.1.7",
@@ -22,6 +22,7 @@
         "@metrom-xyz/contracts": "^0.56.0",
         "@metrom-xyz/sdk": "workspace:*",
         "@metrom-xyz/ui": "workspace:*",
+        "@next/eslint-plugin-next": "^16.2.10",
         "@reown/appkit": "1.8.18",
         "@reown/appkit-adapter-wagmi": "1.8.18",
         "@safe-global/safe-apps-sdk": "^9.1.0",
@@ -32,7 +33,7 @@
         "dayjs": "^1.11.21",
         "keyv": "4.5.4",
         "motion": "^12.42.2",
-        "next": "15.5.18",
+        "next": "16.2.10",
         "next-intl": "^4.13.1",
         "next-themes": "^0.4.6",
         "numeral": "^2.0.6",
@@ -45,7 +46,6 @@
         "wagmi": "^2.19.5"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.3.5",
         "@eslint/js": "^9.36.0",
         "@tailwindcss/postcss": "^4.3.2",
         "@tanstack/eslint-plugin-query": "^5.101.2",
@@ -53,8 +53,11 @@
         "@types/numeral": "^2.0.5",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",
-        "eslint": "^9.34.0",
-        "eslint-config-next": "15.5.2",
+        "babel-plugin-react-compiler": "^1.0.0",
+        "eslint": "^9.36.0",
+        "eslint-config-next": "16.2.10",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-react-hooks": "^5.2.0",
         "tailwindcss": "^4.3.2",
         "typescript": "^5.9.3",
         "typescript-eslint": "^8.62.1"

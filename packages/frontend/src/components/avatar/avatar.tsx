@@ -31,6 +31,7 @@ export function Avatar({ address, height, width }: AvatarProps) {
         );
 
     return (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
             alt="Avatar"
             height={height}

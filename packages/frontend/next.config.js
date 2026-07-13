@@ -24,8 +24,8 @@ const cspHeader = `
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    eslint: {
-        ignoreDuringBuilds: true,
+    reactCompiler: {
+        compilationMode: "infer",
     },
     experimental: {
         optimizePackageImports: [
