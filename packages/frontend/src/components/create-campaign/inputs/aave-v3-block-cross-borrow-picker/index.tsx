@@ -48,7 +48,7 @@ export function AaveV3BlockCrossBorrowPicker({
                     ({ address }) => address === collateral.address,
                 );
 
-                let newPickedCollaterals: AaveV3Collateral[] = [];
+                let newPickedCollaterals: AaveV3Collateral[];
                 if (existing)
                     newPickedCollaterals = value!.filter(
                         ({ address }) => address !== collateral.address,

@@ -18,7 +18,6 @@
         "@graphprotocol/graph-ts": "catalog:"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "catalog:",
         "@eslint/js": "catalog:",
         "@types/mustache": "catalog:",
         "@types/node": "catalog:",

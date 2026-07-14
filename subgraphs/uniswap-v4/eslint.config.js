@@ -1,18 +1,22 @@
-import eslint from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 import tseslint from "typescript-eslint";
-import prettier from "eslint-config-prettier";
+import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 
-export default [
-    {
-        ignores: ["generated/**", "build/**"],
-    },
+export default defineConfig(
+    { ignores: ["generated/**", "build/**"] },
+    eslintConfigPrettier,
     eslint.configs.recommended,
-    ...tseslint.configs.recommended,
-    prettier,
+    tseslint.configs.recommended,
     {
+        languageOptions: {
+            parserOptions: {
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
         rules: {
             "prefer-const": "off",
             "@typescript-eslint/ban-types": "off",
         },
     },
-];
+);

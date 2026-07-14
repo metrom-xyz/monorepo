@@ -15,6 +15,7 @@ export function getAmount0(
     const absAmount = isNegative ? amount.neg() : amount;
     const roundUp = !isNegative;
 
+    // eslint-disable-next-line no-useless-assignment
     let amount0 = BI_0;
 
     if (currTick < tickLower) {
@@ -52,6 +53,7 @@ export function getAmount1(
     const absAmount = isNegative ? amount.neg() : amount;
     const roundUp = !isNegative;
 
+    // eslint-disable-next-line no-useless-assignment
     let amount1 = BI_0;
 
     if (currTick < tickLower) {

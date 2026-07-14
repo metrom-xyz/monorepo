@@ -11,10 +11,11 @@
         "format": "pnpm eslint --fix"
     },
     "dependencies": {
-        "@aptos-labs/js-pro": "^0.1.7",
-        "@aptos-labs/react": "^0.1.7",
-        "@aptos-labs/ts-sdk": "^6.0.0",
+        "@aptos-labs/js-pro": "^0.1.8",
+        "@aptos-labs/react": "^0.1.8",
+        "@aptos-labs/ts-sdk": "^7.2.0",
         "@aptos-labs/wallet-adapter-react": "^8.3.0",
+        "@emotion/is-prop-valid": "catalog:",
         "@fontsource/ibm-plex-mono": "^5.2.7",
         "@fontsource/ibm-plex-sans": "^5.2.8",
         "@metrom-xyz/aptos-contracts": "^0.9.0",
