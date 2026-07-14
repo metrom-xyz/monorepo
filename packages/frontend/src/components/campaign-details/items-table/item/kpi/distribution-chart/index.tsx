@@ -35,10 +35,7 @@ export interface DistributionChartData {
 }
 
 interface DistributionChartProps {
-    item?: DistributablesNamedCampaign<
-        DistributablesType.Tokens,
-        CampaignItem
-    >;
+    item?: DistributablesNamedCampaign<DistributablesType.Tokens, CampaignItem>;
     minimumPayoutPercentage?: number;
     loading?: boolean;
 }
@@ -74,7 +71,7 @@ export function DistributionChart({
         let aggregated;
         if (fullTimeRange < ONE_DAY_SECONDS) aggregated = kpiMeasurements;
         else
-            aggregated = aggregated = getAggregatedKpiMeasurements(
+            aggregated = getAggregatedKpiMeasurements(
                 kpiMeasurements,
                 THREE_HOURS_SECONDS,
             );

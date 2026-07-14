@@ -21,6 +21,10 @@ export default defineConfig(
             next: {
                 rootDir: import.meta.dirname,
             },
+            // FIXME: remove once this is solved https://github.com/vercel/next.js/issues/89764
+            react: {
+                version: "19.2",
+            },
         },
         rules: {
             "@tanstack/query/exhaustive-deps": "off",

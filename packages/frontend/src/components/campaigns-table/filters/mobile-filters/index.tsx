@@ -91,7 +91,7 @@ export function MobileFilters({
                     ({ value }) => value === status.value,
                 );
 
-                let newStatuses: SelectOption<Status>[] = [];
+                let newStatuses: SelectOption<Status>[];
                 if (existing)
                     newStatuses = statuses.filter(
                         ({ value }) => value !== status.value,

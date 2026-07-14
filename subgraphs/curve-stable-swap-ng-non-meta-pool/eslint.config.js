@@ -1,25 +1,19 @@
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import tseslint from "typescript-eslint";
-import { FlatCompat } from "@eslint/eslintrc";
 import eslint from "@eslint/js";
 import { defineConfig } from "eslint/config";
 
-const compat = new FlatCompat({
-    baseDirectory: import.meta.dirname,
-});
-
 export default defineConfig(
     { ignores: ["generated/**", "build/**"] },
-    ...compat.config({
-        parserOptions: {
-            tsconfigRootDir: import.meta.dirname,
-        },
-        extends: ["prettier"],
-    }),
     eslintConfigPrettier,
     eslint.configs.recommended,
     tseslint.configs.recommended,
     {
+        languageOptions: {
+            parserOptions: {
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
         rules: {
             "prefer-const": "off",
             "@typescript-eslint/ban-types": "off",

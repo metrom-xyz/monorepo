@@ -149,7 +149,7 @@ function Component<V extends ValueType, O extends SelectOption<V>>(
         (item: O) => {
             const existing = values.find(({ value }) => value === item.value);
 
-            let newValues: O[] = [];
+            let newValues: O[];
             if (existing)
                 newValues = options.filter(
                     (option) =>

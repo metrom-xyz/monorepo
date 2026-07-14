@@ -66,7 +66,7 @@ export function ProjectsList() {
                     projects.map((project) => {
                         const { slug, kind } = project;
 
-                        let chains: ChainWithType[] = [];
+                        let chains: ChainWithType[];
 
                         if (kind === "liquidity-deals")
                             chains = getChainsForTurtleDeal(
