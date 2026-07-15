@@ -145,7 +145,7 @@ const DEX_BRAND_NAME: Record<SupportedDex, string> = {
     [SupportedDex.Thala]: "Thala",
     [SupportedDex.Stabull]: "Stabull",
     [SupportedDex.Orca]: "Orca",
-    [SupportedDex.Cetus]: "Cetus",  
+    [SupportedDex.Cetus]: "Cetus",
 };
 
 const GMX_V1_BRAND_NAME: Record<SupportedGmxV1, string> = {
@@ -222,7 +222,7 @@ export interface FetchPoolParams extends ChainParams {
     id: Hex;
 }
 
-export interface FetchClaimsParams {
+export interface FetchClaimsParams extends Partial<ChainParams> {
     address: string;
 }
 
@@ -499,9 +499,14 @@ export class MetromApiClient {
     }
 
     async fetchClaims(params: FetchClaimsParams): Promise<Claim[]> {
-        const response = await fetch(
-            new URL(`v2/claims/${params.address}`, this.baseUrl),
-        );
+        const url = new URL(`v2/claims/${params.address}`, this.baseUrl);
+
+        if (params.chainType)
+            url.searchParams.set("chainType", params.chainType);
+        if (params.chainId)
+            url.searchParams.set("chainId", params.chainId.toString());
+
+        const response = await fetch(url);
         if (!response.ok)
             throw new Error(
                 `Response not ok while fetching claimable rewards: ${await response.text()}`,
