@@ -1,5 +1,5 @@
+export * from "./use-claims";
+export * from "./use-claims-transaction";
 export * from "./useCampaign";
 export * from "./useCampaigns";
-export * from "./useClaims";
-export * from "./useClaimsTransaction";
 export * from "./useLeaderboard";

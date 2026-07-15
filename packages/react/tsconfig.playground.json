@@ -1,12 +1,11 @@
 {
     "compilerOptions": {
-        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.playground.tsbuildinfo",
         "target": "ES2020",
         "useDefineForClassFields": true,
         "lib": ["ES2020", "DOM", "DOM.Iterable"],
         "module": "ESNext",
         "skipLibCheck": true,
-        "rootDir": "./src",
 
         /* Bundler mode */
         "moduleResolution": "bundler",
@@ -21,7 +20,11 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "noUncheckedSideEffectImports": true
+        "noUncheckedSideEffectImports": true,
+
+        "paths": {
+            "@metrom-xyz/react": ["./src/index.ts"]
+        }
     },
-    "include": ["src"]
+    "include": ["playground"]
 }

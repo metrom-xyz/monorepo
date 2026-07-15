@@ -1,3 +1,4 @@
+import { Claim, OnChainAmount } from "@metrom-xyz/sdk";
 import type {
     DefaultError,
     QueryKey,
@@ -21,4 +22,8 @@ export interface QueryResult<TData = unknown> {
     isPending: boolean;
     isLoading: boolean;
     isFetching: boolean;
+}
+
+export interface ClaimWithRemaining extends Claim {
+    remaining: OnChainAmount | null;
 }

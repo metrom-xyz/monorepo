@@ -7,13 +7,13 @@ import {
     SimulateContractErrorType,
     SimulateContractReturnType,
 } from "wagmi/actions";
-import { QueryResult } from "../types";
-import { ClaimWithRemaining } from "./useClaims";
+import { ClaimWithRemaining, QueryResult } from "../../types";
 
-export interface UseClaimsTransactionParams {
+export interface UseClaimsTransactionEvmParams {
     chainId: number;
     claims: ClaimWithRemaining[];
     address?: Address;
+    enabled?: boolean;
 }
 
 export type ClaimRewardsSimulationResult = SimulateContractReturnType<
@@ -30,18 +30,18 @@ export type ClaimRewardsSimulationResult = SimulateContractReturnType<
     ]
 >;
 
-export type UseClaimsTransactionReturnValue = QueryResult<
+export type UseClaimsTransactionEvmReturnValue = QueryResult<
     ClaimRewardsSimulationResult | undefined
 > & {
     error: SimulateContractErrorType | null;
 };
 
-/** https://docs.metrom.xyz/react-library/use-claims-transaction */
-export function useClaimsTransaction({
+export function useClaimsTransactionEvm({
     chainId,
     claims,
     address,
-}: UseClaimsTransactionParams): UseClaimsTransactionReturnValue {
+    enabled = true,
+}: UseClaimsTransactionEvmParams): UseClaimsTransactionEvmReturnValue {
     const claimsInChain = useMemo(() => {
         return claims.filter((claim) => claim.chainId === chainId);
     }, [chainId, claims]);
@@ -71,7 +71,7 @@ export function useClaimsTransaction({
                 : [],
         ],
         query: {
-            enabled: address && claimsInChain.length > 0,
+            enabled: enabled && !!address && claimsInChain.length > 0,
         },
     });
 

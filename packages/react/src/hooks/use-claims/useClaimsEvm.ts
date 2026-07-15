@@ -1,30 +1,32 @@
 import { useReadContracts } from "wagmi";
 import { formatUnits, type Address, type Hex } from "viem";
-import { OnChainAmount, type Claim } from "@metrom-xyz/sdk";
+import { ChainType } from "@metrom-xyz/sdk";
 import { SupportedChain, ADDRESS } from "@metrom-xyz/contracts";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useMetromClient } from "./useMetromClient";
-import { QueryOptions, type QueryResult } from "../types";
+import { useMetromClient } from "../useMetromClient";
+import {
+    ClaimWithRemaining,
+    QueryOptions,
+    type QueryResult,
+} from "../../types";
 
-export interface ClaimWithRemaining extends Claim {
-    remaining: OnChainAmount | null;
-}
-
-export interface UseClaimsParams
-    extends QueryOptions<ClaimWithRemaining[] | undefined> {
+export interface UseClaimsEvmParams extends QueryOptions<
+    ClaimWithRemaining[] | undefined
+> {
     address?: Address;
 }
 
-export type UseClaimsReturnValue = QueryResult<
+export type UseClaimsEvmReturnValue = QueryResult<
     ClaimWithRemaining[] | undefined
 >;
 
-type QueryKey = [string, Hex];
+type QueryKey = [string, ChainType, Hex | undefined];
 
-/** https://docs.metrom.xyz/react-library/use-claims */
-export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
+export function useClaimsEvm(
+    params: UseClaimsEvmParams,
+): UseClaimsEvmReturnValue {
     const metromClient = useMetromClient();
 
     const {
@@ -34,13 +36,14 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
         isFetching: isFetchingClaims,
     } = useQuery({
         ...params.options,
-        queryKey: ["claims", params.address],
+        queryKey: ["claims", ChainType.Evm, params.address],
         queryFn: async ({ queryKey }) => {
-            const [, account] = queryKey as QueryKey;
+            const [, , account] = queryKey as QueryKey;
 
             try {
                 const claims = await metromClient.fetchClaims({
                     address: account as Address,
+                    chainType: ChainType.Evm,
                 });
 
                 return claims.map((claim) => ({
@@ -54,7 +57,7 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
                 throw error;
             }
         },
-        enabled: !!params.address,
+        enabled: (params.options?.enabled ?? true) && !!params.address,
     });
 
     const {
@@ -80,13 +83,11 @@ export function useClaims(params: UseClaimsParams): UseClaimsReturnValue {
                     ],
                 };
             }),
-        query: {
-            enabled: !!rawClaims,
-        },
+        query: { enabled: (params.options?.enabled ?? true) && !!rawClaims },
     });
 
     const claims = useMemo(() => {
-        if (!rawClaims || !claimedData) return [];
+        if (!rawClaims || !claimedData) return undefined;
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
