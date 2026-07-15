@@ -1,7 +1,8 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.lib.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+    "files": [],
+    "references": [
+        { "path": "./tsconfig.lib.json" },
+        { "path": "./tsconfig.node.json" },
+        { "path": "./tsconfig.playground.json" }
+    ]
 }

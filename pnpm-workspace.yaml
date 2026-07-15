@@ -54,6 +54,7 @@ allowBuilds:
 
 minimumReleaseAge: 5760 # 4 days in minutes
 minimumReleaseAgeExclude:
+  - "@metrom-xyz/sdk"
   - "@metrom-xyz/contracts"
   - "@metrom-xyz/aptos-contracts"
   - "@metrom-xyz/programs-solana"
