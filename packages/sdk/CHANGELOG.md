@@ -1,5 +1,11 @@
 # @metrom-xyz/sdk
 
+## 0.9.1
+
+### Patch Changes
+
+- Add chain params to fetchClaims
+
 ## 0.9.0
 
 ### Minor Changes
