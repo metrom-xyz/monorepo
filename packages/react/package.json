@@ -15,29 +15,38 @@
         }
     },
     "scripts": {
+        "dev": "vite --config playground/vite.config.ts",
         "build": "tsc -b && vite build",
         "lint": "eslint ."
     },
     "dependencies": {
+        "@metrom-xyz/aptos-contracts": "^0.9.0",
         "@metrom-xyz/contracts": "^0.56.0",
-        "@metrom-xyz/sdk": "^0.8.1"
+        "@metrom-xyz/programs-solana": "^0.5.0",
+        "@metrom-xyz/sdk": "^0.9.1",
+        "@metrom-xyz/sui-contracts": "^0.5.0"
     },
     "peerDependencies": {
+        "@aptos-labs/react": "^0.1.8",
+        "@aptos-labs/ts-sdk": "^7.2.0",
         "@tanstack/react-query": "^5.89.0",
-        "react": "^19.1.1",
-        "react-dom": "^19.1.1",
-        "viem": "^2.46.2",
+        "react": "catalog:",
+        "react-dom": "catalog:",
+        "viem": "catalog:",
         "wagmi": "catalog:"
     },
     "devDependencies": {
-        "eslint-config-prettier": "catalog:",
+        "@aptos-labs/react": "^0.1.8",
+        "@aptos-labs/ts-sdk": "^7.2.0",
         "@eslint/js": "catalog:",
         "@tanstack/eslint-plugin-query": "catalog:",
         "@tanstack/react-query": "catalog:",
+        "@types/node": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "@vitejs/plugin-react-swc": "^4.3.1",
         "eslint": "catalog:",
+        "eslint-config-prettier": "catalog:",
         "eslint-plugin-react-hooks": "catalog:",
         "globals": "catalog:",
         "react": "catalog:",
