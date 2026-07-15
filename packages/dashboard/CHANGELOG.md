@@ -1,5 +1,13 @@
 # dashboard
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @metrom-xyz/sdk@0.9.0
+  - @metrom-xyz/chains@0.0.4
+
 ## 0.1.2
 
 ### Patch Changes
