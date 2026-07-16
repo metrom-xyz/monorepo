@@ -20,16 +20,27 @@ import { useTheme } from "next-themes";
 import { SUPPORTED_CHAINS_EVM } from "../commons";
 import { WALLETCONNECT_PROJECT_ID, SAFE } from "../commons/env";
 import type { EIP1193RequestFn, Transport } from "viem";
-import { mainnet } from "viem/chains";
+import { mainnet, swellchain } from "viem/chains";
 
 const FONT = "IBM Plex Sans, ui-sans-serif, sans-serif";
 
+const MAINNET_RPC = "https://ethereum-rpc.publicnode.com";
+const SWELL_RPC = "https://rpc.ankr.com/swell";
+
+const OVERRIDE_TRANSPORTS: Record<number, string> = {
+    [mainnet.id]: MAINNET_RPC,
+    [swellchain.id]: SWELL_RPC,
+};
+
 const transports = SUPPORTED_CHAINS_EVM.reduce(
     (prev, chain) => {
-        prev[chain.id] = http(chain.rpcUrls.default.http[0], {
-            batch: true,
-            retryDelay: 500,
-        });
+        prev[chain.id] = http(
+            OVERRIDE_TRANSPORTS[chain.id] || chain.rpcUrls.default.http[0],
+            {
+                batch: true,
+                retryDelay: 500,
+            },
+        );
         return prev;
     },
     {} as Record<
@@ -90,7 +101,7 @@ export const wagmiConfig = createConfig({
 export const mainnetWagmiConfig = createConfig({
     chains: [mainnet],
     transports: {
-        [mainnet.id]: http(mainnet.rpcUrls.default.http[0]),
+        [mainnet.id]: http(MAINNET_RPC),
     },
 });
 
