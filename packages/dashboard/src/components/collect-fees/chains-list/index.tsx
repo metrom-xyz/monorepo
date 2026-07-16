@@ -3,7 +3,8 @@ import { useTranslations } from "next-intl";
 import { ClaimableFees } from "@/hooks/useClaimableFees";
 import { formatUsdAmount } from "@/utils/format";
 import { useCallback, useMemo } from "react";
-import { useChainId, useSwitchChain } from "wagmi";
+import { useChainWithType } from "@/hooks/useChainWithType";
+import { useSwitchChainCrossVm } from "@/hooks/useSwitchChainCrossVm";
 import classNames from "classnames";
 
 import styles from "./styles.module.css";
@@ -20,8 +21,8 @@ export function ChainsList({
     claimableFees,
 }: ChainsListProps) {
     const t = useTranslations("chainsList");
-    const chainId = useChainId();
-    const { switchChain } = useSwitchChain();
+    const { id: chainId } = useChainWithType();
+    const switchChain = useSwitchChainCrossVm();
 
     const chains = useMemo(() => {
         if (!claimableFees) return [];
@@ -38,7 +39,7 @@ export function ChainsList({
     const getOnChainClickHandler = useCallback(
         (chainId: number) => {
             return () => {
-                switchChain({ chainId });
+                switchChain(chainId);
             };
         },
         [switchChain],
@@ -51,7 +52,7 @@ export function ChainsList({
                 loading={loading}
                 value={formatUsdAmount({ amount: totalUsd })}
             />
-            <Typography uppercase variant="tertiary"weight="medium" size="sm">
+            <Typography uppercase variant="tertiary" weight="medium" size="sm">
                 {t("chains")}
             </Typography>
             <div className={styles.list}>

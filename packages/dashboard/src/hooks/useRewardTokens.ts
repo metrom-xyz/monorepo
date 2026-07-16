@@ -1,9 +1,9 @@
 import { METROM_API_CLIENT } from "../commons";
-import { ChainType, type RewardToken } from "@metrom-xyz/sdk";
+import { type RewardToken } from "@metrom-xyz/sdk";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useActiveChains } from "./useActiveChains";
-import { APTOS } from "@/commons/env";
+import { useChainType } from "../context/chain-type";
 
 interface UseRewardTokensReturnValue {
     loading: boolean;
@@ -15,16 +15,17 @@ export interface RewardTokenWithChain extends RewardToken {
 }
 
 export function useRewardTokens(): UseRewardTokensReturnValue {
+    const { chainType } = useChainType();
     const chains = useActiveChains();
 
     const { rawRewardTokensResults, loading } = useQueries({
         queries: chains.map((chain) => ({
-            queryKey: ["reward-tokens", chain.id],
+            queryKey: ["reward-tokens", chainType, chain.id],
             queryFn: async () => {
                 try {
                     const rewardTokens =
                         await METROM_API_CLIENT.fetchRewardTokens({
-                            chainType: APTOS ? ChainType.Aptos : ChainType.Evm,
+                            chainType,
                             chainId: chain.id,
                         });
 

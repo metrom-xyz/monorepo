@@ -9,6 +9,8 @@ import {
     SUPPORTED_DEVELOPMENT_CHAINS,
     SUPPORTED_PRODUCTION_CHAINS,
 } from "@metrom-xyz/chains";
+import { NetworkToChainId } from "@aptos-labs/ts-sdk";
+import { SupportedChain as SupportedAptosChain } from "@metrom-xyz/aptos-contracts";
 
 // taken from https://github.com/wevm/wagmi/blob/80326815bea2f175623157f57465f9dfae1f4c5c/packages/connectors/src/safe.ts#L45
 export const SAFE_CONNECTOR_ID = "safe";
@@ -19,6 +21,14 @@ export const SUPPORTED_CHAINS: [Chain, ...Chain[]] =
     ENVIRONMENT === Environment.Production
         ? SUPPORTED_PRODUCTION_CHAINS
         : SUPPORTED_DEVELOPMENT_CHAINS;
+
+export const SUPPORTED_CHAINS_MVM =
+    ENVIRONMENT === Environment.Production
+        ? [NetworkToChainId[SupportedAptosChain.Mainnet]]
+        : [
+              NetworkToChainId[SupportedAptosChain.Mainnet],
+              NetworkToChainId[SupportedAptosChain.Testnet],
+          ];
 
 export const METROM_API_CLIENT = METROM_API_CLIENTS[ENVIRONMENT];
 

@@ -17,7 +17,6 @@ import { TickIcon } from "@/assets/tick-icon";
 import { CopyIcon } from "@/assets/copy-icon";
 import { formatAmount } from "@/utils/format";
 import { ErrorIcon } from "@/assets/error-icon";
-import { ThemeSwitcherTabs } from "@/components/theme-switcher-tabs";
 
 import styles from "./styles.module.css";
 
@@ -147,7 +146,6 @@ export function AccountMenu({
                     </div>
                 </div>
             </div>
-            <ThemeSwitcherTabs />
         </RemoveScroll>
     );
 }

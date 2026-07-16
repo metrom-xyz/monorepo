@@ -1,7 +1,7 @@
 @reference "../../../app.css";
 
 .root {
-    @apply w-full;
+    @apply flex items-center;
 }
 
 .modal {
@@ -27,6 +27,14 @@
 
 .walletItem {
     @apply flex items-center justify-between;
+}
+
+.connectButton {
+    @apply h-10 rounded-lg;
+}
+
+.wrapper {
+    @apply flex items-center gap-3;
 }
 
 .walletButton {

@@ -20,7 +20,7 @@ import { hashFn } from "wagmi/query";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { EIP1193RequestFn, Transport } from "viem";
-import { base, mainnet } from "viem/chains";
+import { base, mainnet, swellchain } from "viem/chains";
 import { WALLETCONNECT_PROJECT_ID } from "@/commons/env";
 
 // Set up queryClient
@@ -51,7 +51,11 @@ const wagmiAdapter = new WagmiAdapter({
     projectId: WALLETCONNECT_PROJECT_ID,
     networks: SUPPORTED_CHAINS,
     // FIXME: override base rpc due to 429 errors
-    transports: { ...transports, [base.id]: http("https://mainnet.base.org") },
+    transports: {
+        ...transports,
+        [base.id]: http("https://mainnet.base.org"),
+        [swellchain.id]: http("https://rpc.ankr.com/swell"),
+    },
     connectors: [safe()],
 });
 

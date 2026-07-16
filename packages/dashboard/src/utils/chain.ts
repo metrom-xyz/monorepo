@@ -9,7 +9,7 @@ import {
     type ChainData,
 } from "@metrom-xyz/chains";
 import { SupportedChain as SupportedChainMvm } from "@metrom-xyz/aptos-contracts";
-import { APTOS, ENVIRONMENT } from "../commons/env";
+import { ENVIRONMENT } from "../commons/env";
 import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
 import { ChainType } from "@metrom-xyz/sdk";
 
@@ -70,50 +70,6 @@ export function getCrossVmChainData(
                     : EVM_CHAIN_DATA[Environment.Production][
                           chainId as SupportedProductionEvmChain
                       ];
-
-            break;
-        }
-        default: {
-            throw new Error(`Unsupported environment ${ENVIRONMENT}`);
-        }
-    }
-
-    return chainData;
-}
-
-export function getChainData(chainId: number): ChainData | undefined {
-    let chainData: ChainData | undefined;
-
-    switch (ENVIRONMENT) {
-        case Environment.Development: {
-            if (APTOS)
-                chainData =
-                    MVM_CHAIN_DATA[Environment.Development][
-                        chainIdToAptosNetwork(
-                            chainId,
-                        ) as unknown as SupportedDevelopmentMvmChain
-                    ];
-            else
-                chainData =
-                    EVM_CHAIN_DATA[Environment.Development][
-                        chainId as SupportedDevelopmentEvmChain
-                    ];
-
-            break;
-        }
-        case Environment.Production: {
-            if (APTOS)
-                chainData =
-                    MVM_CHAIN_DATA[Environment.Production][
-                        chainIdToAptosNetwork(
-                            chainId,
-                        ) as unknown as SupportedProductionMvmChain
-                    ];
-            else
-                chainData =
-                    EVM_CHAIN_DATA[Environment.Production][
-                        chainId as SupportedProductionEvmChain
-                    ];
 
             break;
         }

@@ -1,7 +1,7 @@
 import { ClaimableFees } from "@/hooks/useClaimableFees";
 import { Overview } from "./overview";
 import { useMemo } from "react";
-import { useChainId } from "wagmi";
+import { useChainWithType } from "@/hooks/useChainWithType";
 import { TokenClaim } from "./token-claim";
 
 import styles from "./styles.module.css";
@@ -12,7 +12,7 @@ interface ChainClaimsProps {
 }
 
 export function ChainClaims({ loading, claimableFees }: ChainClaimsProps) {
-    const chainId = useChainId();
+    const { id: chainId } = useChainWithType();
 
     const claims = useMemo(() => {
         if (!claimableFees || !claimableFees[chainId]) return undefined;

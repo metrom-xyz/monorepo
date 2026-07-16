@@ -1,8 +1,19 @@
+"use client";
+
+import { ChainType } from "@metrom-xyz/sdk";
+import { useChainType } from "@/context/chain-type";
 import { ConnectButtonMvm } from "./mvm";
 import { ConnectButtonEvm } from "./evm";
-import { APTOS } from "@/commons/env";
 
 export function ConnectButton() {
-    if (APTOS) return <ConnectButtonMvm />;
-    return <ConnectButtonEvm />;
+    const { chainType } = useChainType();
+
+    switch (chainType) {
+        case ChainType.Aptos:
+            return <ConnectButtonMvm />;
+        case ChainType.Evm:
+            return <ConnectButtonEvm />;
+        default:
+            throw new Error(`Unsupported chain type: ${chainType}`);
+    }
 }

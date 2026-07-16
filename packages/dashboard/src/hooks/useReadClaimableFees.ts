@@ -2,9 +2,10 @@ import { useQueries } from "@tanstack/react-query";
 import { readContract } from "@wagmi/core";
 import { useMemo } from "react";
 import { useConfig } from "wagmi";
-import { getChainData } from "@/utils/chain";
+import { getCrossVmChainData } from "@/utils/chain";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { APTOS } from "@/commons/env";
+import { ChainType } from "@metrom-xyz/sdk";
+import { useChainType } from "../context/chain-type";
 import { useClients } from "@aptos-labs/react";
 import { RewardTokenWithChain } from "./useRewardTokens";
 
@@ -18,13 +19,14 @@ export function useReadClaimableFees({
     enabled,
 }: UseReadClaimableFeesParams) {
     const config = useConfig();
+    const { chainType } = useChainType();
     const { aptos } = useClients();
 
     const params = useMemo(() => {
         return tokens
             .map((token: RewardTokenWithChain) => {
                 const chainId = token.chainId;
-                const chainData = getChainData(chainId);
+                const chainData = getCrossVmChainData(chainId, chainType);
 
                 if (!chainData) return undefined;
 
@@ -37,14 +39,21 @@ export function useReadClaimableFees({
                 };
             })
             .filter((params) => !!params);
-    }, [tokens]);
+    }, [tokens, chainType]);
 
     const { results, loading } = useQueries({
         queries: params.map((params) => ({
-            queryKey: ["claimable-fees", params.address, params.args],
+            // The chain type is needed in the key: Aptos mainnet and Ethereum
+            // mainnet share chain id 1, so contract params alone could collide.
+            queryKey: [
+                "claimable-fees",
+                chainType,
+                params.address,
+                params.args,
+            ],
             queryFn: async () => {
                 try {
-                    if (APTOS) {
+                    if (chainType === ChainType.Aptos) {
                         return aptos.view({
                             payload: {
                                 function: `${params.address}::metrom::claimable_fees`,

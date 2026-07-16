@@ -7,7 +7,6 @@ import {
 import { Button, Modal, Typography, X } from "@metrom-xyz/ui";
 import { useState } from "react";
 import type { Address } from "viem";
-import commonStyles from "./styles.module.css";
 import { useTranslations } from "next-intl";
 import { Account } from "@/components/account";
 
@@ -42,8 +41,8 @@ export function ConnectButtonMvm() {
     const address = account?.address.toString() as Address | undefined;
 
     return (
-        <div className={commonStyles.root}>
-            <div className={commonStyles.wrapper}>
+        <div className={styles.root}>
+            <div className={styles.wrapper}>
                 {connected && network && address ? (
                     <div className={styles.walletWrapper}>
                         <div className={styles.account}>
@@ -55,11 +54,9 @@ export function ConnectButtonMvm() {
                     </div>
                 ) : (
                     <Button
+                        size="sm"
                         onClick={handleModalOnOpen}
-                        iconPlacement="right"
-                        className={{
-                            root: commonStyles.connectButton,
-                        }}
+                        className={{ root: styles.connectButton }}
                     >
                         {t("connect")}
                     </Button>

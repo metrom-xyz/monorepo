@@ -2,8 +2,9 @@ import { formatUnits } from "viem";
 import { useRewardTokens } from "./useRewardTokens";
 import { FunctionComponent, useMemo } from "react";
 import { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
-import { getChainData } from "@/utils/chain";
+import { getCrossVmChainData } from "@/utils/chain";
 import { SVGIcon } from "@metrom-xyz/chains";
+import { useChainType } from "../context/chain-type";
 import { useReadClaimableFees } from "./useReadClaimableFees";
 
 interface ChainClaimableFees {
@@ -25,6 +26,7 @@ interface UseClaimableFeesReturnValue {
 export type ClaimableFees = Record<number, ChainClaimableFees>;
 
 export function useClaimableFees(): UseClaimableFeesReturnValue {
+    const { chainType } = useChainType();
     const { tokens, loading: loadingTokens } = useRewardTokens();
     const { results: rawClaimableFees, loading: loadingClaimableFees } =
         useReadClaimableFees({ tokens });
@@ -47,7 +49,7 @@ export function useClaimableFees(): UseClaimableFeesReturnValue {
                 throw new Error(`Token index ${index} missing from whitelist`);
             }
 
-            const chainData = getChainData(token.chainId);
+            const chainData = getCrossVmChainData(token.chainId, chainType);
             if (!chainData) {
                 console.error(`Couldn't get data for chain ${token.chainId}`);
                 throw new Error(`Data missing for chain ${token.chainId}`);
@@ -91,7 +93,7 @@ export function useClaimableFees(): UseClaimableFeesReturnValue {
         });
 
         return { totalUsd, claimableFees: byChain };
-    }, [rawClaimableFees, tokens]);
+    }, [rawClaimableFees, tokens, chainType]);
 
     return {
         loading: loadingTokens || loadingClaimableFees,

@@ -2,6 +2,8 @@ import { Typography, type TypographyProps } from "@metrom-xyz/ui";
 import type { Address } from "viem";
 import { mainnet } from "viem/chains";
 import { useEnsName } from "wagmi";
+import { ChainType } from "@metrom-xyz/sdk";
+import { useChainType } from "@/context/chain-type";
 import { mainnetWagmiConfig } from "./reown-app-kit-provider";
 import { shortenAddress } from "@/utils/address";
 
@@ -11,10 +13,16 @@ interface AccountProps extends Omit<TypographyProps, "children"> {
 }
 
 export function Account({ address, className, ...rest }: AccountProps) {
+    const { chainType } = useChainType();
+
+    // ENS only exists on EVM: avoid querying with 32-byte Aptos addresses
     const { data: ensName } = useEnsName({
         address,
         chainId: mainnet.id,
         config: mainnetWagmiConfig,
+        query: {
+            enabled: chainType === ChainType.Evm && !!address,
+        },
     });
 
     return (

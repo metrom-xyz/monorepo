@@ -10,6 +10,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import { type ReactNode } from "react";
+import { ChainTypeProvider } from "@/context/chain-type";
 import AptosCoreProvider from "./aptos-core-provider";
 import { ReownAppKitContextProvider } from "./reown-app-kit-provider";
 import { TokenIconsProvider } from "./token-icon-provider";
@@ -25,24 +26,26 @@ export function ClientProviders({
     children: ReactNode;
 }>) {
     return (
-        <AptosWalletAdapterProvider
-            autoConnect={true}
-            disableTelemetry={true}
-            dappConfig={{
-                network: Network.MAINNET,
-                aptosApiKeys: {
-                    mainnet: APTOS_CLIENT_API_KEY,
-                },
-            }}
-        >
-            <AptosCoreProvider>
-                <ReownAppKitContextProvider>
-                    <TokenIconsProvider>
-                        <Toaster />
-                        {children}
-                    </TokenIconsProvider>
-                </ReownAppKitContextProvider>
-            </AptosCoreProvider>
-        </AptosWalletAdapterProvider>
+        <ChainTypeProvider>
+            <AptosWalletAdapterProvider
+                autoConnect={true}
+                disableTelemetry={true}
+                dappConfig={{
+                    network: Network.MAINNET,
+                    aptosApiKeys: {
+                        mainnet: APTOS_CLIENT_API_KEY,
+                    },
+                }}
+            >
+                <AptosCoreProvider>
+                    <ReownAppKitContextProvider>
+                        <TokenIconsProvider>
+                            <Toaster />
+                            {children}
+                        </TokenIconsProvider>
+                    </ReownAppKitContextProvider>
+                </AptosCoreProvider>
+            </AptosWalletAdapterProvider>
+        </ChainTypeProvider>
     );
 }

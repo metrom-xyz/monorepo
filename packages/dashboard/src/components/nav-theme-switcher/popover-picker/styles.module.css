@@ -1,9 +1,0 @@
-@reference "../../../app.css";
-
-.root {
-    @apply hidden sm:flex;
-}
-
-.tabs {
-    @apply h-fit;
-}
