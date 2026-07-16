@@ -1,12 +1,12 @@
 import { type UseEnsNameParameters } from "wagmi";
-import { useConfig } from "wagmi";
 import { getEnsName } from "@wagmi/core";
 import { useQuery } from "@tanstack/react-query";
+import { mainnet } from "viem/chains";
 import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
+import { mainnetWagmiConfig } from "../context/rainbow-kit";
 
 export function useAccountName(params: UseEnsNameParameters) {
-    const config = useConfig();
     const { chainType } = useChainType();
 
     const data = useQuery({
@@ -19,8 +19,9 @@ export function useAccountName(params: UseEnsNameParameters) {
                 // TODO: implement for Aptos and Solana
                 if (chainType !== ChainType.Evm) return null;
 
-                return await getEnsName(params.config || config, {
+                return await getEnsName(params.config || mainnetWagmiConfig, {
                     ...rest,
+                    chainId: mainnet.id,
                     address,
                 });
             } catch (error) {
