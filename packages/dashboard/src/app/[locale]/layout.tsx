@@ -12,7 +12,7 @@ import { setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
 import { Layout } from "@/components/layout";
-import { ClientProviders } from "@/components/client-providers";
+import { ClientProvidersDynamic } from "@/components/client-providers-dynamic";
 
 export const metadata: Metadata = {
     title: "Maximize your liquidity mining impact with precise incentives",
@@ -37,13 +37,17 @@ export default async function RootLayout({ children, params }: LayoutParams) {
     setRequestLocale(locale as Locale);
 
     return (
-        <html lang={locale} suppressHydrationWarning className="background-main">
+        <html
+            lang={locale}
+            suppressHydrationWarning
+            className="background-main"
+        >
             <body>
                 <NextIntlClientProvider>
                     <ThemeProvider attribute={"data-theme"}>
-                        <ClientProviders>
+                        <ClientProvidersDynamic>
                             <Layout>{children}</Layout>
-                        </ClientProviders>
+                        </ClientProvidersDynamic>
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

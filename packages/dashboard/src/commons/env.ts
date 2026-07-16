@@ -15,6 +15,5 @@ if (!WALLETCONNECT_PROJECT_ID)
         "A valid NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID env variable is needed",
     );
 
-export const APTOS: boolean = process.env.NEXT_PUBLIC_APTOS === "true";
 export const APTOS_CLIENT_API_KEY: string | undefined =
     process.env.NEXT_PUBLIC_APTOS_CLIENT_API_KEY;

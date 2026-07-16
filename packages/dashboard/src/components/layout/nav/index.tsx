@@ -4,12 +4,11 @@ import { Link, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
-import { useAccount } from "wagmi";
 import { TranslationsKeys } from "@/types/utils";
 import { MetromSquareLogo } from "@/assets/logos/metrom-square";
 import { ConnectButton } from "@/components/connect-button";
-import { NavThemeSwitcher } from "@/components/nav-theme-switcher";
-import { NetworkSelect } from "@/components/network-select";
+import { EcosystemPicker } from "@/components/layout/ecosystem-picker";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 import styles from "./styles.module.css";
 
@@ -21,7 +20,11 @@ const ROUTES: {
 export function Nav() {
     const t = useTranslations("layout.navigation");
     const pathname = usePathname();
-    const { address } = useAccount();
+
+    // Inside the Safe iframe extension wallets can't inject, so switching
+    // ecosystem would just strand the user: hide the picker when embedded.
+    const embedded =
+        typeof window !== "undefined" && window.self !== window.top;
 
     return (
         <div className={styles.root}>
@@ -32,8 +35,8 @@ export function Nav() {
                     </Link>
                 </div>
                 <div className={styles.rightContentContainer}>
-                    <NetworkSelect />
-                    {!address && <NavThemeSwitcher />}
+                    {!embedded && <EcosystemPicker />}
+                    <ThemeToggle />
                     <ConnectButton />
                 </div>
                 <div className={styles.tabs}>
