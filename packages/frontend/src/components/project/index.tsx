@@ -2,8 +2,7 @@
 
 import { Header } from "./header";
 import { Intro } from "./intro";
-import { BackendCampaignType } from "@metrom-xyz/sdk";
-import type { Project } from "@/src/types/project";
+import { BackendCampaignType, type Project } from "@metrom-xyz/sdk";
 import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
 import { Campaigns } from "../campaigns";
 import { useMemo } from "react";

@@ -5,7 +5,8 @@
 ### Minor Changes
 
 - Add multi-chain-type support to claims hooks. `useClaims` and
-  `useClaimsTransaction` now take chainType param (currently `Evm` only)
+  `useClaimsTransaction` now accept `chainType` as a param (currently `Evm`
+  only)
 
 ## 0.6.1
 
