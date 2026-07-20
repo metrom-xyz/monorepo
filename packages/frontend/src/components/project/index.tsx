@@ -2,10 +2,7 @@
 
 import { Header } from "./header";
 import { Intro } from "./intro";
-import {
-    BackendCampaignType,
-    SupportedLiquidityProviderDeal,
-} from "@metrom-xyz/sdk";
+import { BackendCampaignType } from "@metrom-xyz/sdk";
 import type { Project } from "@/src/types/project";
 import { PROJECTS_WIDGETS } from "@/src/commons/project-widgets";
 import { Campaigns } from "../campaigns";
@@ -36,9 +33,16 @@ export function Project({ project }: ProjectProps) {
                     protocols: [{ label: "", value: slug }],
                 };
             case "liquidity-deals": {
-                const [, chain] = slug.split("-");
-                const chainData = getChainDataBySlug(chain);
+                const chain = slug.split("-").pop();
+                const protocol = slug.split("-").shift();
+                if (!chain || !protocol) {
+                    console.warn(
+                        `Malformed liquidity deals project with slug ${slug}`,
+                    );
+                    return { chains: [], statuses: [], protocols: [] };
+                }
 
+                const chainData = getChainDataBySlug(chain);
                 if (!chainData) {
                     console.warn(
                         `Unsupported liquidity deals project with chain ${chain}`,
@@ -58,7 +62,7 @@ export function Project({ project }: ProjectProps) {
                     protocols: [
                         {
                             label: "",
-                            value: SupportedLiquidityProviderDeal.Turtle,
+                            value: protocol,
                         },
                     ],
                 };
