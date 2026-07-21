@@ -11,13 +11,7 @@ import { RecoverSuccess } from "../notification/recover-success";
 import { RecoverFail } from "../notification/recover-fail";
 import { formatUsdAmount } from "@/src/utils/format";
 import type { ChainOverviewProps } from ".";
-import {
-    getBase16Encoder,
-    getBase64EncodedWireTransaction,
-    signTransactionMessageWithSigners,
-    type Address,
-    type Instruction,
-} from "@solana/kit";
+import { getBase16Encoder, type Address, type Instruction } from "@solana/kit";
 import {
     useLatestBlockhash,
     useSolanaClient,
@@ -28,8 +22,8 @@ import {
     getClaimRewardInstructionAsync,
     getRecoverRewardInstructionAsync,
 } from "@metrom-xyz/programs-solana";
-import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
 import { useSimulateSolanaTransactions } from "@/src/hooks/useSimulateSolanaTransactions";
+import { useExecuteSolanaTransactionPlan } from "@/src/hooks/useExecuteSolanaTransactionPlan";
 
 import styles from "./styles.module.css";
 
@@ -59,7 +53,7 @@ export function ChainOverviewSvm({
     const { wallet } = useWalletConnection();
     const client = useSolanaClient();
     const { data: latestBlockhash } = useLatestBlockhash();
-    const { waitForConfirmationAsync } = useSolanaTransactionSignature();
+    const { execute } = useExecuteSolanaTransactionPlan();
 
     const ChainIcon = chainWithRewardsData.chainData.icon;
 
@@ -156,7 +150,8 @@ export function ChainOverviewSvm({
     }, [signer, account, client, chainWithRewardsData.claims]);
 
     const {
-        transactions: recoverAllTransactions,
+        instructionPlan: recoverInstructionPlan,
+        transactionCount: recoverAllTransactionCount,
         simulating: simulatingRecoverAll,
         errored: simulateRecoverAllErrored,
     } = useSimulateSolanaTransactions({
@@ -167,7 +162,8 @@ export function ChainOverviewSvm({
     });
 
     const {
-        transactions: claimAllTransactions,
+        instructionPlan: claimInstructionPlan,
+        transactionCount: claimAllTransactionCount,
         simulating: simulatingClaimAll,
         errored: simulateClaimAllErrored,
     } = useSimulateSolanaTransactions({
@@ -202,31 +198,49 @@ export function ChainOverviewSvm({
     }
 
     const handleStandardRecoverAll = useCallback(() => {
-        if (!recoverAllTransactions?.length || simulateRecoverAllErrored)
+        if (!recoverInstructionPlan || simulateRecoverAllErrored || !signer)
             return;
 
         const recover = async () => {
             setRecovering(true);
             try {
-                for (const transaction of recoverAllTransactions) {
-                    const signedTransaction =
-                        await signTransactionMessageWithSigners(transaction);
+                const summary = await execute({
+                    instructionPlan: recoverInstructionPlan,
+                    signer,
+                });
 
-                    const signature = await client.runtime.rpc
-                        .sendTransaction(
-                            getBase64EncodedWireTransaction(signedTransaction),
-                            { encoding: "base64" },
-                        )
-                        .send();
-
-                    await waitForConfirmationAsync(signature);
+                if (summary.successful) {
                     toast.custom((toastId) => (
                         <RecoverSuccess toastId={toastId} />
                     ));
                     onRecoverAll();
+                    trackUmamiEvent("click-recover-all");
+                } else if (summary.successfulTransactions.length > 0) {
+                    const failed =
+                        summary.failedTransactions.length +
+                        summary.canceledTransactions.length;
+                    toast.custom((toastId) => (
+                        <RecoverFail
+                            toastId={toastId}
+                            message={t(
+                                "reimbursements.notification.partial.message",
+                                {
+                                    succeeded:
+                                        summary.successfulTransactions.length,
+                                    failed,
+                                    total:
+                                        summary.successfulTransactions.length +
+                                        failed,
+                                },
+                            )}
+                        />
+                    ));
+                    onRecoverAll();
+                } else {
+                    toast.custom((toastId) => (
+                        <RecoverFail toastId={toastId} />
+                    ));
                 }
-
-                trackUmamiEvent("click-recover-all");
             } catch (error) {
                 toast.custom((toastId) => <RecoverFail toastId={toastId} />);
                 console.warn("Could not recover", error);
@@ -236,38 +250,58 @@ export function ChainOverviewSvm({
         };
         void recover();
     }, [
-        recoverAllTransactions,
+        recoverInstructionPlan,
         simulateRecoverAllErrored,
-        client.runtime.rpc,
+        signer,
+        execute,
         onRecoverAll,
-        waitForConfirmationAsync,
+        t,
     ]);
 
     const handleStandardClaimAll = useCallback(() => {
-        if (!claimAllTransactions?.length || simulateClaimAllErrored) return;
+        if (!claimInstructionPlan || simulateClaimAllErrored || !signer) return;
 
         const claim = async () => {
             setClaiming(true);
             try {
-                for (const transaction of claimAllTransactions) {
-                    const signedTransaction =
-                        await signTransactionMessageWithSigners(transaction);
+                const summary = await execute({
+                    instructionPlan: claimInstructionPlan,
+                    signer,
+                });
 
-                    const signature = await client.runtime.rpc
-                        .sendTransaction(
-                            getBase64EncodedWireTransaction(signedTransaction),
-                            { encoding: "base64" },
-                        )
-                        .send();
-
-                    await waitForConfirmationAsync(signature);
+                if (summary.successful) {
                     toast.custom((toastId) => (
                         <ClaimSuccess toastId={toastId} />
                     ));
                     onClaimAll();
-                }
+                    trackUmamiEvent("click-claim-all");
+                } else if (summary.successfulTransactions.length > 0) {
+                    const failed =
+                        summary.failedTransactions.length +
+                        summary.canceledTransactions.length;
 
-                trackUmamiEvent("click-claim-all");
+                    toast.custom((toastId) => (
+                        <ClaimFail
+                            toastId={toastId}
+                            message={t("claims.notification.partial.message", {
+                                succeeded:
+                                    summary.successfulTransactions.length,
+                                failed,
+                                total:
+                                    summary.successfulTransactions.length +
+                                    failed,
+                            })}
+                        />
+                    ));
+                    onClaimAll();
+                } else {
+                    toast.custom((toastId) => (
+                        <ClaimFail
+                            toastId={toastId}
+                            message={t("claims.notification.fail.message")}
+                        />
+                    ));
+                }
             } catch (error) {
                 toast.custom((toastId) => (
                     <ClaimFail
@@ -285,16 +319,14 @@ export function ChainOverviewSvm({
     }, [
         t,
         simulateClaimAllErrored,
-        client.runtime.rpc,
-        claimAllTransactions,
+        signer,
+        claimInstructionPlan,
+        execute,
         onClaimAll,
-        waitForConfirmationAsync,
     ]);
 
-    const multipleRecoveries =
-        recoverAllTransactions && recoverAllTransactions.length > 1;
-    const multipleClaims =
-        claimAllTransactions && claimAllTransactions.length > 1;
+    const multipleRecoveries = recoverAllTransactionCount > 1;
+    const multipleClaims = claimAllTransactionCount > 1;
 
     return (
         <Card className={classNames(styles.root, className)}>
@@ -326,7 +358,7 @@ export function ChainOverviewSvm({
                             >
                                 <Typography size="sm">
                                     {t("reimbursements.multipleTransactions", {
-                                        count: recoverAllTransactions.length,
+                                        count: recoverAllTransactionCount,
                                     })}
                                 </Typography>
                             </Popover>
@@ -334,7 +366,7 @@ export function ChainOverviewSvm({
                         <Button
                             size="sm"
                             disabled={
-                                !recoverAllTransactions?.length ||
+                                !recoverInstructionPlan ||
                                 simulateRecoverAllErrored
                             }
                             loading={simulatingRecoverAll || recovering}
@@ -365,7 +397,7 @@ export function ChainOverviewSvm({
                             >
                                 <Typography size="sm">
                                     {t("claims.multipleTransactions", {
-                                        count: claimAllTransactions.length,
+                                        count: claimAllTransactionCount,
                                     })}
                                 </Typography>
                             </Popover>
@@ -373,8 +405,7 @@ export function ChainOverviewSvm({
                         <Button
                             size="sm"
                             disabled={
-                                !claimAllTransactions?.length ||
-                                simulateClaimAllErrored
+                                !claimInstructionPlan || simulateClaimAllErrored
                             }
                             loading={simulatingClaimAll || claiming}
                             iconPlacement="right"

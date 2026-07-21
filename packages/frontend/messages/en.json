@@ -912,6 +912,9 @@
                 "fail": {
                     "title": "Claim failed",
                     "message": "Something went wrong"
+                },
+                "partial": {
+                    "message": "{succeeded} of {total} claims succeeded, {failed} failed"
                 }
             },
             "multipleTransactions": "Claiming all will require approving {count} transactions in your wallet"
@@ -931,6 +934,9 @@
                 "fail": {
                     "title": "Recover failed",
                     "message": "Something went wrong"
+                },
+                "partial": {
+                    "message": "{succeeded} of {total} recoveries succeeded, {failed} failed"
                 }
             },
             "multipleTransactions": "Recovering all will require approving {count} transactions in your wallet"

@@ -1,82 +1,50 @@
 import {
-    appendTransactionMessageInstructions,
-    compileTransaction,
     createTransactionMessage,
-    getBase64EncodedWireTransaction,
+    createTransactionPlanner,
+    parallelInstructionPlan,
     pipe,
     setTransactionMessageFeePayerSigner,
     setTransactionMessageLifetimeUsingBlockhash,
     type Blockhash,
     type Instruction,
+    type InstructionPlan,
+    type TransactionPlan,
     type TransactionSigner,
 } from "@solana/kit";
 
-export const MAX_BASE64_TX_SIZE = 1644;
+export type LatestBlockhash = Readonly<{
+    blockhash: Blockhash;
+    lastValidBlockHeight: bigint;
+}>;
 
-interface BuildTransactionParams {
+export function buildSolanaClaimInstructionPlan(
+    instructions: Instruction[],
+): InstructionPlan {
+    return parallelInstructionPlan(instructions);
+}
+
+interface BuildSolanaTransactionPlanParams {
+    instructionPlan: InstructionPlan;
     signer: TransactionSigner;
-    blockHash: Readonly<{
-        blockhash: Blockhash;
-        lastValidBlockHeight: bigint;
-    }>;
-    instructions: Instruction[];
+    getLatestBlockhash: () => Promise<LatestBlockhash> | LatestBlockhash;
 }
 
-export function buildSolanaTransaction({
+export function buildSolanaTransactionPlan({
+    instructionPlan,
     signer,
-    blockHash,
-    instructions,
-}: BuildTransactionParams) {
-    return pipe(
-        createTransactionMessage({ version: 0 }),
-        (tx) => setTransactionMessageFeePayerSigner(signer, tx),
-        (tx) => setTransactionMessageLifetimeUsingBlockhash(blockHash, tx),
-        (tx) => appendTransactionMessageInstructions(instructions, tx),
-    );
-}
-
-type BuildSolanaTransactionBatchesParams = BuildTransactionParams;
-
-export function buildSolanaTransactionBatches({
-    signer,
-    blockHash,
-    instructions,
-}: BuildSolanaTransactionBatchesParams) {
-    const batches = [];
-
-    let pending: Instruction[] = [];
-    for (const instruction of instructions) {
-        const candidate = [...pending, instruction];
-        const size = getBase64EncodedWireTransaction(
-            compileTransaction(
-                buildSolanaTransaction({
-                    signer,
-                    blockHash,
-                    instructions: candidate,
-                }),
-            ),
-        ).length;
-
-        if (size > MAX_BASE64_TX_SIZE && pending.length > 0) {
-            batches.push(
-                buildSolanaTransaction({
-                    signer,
-                    blockHash,
-                    instructions: pending,
-                }),
+    getLatestBlockhash,
+}: BuildSolanaTransactionPlanParams): Promise<TransactionPlan> {
+    const planner = createTransactionPlanner({
+        createTransactionMessage: async () => {
+            const blockHash = await getLatestBlockhash();
+            return pipe(
+                createTransactionMessage({ version: 0 }),
+                (tx) => setTransactionMessageFeePayerSigner(signer, tx),
+                (tx) =>
+                    setTransactionMessageLifetimeUsingBlockhash(blockHash, tx),
             );
-            pending = [instruction];
-        } else pending = candidate;
-    }
+        },
+    });
 
-    if (pending.length)
-        batches.push(
-            buildSolanaTransaction({
-                signer,
-                blockHash,
-                instructions: pending,
-            }),
-        );
-
-    return batches;
+    return planner(instructionPlan);
 }

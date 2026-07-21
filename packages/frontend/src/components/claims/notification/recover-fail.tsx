@@ -4,9 +4,10 @@ import { useTranslations } from "next-intl";
 
 interface RecoverFailProps {
     toastId: string | number;
+    message?: string;
 }
 
-export function RecoverFail({ toastId }: RecoverFailProps) {
+export function RecoverFail({ toastId, message }: RecoverFailProps) {
     const t = useTranslations("rewards.reimbursements.notification.fail");
 
     return (
@@ -16,7 +17,9 @@ export function RecoverFail({ toastId }: RecoverFailProps) {
             icon={ErrorIcon}
             variant="fail"
         >
-            <Typography weight="medium">{t("message")}</Typography>
+            <Typography weight="medium">
+                {message ? message : t("message")}
+            </Typography>
         </ToastNotification>
     );
 }

@@ -1,4 +1,4 @@
-import { Typography, Button, Card } from "@metrom-xyz/ui";
+import { Typography, Button, Card, Popover } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -16,15 +16,9 @@ import {
 } from "@solana/react-hooks";
 import { getClaimRewardInstructionAsync } from "@metrom-xyz/programs-solana";
 import { createWalletTransactionSigner } from "@solana/client";
-import {
-    getBase16Encoder,
-    getBase64EncodedWireTransaction,
-    signTransactionMessageWithSigners,
-    type Address,
-    type Instruction,
-} from "@solana/kit";
-import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
+import { getBase16Encoder, type Address, type Instruction } from "@solana/kit";
 import { useSimulateSolanaTransactions } from "@/src/hooks/useSimulateSolanaTransactions";
+import { useExecuteSolanaTransactionPlan } from "@/src/hooks/useExecuteSolanaTransactionPlan";
 
 import styles from "./styles.module.css";
 
@@ -37,13 +31,15 @@ export function TokenClaimSvm({
     const [claiming, setClaiming] = useState(false);
     const [claimed, setClaimed] = useState(false);
     const [instructions, setInstructions] = useState<Instruction[]>();
+    const [popoverOpen, setPopoverOpen] = useState(false);
+    const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
     const t = useTranslations("rewards.claims");
     const { address: account } = useAccount();
     const { wallet } = useWalletConnection();
     const client = useSolanaClient();
     const { data: latestBlockhash } = useLatestBlockhash();
-    const { waitForConfirmationAsync } = useSolanaTransactionSignature();
+    const { execute } = useExecuteSolanaTransactionPlan();
 
     const signer = useMemo(
         () =>
@@ -94,7 +90,8 @@ export function TokenClaimSvm({
     }, [signer, account, client, tokenClaims.claims]);
 
     const {
-        transactions,
+        instructionPlan,
+        transactionCount,
         simulating: simulatingClaim,
         errored: simulateClaimErrored,
     } = useSimulateSolanaTransactions({
@@ -104,36 +101,46 @@ export function TokenClaimSvm({
     });
 
     const handleStandardClaim = useCallback(() => {
-        if (!transactions?.length || simulateClaimErrored) return;
+        if (!instructionPlan || simulateClaimErrored || !signer) return;
 
         const claim = async () => {
             setClaiming(true);
             try {
-                for (const transaction of transactions) {
-                    const signedTransaction =
-                        await signTransactionMessageWithSigners(transaction);
+                const summary = await execute({ instructionPlan, signer });
 
-                    const signature = await client.runtime.rpc
-                        .sendTransaction(
-                            getBase64EncodedWireTransaction(signedTransaction),
-                            { encoding: "base64" },
-                        )
-                        .send();
-
-                    await waitForConfirmationAsync(signature);
+                if (summary.successful) {
+                    toast.custom((toastId) => (
+                        <ClaimSuccess
+                            toastId={toastId}
+                            chain={chainId}
+                            token={tokenClaims.token}
+                            amount={tokenClaims.totalAmount}
+                        />
+                    ));
+                    setClaimed(true);
+                    onClaim();
+                    trackUmamiEvent("click-claim-single");
+                } else if (summary.successfulTransactions.length > 0) {
+                    const failed =
+                        summary.failedTransactions.length +
+                        summary.canceledTransactions.length;
+                    toast.custom((toastId) => (
+                        <ClaimFail
+                            toastId={toastId}
+                            message={t("notification.partial.message", {
+                                succeeded:
+                                    summary.successfulTransactions.length,
+                                failed,
+                                total:
+                                    summary.successfulTransactions.length +
+                                    failed,
+                            })}
+                        />
+                    ));
+                    onClaim();
+                } else {
+                    toast.custom((toastId) => <ClaimFail toastId={toastId} />);
                 }
-
-                toast.custom((toastId) => (
-                    <ClaimSuccess
-                        toastId={toastId}
-                        chain={chainId}
-                        token={tokenClaims.token}
-                        amount={tokenClaims.totalAmount}
-                    />
-                ));
-                setClaimed(true);
-                onClaim();
-                trackUmamiEvent("click-claim-single");
             } catch (error) {
                 toast.custom((toastId) => <ClaimFail toastId={toastId} />);
                 console.warn("Could not claim", error);
@@ -144,15 +151,24 @@ export function TokenClaimSvm({
 
         void claim();
     }, [
-        transactions,
+        instructionPlan,
         simulateClaimErrored,
-        client.runtime.rpc,
-        waitForConfirmationAsync,
+        signer,
+        execute,
         onClaim,
         chainId,
         tokenClaims.token,
         tokenClaims.totalAmount,
+        t,
     ]);
+
+    function handlePopoverOpen() {
+        setPopoverOpen(true);
+    }
+
+    function handlePopoverClose() {
+        setPopoverOpen(false);
+    }
 
     return (
         <Card className={styles.root}>
@@ -180,25 +196,46 @@ export function TokenClaimSvm({
                     </Typography>
                 </div>
             </div>
-            <Button
-                variant="secondary"
-                size="sm"
-                disabled={
-                    !transactions?.length ||
-                    simulateClaimErrored ||
-                    claimed ||
-                    claimingAll
-                }
-                loading={simulatingClaim || claiming || claimingAll}
-                iconPlacement="right"
-                onClick={handleStandardClaim}
+            <div
+                ref={setAnchor}
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
             >
-                {simulatingClaim
-                    ? t("loading")
-                    : claiming || claimingAll
-                      ? t("claimingByToken")
-                      : t("claimByToken")}
-            </Button>
+                {transactionCount > 1 && (
+                    <Popover
+                        placement="top"
+                        anchor={anchor}
+                        open={popoverOpen}
+                        onOpenChange={setPopoverOpen}
+                        className={styles.popover}
+                    >
+                        <Typography size="sm">
+                            {t("multipleTransactions", {
+                                count: transactionCount,
+                            })}
+                        </Typography>
+                    </Popover>
+                )}
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    disabled={
+                        !instructionPlan ||
+                        simulateClaimErrored ||
+                        claimed ||
+                        claimingAll
+                    }
+                    loading={simulatingClaim || claiming || claimingAll}
+                    iconPlacement="right"
+                    onClick={handleStandardClaim}
+                >
+                    {simulatingClaim
+                        ? t("loading")
+                        : claiming || claimingAll
+                          ? t("claimingByToken")
+                          : t("claimByToken")}
+                </Button>
+            </div>
         </Card>
     );
 }
