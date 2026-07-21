@@ -91,7 +91,7 @@ export function Project({ project }: ProjectProps) {
     return (
         <div className={styles.root}>
             <div className={styles.topContent}>
-                <BackButton />
+                <BackButton pathname="/" />
                 <Header project={project} />
                 {project.intro && <Intro {...project.intro} />}
                 {Widget && (
