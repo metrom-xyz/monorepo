@@ -1,4 +1,4 @@
-import { Typography, Button, Card } from "@metrom-xyz/ui";
+import { Typography, Button, Card, Popover } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useAccount } from "@/src/hooks/useAccount";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -18,13 +18,11 @@ import { getRecoverRewardInstructionAsync } from "@metrom-xyz/programs-solana";
 import { createWalletTransactionSigner } from "@solana/client";
 import {
     getBase16Encoder,
-    getBase64EncodedWireTransaction,
-    signTransactionMessageWithSigners,
     type Address,
     type Instruction,
 } from "@solana/kit";
-import { useSolanaTransactionSignature } from "@/src/hooks/useSolanaTransactionSignature";
 import { useSimulateSolanaTransactions } from "@/src/hooks/useSimulateSolanaTransactions";
+import { useExecuteSolanaTransactionPlan } from "@/src/hooks/useExecuteSolanaTransactionPlan";
 
 import styles from "./styles.module.css";
 
@@ -37,13 +35,15 @@ export function TokenReimbursementSvm({
     const [recovering, setRecovering] = useState(false);
     const [recovered, setRecovered] = useState(false);
     const [instructions, setInstructions] = useState<Instruction[]>();
+    const [popoverOpen, setPopoverOpen] = useState(false);
+    const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
     const t = useTranslations("rewards.reimbursements");
     const { address: account } = useAccount();
     const { wallet } = useWalletConnection();
     const client = useSolanaClient();
     const { data: latestBlockhash } = useLatestBlockhash();
-    const { waitForConfirmationAsync } = useSolanaTransactionSignature();
+    const { execute } = useExecuteSolanaTransactionPlan();
 
     const signer = useMemo(
         () =>
@@ -96,7 +96,8 @@ export function TokenReimbursementSvm({
     }, [signer, account, client, tokenReimbursements.reimbursements]);
 
     const {
-        transactions,
+        instructionPlan,
+        transactionCount,
         simulating: simulatingRecover,
         errored: simulateRecoverErrored,
     } = useSimulateSolanaTransactions({
@@ -106,36 +107,45 @@ export function TokenReimbursementSvm({
     });
 
     const handleStandardRecover = useCallback(() => {
-        if (!transactions?.length || simulateRecoverErrored) return;
+        if (!instructionPlan || simulateRecoverErrored || !signer) return;
 
         const recover = async () => {
             setRecovering(true);
             try {
-                for (const transaction of transactions) {
-                    const signedTransaction =
-                        await signTransactionMessageWithSigners(transaction);
+                const summary = await execute({ instructionPlan, signer });
 
-                    const signature = await client.runtime.rpc
-                        .sendTransaction(
-                            getBase64EncodedWireTransaction(signedTransaction),
-                            { encoding: "base64" },
-                        )
-                        .send();
-
-                    await waitForConfirmationAsync(signature);
+                if (summary.successful) {
+                    toast.custom((toastId) => (
+                        <RecoverSuccess
+                            toastId={toastId}
+                            chain={chainId}
+                            token={tokenReimbursements.token}
+                            amount={tokenReimbursements.totalAmount}
+                        />
+                    ));
+                    setRecovered(true);
+                    onRecover();
+                    trackUmamiEvent("click-recover-single");
+                } else if (summary.successfulTransactions.length > 0) {
+                    const failed =
+                        summary.failedTransactions.length +
+                        summary.canceledTransactions.length;
+                    toast.custom((toastId) => (
+                        <RecoverFail
+                            toastId={toastId}
+                            message={t("notification.partial.message", {
+                                succeeded: summary.successfulTransactions.length,
+                                failed,
+                                total:
+                                    summary.successfulTransactions.length +
+                                    failed,
+                            })}
+                        />
+                    ));
+                    onRecover();
+                } else {
+                    toast.custom((toastId) => <RecoverFail toastId={toastId} />);
                 }
-
-                toast.custom((toastId) => (
-                    <RecoverSuccess
-                        toastId={toastId}
-                        chain={chainId}
-                        token={tokenReimbursements.token}
-                        amount={tokenReimbursements.totalAmount}
-                    />
-                ));
-                setRecovered(true);
-                onRecover();
-                trackUmamiEvent("click-recover-single");
             } catch (error) {
                 toast.custom((toastId) => <RecoverFail toastId={toastId} />);
                 console.warn("Could not recover", error);
@@ -146,15 +156,24 @@ export function TokenReimbursementSvm({
 
         void recover();
     }, [
-        transactions,
+        instructionPlan,
         simulateRecoverErrored,
-        client.runtime.rpc,
-        waitForConfirmationAsync,
+        signer,
+        execute,
         onRecover,
         chainId,
         tokenReimbursements.token,
         tokenReimbursements.totalAmount,
+        t,
     ]);
+
+    function handlePopoverOpen() {
+        setPopoverOpen(true);
+    }
+
+    function handlePopoverClose() {
+        setPopoverOpen(false);
+    }
 
     return (
         <Card className={styles.root}>
@@ -182,25 +201,46 @@ export function TokenReimbursementSvm({
                     </Typography>
                 </div>
             </div>
-            <Button
-                variant="secondary"
-                size="sm"
-                disabled={
-                    !transactions?.length ||
-                    simulateRecoverErrored ||
-                    recovered ||
-                    recoveringAll
-                }
-                loading={simulatingRecover || recovering || recoveringAll}
-                iconPlacement="right"
-                onClick={handleStandardRecover}
+            <div
+                ref={setAnchor}
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
             >
-                {simulatingRecover
-                    ? t("loading")
-                    : recovering || recoveringAll
-                      ? t("recoveringByToken")
-                      : t("recoverByToken")}
-            </Button>
+                {transactionCount > 1 && (
+                    <Popover
+                        placement="top"
+                        anchor={anchor}
+                        open={popoverOpen}
+                        onOpenChange={setPopoverOpen}
+                        className={styles.popover}
+                    >
+                        <Typography size="sm">
+                            {t("multipleTransactions", {
+                                count: transactionCount,
+                            })}
+                        </Typography>
+                    </Popover>
+                )}
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    disabled={
+                        !instructionPlan ||
+                        simulateRecoverErrored ||
+                        recovered ||
+                        recoveringAll
+                    }
+                    loading={simulatingRecover || recovering || recoveringAll}
+                    iconPlacement="right"
+                    onClick={handleStandardRecover}
+                >
+                    {simulatingRecover
+                        ? t("loading")
+                        : recovering || recoveringAll
+                          ? t("recoveringByToken")
+                          : t("recoverByToken")}
+                </Button>
+            </div>
         </Card>
     );
 }
