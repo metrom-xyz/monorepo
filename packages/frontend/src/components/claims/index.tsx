@@ -3,7 +3,7 @@
 import { useClaims } from "@/src/hooks/use-claims";
 import { Chains, ChainsSkeleton, type ChainOption } from "./chains";
 import { SupportedChain } from "@metrom-xyz/contracts";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ChainOverview, SkeletonChainOverview } from "./chain-overview";
 import { ChainClaims, SkeletonChainClaims } from "./chain-claims";
 import { Empty } from "./empty";
@@ -167,22 +167,23 @@ export function Claims() {
         chainWithRewardsData,
     ]);
 
-    useEffect(() => {
+    // Render-time adjustment: whenever the chains data set changes (e.g. it
+    // just finished loading, or the previously selected chain dropped out of
+    // it after a claim/reimbursement), fall back to the first available
+    // chain if the current selection is missing or no longer valid.
+    const [prevChainsData, setPrevChainsData] = useState(chainsData);
+    if (chainsData !== prevChainsData) {
+        setPrevChainsData(chainsData);
+
         if (
             !loadingClaims &&
             !loadingReimbursements &&
             chainsData &&
-            chainsData.length > 0
+            chainsData.length > 0 &&
+            (!chainId || !chainWithRewardsData)
         )
-            if (!chainId || !chainWithRewardsData)
-                setChainId(chainsData[0].chainId);
-    }, [
-        loadingClaims,
-        loadingReimbursements,
-        chainWithRewardsData,
-        chainId,
-        chainsData,
-    ]);
+            setChainId(chainsData[0].chainId);
+    }
 
     const onChainSwitch = useCallback(
         (chainId: number) => {

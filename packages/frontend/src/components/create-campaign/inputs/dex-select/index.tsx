@@ -75,12 +75,14 @@ export function DexSelect({
         [dexes],
     );
 
+    const singleDex =
+        options.length === 1
+            ? dexes.find(({ slug }) => slug === options[0].value)
+            : undefined;
+
     useEffect(() => {
-        if (!!value || options.length > 1) return;
-        const selected = dexes.find(({ slug }) => slug === options[0].value);
-        if (!selected) return;
-        onChange({ dex: selected });
-    }, [options, dexes, value, onChange]);
+        if (!value && singleDex) onChange({ dex: singleDex });
+    }, [value, singleDex, onChange]);
 
     const handleOnChange = useCallback(
         (option: SelectOption<string, OptionData>) => {

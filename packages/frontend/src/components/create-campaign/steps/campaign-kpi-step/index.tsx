@@ -102,7 +102,6 @@ export function CampaignKpiStep({
     disabled,
     onApply,
 }: CampaignkPIStepProps) {
-    const [open, setOpen] = useState(false);
     const [applied, setApplied] = useState(false);
     const [skipped, setSkipped] = useState(false);
     const [preset, setPreset] = useState<KpiPresetType | undefined>();
@@ -167,40 +166,64 @@ export function CampaignKpiStep({
 
     const internalDisabled = disabled || !!payload.fixedDistribution;
 
-    useEffect(() => {
-        if (targetUsdValue === undefined || !preset) return;
+    const [open, setOpen] = useState(() => activeStepId === FormStepId.Kpi);
+    const [prevActiveStepId, setPrevActiveStepId] = useState(activeStepId);
 
-        const { setLowerBound, setUpperBound, minimumPayoutPercentage } =
-            KPI_PRESETS[preset];
+    if (activeStepId !== prevActiveStepId) {
+        setPrevActiveStepId(activeStepId);
+        if (!applied && !completed && !internalDisabled) {
+            setOpen(activeStepId === FormStepId.Kpi);
+        }
+    }
 
-        setKpiPayload({
-            kpiDistribution: {
-                goal: {
-                    metric: KpiMetric.RangePoolTvl,
-                    lowerUsdTarget: setLowerBound(Math.floor(targetUsdValue)),
-                    upperUsdTarget: setUpperBound(Math.floor(targetUsdValue)),
+    const shouldForceOpen =
+        !completed &&
+        !internalDisabled &&
+        !skipped &&
+        (!!errors.kpi || unsavedChanges);
+    const [prevShouldForceOpen, setPrevShouldForceOpen] =
+        useState(shouldForceOpen);
+
+    if (shouldForceOpen !== prevShouldForceOpen) {
+        setPrevShouldForceOpen(shouldForceOpen);
+        if (shouldForceOpen) setOpen(true);
+    }
+
+    const [prevPresetDeps, setPrevPresetDeps] = useState({
+        preset,
+        targetUsdValue,
+    });
+
+    if (
+        prevPresetDeps.preset !== preset ||
+        prevPresetDeps.targetUsdValue !== targetUsdValue
+    ) {
+        setPrevPresetDeps({ preset, targetUsdValue });
+
+        if (targetUsdValue !== undefined && preset) {
+            const { setLowerBound, setUpperBound, minimumPayoutPercentage } =
+                KPI_PRESETS[preset];
+
+            setKpiPayload({
+                kpiDistribution: {
+                    goal: {
+                        metric: KpiMetric.RangePoolTvl,
+                        lowerUsdTarget: setLowerBound(
+                            Math.floor(targetUsdValue),
+                        ),
+                        upperUsdTarget: setUpperBound(
+                            Math.floor(targetUsdValue),
+                        ),
+                    },
+                    minimumPayoutPercentage,
                 },
-                minimumPayoutPercentage,
-            },
-        });
-    }, [targetUsdValue, preset]);
-
-    useEffect(() => {
-        if (applied || completed || internalDisabled) return;
-        setOpen(activeStepId === FormStepId.Kpi);
-    }, [applied, completed, internalDisabled, activeStepId]);
+            });
+        }
+    }
 
     useEffect(() => {
         updateUnsaved({ kpi: unsavedChanges });
     }, [unsavedChanges, updateUnsaved]);
-
-    useEffect(() => {
-        if (completed || internalDisabled || skipped) return;
-        if (errors.kpi || unsavedChanges) {
-            setOpen(true);
-            return;
-        }
-    }, [skipped, completed, internalDisabled, unsavedChanges, errors.kpi]);
 
     function handlePopoverOpen() {
         setPopover(true);

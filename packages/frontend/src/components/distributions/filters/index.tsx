@@ -69,7 +69,6 @@ export function Filters({
     const [from, setFrom] = useState<Dayjs | undefined>();
     const [to, setTo] = useState<Dayjs | undefined>();
     const [activePreset, setActivePreset] = useState<string | undefined>();
-    const [error, setError] = useState("");
     const [fromPopover, setFromPopover] = useState(false);
     const [toPopover, setToPopover] = useState(false);
     const [fromAnchor, setFromAnchor] = useState<HTMLDivElement | null>(null);
@@ -100,35 +99,42 @@ export function Filters({
         onLoading(loadingDistributions);
     }, [loadingDistributions, distributions, onLoading, onFetched]);
 
-    useEffect(() => {
-        if (!from || !to) return;
+    const error =
+        from && to
+            ? to.isBefore(from)
+                ? t("errors.inconsistentRange")
+                : to.diff(from, "days") > 7
+                  ? t("errors.rangeTooWide")
+                  : ""
+            : "";
 
-        let error = "";
-        if (to.isBefore(from)) error = t("errors.inconsistentRange");
-        if (to.diff(from, "days") > 7) error = t("errors.rangeTooWide");
+    const [prevDefaultRangeTrigger, setPrevDefaultRangeTrigger] = useState({
+        loading,
+        campaignItemDetails,
+    });
+    if (
+        loading !== prevDefaultRangeTrigger.loading ||
+        campaignItemDetails !== prevDefaultRangeTrigger.campaignItemDetails
+    ) {
+        setPrevDefaultRangeTrigger({ loading, campaignItemDetails });
 
-        setError(error);
-    }, [from, to, t]);
-
-    useEffect(() => {
         if (
-            loading ||
-            !campaignItemDetails ||
-            campaignItemDetails.status === Status.Upcoming
-        )
-            return;
+            !loading &&
+            campaignItemDetails &&
+            campaignItemDetails.status !== Status.Upcoming
+        ) {
+            if (campaignItemDetails.status === Status.Active) {
+                const now = dayjs();
+                setFrom(getClosestAvailableTime(now.subtract(24, "hours")));
+                setTo(getClosestAvailableTime(now));
+            } else {
+                const endDate = dayjs.unix(campaignItemDetails.to);
 
-        if (campaignItemDetails.status === Status.Active) {
-            const now = dayjs();
-            setFrom(getClosestAvailableTime(now.subtract(24, "hours")));
-            setTo(getClosestAvailableTime(now));
-        } else {
-            const endDate = dayjs.unix(campaignItemDetails.to);
-
-            setFrom(getClosestAvailableTime(endDate.subtract(48, "hours")));
-            setTo(getClosestAvailableTime(endDate));
+                setFrom(getClosestAvailableTime(endDate.subtract(48, "hours")));
+                setTo(getClosestAvailableTime(endDate));
+            }
         }
-    }, [loading, campaignItemDetails]);
+    }
 
     function getPopoverHandler(type: "from" | "to", open: boolean) {
         return () => {
@@ -153,7 +159,6 @@ export function Filters({
     }
 
     function clearDurationPreset() {
-        setError("");
         setActivePreset(undefined);
         setFrom(undefined);
         setTo(undefined);

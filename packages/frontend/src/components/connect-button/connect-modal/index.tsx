@@ -1,13 +1,12 @@
 "use client";
 
 import { Modal, Tabs, Typography, UnderlinedTab, X } from "@metrom-xyz/ui";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useChainType } from "@/src/context/chain-type";
 import { useSwitchEcosystem } from "@/src/hooks/useSwitchEcosystem";
 import { ECOSYSTEMS } from "@/src/commons/ecosystems";
-import { useAccount } from "@/src/hooks/useAccount";
 import { WalletListEvm } from "./wallets-list/wallet-list-evm";
 import { WalletListMvm } from "./wallets-list/wallet-list-mvm";
 import { WalletListSvm } from "./wallets-list/wallet-list-svm";
@@ -21,20 +20,23 @@ interface ConnectModalProps {
 }
 
 export function ConnectModal({ open, onDismiss }: ConnectModalProps) {
+    return (
+        <Modal onDismiss={onDismiss} open={open}>
+            {open && <ConnectModalBody onDismiss={onDismiss} />}
+        </Modal>
+    );
+}
+
+interface ConnectModalBodyProps {
+    onDismiss: () => void;
+}
+
+function ConnectModalBody({ onDismiss }: ConnectModalBodyProps) {
     const t = useTranslations();
     const { chainType } = useChainType();
     const switchEcosystem = useSwitchEcosystem();
-    const { connected } = useAccount();
 
     const [selectedChainType, setSelectedChainType] = useState(chainType);
-
-    useEffect(() => {
-        if (open) setSelectedChainType(chainType);
-    }, [open, chainType]);
-
-    useEffect(() => {
-        if (open && connected) onDismiss();
-    }, [open, connected, onDismiss]);
 
     const handleConnected = useCallback(() => {
         if (chainType !== selectedChainType) {
@@ -66,36 +68,29 @@ export function ConnectModal({ open, onDismiss }: ConnectModalProps) {
     }
 
     return (
-        <Modal onDismiss={onDismiss} open={open}>
-            <div className={styles.modal}>
-                <div className={styles.title}>
-                    <Typography weight="medium">
-                        {t("wallets.title")}
-                    </Typography>
-                    <X onClick={onDismiss} className={styles.closeIcon} />
-                </div>
-                <div className={styles.ecosystems}>
-                    <Tabs
-                        value={selectedChainType}
-                        onChange={setSelectedChainType}
-                    >
-                        {ECOSYSTEMS.map(({ name, type, icon: Icon }) => {
-                            return (
-                                <UnderlinedTab
-                                    key={type}
-                                    icon={Icon}
-                                    value={type}
-                                    onClick={getEcosystemChangeHandler(type)}
-                                    className={styles.ecosystemTabIcon}
-                                >
-                                    {name}
-                                </UnderlinedTab>
-                            );
-                        })}
-                    </Tabs>
-                </div>
-                <div className={styles.walletsList}>{walletList}</div>
+        <div className={styles.modal}>
+            <div className={styles.title}>
+                <Typography weight="medium">{t("wallets.title")}</Typography>
+                <X onClick={onDismiss} className={styles.closeIcon} />
             </div>
-        </Modal>
+            <div className={styles.ecosystems}>
+                <Tabs value={selectedChainType} onChange={setSelectedChainType}>
+                    {ECOSYSTEMS.map(({ name, type, icon: Icon }) => {
+                        return (
+                            <UnderlinedTab
+                                key={type}
+                                icon={Icon}
+                                value={type}
+                                onClick={getEcosystemChangeHandler(type)}
+                                className={styles.ecosystemTabIcon}
+                            >
+                                {name}
+                            </UnderlinedTab>
+                        );
+                    })}
+                </Tabs>
+            </div>
+            <div className={styles.walletsList}>{walletList}</div>
+        </div>
     );
 }

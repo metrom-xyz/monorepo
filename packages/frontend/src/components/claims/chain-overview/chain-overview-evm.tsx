@@ -9,7 +9,7 @@ import {
 } from "wagmi";
 import { useAccount } from "@/src/hooks/useAccount";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { trackUmamiEvent } from "@/src/utils/umami";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
@@ -110,14 +110,6 @@ export function ChainOverviewEvm({
         },
     });
 
-    useEffect(() => {
-        if (onClaiming) onClaiming(claiming);
-    }, [claiming, onClaiming]);
-
-    useEffect(() => {
-        if (onRecovering) onRecovering(recovering);
-    }, [recovering, onRecovering]);
-
     const handleStandardRecoverAll = useCallback(() => {
         if (
             !writeContractAsync ||
@@ -127,6 +119,7 @@ export function ChainOverviewEvm({
             return;
         const recover = async () => {
             setRecovering(true);
+            onRecovering?.(true);
             try {
                 await switchChainAsync({
                     chainId: chainWithRewardsData.chainId,
@@ -160,6 +153,7 @@ export function ChainOverviewEvm({
                 console.warn("Could not recover", error);
             } finally {
                 setRecovering(false);
+                onRecovering?.(false);
             }
         };
         void recover();
@@ -168,6 +162,7 @@ export function ChainOverviewEvm({
         publicClient,
         simulatedRecoverAll,
         onRecoverAll,
+        onRecovering,
         switchChainAsync,
         writeContractAsync,
     ]);
@@ -175,6 +170,7 @@ export function ChainOverviewEvm({
     const handleSafeRecoverAll = useCallback(() => {
         const recover = async () => {
             setRecovering(true);
+            onRecovering?.(true);
 
             try {
                 await SAFE_APP_SDK.txs.send({
@@ -203,17 +199,24 @@ export function ChainOverviewEvm({
                 console.warn("Could not recover", error);
             } finally {
                 setRecovering(false);
+                onRecovering?.(false);
             }
         };
 
         void recover();
-    }, [recoverRewardsArgs, chainWithRewardsData.chainData, onRecoverAll]);
+    }, [
+        recoverRewardsArgs,
+        chainWithRewardsData.chainData,
+        onRecoverAll,
+        onRecovering,
+    ]);
 
     const handleStandardClaimAll = useCallback(() => {
         if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
             return;
         const claim = async () => {
             setClaiming(true);
+            onClaiming?.(true);
             try {
                 await switchChainAsync({
                     chainId: chainWithRewardsData.chainId,
@@ -248,6 +251,7 @@ export function ChainOverviewEvm({
                 console.warn("Could not claim", error);
             } finally {
                 setClaiming(false);
+                onClaiming?.(false);
             }
         };
         void claim();
@@ -257,6 +261,7 @@ export function ChainOverviewEvm({
         publicClient,
         simulatedClaimAll,
         onClaimAll,
+        onClaiming,
         switchChainAsync,
         writeContractAsync,
     ]);
@@ -264,6 +269,7 @@ export function ChainOverviewEvm({
     const handleSafeClaimAll = useCallback(() => {
         const claim = async () => {
             setClaiming(true);
+            onClaiming?.(true);
 
             try {
                 await SAFE_APP_SDK.txs.send({
@@ -290,11 +296,17 @@ export function ChainOverviewEvm({
                 console.warn("Could not claim", error);
             } finally {
                 setClaiming(false);
+                onClaiming?.(false);
             }
         };
 
         void claim();
-    }, [claimRewardsArgs, chainWithRewardsData.chainData, onClaimAll]);
+    }, [
+        claimRewardsArgs,
+        chainWithRewardsData.chainData,
+        onClaimAll,
+        onClaiming,
+    ]);
 
     return (
         <Card className={classNames(styles.root, className)}>

@@ -34,7 +34,6 @@ export function ApproveAndDeployMvm({
     specificationHash,
     uploadingSpecification,
     disabled,
-    onAllTokensApproved,
     onLaunch,
 }: ApproveAndLaunchProps) {
     const t = useTranslations("newCampaign.form.approveLaunch");
@@ -48,11 +47,6 @@ export function ApproveAndDeployMvm({
     const [deploying, setDeploying] = useState(false);
     const [txPayload, setTxPayload] =
         useState<InputGenerateTransactionPayloadData>();
-
-    // No token approval needed for Aptos
-    useEffect(() => {
-        onAllTokensApproved(true);
-    }, [onAllTokensApproved]);
 
     useEffect(() => {
         const build = async () => {

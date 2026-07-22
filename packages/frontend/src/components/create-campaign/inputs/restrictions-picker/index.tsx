@@ -31,27 +31,28 @@ interface RestrictionsPickerProps {
 
 type ErrorMessage = LocalizedMessage<"newCampaign.inputs.restrictionsPicker">;
 
+function getAddressError(
+    address: string,
+    list: Restrictions["list"] | undefined,
+): ErrorMessage {
+    if (!address) return "";
+
+    if (!isAddress(address)) return "errors.notAnAddress";
+    if (list?.find((existing) => existing === address))
+        return "errors.alreadyRestricted";
+    return "";
+}
+
 export function RestrictionsPicker({
     value,
     onChange,
 }: RestrictionsPickerProps) {
-    const [error, setError] = useState<ErrorMessage>("");
     const [address, setAddress] = useState("");
 
     const t = useTranslations("newCampaign.inputs.restrictionsPicker");
     const { updateErrors } = useFormSteps();
 
-    useEffect(() => {
-        if (!address) {
-            setError("");
-            return;
-        }
-
-        if (!isAddress(address)) setError("errors.notAnAddress");
-        else if (value?.list.find((existing) => existing === address))
-            setError("errors.alreadyRestricted");
-        else setError("");
-    }, [address, value?.list]);
+    const error = getAddressError(address, value?.list);
 
     useEffect(() => {
         updateErrors({ restrictions: error });

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Card, Typography } from "@metrom-xyz/ui";
 import { Pie, PieChart, Tooltip } from "recharts";
@@ -57,8 +57,6 @@ export function RepartitionChart({
 }: RepartitionChartProps) {
     const t = useTranslations("campaignDetails.leaderboard");
 
-    const [activeIndex, setActiveIndex] = useState(0);
-
     const chartData = useMemo(() => {
         if (!leaderboard) return undefined;
 
@@ -96,15 +94,12 @@ export function RepartitionChart({
         }));
     }, [leaderboard, connectedAccountRank]);
 
-    useEffect(() => {
-        if (!chartData) return;
+    const activeIndex = useMemo(() => {
+        if (!chartData || !connectedAccountRank) return 0;
 
-        if (connectedAccountRank) {
-            const index = chartData.findIndex(
-                (data) => data.name === connectedAccountRank.account,
-            );
-            setActiveIndex(index);
-        }
+        return chartData.findIndex(
+            (data) => data.name === connectedAccountRank.account,
+        );
     }, [chartData, connectedAccountRank]);
 
     return (

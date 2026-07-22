@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Typography, Button, Card } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useAccount } from "@/src/hooks/useAccount";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { trackUmamiEvent } from "@/src/utils/umami";
 import { toast } from "sonner";
 import { ClaimSuccess } from "../notification/claim-success";
@@ -109,14 +109,6 @@ export function ChainOverviewMvm({
 
     const { signAndSubmitTransactionAsync } = useSignAndSubmitTransaction();
 
-    useEffect(() => {
-        if (onClaiming) onClaiming(claiming);
-    }, [claiming, onClaiming]);
-
-    useEffect(() => {
-        if (onRecovering) onRecovering(recovering);
-    }, [recovering, onRecovering]);
-
     const handleStandardRecoverAll = useCallback(() => {
         if (
             !recoverRewardsTxPayload ||
@@ -127,6 +119,7 @@ export function ChainOverviewMvm({
 
         const recover = async () => {
             setRecovering(true);
+            onRecovering?.(true);
             try {
                 const tx = await signAndSubmitTransactionAsync({
                     data: recoverRewardsTxPayload,
@@ -148,6 +141,7 @@ export function ChainOverviewMvm({
                 console.warn("Could not recover", error);
             } finally {
                 setRecovering(false);
+                onRecovering?.(false);
             }
         };
         void recover();
@@ -158,6 +152,7 @@ export function ChainOverviewMvm({
         simulatedRecoverAll,
         signAndSubmitTransactionAsync,
         onRecoverAll,
+        onRecovering,
     ]);
 
     const handleStandardClaimAll = useCallback(() => {
@@ -170,6 +165,7 @@ export function ChainOverviewMvm({
 
         const claim = async () => {
             setClaiming(true);
+            onClaiming?.(true);
             try {
                 const tx = await signAndSubmitTransactionAsync({
                     data: claimRewardsTxPayload,
@@ -197,6 +193,7 @@ export function ChainOverviewMvm({
                 console.warn("Could not claim", error);
             } finally {
                 setClaiming(false);
+                onClaiming?.(false);
             }
         };
         void claim();
@@ -208,6 +205,7 @@ export function ChainOverviewMvm({
         simulatedClaimAll,
         signAndSubmitTransactionAsync,
         onClaimAll,
+        onClaiming,
     ]);
 
     return (

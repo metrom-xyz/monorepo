@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
 import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import type { ClaimWithRemaining } from "@/src/types/campaign/common";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -18,8 +18,6 @@ type ClaimsQueryKey = [string, ChainType, string | undefined];
 export function useClaimsSui({
     enabled = true,
 }: UseClaimsParams = {}): UseClaimsReturnValue {
-    const [claims, setClaims] = useState<ClaimWithRemaining[]>();
-
     const queryClient = useQueryClient();
     const client = useCurrentClient();
     const { address } = useAccount();
@@ -126,23 +124,16 @@ export function useClaimsSui({
         enabled: enabled && !!address && !!rawClaims && rawClaims.length > 0,
     });
 
-    useEffect(() => {
-        if (!address) {
-            setClaims([]);
-            return;
-        }
+    const claims = useMemo<ClaimWithRemaining[] | undefined>(() => {
+        if (!address) return [];
         if (claimsErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
-            setClaims([]);
-            return;
+            return [];
         }
-        if (loadingClaims || loadingClaimed) return;
-        if (!rawClaims || !claimedData) {
-            setClaims([]);
-            return;
-        }
+        if (loadingClaims || loadingClaimed) return undefined;
+        if (!rawClaims || !claimedData) return [];
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < rawClaims.length; i++) {
@@ -166,7 +157,7 @@ export function useClaimsSui({
             }
         }
 
-        setClaims(claims);
+        return claims;
     }, [
         address,
         claimedData,

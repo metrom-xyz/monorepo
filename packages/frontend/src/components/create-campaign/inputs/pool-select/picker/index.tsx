@@ -19,8 +19,35 @@ import { useChainType } from "@/src/context/chain-type";
 import { TrashIcon } from "@/src/assets/trash-icon";
 import { PoolRemoteLogo } from "@/src/components/pool-remote-logo";
 import type { FormSteps } from "@/src/context/form-steps";
+import type { TranslationsType } from "@/src/types/utils";
 
 import styles from "./styles.module.css";
+
+function getPoolError(
+    t: TranslationsType<"newCampaign.inputs.poolSelect">,
+    {
+        search,
+        addressOrId,
+        id,
+        loadingImportedPool,
+        importedPool,
+        dex,
+    }: {
+        search: string;
+        addressOrId: boolean;
+        id: Address | Hex | undefined;
+        loadingImportedPool: boolean;
+        importedPool: AmmPool | undefined;
+        dex: DexProtocol | undefined;
+    },
+): string {
+    if (search && !addressOrId) return t("errors.invalidAddress");
+    if (id && !loadingImportedPool && !importedPool)
+        return t("errors.invalidPool");
+    if (dex && importedPool && importedPool.dex.slug !== dex.slug)
+        return t("errors.inconsistentDex", { dex: dex.name });
+    return "";
+}
 
 export interface PickerProps {
     disabled?: boolean;
@@ -40,7 +67,6 @@ export function Picker({
     onError,
 }: PickerProps) {
     const [id, setId] = useState<Address | Hex>();
-    const [error, setError] = useState("");
     const [search, setSearch] = useState("");
     const [popover, setPopover] = useState(false);
     const [picked, setPicked] = useState(false);
@@ -70,32 +96,22 @@ export function Picker({
         setPicked(false);
     }, [importedPool]);
 
+    const error = getPoolError(t, {
+        search,
+        addressOrId,
+        id,
+        loadingImportedPool,
+        importedPool,
+        dex,
+    });
+
     useEffect(() => {
-        let error = "";
-
-        if (search && !addressOrId) error = t("errors.invalidAddress");
-        else if (id && !loadingImportedPool && !importedPool)
-            error = t("errors.invalidPool");
-        else if (dex && importedPool && importedPool.dex.slug !== dex.slug)
-            error = t("errors.inconsistentDex", { dex: dex.name });
-
-        setError(error);
         onError({ basics: error });
 
         return () => {
-            setError("");
             onError({ basics: "" });
         };
-    }, [
-        id,
-        dex,
-        addressOrId,
-        loadingImportedPool,
-        importedPool,
-        search,
-        t,
-        onError,
-    ]);
+    }, [error, onError]);
 
     const handlePoolOnPick = useCallback(() => {
         setPicked(true);

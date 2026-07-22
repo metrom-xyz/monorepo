@@ -100,11 +100,14 @@ export function Distributions({
             id: campaignItemId,
         });
 
-    useEffect(() => {
-        if (distros.length === 0) return;
-        setActiveIndex(0);
-        setActiveAccount(undefined);
-    }, [distros]);
+    const [prevDistros, setPrevDistros] = useState(distros);
+    if (distros !== prevDistros) {
+        setPrevDistros(distros);
+        if (distros.length > 0) {
+            setActiveIndex(0);
+            setActiveAccount(undefined);
+        }
+    }
 
     useEffect(() => {
         if (activeIndex === undefined || !timestampTabsRef.current) return;

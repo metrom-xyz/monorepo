@@ -31,7 +31,6 @@ export function ApproveAndDeploySui({
     specificationHash,
     uploadingSpecification,
     disabled,
-    onAllTokensApproved,
     onLaunch,
 }: ApproveAndLaunchProps) {
     const [deploying, setDeploying] = useState(false);
@@ -44,11 +43,6 @@ export function ApproveAndDeploySui({
     const account = useCurrentAccount();
     const client = useCurrentClient();
     const dAppKit = useDAppKit();
-
-    // No token approval step needed on Sui
-    useEffect(() => {
-        onAllTokensApproved(true);
-    }, [onAllTokensApproved]);
 
     useEffect(() => {
         const build = async () => {

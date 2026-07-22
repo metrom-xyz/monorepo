@@ -173,14 +173,6 @@ export function ChainOverviewSvm({
         enabled: chainWithRewardsData.claims.length > 0,
     });
 
-    useEffect(() => {
-        if (onClaiming) onClaiming(claiming);
-    }, [claiming, onClaiming]);
-
-    useEffect(() => {
-        if (onRecovering) onRecovering(recovering);
-    }, [recovering, onRecovering]);
-
     function handleRecoverAllPopoverOpen() {
         setRecoverAllPopoverOpen(true);
     }
@@ -203,6 +195,7 @@ export function ChainOverviewSvm({
 
         const recover = async () => {
             setRecovering(true);
+            onRecovering?.(true);
             try {
                 const summary = await execute({
                     instructionPlan: recoverInstructionPlan,
@@ -246,6 +239,7 @@ export function ChainOverviewSvm({
                 console.warn("Could not recover", error);
             } finally {
                 setRecovering(false);
+                onRecovering?.(false);
             }
         };
         void recover();
@@ -255,6 +249,7 @@ export function ChainOverviewSvm({
         signer,
         execute,
         onRecoverAll,
+        onRecovering,
         t,
     ]);
 
@@ -263,6 +258,7 @@ export function ChainOverviewSvm({
 
         const claim = async () => {
             setClaiming(true);
+            onClaiming?.(true);
             try {
                 const summary = await execute({
                     instructionPlan: claimInstructionPlan,
@@ -313,6 +309,7 @@ export function ChainOverviewSvm({
                 console.warn("Could not claim", error);
             } finally {
                 setClaiming(false);
+                onClaiming?.(false);
             }
         };
         void claim();
@@ -323,6 +320,7 @@ export function ChainOverviewSvm({
         claimInstructionPlan,
         execute,
         onClaimAll,
+        onClaiming,
     ]);
 
     const multipleRecoveries = recoverAllTransactionCount > 1;

@@ -34,10 +34,11 @@ export function AaveV3MarketSelect({
         return (protocol as AaveV3Protocol).markets;
     }, [chainData, brand]);
 
+    const firstMarket = markets.length > 0 ? markets[0] : undefined;
+
     useEffect(() => {
-        if (!chainId || !!value || !markets || markets.length === 0) return;
-        onChange({ market: markets[0] });
-    }, [chainId, value, markets, onChange]);
+        if (chainId && !value && firstMarket) onChange({ market: firstMarket });
+    }, [chainId, value, firstMarket, onChange]);
 
     if (markets.length === 0) return null;
 

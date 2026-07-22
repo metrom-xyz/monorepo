@@ -1,6 +1,5 @@
 import {
     useCallback,
-    useEffect,
     useMemo,
     useState,
     type ReactSVGElement,
@@ -40,7 +39,7 @@ export function CampaignKindStep({
 }: CampaignKindStepProps) {
     const t = useTranslations("newCampaign.form.base.kind");
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(() => !disabled && !kind);
 
     const { id: chainId } = useChainWithType();
 
@@ -49,14 +48,21 @@ export function CampaignKindStep({
         return kinds.find(({ value }) => value === kind);
     }, [kinds, kind]);
 
-    useEffect(() => {
-        setOpen(false);
-    }, [chainId]);
+    const [prevChainId, setPrevChainId] = useState(chainId);
 
-    useEffect(() => {
-        if (disabled || !!kind) return;
-        setOpen(true);
-    }, [disabled, kind]);
+    if (chainId !== prevChainId) {
+        setPrevChainId(chainId);
+        setOpen(false);
+    }
+
+    const shouldForceOpen = !disabled && !kind;
+    const [prevShouldForceOpen, setPrevShouldForceOpen] =
+        useState(shouldForceOpen);
+
+    if (shouldForceOpen !== prevShouldForceOpen) {
+        setPrevShouldForceOpen(shouldForceOpen);
+        if (shouldForceOpen) setOpen(true);
+    }
 
     const getKindChangeHandler = useCallback(
         (newKind: CampaignKind) => {

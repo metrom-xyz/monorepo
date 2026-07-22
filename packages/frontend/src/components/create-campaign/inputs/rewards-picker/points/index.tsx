@@ -50,7 +50,6 @@ export function RewardPoints({
 }: RewardPointsProps) {
     const t = useTranslations("newCampaign.form.base.rewards.points");
     const [costError, setCostError] = useState<ErrorMessage>();
-    const [amountError, setAmountError] = useState<ErrorMessage>();
     const [amount, setAmount] = useState<NumberFormatValues>();
     const [token, setToken] =
         useState<SelectOption<string, RewardsPickerSelectOptionData>>();
@@ -86,6 +85,9 @@ export function RewardPoints({
         return { amount, usd };
     }, [campaignDuration, token]);
 
+    const amountError: ErrorMessage =
+        value?.points === 0 ? "errors.wrongAmount" : "";
+
     useEffect(() => {
         const error = costError || amountError;
         onError({ rewards: error ? t(error) : undefined });
@@ -100,21 +102,10 @@ export function RewardPoints({
             setCostError("errors.costChanged");
     }, [campaignDuration, resolvedFee, prevCampaignDuration]);
 
-    useEffect(() => {
-        if (value?.points === 0) setAmountError("errors.wrongAmount");
-        else setAmountError("");
-    }, [value?.points]);
-
-    useEffect(() => {
-        if (!token?.data || !campaignDuration || !resolvedFee || !amount)
-            return;
-    }, [resolvedFee, amount, token?.data, campaignDuration, onChange]);
-
     const handleOnApply = useCallback(() => {
         if (!amount || !token?.data || !resolvedFee) return;
 
         setCostError(undefined);
-        setAmountError(undefined);
         onChange({
             distributables: {
                 type: DistributablesType.FixedPoints,

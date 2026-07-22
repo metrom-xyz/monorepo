@@ -1,6 +1,6 @@
 import { type Address } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ClaimWithRemaining } from "../../types/campaign/common";
 import { chainIdToAptosNetwork, getChainData } from "../../utils/chain";
@@ -20,8 +20,6 @@ type QueryKey = [string, ChainType, Address | undefined];
 export function useClaimsMvm({
     enabled = true,
 }: UseClaimsParams = {}): UseClaimsReturnValue {
-    const [claims, setClaims] = useState<ClaimWithRemaining[]>();
-
     const queryClient = useQueryClient();
     const { account } = useWallet();
     const { aptos } = useClients();
@@ -114,20 +112,16 @@ export function useClaimsMvm({
         enabled: enabled && !!claimedPayloads,
     });
 
-    useEffect(() => {
-        if (!address) return;
+    const claims = useMemo<ClaimWithRemaining[] | undefined>(() => {
+        if (!address) return undefined;
         if (claimsErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
-            setClaims([]);
-            return;
+            return [];
         }
-        if (loadingClaims || loadingClaimed) return;
-        if (!rawClaims || !claimedData) {
-            setClaims([]);
-            return;
-        }
+        if (loadingClaims || loadingClaimed) return undefined;
+        if (!rawClaims || !claimedData) return [];
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
@@ -151,7 +145,7 @@ export function useClaimsMvm({
             }
         }
 
-        setClaims(claims);
+        return claims;
     }, [
         address,
         claimedData,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useProtocolFees } from "./use-protocol-fees";
 import type { CampaignPayloadDistributables } from "../types/campaign/common";
 import { FEE_UNIT } from "../commons";
@@ -17,8 +17,6 @@ export function useCampaignFee({
         chainId,
         enabled: !!distributables,
     });
-
-    const [resolvedFee, setResolvedFee] = useState<number>();
 
     const totalRewardsUsdAmount = useMemo(() => {
         if (!distributables) return 0;
@@ -45,13 +43,12 @@ export function useCampaignFee({
         return 0;
     }, [distributables]);
 
-    useEffect(() => {
-        if (fee !== undefined && feeRebate === undefined) setResolvedFee(fee);
-        else if (fee !== undefined && feeRebate !== undefined) {
-            const resolvedFeeRebate = feeRebate / FEE_UNIT;
-            setResolvedFee(fee - fee * resolvedFeeRebate);
-        }
-    }, [feeRebate, fee]);
+    let resolvedFee: number | undefined;
+    if (fee !== undefined && feeRebate === undefined) resolvedFee = fee;
+    else if (fee !== undefined && feeRebate !== undefined) {
+        const resolvedFeeRebate = feeRebate / FEE_UNIT;
+        resolvedFee = fee - fee * resolvedFeeRebate;
+    }
 
     const campaignFee =
         resolvedFee !== undefined

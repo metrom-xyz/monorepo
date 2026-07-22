@@ -27,6 +27,32 @@ import { useNumericFormat } from "react-number-format";
 
 import styles from "./styles.module.css";
 
+function getRewardError(
+    token: WhitelistedErc20Token,
+    amount: UsdPricedOnChainAmount,
+    campaignDuration: number | undefined,
+    tokens: WhitelistedErc20Token[] | undefined,
+    rewardTokenBalance: bigint | undefined,
+): RewardsPickerErrorMessage | undefined {
+    if (!campaignDuration || !tokens) return undefined;
+
+    if (!amount.formatted) return "errors.lowDistributionRate";
+
+    const distributionRate = (amount.formatted * 3_600) / campaignDuration;
+    const balance =
+        rewardTokenBalance === undefined ? MAX_U256 : rewardTokenBalance;
+
+    const availableRewards = tokens.map(({ address }) => address);
+
+    return !availableRewards.includes(token.address)
+        ? "errors.incompatibleChain"
+        : amount.raw > balance
+          ? "errors.insufficientBalance"
+          : distributionRate < token.minimumRate.formatted
+            ? "errors.lowDistributionRate"
+            : "";
+}
+
 interface RewardProps {
     chainId?: number;
     tokens?: WhitelistedErc20Token[];
@@ -91,30 +117,18 @@ export function Reward({
         setInputWidth(hiddenSpanRef.current.offsetWidth);
     }, [inputAmount.formattedValue, format]);
 
+    const computedError = getRewardError(
+        token,
+        amount,
+        campaignDuration,
+        tokens,
+        rewardTokenBalance,
+    );
+
     useEffect(() => {
-        if (!campaignDuration || !tokens) return;
-
-        if (!amount.formatted) {
-            onError(token.address, "errors.lowDistributionRate");
-            return;
-        }
-
-        const distributionRate = (amount.formatted * 3_600) / campaignDuration;
-        const balance =
-            rewardTokenBalance === undefined ? MAX_U256 : rewardTokenBalance;
-
-        const availableRewards = tokens.map(({ address }) => address);
-
-        const error = !availableRewards.includes(token.address)
-            ? "errors.incompatibleChain"
-            : amount.raw > balance
-              ? "errors.insufficientBalance"
-              : distributionRate < token.minimumRate.formatted
-                ? "errors.lowDistributionRate"
-                : "";
-
-        onError(token.address, error);
-    }, [tokens, campaignDuration, token, amount, rewardTokenBalance, onError]);
+        if (computedError === undefined) return;
+        onError(token.address, computedError);
+    }, [computedError, onError, token.address]);
 
     function handleInputOnClick() {
         setEditingAmount(true);
