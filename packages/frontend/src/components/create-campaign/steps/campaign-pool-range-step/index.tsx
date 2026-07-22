@@ -17,7 +17,6 @@ import { formatAmount } from "@/src/utils/format";
 import { LiquidityDensityChart } from "@/src/components/liquidity-density-chart";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import classNames from "classnames";
-import { usePrevious } from "react-use";
 import { FormStepId } from "@/src/types/form";
 
 import styles from "./styles.module.css";
@@ -38,7 +37,12 @@ export function CampaignPoolRangeStep({
     disabled,
     onApply,
 }: CampaignPoolRangeStepProps) {
-    const [open, setOpen] = useState(false);
+    const { errors, activeStepId, updateErrors, updateUnsaved } =
+        useFormSteps();
+
+    const [open, setOpen] = useState(
+        () => activeStepId === FormStepId.PoolRange,
+    );
     const [applied, setApplied] = useState(false);
     const [skipped, setSkipped] = useState(false);
     const [rangePayload, setRangePayload] = useState({
@@ -52,9 +56,7 @@ export function CampaignPoolRangeStep({
     const token0To1 = rangePayload.priceRangeSpecification?.token0To1 ?? true;
 
     const t = useTranslations("newCampaign.form.range");
-    const { errors, activeStepId, updateErrors, updateUnsaved } =
-        useFormSteps();
-    const prevPoolId = usePrevious(payload.pool?.id);
+    const [prevPoolId, setPrevPoolId] = useState(payload.pool?.id);
 
     const { liquidityDensity, loading: loadingLiquidityDensity } =
         useLiquidityDensity({
@@ -93,42 +95,42 @@ export function CampaignPoolRangeStep({
         !unsavedChanges &&
         rangeSpecificationCompleted(rangePayload);
 
-    useEffect(() => {
-        if (applied || completed) return;
-        setOpen(activeStepId === FormStepId.PoolRange);
-    }, [applied, completed, activeStepId]);
+    const [prevActiveStepId, setPrevActiveStepId] = useState(activeStepId);
+
+    if (activeStepId !== prevActiveStepId) {
+        setPrevActiveStepId(activeStepId);
+        if (!applied && !completed) {
+            setOpen(activeStepId === FormStepId.PoolRange);
+        }
+    }
+
+    const shouldForceOpen =
+        !completed && !disabled && (!!errors.range || unsavedChanges);
+    const [prevShouldForceOpen, setPrevShouldForceOpen] =
+        useState(shouldForceOpen);
+
+    if (shouldForceOpen !== prevShouldForceOpen) {
+        setPrevShouldForceOpen(shouldForceOpen);
+        if (shouldForceOpen) setOpen(true);
+    }
 
     useEffect(() => {
         updateUnsaved({ range: unsavedChanges });
     }, [unsavedChanges, updateUnsaved]);
 
-    useEffect(() => {
-        if (completed || disabled) return;
-        if (errors.range || unsavedChanges) {
-            setOpen(true);
-            return;
+    if (payload.pool?.id !== prevPoolId) {
+        setPrevPoolId(payload.pool?.id);
+        if (prevPoolId && rangePayload.priceRangeSpecification?.from) {
+            setRangePayload({
+                priceRangeSpecification: {
+                    token0To1: true,
+                    from: undefined,
+                    to: undefined,
+                },
+            });
+            updateErrors({ range: t("errors.poolChanged") });
         }
-    }, [completed, disabled, unsavedChanges, errors.range]);
-
-    useEffect(() => {
-        if (!prevPoolId || prevPoolId === payload.pool?.id) return;
-        if (!rangePayload.priceRangeSpecification?.from) return;
-
-        setRangePayload({
-            priceRangeSpecification: {
-                token0To1: true,
-                from: undefined,
-                to: undefined,
-            },
-        });
-        updateErrors({ range: t("errors.poolChanged") });
-    }, [
-        payload.pool?.id,
-        prevPoolId,
-        rangePayload.priceRangeSpecification?.from,
-        updateErrors,
-        t,
-    ]);
+    }
 
     const token0 = payload.pool?.tokens[token0To1 ? 0 : 1];
     const token1 = payload.pool?.tokens[token0To1 ? 1 : 0];

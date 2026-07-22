@@ -9,12 +9,12 @@ import {
 } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo } from "react";
-import { usePrevious } from "react-use";
 import { useErc4626Vaults } from "@/src/hooks/useErc4626Vaults";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import type { Address } from "viem";
 import type { Erc4626VaultProtocol } from "@metrom-xyz/chains";
 import { formatUsdAmount } from "@/src/utils/format";
+import { usePrevious } from "react-use";
 
 import styles from "./styles.module.css";
 

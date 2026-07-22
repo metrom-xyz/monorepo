@@ -16,7 +16,7 @@ import {
 } from "..";
 import { FilterActiveIcon } from "@/src/assets/filter-active-icon";
 import { FilterIcon } from "@/src/assets/filter-icon";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { Status } from "@metrom-xyz/sdk";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
 import { useClickAway } from "react-use";
@@ -73,11 +73,29 @@ export function MobileFilters({
         setDrawer((prev) => !prev);
     }
 
-    useEffect(() => {
+    const [prevDrawer, setPrevDrawer] = useState(drawer);
+    const [prevFilterChains, setPrevFilterChains] = useState(filters.chains);
+    const [prevFilterProtocols, setPrevFilterProtocols] = useState(
+        filters.protocols,
+    );
+    const [prevFilterStatuses, setPrevFilterStatuses] = useState(
+        filters.statuses,
+    );
+
+    if (
+        drawer !== prevDrawer ||
+        filters.chains !== prevFilterChains ||
+        filters.protocols !== prevFilterProtocols ||
+        filters.statuses !== prevFilterStatuses
+    ) {
+        setPrevDrawer(drawer);
+        setPrevFilterChains(filters.chains);
+        setPrevFilterProtocols(filters.protocols);
+        setPrevFilterStatuses(filters.statuses);
         setChains(filters.chains);
         setProtocols(filters.protocols);
         setStatuses(filters.statuses);
-    }, [drawer, filters.chains, filters.protocols, filters.statuses]);
+    }
 
     const handleFiltersOnClear = useCallback(() => {
         setDrawer(false);

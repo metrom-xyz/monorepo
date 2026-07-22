@@ -203,6 +203,7 @@ function Component<
         handleInnerChange,
         renderOption,
         renderLoadingOption,
+        optionDisabled,
     ]);
 
     const listHeight = useMemo(() => {

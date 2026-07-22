@@ -171,19 +171,12 @@ export function ChainOverviewSui({
         client,
     ]);
 
-    useEffect(() => {
-        if (onClaiming) onClaiming(claiming);
-    }, [claiming, onClaiming]);
-
-    useEffect(() => {
-        if (onRecovering) onRecovering(recovering);
-    }, [recovering, onRecovering]);
-
     const handleRecoverAll = useCallback(() => {
         if (!recoverAllTx || !account) return;
 
         const recover = async () => {
             setRecovering(true);
+            onRecovering?.(true);
             try {
                 const { bytes, signature } = await dAppKit.signTransaction({
                     transaction: recoverAllTx,
@@ -214,16 +207,18 @@ export function ChainOverviewSui({
                 console.warn("Could not recover all", error);
             } finally {
                 setRecovering(false);
+                onRecovering?.(false);
             }
         };
         void recover();
-    }, [recoverAllTx, account, dAppKit, client, onRecoverAll]);
+    }, [recoverAllTx, account, dAppKit, client, onRecoverAll, onRecovering]);
 
     const handleClaimAll = useCallback(() => {
         if (!claimAllTx || !account) return;
 
         const claim = async () => {
             setClaiming(true);
+            onClaiming?.(true);
             try {
                 const { bytes, signature } = await dAppKit.signTransaction({
                     transaction: claimAllTx,
@@ -262,10 +257,11 @@ export function ChainOverviewSui({
                 console.warn("Could not claim all", error);
             } finally {
                 setClaiming(false);
+                onClaiming?.(false);
             }
         };
         void claim();
-    }, [t, claimAllTx, account, dAppKit, client, onClaimAll]);
+    }, [t, claimAllTx, account, dAppKit, client, onClaimAll, onClaiming]);
 
     return (
         <Card className={classNames(styles.root, className)}>

@@ -1,6 +1,6 @@
 import { type Address } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
 import { chainIdToAptosNetwork, getChainData } from "../../utils/chain";
@@ -25,9 +25,6 @@ type QueryKey = [string, ChainType, Address | undefined];
 export function useReimbursementsMvm({
     enabled = true,
 }: UseReimbursementsParams = {}): UseReimbursementsReturnValue {
-    const [reimbursements, setReimbursements] =
-        useState<ReimbursementsWithRemaining[]>();
-
     const queryClient = useQueryClient();
     const { account } = useWallet();
     const { aptos } = useClients();
@@ -181,65 +178,66 @@ export function useReimbursementsMvm({
         enabled: enabled && !!payloads,
     });
 
-    useEffect(() => {
-        if (!address) return;
-        if (reimbursementsErrored || recoveredErrored || claimedErrored) {
-            console.error(
-                `Could not fetch reimbursed data for address ${address}: ${recoveredError} ${claimedError}`,
-            );
-            setReimbursements([]);
-            return;
-        }
-        if (loadingReimbursements || loadingRecovered || loadingClaimed) return;
-        if (!rawReimbursements || !recoveredData || !claimedData) {
-            setReimbursements([]);
-            return;
-        }
-
-        const reimbursements: ReimbursementsWithRemaining[] = [];
-        for (let i = 0; i < recoveredData.length; i++) {
-            const rawRecovered = recoveredData[i][0] as unknown as number;
-            const rawClaimed = claimedData[i][0] as unknown as number;
-            const rawReimbursement = rawReimbursements[i];
-
-            const rawRemaining =
-                rawReimbursement.amount.raw -
-                BigInt(rawRecovered) -
-                BigInt(rawClaimed);
-
-            const formattedRemaining = Number(
-                formatUnits(rawRemaining, rawReimbursement.token.decimals),
-            );
-
-            if (formattedRemaining > 0) {
-                reimbursements.push({
-                    ...rawReimbursement,
-                    remaining: {
-                        raw: rawRemaining,
-                        formatted: formattedRemaining,
-                        usdValue:
-                            formattedRemaining *
-                            rawReimbursement.token.usdPrice,
-                    },
-                });
+    const reimbursements = useMemo<ReimbursementsWithRemaining[] | undefined>(
+        () => {
+            if (!address) return undefined;
+            if (reimbursementsErrored || recoveredErrored || claimedErrored) {
+                console.error(
+                    `Could not fetch reimbursed data for address ${address}: ${recoveredError} ${claimedError}`,
+                );
+                return [];
             }
-        }
+            if (loadingReimbursements || loadingRecovered || loadingClaimed)
+                return undefined;
+            if (!rawReimbursements || !recoveredData || !claimedData)
+                return [];
 
-        setReimbursements(reimbursements);
-    }, [
-        address,
-        recoveredData,
-        recoveredError,
-        recoveredErrored,
-        loadingRecovered,
-        loadingReimbursements,
-        rawReimbursements,
-        claimedData,
-        loadingClaimed,
-        claimedErrored,
-        claimedError,
-        reimbursementsErrored,
-    ]);
+            const reimbursements: ReimbursementsWithRemaining[] = [];
+            for (let i = 0; i < recoveredData.length; i++) {
+                const rawRecovered = recoveredData[i][0] as unknown as number;
+                const rawClaimed = claimedData[i][0] as unknown as number;
+                const rawReimbursement = rawReimbursements[i];
+
+                const rawRemaining =
+                    rawReimbursement.amount.raw -
+                    BigInt(rawRecovered) -
+                    BigInt(rawClaimed);
+
+                const formattedRemaining = Number(
+                    formatUnits(rawRemaining, rawReimbursement.token.decimals),
+                );
+
+                if (formattedRemaining > 0) {
+                    reimbursements.push({
+                        ...rawReimbursement,
+                        remaining: {
+                            raw: rawRemaining,
+                            formatted: formattedRemaining,
+                            usdValue:
+                                formattedRemaining *
+                                rawReimbursement.token.usdPrice,
+                        },
+                    });
+                }
+            }
+
+            return reimbursements;
+        },
+        [
+            address,
+            recoveredData,
+            recoveredError,
+            recoveredErrored,
+            loadingRecovered,
+            loadingReimbursements,
+            rawReimbursements,
+            claimedData,
+            loadingClaimed,
+            claimedErrored,
+            claimedError,
+            reimbursementsErrored,
+        ],
+    );
 
     // Can be used to invalide the contract queries, to update the reimbursements
     // after a successful recovery.

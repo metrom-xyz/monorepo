@@ -1,7 +1,7 @@
 import { Pagination, Typography } from "@metrom-xyz/ui";
 import classNames from "classnames";
 import { ArrowRightIcon } from "@/src/assets/arrow-right-icon";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { type CampaignSortOptions } from "@/src/utils/filtering";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -11,7 +11,7 @@ import { Filters, type FilterParams, type RawFilters } from "./filters";
 import { useCampaigns } from "@/src/hooks/useCampaigns";
 import { BackendCampaignType, ChainType } from "@metrom-xyz/sdk";
 import { LoadingBar } from "../loading-bar";
-import { useDebounce, usePrevious } from "react-use";
+import { useDebounce } from "react-use";
 import { EmptyTable } from "./empty-table";
 import {
     useCampaignsFiltersOptions,
@@ -129,7 +129,7 @@ export function CampaignsTable({
     const router = useRouter();
     const searchParams = useSearchParams();
     const filterOptions = useCampaignsFiltersOptions();
-    const prevType = usePrevious(type);
+    const [prevType, setPrevType] = useState(type);
 
     const [sortField, setSortField] = useState<CampaignSortOptions>();
     const [order, setOrder] = useState<number | undefined>();
@@ -198,12 +198,12 @@ export function CampaignsTable({
         if (onClearFilters) onClearFilters();
     }, [disableFilters, optionalFilters, onClearFilters]);
 
-    useEffect(() => {
-        // Avoid clearing the filters the first time, otherwise the query params
-        // get removed.
-        if ((!prevType && type) || prevType === type) return;
-        handleClearFilters();
-    }, [handleClearFilters, prevType, type]);
+    // Avoid clearing the filters the first time, otherwise the query params
+    // get removed.
+    if (type !== prevType) {
+        setPrevType(type);
+        if (prevType) handleClearFilters();
+    }
 
     useDebounce(
         () => {

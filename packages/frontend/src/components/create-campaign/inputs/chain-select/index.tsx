@@ -76,10 +76,12 @@ export function ChainSelect({
         return options;
     }, [activeChains, campaignType]);
 
+    const singleChainId = options.length === 1 ? options[0].value : undefined;
+
     useEffect(() => {
-        if (!!value || options.length > 1) return;
-        onChange({ chainId: options[0].value });
-    }, [options, value, onChange]);
+        if (!value && singleChainId !== undefined)
+            onChange({ chainId: singleChainId });
+    }, [value, singleChainId, onChange]);
 
     const handleOnChange = useCallback(
         (option: SelectOption<number>) => {

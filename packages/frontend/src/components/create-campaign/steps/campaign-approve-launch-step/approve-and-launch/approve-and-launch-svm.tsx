@@ -50,7 +50,6 @@ export function ApproveAndDeploySvm({
     specificationHash,
     uploadingSpecification,
     disabled,
-    onAllTokensApproved,
     onLaunch,
 }: ApproveAndLaunchProps) {
     const [deploying, setDeploying] = useState(false);
@@ -67,11 +66,6 @@ export function ApproveAndDeploySvm({
     const client = useSolanaClient();
     const { data: latestBlockhash } = useLatestBlockhash();
     const { waitForConfirmationAsync } = useSolanaTransactionSignature();
-
-    // No token approval needed for Solana
-    useEffect(() => {
-        onAllTokensApproved(true);
-    }, [onAllTokensApproved]);
 
     const {
         data: simulatedCreate,

@@ -59,7 +59,6 @@ export function EndDatePicker({
     onError,
 }: EndDatePickerProps) {
     const [durationPreset, setDurationPreset] = useState<DurationPreset>();
-    const [dateError, setDateError] = useState("");
     const [popover, setPopover] = useState(false);
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
@@ -67,36 +66,34 @@ export function EndDatePicker({
     const popoverRef = useRef<HTMLDivElement>(null);
     const { limits } = useCampaignDurationLimits();
 
-    useEffect(() => {
-        if (!endDate || !startDate || !limits) {
-            onError(undefined);
-            setDateError("");
-            return;
-        }
+    const dateError = (() => {
+        if (!endDate || !startDate || !limits) return "";
 
         const campaignDuration = endDate.diff(startDate, "seconds");
 
-        let dateError = "";
-        if (endDate.isBefore(startDate)) dateError = t("endBeforeStart");
-        else if (endDate.isBefore(dayjs())) dateError = t("dateInThePast");
-        else if (campaignDuration < limits.minimumSeconds)
-            dateError = t("minimumDate", {
+        if (endDate.isBefore(startDate)) return t("endBeforeStart");
+        if (endDate.isBefore(dayjs())) return t("dateInThePast");
+        if (campaignDuration < limits.minimumSeconds)
+            return t("minimumDate", {
                 duration: dayjs(startDate.toDate()).to(
                     startDate.add(limits.minimumSeconds, "second"),
                     true,
                 ),
             });
-        else if (campaignDuration > limits.maximumSeconds)
-            dateError = t("maximumDate", {
+        if (campaignDuration > limits.maximumSeconds)
+            return t("maximumDate", {
                 duration: dayjs(startDate.toDate()).to(
                     startDate.add(limits.maximumSeconds, "second"),
                     true,
                 ),
             });
 
+        return "";
+    })();
+
+    useEffect(() => {
         onError(dateError);
-        setDateError(dateError);
-    }, [limits, endDate, startDate, onError, t]);
+    }, [dateError, onError]);
 
     function handleInputOnClick() {
         setPopover((prev) => !prev);

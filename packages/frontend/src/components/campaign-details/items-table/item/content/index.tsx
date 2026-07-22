@@ -1,6 +1,6 @@
 import type { CampaignItem } from "@/src/types/campaign/common";
 import { Tabs, UnderlinedTab } from "@metrom-xyz/ui";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { TranslationsKeys } from "@/src/types/utils";
 import { useTranslations } from "next-intl";
 import { Kpi } from "../kpi";
@@ -46,16 +46,7 @@ const TABS: {
 ];
 
 export function ItemContent({ campaignItem }: ItemContentProps) {
-    const [tab, setTab] = useState<TabType>();
-
     const t = useTranslations("campaignDetails.itemsTable.campaignItem");
-
-    const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
-        campaignId: campaignItem.id,
-        chainId: campaignItem.chainId,
-        chainType: campaignItem.chainType,
-        enabled: tab === TabType.Leaderboard,
-    });
 
     const tabOptions = useMemo(
         () =>
@@ -74,10 +65,16 @@ export function ItemContent({ campaignItem }: ItemContentProps) {
         [campaignItem],
     );
 
-    useEffect(() => {
-        if (tab) return;
-        setTab(tabOptions[0].type);
-    }, [tabOptions, tab]);
+    // Only needs a default once, at mount, and is never re-derived
+    // afterwards (matching the previous `if (tab) return;` guard).
+    const [tab, setTab] = useState<TabType>(() => tabOptions[0].type);
+
+    const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
+        campaignId: campaignItem.id,
+        chainId: campaignItem.chainId,
+        chainType: campaignItem.chainType,
+        enabled: tab === TabType.Leaderboard,
+    });
 
     const tokensItem = campaignItem.isDistributing(DistributablesType.Tokens);
     const ammPoolLiquidityItem = campaignItem.isTargeting(

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { UseClaimsParams, UseClaimsReturnValue } from ".";
 import type { ClaimWithRemaining } from "@/src/types/campaign/common";
 import { ChainType } from "@metrom-xyz/sdk";
@@ -19,7 +19,6 @@ type QueryKey = [string, ChainType, string | undefined];
 export function useClaimsSvm({
     enabled = true,
 }: UseClaimsParams = {}): UseClaimsReturnValue {
-    const [claims, setClaims] = useState<ClaimWithRemaining[]>();
     const [claimedPdas, setClaimedPdas] = useState<AddressSvm<string>[]>();
 
     const queryClient = useQueryClient();
@@ -130,24 +129,17 @@ export function useClaimsSvm({
         enabled: enabled && !!claimedPdas,
     });
 
-    useEffect(() => {
-        if (!enabled) {
-            setClaims([]);
-            return;
-        }
-        if (!address) return;
+    const claims = useMemo<ClaimWithRemaining[] | undefined>(() => {
+        if (!enabled) return [];
+        if (!address) return undefined;
         if (claimsErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
-            setClaims([]);
-            return;
+            return [];
         }
-        if (loadingClaims || loadingClaimed) return;
-        if (!rawClaims || !claimedData) {
-            setClaims([]);
-            return;
-        }
+        if (loadingClaims || loadingClaimed) return undefined;
+        if (!rawClaims || !claimedData) return [];
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
@@ -175,7 +167,7 @@ export function useClaimsSvm({
             }
         }
 
-        setClaims(claims);
+        return claims;
     }, [
         enabled,
         address,

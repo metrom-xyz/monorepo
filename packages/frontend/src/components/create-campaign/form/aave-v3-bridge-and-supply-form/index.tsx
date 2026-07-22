@@ -4,7 +4,7 @@ import {
     type CampaignPreviewKpiDistribution,
 } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useChainWithType } from "@/src/hooks/useChainWithType";
 import { CampaignKind, DistributablesType } from "@metrom-xyz/sdk";
 import { Button } from "@metrom-xyz/ui";
@@ -142,9 +142,12 @@ export function AaveV3BridgeAndSupplyForm({
         return true;
     }, [payload.distributables]);
 
-    useEffect(() => {
+    const [prevChainId, setPrevChainId] = useState(chainId);
+
+    if (chainId !== prevChainId) {
+        setPrevChainId(chainId);
         setPayload(initialPayload);
-    }, [chainId]);
+    }
 
     const handlePayloadOnChange = useCallback(
         (part: AaveV3CampaignPayloadPart) => {

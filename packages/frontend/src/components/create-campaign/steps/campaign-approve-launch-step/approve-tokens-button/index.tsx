@@ -16,6 +16,7 @@ import styles from "./styles.module.css";
 
 interface ApproveTokensButtonProps {
     tokensToApprove: Erc20TokenAmountWithAllowance[];
+    checkingApprovals: boolean;
     onApproved: (token: UsdPricedErc20TokenAmount) => void;
     onApproving: (address: Address | null) => void;
     onSafeTx: (tx: BaseTransaction) => void;
@@ -23,6 +24,7 @@ interface ApproveTokensButtonProps {
 
 export function ApproveTokensButton({
     tokensToApprove,
+    checkingApprovals,
     onApproved,
     onApproving,
     onSafeTx,
@@ -63,6 +65,7 @@ export function ApproveTokensButton({
     return (
         <ApproveTokens
             tokensToApprove={tokensToApprove}
+            checkingApprovals={checkingApprovals}
             spender={chainData?.metromContract.address}
             onApproved={onApproved}
             onApproving={onApproving}

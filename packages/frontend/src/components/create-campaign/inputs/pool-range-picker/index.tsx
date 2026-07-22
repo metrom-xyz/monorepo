@@ -5,7 +5,7 @@ import {
     scaledPriceToTick,
     tickToScaledPrice,
 } from "@metrom-xyz/sdk";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormSteps } from "@/src/context/form-steps";
 import type { AugmentedPriceRangeBound } from "@/src/types/campaign/amm-pool-liquidity-campaign";
 import type { LocalizedMessage } from "@/src/types/utils";
@@ -27,6 +27,23 @@ interface PoolRangeProps {
 
 type ErrorMessage = LocalizedMessage<"newCampaign.inputs.rangePicker">;
 
+function getRangeErrors(
+    from: AugmentedPriceRangeBound | undefined,
+    to: AugmentedPriceRangeBound | undefined,
+    lastEdited: "from" | "to" | null,
+): [ErrorMessage, ErrorMessage] {
+    if (!from && !to) return ["", ""];
+    if (!from && to) return ["errors.minPriceMissing", ""];
+    if (!to && from) return ["", "errors.maxPriceMissing"];
+    if (!!from && !!to && from.tick >= to.tick) {
+        if (lastEdited === "from") return ["errors.minPriceMalformed", ""];
+        return ["", "errors.maxPriceMalformed"];
+    }
+    if (!!from && !!to && Math.abs(to.tick - from.tick) > RANGE_TICKS_LIMIT)
+        return ["errors.rangeTooWide", "errors.rangeTooWide"];
+    return ["", ""];
+}
+
 export function PoolRangePicker({
     pool,
     currentPrice,
@@ -36,39 +53,11 @@ export function PoolRangePicker({
     onFromChange,
     onToChange,
 }: PoolRangeProps) {
-    const [fromError, setFromError] = useState<ErrorMessage>("");
-    const [toError, setToError] = useState<ErrorMessage>("");
-
     const t = useTranslations("newCampaign.inputs.rangePicker");
-    const lastEdited = useRef<"from" | "to" | null>(null);
+    const [lastEdited, setLastEdited] = useState<"from" | "to" | null>(null);
     const { updateErrors } = useFormSteps();
 
-    useEffect(() => {
-        if (!from && !to) {
-            setFromError("");
-            setToError("");
-        } else if (!from && to) setFromError("errors.minPriceMissing");
-        else if (!to && from) setToError("errors.maxPriceMissing");
-        else if (!!from && !!to && from.tick >= to.tick) {
-            if (lastEdited.current === "from") {
-                setFromError("errors.minPriceMalformed");
-                setToError("");
-            } else {
-                setFromError("");
-                setToError("errors.maxPriceMalformed");
-            }
-        } else if (
-            !!from &&
-            !!to &&
-            Math.abs(to.tick - from.tick) > RANGE_TICKS_LIMIT
-        ) {
-            setFromError("errors.rangeTooWide");
-            setToError("errors.rangeTooWide");
-        } else {
-            setFromError("");
-            setToError("");
-        }
-    }, [from, to]);
+    const [fromError, toError] = getRangeErrors(from, to, lastEdited);
 
     useEffect(() => {
         const error = fromError || toError;
@@ -78,7 +67,7 @@ export function PoolRangePicker({
     const getChangeHandler = useCallback(
         (type: "from" | "to") => {
             return (value?: number) => {
-                lastEdited.current = type;
+                setLastEdited(type);
                 const onChange = type === "from" ? onFromChange : onToChange;
 
                 if (value === undefined || !pool) {
@@ -98,7 +87,7 @@ export function PoolRangePicker({
     const getStepHandler = useCallback(
         (type: "from" | "to", delta: "increment" | "decrement") => {
             return () => {
-                lastEdited.current = type;
+                setLastEdited(type);
                 if (currentPrice === undefined || !pool) return;
 
                 const value = type === "from" ? from : to;

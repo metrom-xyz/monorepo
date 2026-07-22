@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Typography } from "@metrom-xyz/ui";
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useRef, type ChangeEvent } from "react";
 import { type Address } from "viem";
 import Papa from "papaparse";
 import { toast } from "sonner";
@@ -23,63 +23,7 @@ export function CsvAddressesImport({
     className,
 }: CsvAddressesImportProps) {
     const t = useTranslations("newCampaign.form.base.restrictions.import");
-    const [csv, setCsv] = useState<File | null>(null);
-    const [addresses, setAddresses] = useState<string[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        if (!csv) return;
-
-        Papa.parse(csv, {
-            skipEmptyLines: true,
-            complete: (result) => {
-                const addresses = result.data
-                    .flat()
-                    .filter((data) => !!data) as string[];
-                setAddresses(Array.from(new Set(addresses)));
-            },
-            error: (error) => {
-                console.error("Error parsing csv: ", error);
-            },
-        });
-    }, [csv]);
-
-    useEffect(() => {
-        if (addresses.length === 0 || !csv) return;
-
-        setCsv(null);
-        setAddresses([]);
-
-        if (addresses.some((address) => !isAddress(address))) {
-            toast.custom((toastId) => (
-                <ImportFail
-                    toastId={toastId}
-                    message={t("notification.fail.malformed")}
-                />
-            ));
-            return;
-        }
-        if (addresses.length > MAXIMUM_RESTRICTIONS) {
-            toast.custom((toastId) => (
-                <ImportFail
-                    toastId={toastId}
-                    message={t("notification.fail.tooMany", {
-                        max: MAXIMUM_RESTRICTIONS,
-                    })}
-                />
-            ));
-            return;
-        }
-
-        toast.custom((toastId) => (
-            <ImportSuccess
-                toastId={toastId}
-                message={t("notification.success.message")}
-            />
-        ));
-
-        onImport(addresses as Address[]);
-    }, [csv, addresses, onImport, t]);
 
     function handleInputOnClick() {
         inputRef.current?.click();
@@ -88,8 +32,54 @@ export function CsvAddressesImport({
     function handleInputOnChange({
         target: { files },
     }: ChangeEvent<HTMLInputElement>) {
-        if (files && files[0]) setCsv(files[0]);
+        const csv = files && files[0];
         if (inputRef.current) inputRef.current.value = "";
+        if (!csv) return;
+
+        Papa.parse(csv, {
+            skipEmptyLines: true,
+            complete: (result) => {
+                const rawAddresses = result.data
+                    .flat()
+                    .filter((data) => !!data) as string[];
+                const addresses = Array.from(new Set(rawAddresses));
+
+                if (addresses.length === 0) return;
+
+                if (addresses.some((address) => !isAddress(address))) {
+                    toast.custom((toastId) => (
+                        <ImportFail
+                            toastId={toastId}
+                            message={t("notification.fail.malformed")}
+                        />
+                    ));
+                    return;
+                }
+                if (addresses.length > MAXIMUM_RESTRICTIONS) {
+                    toast.custom((toastId) => (
+                        <ImportFail
+                            toastId={toastId}
+                            message={t("notification.fail.tooMany", {
+                                max: MAXIMUM_RESTRICTIONS,
+                            })}
+                        />
+                    ));
+                    return;
+                }
+
+                toast.custom((toastId) => (
+                    <ImportSuccess
+                        toastId={toastId}
+                        message={t("notification.success.message")}
+                    />
+                ));
+
+                onImport(addresses as Address[]);
+            },
+            error: (error) => {
+                console.error("Error parsing csv: ", error);
+            },
+        });
     }
 
     return (

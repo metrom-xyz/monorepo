@@ -73,10 +73,11 @@ export function AaveV3BrandSelect({
         [brands],
     );
 
+    const singleBrand = brands.length === 1 ? brands[0] : undefined;
+
     useEffect(() => {
-        if (!chainId || !!value || brands.length > 1) return;
-        onChange({ brand: brands[0] });
-    }, [chainId, brands, value, onChange]);
+        if (chainId && !value && singleBrand) onChange({ brand: singleBrand });
+    }, [chainId, value, singleBrand, onChange]);
 
     const handleOnChange = useCallback(
         (option: SelectOption<string, OptionData>) => {

@@ -61,7 +61,6 @@ export function FixedAprPicker({
         raw: REFERENCE_TVL,
         formatted: REFERENCE_TVL.toString(),
     });
-    const [resolvedFee, setResolvedFee] = useState<number>();
     const [editingTvl, setEditingTvl] = useState(false);
     const [tvlPopover, setTvlPopover] = useState(false);
     const [tvlPopoverAnchor, setTvlPopoverAnchor] =
@@ -83,12 +82,10 @@ export function FixedAprPicker({
         tokens: rewardTokens,
     });
 
-    useEffect(() => {
-        if (fee !== undefined && feeRebate !== undefined) {
-            const resolvedFeeRebate = feeRebate / FEE_UNIT;
-            setResolvedFee(fee - fee * resolvedFeeRebate);
-        }
-    }, [feeRebate, fee]);
+    const resolvedFee =
+        fee !== undefined && feeRebate !== undefined
+            ? fee - fee * (feeRebate / FEE_UNIT)
+            : undefined;
 
     useEffect(() => {
         if (!editingTvl) return;

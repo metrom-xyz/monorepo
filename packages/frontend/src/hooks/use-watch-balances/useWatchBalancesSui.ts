@@ -64,6 +64,7 @@ export function useWatchBalancesSui<T extends UsdPricedErc20Token>({
         if (!tokens) return [];
 
         if (
+            !enabled ||
             !rewardTokenRawBalances ||
             rewardTokenRawBalances.length !== tokens.length
         )
@@ -96,7 +97,7 @@ export function useWatchBalancesSui<T extends UsdPricedErc20Token>({
             },
             [],
         );
-    }, [rewardTokenRawBalances, tokens]);
+    }, [rewardTokenRawBalances, tokens, enabled]);
 
     const sortedTokensWithBalance = [...tokensWithBalance].sort((a, b) => {
         if (!a.balance && !b.balance)

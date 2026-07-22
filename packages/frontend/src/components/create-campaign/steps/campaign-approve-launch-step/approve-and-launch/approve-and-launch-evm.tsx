@@ -440,6 +440,7 @@ export function ApproveAndDeployEvm({
                 )}
                 <ApproveTokensButton
                     tokensToApprove={tokensToApproveWithAllowance}
+                    checkingApprovals={loadingTokensAllowances}
                     onApproved={handleOnRewardApproved}
                     onApproving={handleOnRewardApproving}
                     onSafeTx={handleSafeTransaction}

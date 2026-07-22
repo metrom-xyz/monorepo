@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback } from "react";
 import { type Address } from "viem";
 import { ApproveToken } from "./approve-token";
 import type { BaseTransaction } from "@safe-global/safe-apps-sdk";
@@ -7,6 +7,7 @@ import type { UsdPricedErc20TokenAmount } from "@metrom-xyz/sdk";
 
 interface ApproveTokensProps {
     tokensToApprove: Erc20TokenAmountWithAllowance[];
+    checkingApprovals: boolean;
     spender?: Address;
     onApproved: (token: UsdPricedErc20TokenAmount) => void;
     onApproving: (address: Address | null) => void;
@@ -15,30 +16,15 @@ interface ApproveTokensProps {
 
 export function ApproveTokens({
     tokensToApprove,
+    checkingApprovals,
     spender,
     onApproved,
     onApproving,
     onSafeTx,
 }: ApproveTokensProps) {
-    const [checkingApprovals, setCheckingApprovals] = useState(false);
-
     const currentlyApprovingTokenAmount = tokensToApprove.find(
         ({ approved }) => !approved,
     );
-
-    useEffect(() => {
-        setCheckingApprovals(true);
-        const newToApprove = tokensToApprove.filter(
-            ({ approved }) => !approved,
-        );
-
-        if (newToApprove.length === 0) {
-            setCheckingApprovals(false);
-            return;
-        }
-
-        setCheckingApprovals(false);
-    }, [tokensToApprove]);
 
     const handleOnApprove = useCallback(
         (token: UsdPricedErc20TokenAmount) => {

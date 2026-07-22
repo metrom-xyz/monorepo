@@ -33,12 +33,6 @@ export function CampaignApproveLaunchStep({
     disabled,
     onLaunch,
 }: CampaignApproveLaunchStepProps) {
-    const [open, setOpen] = useState(false);
-    const [error, setError] = useState<ErrorMessage>("");
-    const [uploadingSpecification, setUploadingSpecification] = useState(false);
-    const [allTokensApproved, setAllTokensApproved] = useState(false);
-    const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
-
     const t = useTranslations("newCampaign.form.approveLaunch");
     const { chainType } = useChainType();
     const { connected } = useAccount();
@@ -49,9 +43,22 @@ export function CampaignApproveLaunchStep({
         distributables: payload?.distributables,
     });
 
-    useEffect(() => {
+    const [open, setOpen] = useState(() => activeStepId === FormStepId.Launch);
+    const [error, setError] = useState<ErrorMessage>("");
+    const [uploadingSpecification, setUploadingSpecification] = useState(false);
+    // Only EVM campaigns require an explicit, per-token approval step: for
+    // every other chain type there's nothing to approve, so it's always true.
+    const [evmAllTokensApproved, setEvmAllTokensApproved] = useState(false);
+    const [specificationHash, setSpecificationHash] = useState<Hex>(zeroHash);
+    const allTokensApproved =
+        chainType !== ChainType.Evm || evmAllTokensApproved;
+
+    const [prevActiveStepId, setPrevActiveStepId] = useState(activeStepId);
+
+    if (activeStepId !== prevActiveStepId) {
+        setPrevActiveStepId(activeStepId);
         setOpen(activeStepId === FormStepId.Launch);
-    }, [activeStepId]);
+    }
 
     useEffect(() => {
         if (!payload || disabled) return;
@@ -156,7 +163,7 @@ export function CampaignApproveLaunchStep({
                     specificationHash={specificationHash}
                     uploadingSpecification={uploadingSpecification}
                     disabled={!!error}
-                    onAllTokensApproved={setAllTokensApproved}
+                    onAllTokensApproved={setEvmAllTokensApproved}
                     onLaunch={onLaunch}
                 />
             )}

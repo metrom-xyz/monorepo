@@ -37,9 +37,6 @@ export function CampaignBasicsStep({
     onChange,
     onApply,
 }: CampaignBasicsStepProps) {
-    const [open, setOpen] = useState(true);
-    const [applied, setApplied] = useState(false);
-
     const t = useTranslations("newCampaign.form.basics");
     const experimentalChain = useIsChainExperimental({
         chainId: payload.chainId,
@@ -47,10 +44,16 @@ export function CampaignBasicsStep({
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();
 
-    useEffect(() => {
-        if (applied || completed) return;
-        setOpen(activeStepId === FormStepId.Basics);
-    }, [applied, completed, activeStepId]);
+    const [open, setOpen] = useState(() => activeStepId === FormStepId.Basics);
+    const [applied, setApplied] = useState(false);
+    const [prevActiveStepId, setPrevActiveStepId] = useState(activeStepId);
+
+    if (activeStepId !== prevActiveStepId) {
+        setPrevActiveStepId(activeStepId);
+        if (!applied && !completed) {
+            setOpen(activeStepId === FormStepId.Basics);
+        }
+    }
 
     useEffect(() => {
         updateUnsaved({ basics: unsavedChanges });

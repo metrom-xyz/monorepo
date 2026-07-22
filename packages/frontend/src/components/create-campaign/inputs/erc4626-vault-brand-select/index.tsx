@@ -75,14 +75,14 @@ export function Erc4626VaultBrandSelect({
         [erc4626Vaults],
     );
 
+    const singleVault =
+        options.length === 1
+            ? erc4626Vaults.find(({ slug }) => slug === options[0].value)
+            : undefined;
+
     useEffect(() => {
-        if (!!value || options.length > 1) return;
-        const selected = erc4626Vaults.find(
-            ({ slug }) => slug === options[0].value,
-        );
-        if (!selected) return;
-        onChange({ brand: selected });
-    }, [options, erc4626Vaults, value, onChange]);
+        if (!value && singleVault) onChange({ brand: singleVault });
+    }, [value, singleVault, onChange]);
 
     const handleOnChange = useCallback(
         (option: SelectOption<string, OptionData>) => {

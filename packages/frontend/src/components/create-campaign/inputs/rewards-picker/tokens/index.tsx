@@ -4,7 +4,7 @@ import type {
     CampaignPayloadTokenDistributables,
 } from "@/src/types/campaign/common";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     RewardsPickerTokensSelect,
     type RewardsPickerSelectOptionData,
@@ -52,7 +52,6 @@ export function RewardsPickerTokens({
     const [token, setToken] =
         useState<SelectOption<string, RewardsPickerSelectOptionData>>();
     const [amount, setAmount] = useState<NumberFormatValues>();
-    const [amountError, setAmountError] = useState<RewardsPickerErrorMessage>();
     const [errors, setErrors] = useState<
         { address: Address; error?: RewardsPickerErrorMessage }[]
     >([]);
@@ -67,13 +66,10 @@ export function RewardsPickerTokens({
         token: token?.data?.token.address,
     });
 
-    useEffect(() => {
-        if (!campaignDuration || !token || !token.data) return;
+    const amountError = useMemo<RewardsPickerErrorMessage | undefined>(() => {
+        if (!campaignDuration || !token || !token.data) return undefined;
 
-        if (!amount || amount.floatValue === undefined) {
-            setAmountError("");
-            return;
-        }
+        if (!amount || amount.floatValue === undefined) return "";
 
         const distributionRate = (amount.floatValue * 3_600) / campaignDuration;
         const balance =
@@ -86,14 +82,11 @@ export function RewardsPickerTokens({
                   )
                 : Number.MAX_SAFE_INTEGER;
 
-        const error =
-            amount.floatValue > balance
-                ? "errors.insufficientBalance"
-                : distributionRate < token.data.token.minimumRate.formatted
-                  ? "errors.lowDistributionRate"
-                  : "";
-
-        setAmountError(error);
+        return amount.floatValue > balance
+            ? "errors.insufficientBalance"
+            : distributionRate < token.data.token.minimumRate.formatted
+              ? "errors.lowDistributionRate"
+              : "";
     }, [campaignDuration, amount, token, rewardTokenBalance]);
 
     useEffect(() => {

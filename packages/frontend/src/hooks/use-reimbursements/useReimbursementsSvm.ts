@@ -1,5 +1,5 @@
 import { METROM_API_CLIENT } from "../../commons";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
 import { chainIdToSolanaNetwork, getChainData } from "../../utils/chain";
@@ -19,8 +19,6 @@ type QueryKey = [string, ChainType, Address | undefined];
 export function useReimbursementsSvm({
     enabled = true,
 }: UseReimbursementsParams = {}): UseReimbursementsReturnValue {
-    const [reimbursements, setReimbursements] =
-        useState<ReimbursementsWithRemaining[]>();
     const [recoveredPdas, setRecoveredPdas] = useState<Address[]>();
 
     const queryClient = useQueryClient();
@@ -129,65 +127,62 @@ export function useReimbursementsSvm({
         void fetchReimbursements();
     }, [address, rawReimbursements, enabled]);
 
-    useEffect(() => {
-        if (!enabled) {
-            setReimbursements([]);
-            return;
-        }
-        if (!address) return;
-        if (reimbursementsErrored || recoveredErrored) {
-            console.error(
-                `Could not fetch reimbursed data for address ${address}: ${recoveredError}`,
-            );
-            setReimbursements([]);
-            return;
-        }
-        if (loadingReimbursements || loadingRecovered) return;
-        if (!rawReimbursements || !recoveredData) {
-            setReimbursements([]);
-            return;
-        }
-
-        const reimbursements: ReimbursementsWithRemaining[] = [];
-        for (let i = 0; i < recoveredData.length; i++) {
-            const rawRecovered = recoveredData[i];
-            const rawReimbursement = rawReimbursements[i];
-
-            // On Solana, reward claims and reimbursement recoveries use separate
-            // PDAs, so the remaining reimbursement is only reduced by what has
-            // already been recovered, not by reward claims.
-            const rawRemaining = rawReimbursement.amount.raw - rawRecovered;
-
-            const formattedRemaining = Number(
-                formatUnits(rawRemaining, rawReimbursement.token.decimals),
-            );
-
-            if (formattedRemaining > 0) {
-                reimbursements.push({
-                    ...rawReimbursement,
-                    remaining: {
-                        raw: rawRemaining,
-                        formatted: formattedRemaining,
-                        usdValue:
-                            formattedRemaining *
-                            rawReimbursement.token.usdPrice,
-                    },
-                });
+    const reimbursements = useMemo<ReimbursementsWithRemaining[] | undefined>(
+        () => {
+            if (!enabled) return [];
+            if (!address) return undefined;
+            if (reimbursementsErrored || recoveredErrored) {
+                console.error(
+                    `Could not fetch reimbursed data for address ${address}: ${recoveredError}`,
+                );
+                return [];
             }
-        }
+            if (loadingReimbursements || loadingRecovered) return undefined;
+            if (!rawReimbursements || !recoveredData) return [];
 
-        setReimbursements(reimbursements);
-    }, [
-        enabled,
-        address,
-        recoveredData,
-        recoveredError,
-        recoveredErrored,
-        loadingRecovered,
-        loadingReimbursements,
-        rawReimbursements,
-        reimbursementsErrored,
-    ]);
+            const reimbursements: ReimbursementsWithRemaining[] = [];
+            for (let i = 0; i < recoveredData.length; i++) {
+                const rawRecovered = recoveredData[i];
+                const rawReimbursement = rawReimbursements[i];
+
+                // On Solana, reward claims and reimbursement recoveries use separate
+                // PDAs, so the remaining reimbursement is only reduced by what has
+                // already been recovered, not by reward claims.
+                const rawRemaining =
+                    rawReimbursement.amount.raw - rawRecovered;
+
+                const formattedRemaining = Number(
+                    formatUnits(rawRemaining, rawReimbursement.token.decimals),
+                );
+
+                if (formattedRemaining > 0) {
+                    reimbursements.push({
+                        ...rawReimbursement,
+                        remaining: {
+                            raw: rawRemaining,
+                            formatted: formattedRemaining,
+                            usdValue:
+                                formattedRemaining *
+                                rawReimbursement.token.usdPrice,
+                        },
+                    });
+                }
+            }
+
+            return reimbursements;
+        },
+        [
+            enabled,
+            address,
+            recoveredData,
+            recoveredError,
+            recoveredErrored,
+            loadingRecovered,
+            loadingReimbursements,
+            rawReimbursements,
+            reimbursementsErrored,
+        ],
+    );
 
     // Can be used to invalide the contract queries, to update the reimbursements
     // after a successful recovery.

@@ -68,19 +68,24 @@ export function CampaignRewardsStep({
     onChange,
     onApply,
 }: CampaignRewardsStepProps) {
-    const [open, setOpen] = useState(false);
-    const [applied, setApplied] = useState(false);
-
     const t = useTranslations("newCampaign.form.rewards");
     const { chainType } = useChainType();
     const chainData = useChainData({ chainId });
     const { errors, activeStepId, updateErrors, updateUnsaved } =
         useFormSteps();
 
-    useEffect(() => {
-        if (applied || completed) return;
-        setOpen(activeStepId === FormStepId.Rewards);
-    }, [applied, completed, activeStepId]);
+    const [open, setOpen] = useState(
+        () => activeStepId === FormStepId.Rewards,
+    );
+    const [applied, setApplied] = useState(false);
+    const [prevActiveStepId, setPrevActiveStepId] = useState(activeStepId);
+
+    if (activeStepId !== prevActiveStepId) {
+        setPrevActiveStepId(activeStepId);
+        if (!applied && !completed) {
+            setOpen(activeStepId === FormStepId.Rewards);
+        }
+    }
 
     useEffect(() => {
         updateUnsaved({ rewards: unsavedChanges });

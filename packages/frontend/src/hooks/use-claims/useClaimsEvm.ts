@@ -2,7 +2,7 @@ import { useAccount, useChains, useConfig } from "wagmi";
 import { formatUnits, type Address } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ClaimWithRemaining } from "../../types/campaign/common";
 import { getChainData } from "../../utils/chain";
@@ -15,8 +15,6 @@ type QueryKey = [string, ChainType, Address | undefined];
 export function useClaimsEvm({
     enabled = true,
 }: UseClaimsParams = {}): UseClaimsReturnValue {
-    const [claims, setClaims] = useState<ClaimWithRemaining[]>();
-
     const config = useConfig();
     const supportedChains = useChains();
     const queryClient = useQueryClient();
@@ -107,20 +105,16 @@ export function useClaimsEvm({
         enabled: enabled && !!claimedContracts,
     });
 
-    useEffect(() => {
-        if (!address) return;
+    const claims = useMemo<ClaimWithRemaining[] | undefined>(() => {
+        if (!address) return undefined;
         if (claimsErrored || claimedErrored) {
             console.error(
                 `Could not fetch claimed data for address ${address}: ${claimedError}`,
             );
-            setClaims([]);
-            return;
+            return [];
         }
-        if (loadingClaims || loadingClaimed) return;
-        if (!rawClaims || !claimedData) {
-            setClaims([]);
-            return;
-        }
+        if (loadingClaims || loadingClaimed) return undefined;
+        if (!rawClaims || !claimedData) return [];
 
         const claims: ClaimWithRemaining[] = [];
         for (let i = 0; i < claimedData.length; i++) {
@@ -144,7 +138,7 @@ export function useClaimsEvm({
             }
         }
 
-        setClaims(claims);
+        return claims;
     }, [
         address,
         claimedData,

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
 import type { UseReimbursementsParams, UseReimbursementsReturnValue } from ".";
 import type { ReimbursementsWithRemaining } from "../../types/campaign/common";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,9 +21,6 @@ type ReimbursementsQueryKey = [string, ChainType, string | undefined];
 export function useReimbursementsSui({
     enabled = true,
 }: UseReimbursementsParams = {}): UseReimbursementsReturnValue {
-    const [reimbursements, setReimbursements] =
-        useState<ReimbursementsWithRemaining[]>();
-
     const queryClient = useQueryClient();
     const client = useCurrentClient();
     const { address } = useAccount();
@@ -137,63 +134,61 @@ export function useReimbursementsSui({
             rawReimbursements.length > 0,
     });
 
-    useEffect(() => {
-        if (!address) {
-            setReimbursements([]);
-            return;
-        }
-        if (reimbursementsErrored || reimbursementDataErrored) {
-            console.error(
-                `Could not fetch reimbursement data for address ${address}: ${reimbursementDataError}`,
-            );
-            setReimbursements([]);
-            return;
-        }
-        if (loadingReimbursements || loadingReimbursementData) return;
-        if (!rawReimbursements || !reimbursementData) {
-            setReimbursements([]);
-            return;
-        }
-
-        const { recovered } = reimbursementData;
-
-        const reimbursements: ReimbursementsWithRemaining[] = [];
-        for (let i = 0; i < rawReimbursements.length; i++) {
-            const rawReimbursement = rawReimbursements[i];
-
-            // The contract only tracks recovered rewards (under the zero
-            // address): the owner's own claims never reduce the
-            // recoverable amount.
-            const rawRemaining = rawReimbursement.amount.raw - recovered[i];
-            const formattedRemaining = Number(
-                formatUnits(rawRemaining, rawReimbursement.token.decimals),
-            );
-
-            if (formattedRemaining > 0) {
-                reimbursements.push({
-                    ...rawReimbursement,
-                    remaining: {
-                        raw: rawRemaining,
-                        formatted: formattedRemaining,
-                        usdValue:
-                            formattedRemaining *
-                            rawReimbursement.token.usdPrice,
-                    },
-                });
+    const reimbursements = useMemo<ReimbursementsWithRemaining[] | undefined>(
+        () => {
+            if (!address) return [];
+            if (reimbursementsErrored || reimbursementDataErrored) {
+                console.error(
+                    `Could not fetch reimbursement data for address ${address}: ${reimbursementDataError}`,
+                );
+                return [];
             }
-        }
+            if (loadingReimbursements || loadingReimbursementData)
+                return undefined;
+            if (!rawReimbursements || !reimbursementData) return [];
 
-        setReimbursements(reimbursements);
-    }, [
-        address,
-        reimbursementData,
-        reimbursementDataError,
-        reimbursementDataErrored,
-        reimbursementsErrored,
-        loadingReimbursementData,
-        loadingReimbursements,
-        rawReimbursements,
-    ]);
+            const { recovered } = reimbursementData;
+
+            const reimbursements: ReimbursementsWithRemaining[] = [];
+            for (let i = 0; i < rawReimbursements.length; i++) {
+                const rawReimbursement = rawReimbursements[i];
+
+                // The contract only tracks recovered rewards (under the zero
+                // address): the owner's own claims never reduce the
+                // recoverable amount.
+                const rawRemaining =
+                    rawReimbursement.amount.raw - recovered[i];
+                const formattedRemaining = Number(
+                    formatUnits(rawRemaining, rawReimbursement.token.decimals),
+                );
+
+                if (formattedRemaining > 0) {
+                    reimbursements.push({
+                        ...rawReimbursement,
+                        remaining: {
+                            raw: rawRemaining,
+                            formatted: formattedRemaining,
+                            usdValue:
+                                formattedRemaining *
+                                rawReimbursement.token.usdPrice,
+                        },
+                    });
+                }
+            }
+
+            return reimbursements;
+        },
+        [
+            address,
+            reimbursementData,
+            reimbursementDataError,
+            reimbursementDataErrored,
+            reimbursementsErrored,
+            loadingReimbursementData,
+            loadingReimbursements,
+            rawReimbursements,
+        ],
+    );
 
     const invalidate = useCallback(async () => {
         await queryClient.invalidateQueries({

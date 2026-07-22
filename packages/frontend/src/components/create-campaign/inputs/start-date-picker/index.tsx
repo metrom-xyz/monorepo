@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
 import type { BaseCampaignPayloadPart } from "@/src/types/campaign/common";
+import type { TranslationsType } from "@/src/types/utils";
 import { DateTimePicker, TextInput, Popover, Chip } from "@metrom-xyz/ui";
 import {
     getClosestAvailableDateTime,
@@ -13,6 +14,24 @@ import { formatDateTime } from "@/src/utils/format";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
 
 import styles from "./styles.module.css";
+
+function getDateError(
+    startDate: Dayjs | undefined,
+    minDate: Dayjs | undefined,
+    t: TranslationsType<"newCampaign.inputs.startDatePicker">,
+): string {
+    if (!startDate || !minDate) return "";
+
+    if (startDate.isBefore(minDate)) {
+        const duration =
+            START_DATE_BUFFER_HOURS < 1
+                ? `${START_DATE_BUFFER_HOURS * 60}m`
+                : `${START_DATE_BUFFER_HOURS}h`;
+        return t("dateTooSoon", { duration });
+    }
+
+    return "";
+}
 
 interface StartDatePickerProps {
     disabled?: boolean;
@@ -29,18 +48,14 @@ export function StartDatePicker({
     onChange,
     onError,
 }: StartDatePickerProps) {
-    const [minDate, setMinDate] = useState<Dayjs | undefined>();
-    const [dateError, setDateError] = useState("");
+    const [minDate, setMinDate] = useState<Dayjs | undefined>(() =>
+        disabled ? undefined : getClosestAvailableDateTime(),
+    );
     const [popover, setPopover] = useState(false);
     const [anchor, setAnchor] = useState<HTMLDivElement | null>(null);
 
     const t = useTranslations("newCampaign.inputs.startDatePicker");
     const popoverRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (minDate || disabled) return;
-        setMinDate(getClosestAvailableDateTime());
-    }, [minDate, disabled]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -54,21 +69,11 @@ export function StartDatePicker({
         };
     }, []);
 
+    const dateError = getDateError(startDate, minDate, t);
+
     useEffect(() => {
-        if (!startDate || !minDate) return;
-
-        let dateError = "";
-        if (startDate.isBefore(minDate)) {
-            const duration =
-                START_DATE_BUFFER_HOURS < 1
-                    ? `${START_DATE_BUFFER_HOURS * 60}m`
-                    : `${START_DATE_BUFFER_HOURS}h`;
-            dateError = t("dateTooSoon", { duration });
-        }
-
         onError(dateError);
-        setDateError(dateError);
-    }, [startDate, minDate, onError, t]);
+    }, [dateError, onError]);
 
     function handleInputOnClick() {
         setPopover((prev) => !prev);

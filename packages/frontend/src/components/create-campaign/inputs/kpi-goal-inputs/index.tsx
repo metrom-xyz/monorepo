@@ -1,6 +1,6 @@
 import type { CampaignPayloadKpiDistribution } from "@/src/types/campaign/common";
 import { Chip, NumberInput, type NumberFormatValues } from "@metrom-xyz/ui";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useFormSteps } from "@/src/context/form-steps";
 import type { LocalizedMessage } from "@/src/types/utils";
@@ -32,8 +32,6 @@ export function KpiGoalInputs({
     onUpperUsdTargetChange,
     onMinimumPayoutPercentageChange,
 }: KpiGoalInputsProps) {
-    const [lowerTargetError, setLowerTargetError] = useState<ErrorMessage>("");
-    const [upperTargetError, setUpperTargetError] = useState<ErrorMessage>("");
     const [lowerUsdTarget, setLowerUsdTarget] = useState<number | undefined>(
         kpiDistribution?.goal?.lowerUsdTarget,
     );
@@ -45,57 +43,53 @@ export function KpiGoalInputs({
     >(kpiDistribution?.minimumPayoutPercentage);
 
     const t = useTranslations("newCampaign.inputs.kpiGoalInputs");
-    const lastEdited = useRef<"lowerBound" | "upperBound" | null>(null);
+    const [lastEdited, setLastEdited] = useState<
+        "lowerBound" | "upperBound" | null
+    >(null);
     const { updateErrors } = useFormSteps();
+    const [prevKpiDistribution, setPrevKpiDistribution] =
+        useState(kpiDistribution);
 
-    useEffect(() => {
+    if (kpiDistribution !== prevKpiDistribution) {
+        setPrevKpiDistribution(kpiDistribution);
         setLowerUsdTarget(kpiDistribution?.goal?.lowerUsdTarget);
         setUpperUsdTarget(kpiDistribution?.goal?.upperUsdTarget);
         setMinimumPayoutPercentage(kpiDistribution?.minimumPayoutPercentage);
-    }, [kpiDistribution]);
+    }
 
-    useEffect(() => {
-        if (lowerUsdTarget === undefined && upperUsdTarget === undefined) {
-            setLowerTargetError("");
-            setUpperTargetError("");
-            return;
-        }
+    const [lowerTargetError, upperTargetError] = useMemo<
+        [ErrorMessage, ErrorMessage]
+    >(() => {
+        if (lowerUsdTarget === undefined && upperUsdTarget === undefined)
+            return ["", ""];
 
-        if (lowerUsdTarget === undefined && upperUsdTarget !== undefined) {
-            setLowerTargetError("errors.missingLowerBound");
-            return;
-        }
+        if (lowerUsdTarget === undefined && upperUsdTarget !== undefined)
+            return ["errors.missingLowerBound", ""];
 
-        if (upperUsdTarget === undefined && lowerUsdTarget !== undefined) {
-            setUpperTargetError("errors.missingUpperBound");
-            return;
-        }
+        if (upperUsdTarget === undefined && lowerUsdTarget !== undefined)
+            return ["", "errors.missingUpperBound"];
 
         if (
             lowerUsdTarget !== undefined &&
             upperUsdTarget !== undefined &&
             lowerUsdTarget >= upperUsdTarget
         ) {
-            if (lastEdited.current === "lowerBound")
-                setLowerTargetError("errors.lowerBoundMalformed");
-            if (lastEdited.current === "upperBound")
-                setUpperTargetError("errors.upperBoundMalformed");
-            return;
+            if (lastEdited === "lowerBound")
+                return ["errors.lowerBoundMalformed", ""];
+            if (lastEdited === "upperBound")
+                return ["", "errors.upperBoundMalformed"];
+            return ["", ""];
         }
 
         if (
             lowerUsdTarget !== undefined &&
             upperUsdTarget !== undefined &&
             lowerUsdTarget === upperUsdTarget
-        ) {
-            setLowerTargetError("errors.boundsEqual");
-            setUpperTargetError("errors.boundsEqual");
-            return;
-        }
+        )
+            return ["errors.boundsEqual", "errors.boundsEqual"];
 
-        setLowerTargetError("");
-        setUpperTargetError("");
-    }, [lowerUsdTarget, upperUsdTarget]);
+        return ["", ""];
+    }, [lowerUsdTarget, upperUsdTarget, lastEdited]);
 
     useEffect(() => {
         const error = lowerTargetError || upperTargetError;
@@ -103,7 +97,7 @@ export function KpiGoalInputs({
     }, [lowerTargetError, upperTargetError, updateErrors, t]);
 
     function handleUpperUsdTargetOnChange({ floatValue }: NumberFormatValues) {
-        lastEdited.current = "upperBound";
+        setLastEdited("upperBound");
         setUpperUsdTarget(floatValue);
     }
 
@@ -112,7 +106,7 @@ export function KpiGoalInputs({
     }
 
     function handleLowerUsdTargetOnChange({ floatValue }: NumberFormatValues) {
-        lastEdited.current = "lowerBound";
+        setLastEdited("lowerBound");
         setLowerUsdTarget(floatValue);
     }
 
