@@ -65,8 +65,6 @@ export function ItemContent({ campaignItem }: ItemContentProps) {
         [campaignItem],
     );
 
-    // Only needs a default once, at mount, and is never re-derived
-    // afterwards (matching the previous `if (tab) return;` guard).
     const [tab, setTab] = useState<TabType>(() => tabOptions[0].type);
 
     const { loading: loadingLeaderboard, leaderboard } = useLeaderboard({
