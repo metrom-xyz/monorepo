@@ -1,4 +1,4 @@
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
 import { useChainData } from "../useChainData";
 import { useReadContracts } from "wagmi";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -11,7 +11,7 @@ export function useProtocolFeesEvm({
     enabled = true,
 }: UseProtocolFeesParams = {}): UseProtocolFeesReturnValue {
     const chainData = useChainData({ chainId });
-    const { address } = useAccount();
+    const { address } = useConnection();
 
     const { data, isLoading } = useReadContracts({
         contracts: [

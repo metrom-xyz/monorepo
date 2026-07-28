@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
 import { type Address } from "viem";
 import type { HookBaseParams } from "../types/hooks";
 import type { BoostedAccountsResponse } from "../types/boosted-accounts";
@@ -32,7 +32,7 @@ export function useIsAccountBoosted({
     booster,
     enabled,
 }: useIsAccountBoostedProps): useIsAccountBoostedReturnValue {
-    const { address } = useAccount();
+    const { address } = useConnection();
 
     const { data: active, isLoading: loading } = useQuery({
         queryKey: ["is-account-boosted", address, protocol, booster],

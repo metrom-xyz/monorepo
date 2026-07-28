@@ -12,7 +12,6 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import updateLocale from "dayjs/plugin/updateLocale";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
-import { RainbowKitContextProvider } from "../context/rainbow-kit";
 import {
     APTOS_CLIENT_API_KEY,
     APTOS_CLIENT_TESTNET_API_KEY,
@@ -68,6 +67,15 @@ const SuiDAppKitClientProvider = dynamic(
     { ssr: false },
 );
 
+// Dynamically imported (no SSR) because `@base-org/account` (used to build
+// the EVM wallet connectors) pulls in `@coinbase/cdp-sdk`'s heavy Node
+// dependency chain, which we don't need for basic wallet connection.
+const EvmWalletProvider = dynamic(
+    () =>
+        import("../context/evm-wallet-provider").then((mod) => mod.EvmWalletProvider),
+    { ssr: false },
+);
+
 export function ClientProviders({
     children,
 }: Readonly<{
@@ -93,12 +101,12 @@ export function ClientProviders({
                             }}
                         >
                             <AptosCoreProvider>
-                                <RainbowKitContextProvider>
+                                <EvmWalletProvider>
                                     <TokenIconsProvider>
                                         <Toaster />
                                         {children}
                                     </TokenIconsProvider>
-                                </RainbowKitContextProvider>
+                                </EvmWalletProvider>
                             </AptosCoreProvider>
                         </AptosWalletAdapterProvider>
                     </SolanaAdapterContextProvider>

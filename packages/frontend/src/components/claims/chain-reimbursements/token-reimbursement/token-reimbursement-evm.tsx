@@ -33,8 +33,8 @@ export function TokenReimbursementEvm({
     const t = useTranslations("rewards.reimbursements");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
-    const { switchChainAsync } = useSwitchChain();
-    const { writeContractAsync } = useWriteContract();
+    const switchChain = useSwitchChain();
+    const writeContract = useWriteContract();
     const chainData = useChainData({ chainId });
 
     const [recovering, setRecovering] = useState(false);
@@ -76,14 +76,20 @@ export function TokenReimbursementEvm({
     });
 
     const handleStandardRecover = useCallback(() => {
-        if (!writeContractAsync || !publicClient || !simulatedRecover?.request)
+        if (
+            !writeContract.mutateAsync ||
+            !publicClient ||
+            !simulatedRecover?.request
+        )
             return;
         const recover = async () => {
             setRecovering(true);
             try {
-                await switchChainAsync({ chainId });
+                await switchChain.mutateAsync({ chainId });
 
-                const tx = await writeContractAsync(simulatedRecover.request);
+                const tx = await writeContract.mutateAsync(
+                    simulatedRecover.request,
+                );
                 const receipt = await publicClient.waitForTransactionReceipt({
                     hash: tx,
                 });
@@ -122,14 +128,14 @@ export function TokenReimbursementEvm({
 
         void recover();
     }, [
-        chainId,
+        writeContract,
         publicClient,
         simulatedRecover,
+        switchChain,
+        chainId,
+        onRecover,
         tokenReimbursements.token,
         tokenReimbursements.totalAmount,
-        onRecover,
-        switchChainAsync,
-        writeContractAsync,
     ]);
 
     const handleSafeRecover = useCallback(() => {

@@ -36,8 +36,8 @@ export function ChainOverviewEvm({
     const t = useTranslations("rewards");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
-    const { switchChainAsync } = useSwitchChain();
-    const { writeContractAsync } = useWriteContract();
+    const switchChain = useSwitchChain();
+    const writeContract = useWriteContract();
 
     const [claiming, setClaiming] = useState(false);
     const [recovering, setRecovering] = useState(false);
@@ -112,7 +112,7 @@ export function ChainOverviewEvm({
 
     const handleStandardRecoverAll = useCallback(() => {
         if (
-            !writeContractAsync ||
+            !writeContract.mutateAsync ||
             !publicClient ||
             !simulatedRecoverAll?.request
         )
@@ -121,11 +121,11 @@ export function ChainOverviewEvm({
             setRecovering(true);
             onRecovering?.(true);
             try {
-                await switchChainAsync({
+                await switchChain.mutateAsync({
                     chainId: chainWithRewardsData.chainId,
                 });
 
-                const tx = await writeContractAsync(
+                const tx = await writeContract.mutateAsync(
                     simulatedRecoverAll.request,
                 );
                 const receipt = await publicClient.waitForTransactionReceipt({
@@ -158,13 +158,13 @@ export function ChainOverviewEvm({
         };
         void recover();
     }, [
-        chainWithRewardsData.chainId,
+        writeContract,
         publicClient,
         simulatedRecoverAll,
-        onRecoverAll,
         onRecovering,
-        switchChainAsync,
-        writeContractAsync,
+        switchChain,
+        chainWithRewardsData.chainId,
+        onRecoverAll,
     ]);
 
     const handleSafeRecoverAll = useCallback(() => {
@@ -212,17 +212,23 @@ export function ChainOverviewEvm({
     ]);
 
     const handleStandardClaimAll = useCallback(() => {
-        if (!writeContractAsync || !publicClient || !simulatedClaimAll?.request)
+        if (
+            !writeContract.mutateAsync ||
+            !publicClient ||
+            !simulatedClaimAll?.request
+        )
             return;
         const claim = async () => {
             setClaiming(true);
             onClaiming?.(true);
             try {
-                await switchChainAsync({
+                await switchChain.mutateAsync({
                     chainId: chainWithRewardsData.chainId,
                 });
 
-                const tx = await writeContractAsync(simulatedClaimAll.request);
+                const tx = await writeContract.mutateAsync(
+                    simulatedClaimAll.request,
+                );
                 const receipt = await publicClient.waitForTransactionReceipt({
                     hash: tx,
                 });
@@ -256,14 +262,14 @@ export function ChainOverviewEvm({
         };
         void claim();
     }, [
-        t,
-        chainWithRewardsData.chainId,
+        writeContract,
         publicClient,
         simulatedClaimAll,
-        onClaimAll,
         onClaiming,
-        switchChainAsync,
-        writeContractAsync,
+        switchChain,
+        chainWithRewardsData.chainId,
+        onClaimAll,
+        t,
     ]);
 
     const handleSafeClaimAll = useCallback(() => {

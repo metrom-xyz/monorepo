@@ -10,10 +10,22 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import { type ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { ChainTypeProvider } from "@/context/chain-type";
 import AptosCoreProvider from "./aptos-core-provider";
-import { ReownAppKitContextProvider } from "./reown-app-kit-provider";
 import { TokenIconsProvider } from "./token-icon-provider";
+
+// Dynamically imported (no SSR): `createAppKit()` runs at module import time
+// and pulls in reown AppKit's full wallet bundle (incl. `@base-org/account`'s
+// heavy `@coinbase/cdp-sdk` dependency chain), even though this dapp only
+// configures the Safe connector.
+const ReownAppKitContextProvider = dynamic(
+    () =>
+        import("./reown-app-kit-provider").then(
+            (mod) => mod.ReownAppKitContextProvider,
+        ),
+    { ssr: false },
+);
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);

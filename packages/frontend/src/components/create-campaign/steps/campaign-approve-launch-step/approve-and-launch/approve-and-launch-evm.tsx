@@ -5,7 +5,7 @@ import { useChainData } from "@/src/hooks/useChainData";
 import { Button } from "@metrom-xyz/ui";
 import { useTranslations } from "next-intl";
 import {
-    useAccount,
+    useConnection,
     usePublicClient,
     useReadContracts,
     useSimulateContract,
@@ -55,11 +55,11 @@ export function ApproveAndDeployEvm({
     const { id: chainId } = useChainWithType();
     const connectedChainData = useChainData({ chainId });
     const deployChainSupported = useIsChainSupported({ chainId });
-    const { address: connectedAddress } = useAccount();
+    const { address: connectedAddress } = useConnection();
     const payloadChainData = useChainData({ chainId: payload.chainId });
     const publicClient = usePublicClient();
-    const { switchChain } = useSwitchChain();
-    const { writeContractAsync } = useWriteContract();
+    const switchChain = useSwitchChain();
+    const writeContract = useWriteContract();
 
     const allTokensApproved = !tokensToApproveWithAllowance.some(
         ({ approved }) => !approved,
@@ -235,7 +235,7 @@ export function ApproveAndDeployEvm({
     }, [simulateCreateError, simulateCreateErrored]);
 
     function handleNetworkOnSwitch() {
-        switchChain(
+        switchChain.mutate(
             { chainId: payload.chainId },
             {
                 onError: (err) => {
@@ -282,13 +282,19 @@ export function ApproveAndDeployEvm({
             return;
         }
 
-        if (!writeContractAsync || !publicClient || !simulatedCreate?.request)
+        if (
+            !writeContract.mutateAsync ||
+            !publicClient ||
+            !simulatedCreate?.request
+        )
             return;
 
         const create = async () => {
             setDeploying(true);
             try {
-                const tx = await writeContractAsync(simulatedCreate.request);
+                const tx = await writeContract.mutateAsync(
+                    simulatedCreate.request,
+                );
                 const receipt = await publicClient.waitForTransactionReceipt({
                     hash: tx,
                 });
@@ -308,12 +314,12 @@ export function ApproveAndDeployEvm({
         };
         void create();
     }, [
-        publicClient,
-        simulateCreateError,
         simulateCreateErrored,
-        simulatedCreate?.request,
+        writeContract,
+        publicClient,
+        simulatedCreate,
+        simulateCreateError,
         onLaunch,
-        writeContractAsync,
     ]);
 
     const handleOnSafeDeploy = useCallback(() => {

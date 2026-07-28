@@ -7,12 +7,23 @@ import { ChainType } from "@metrom-xyz/sdk";
 import { useChainType } from "@/src/context/chain-type";
 import { useSwitchEcosystem } from "@/src/hooks/useSwitchEcosystem";
 import { ECOSYSTEMS } from "@/src/commons/ecosystems";
-import { WalletListEvm } from "./wallets-list/wallet-list-evm";
+import dynamic from "next/dynamic";
 import { WalletListMvm } from "./wallets-list/wallet-list-mvm";
 import { WalletListSvm } from "./wallets-list/wallet-list-svm";
 import { WalletListSui } from "./wallets-list/wallet-list-sui";
 
 import styles from "./styles.module.css";
+
+// Dynamically imported (no SSR): pulls in `@base-org/account`'s wagmi
+// connector, which drags in `@coinbase/cdp-sdk`'s heavy Node dependency
+// chain that isn't needed for basic wallet connection.
+const WalletListEvm = dynamic(
+    () =>
+        import("./wallets-list/wallet-list-evm").then(
+            (mod) => mod.WalletListEvm,
+        ),
+    { ssr: false },
+);
 
 interface ConnectModalProps {
     open: boolean;

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { ErrorIcon } from "@/src/assets/error-icon";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useAccount, useChainId, useSwitchChain } from "wagmi";
+import { useConnection, useChainId, useSwitchChain } from "wagmi";
 import { PopoverPicker } from "./popover-picker";
 import { DrawerPicker } from "./drawer-picker";
 import { useClickAway } from "react-use";
@@ -25,8 +25,8 @@ export function NetworkSelectEvm() {
     const selectedChainId = useChainId();
     const chainData = useChainData({ chainId: selectedChainId });
     const chainSupported = useIsChainSupported({ chainId: selectedChainId });
-    const { address } = useAccount();
-    const { switchChain } = useSwitchChain();
+    const { address } = useConnection();
+    const switchChain = useSwitchChain();
 
     // When no wallet is connected, Wagmi defaults to mainnet.
     // Since mainnet is not marked as active in our config, we need to
@@ -37,7 +37,7 @@ export function NetworkSelectEvm() {
         const supported = activeChains.some(
             ({ id, type }) => id === selectedChainId && type === ChainType.Evm,
         );
-        if (!supported) switchChain({ chainId: activeChains[0].id });
+        if (!supported) switchChain.mutate({ chainId: activeChains[0].id });
     }, [activeChains, address, selectedChainId, switchChain]);
 
     const chains = useMemo(() => {
@@ -63,7 +63,7 @@ export function NetworkSelectEvm() {
     }
 
     function handleNetworkOnChange(chainId: number) {
-        switchChain(
+        switchChain.mutate(
             { chainId },
             {
                 onError: (err) => {

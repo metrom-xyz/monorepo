@@ -9,7 +9,6 @@ import {
 import React, { useEffect, type ReactNode } from "react";
 import {
     cookieToInitialState,
-    createConfig,
     http,
     WagmiProvider,
     type Config,
@@ -20,7 +19,7 @@ import { hashFn } from "wagmi/query";
 import { useTheme } from "next-themes";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import type { EIP1193RequestFn, Transport } from "viem";
-import { base, mainnet, swellchain } from "viem/chains";
+import { base, swellchain } from "viem/chains";
 import { WALLETCONNECT_PROJECT_ID } from "@/commons/env";
 
 // Set up queryClient
@@ -57,15 +56,6 @@ const wagmiAdapter = new WagmiAdapter({
         [swellchain.id]: http("https://rpc.ankr.com/swell"),
     },
     connectors: [safe()],
-});
-
-// Required for ENS resolution hooks, since the dapp doesn't support mainnet,
-// we provide a separate client config specifically for querying ens on mainnet.
-export const mainnetWagmiConfig = createConfig({
-    chains: [mainnet],
-    transports: {
-        [mainnet.id]: http(mainnet.rpcUrls.default.http[0]),
-    },
 });
 
 createAppKit({

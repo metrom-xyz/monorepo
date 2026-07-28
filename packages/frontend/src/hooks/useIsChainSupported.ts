@@ -1,5 +1,5 @@
 import type { HookBaseParams } from "@/src/types/hooks";
-import { useAccount, useChains } from "wagmi";
+import { useConnection, useChains } from "wagmi";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useMemo } from "react";
 import {
@@ -18,7 +18,7 @@ export interface UseIsChainSupportedParams extends HookBaseParams {
 
 export function useIsChainSupported({ chainId }: UseIsChainSupportedParams) {
     const { chainType } = useChainType();
-    const accountEvm = useAccount();
+    const accountEvm = useConnection();
     const accountMvm = useWallet();
     const accountSvm = useWalletConnection();
     const accountSui = useCurrentAccount();

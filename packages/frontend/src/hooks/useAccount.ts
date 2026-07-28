@@ -1,5 +1,5 @@
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { useAccount as useAccountWagmi } from "wagmi";
+import { useConnection as useAccountWagmi } from "wagmi";
 import type { Address } from "viem";
 import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";

@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { Nav } from "./nav";
 import { Footer } from "./footer";
-import { useAccount as useAccountEvm, useDisconnect } from "wagmi";
+import { useConnection as useAccountEvm, useDisconnect } from "wagmi";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useChainType } from "@/src/context/chain-type";
 import { useWalletConnection } from "@solana/react-hooks";
@@ -21,7 +21,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
     const { chainType } = useChainType();
     const { isConnected: connectedEvm } = useAccountEvm();
-    const { disconnect: disconnectEvm } = useDisconnect();
+    const disconnectEvm = useDisconnect();
     const { connected: connectedMvm, disconnect: disconnectMvm } = useWallet();
     const { connected: connectedSvm, disconnect: disconnectSvm } =
         useWalletConnection();
@@ -53,10 +53,11 @@ export function Layout({ children }: LayoutProps) {
 
             if (chainType !== ChainType.Evm && connectedEvm)
                 disconnections.push(
-                    Promise.resolve(disconnectEvm()).catch((error: unknown) =>
-                        console.warn(
-                            `Could not disconnect EVM wallet: ${error}`,
-                        ),
+                    Promise.resolve(disconnectEvm.mutate()).catch(
+                        (error: unknown) =>
+                            console.warn(
+                                `Could not disconnect EVM wallet: ${error}`,
+                            ),
                     ),
                 );
             if (chainType !== ChainType.Aptos && connectedMvm)

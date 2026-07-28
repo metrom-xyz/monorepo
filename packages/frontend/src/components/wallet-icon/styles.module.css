@@ -1,5 +1,5 @@
 @reference "../../app.css";
 
 .walletIcon {
-    @apply size-8;
+    @apply size-8 rounded-lg;
 }

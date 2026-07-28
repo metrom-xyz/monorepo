@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAccount, useConnect, useConnectors, useDisconnect } from "wagmi";
+import { useConnection, useConnect, useConnectors, useDisconnect } from "wagmi";
 import { toast } from "sonner";
 import { SAFE } from "../commons/env";
 import { SAFE_CONNECTOR_ID } from "../commons";
@@ -9,9 +9,9 @@ import { SafeConnectedNotification } from "../components/connect-button/evm/safe
 
 export function useSafeAutoConnect() {
     const connectors = useConnectors();
-    const { connector } = useAccount();
-    const { connect } = useConnect();
-    const { disconnect } = useDisconnect();
+    const { connector } = useConnection();
+    const connect = useConnect();
+    const disconnect = useDisconnect();
 
     useEffect(() => {
         if (!SAFE) return;
@@ -21,9 +21,9 @@ export function useSafeAutoConnect() {
         );
         if (!safeConnector) return;
 
-        if (connector?.id !== SAFE_CONNECTOR_ID) disconnect();
+        if (connector?.id !== SAFE_CONNECTOR_ID) disconnect.mutate();
 
-        connect(
+        connect.mutate(
             { connector: safeConnector },
             {
                 onSuccess: () =>
