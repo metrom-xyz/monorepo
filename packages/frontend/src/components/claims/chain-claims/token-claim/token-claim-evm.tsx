@@ -34,8 +34,8 @@ export function TokenClaimEvm({
     const t = useTranslations("rewards.claims");
     const { address: account } = useAccount();
     const publicClient = usePublicClient();
-    const { switchChainAsync } = useSwitchChain();
-    const { writeContractAsync } = useWriteContract();
+    const switchChain = useSwitchChain();
+    const writeContract = useWriteContract();
     const chainData = useChainData({ chainId, chainType: ChainType.Evm });
 
     const [claiming, setClaiming] = useState(false);
@@ -74,14 +74,20 @@ export function TokenClaimEvm({
     });
 
     const handleStandardClaim = useCallback(() => {
-        if (!writeContractAsync || !publicClient || !simulatedClaim?.request)
+        if (
+            !writeContract.mutateAsync ||
+            !publicClient ||
+            !simulatedClaim?.request
+        )
             return;
         const claim = async () => {
             setClaiming(true);
             try {
-                await switchChainAsync({ chainId });
+                await switchChain.mutateAsync({ chainId });
 
-                const tx = await writeContractAsync(simulatedClaim.request);
+                const tx = await writeContract.mutateAsync(
+                    simulatedClaim.request,
+                );
                 const receipt = await publicClient.waitForTransactionReceipt({
                     hash: tx,
                 });
@@ -117,14 +123,14 @@ export function TokenClaimEvm({
         };
         void claim();
     }, [
-        chainId,
+        writeContract,
         publicClient,
         simulatedClaim,
+        switchChain,
+        chainId,
+        onClaim,
         tokenClaims.token,
         tokenClaims.totalAmount,
-        onClaim,
-        writeContractAsync,
-        switchChainAsync,
     ]);
 
     const handleSafeClaim = useCallback(() => {

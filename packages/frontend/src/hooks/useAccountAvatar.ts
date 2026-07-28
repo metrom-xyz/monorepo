@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { mainnet } from "viem/chains";
 import { useChainType } from "../context/chain-type";
 import { ChainType } from "@metrom-xyz/sdk";
-import { mainnetWagmiConfig } from "../context/rainbow-kit";
+import { mainnetWagmiConfig } from "../wagmi/mainnet-wagmi-config";
 
 export function useAccountAvatar(params: UseEnsAvatarParameters) {
     const { chainType } = useChainType();

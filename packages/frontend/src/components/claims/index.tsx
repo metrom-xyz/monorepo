@@ -39,7 +39,7 @@ export function Claims() {
     const [recoveringAll, setRecoveringAll] = useState(false);
 
     const { address } = useAccount();
-    const { switchChain } = useSwitchChain();
+    const switchChain = useSwitchChain();
     const {
         loading: loadingClaims,
         claims,
@@ -187,7 +187,7 @@ export function Claims() {
 
     const onChainSwitch = useCallback(
         (chainId: number) => {
-            switchChain({ chainId });
+            switchChain.mutate({ chainId });
             setChainId(chainId);
         },
         [switchChain],

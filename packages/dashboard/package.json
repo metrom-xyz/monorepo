@@ -44,7 +44,7 @@
         "react-use": "catalog:",
         "sonner": "catalog:",
         "viem": "catalog:",
-        "wagmi": "catalog:"
+        "wagmi": "^2.19.5"
     },
     "devDependencies": {
         "@eslint/js": "catalog:",

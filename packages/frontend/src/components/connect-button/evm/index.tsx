@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AccountMenu, type Balance } from "../account-menu";
 import { trackUmamiEvent } from "@/src/utils/umami";
-import { useAccount, useBalance, useDisconnect } from "wagmi";
+import { useConnection, useBalance, useDisconnect } from "wagmi";
 import { type Address } from "viem";
 import { SAFE } from "@/src/commons/env";
 import { SafeLogo } from "@/src/assets/logos/safe";
@@ -14,12 +14,13 @@ import { useChainType } from "@/src/context/chain-type";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
+import { formatUnits } from "@/src/utils/format";
 
 export function ConnectButtonEvm() {
-    const { disconnect } = useDisconnect();
+    const disconnect = useDisconnect();
     const { clearLastWallet } = useChainType();
 
-    const { address, isConnected: connected, chainId } = useAccount();
+    const { address, isConnected: connected, chainId } = useConnection();
     const { data: balanceData } = useBalance({ address });
 
     const [accountMenu, setAccountMenu] = useState(false);
@@ -27,13 +28,15 @@ export function ConnectButtonEvm() {
     const balance: Balance | undefined = balanceData
         ? {
               symbol: balanceData.symbol,
-              amount: Number(balanceData.formatted),
+              amount: Number(
+                  formatUnits(balanceData.value, balanceData.decimals),
+              ),
           }
         : undefined;
 
     function handleDisconnect() {
         clearLastWallet(ChainType.Evm);
-        disconnect();
+        disconnect.mutate();
     }
 
     function handleAccountMenuOpen() {

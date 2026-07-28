@@ -1,4 +1,4 @@
-import { mainnetWagmiConfig } from "@/src/context/rainbow-kit";
+import { mainnetWagmiConfig } from "@/src/wagmi/mainnet-wagmi-config";
 import { Typography, type TypographyProps } from "@metrom-xyz/ui";
 import type { Address } from "viem";
 import { mainnet } from "viem/chains";

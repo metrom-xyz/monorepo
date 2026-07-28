@@ -1,4 +1,4 @@
-import { useAccount, useChains, useConfig } from "wagmi";
+import { useConnection, useChains, useConfig } from "wagmi";
 import { formatUnits, type Address, zeroAddress } from "viem";
 import { METROM_API_CLIENT } from "../../commons";
 import { metromAbi } from "@metrom-xyz/contracts/abi";
@@ -26,7 +26,7 @@ export function useReimbursementsEvm({
     const config = useConfig();
     const supportedChains = useChains();
     const queryClient = useQueryClient();
-    const { address } = useAccount();
+    const { address } = useConnection();
 
     const {
         data: rawReimbursements,

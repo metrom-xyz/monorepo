@@ -29,7 +29,6 @@ const nextConfig = {
     },
     experimental: {
         optimizePackageImports: [
-            "@rainbow-me/rainbowkit",
             "wagmi",
             "viem",
             "@wagmi/core",

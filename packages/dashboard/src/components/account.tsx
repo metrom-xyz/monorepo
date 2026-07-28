@@ -4,7 +4,7 @@ import { mainnet } from "viem/chains";
 import { useEnsName } from "wagmi";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useChainType } from "@/context/chain-type";
-import { mainnetWagmiConfig } from "./reown-app-kit-provider";
+import { mainnetWagmiConfig } from "@/context/mainnet-wagmi-config";
 import { shortenAddress } from "@/utils/address";
 
 interface AccountProps extends Omit<TypographyProps, "children"> {
