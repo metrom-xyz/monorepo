@@ -17,8 +17,7 @@ import { TokenIconsProvider } from "./token-icon-provider";
 
 // Dynamically imported (no SSR): `createAppKit()` runs at module import time
 // and pulls in reown AppKit's full wallet bundle (incl. `@base-org/account`'s
-// heavy `@coinbase/cdp-sdk` dependency chain), even though this dapp only
-// configures the Safe connector.
+// heavy `@coinbase/cdp-sdk` dependency chain).
 const ReownAppKitContextProvider = dynamic(
     () =>
         import("./reown-app-kit-provider").then(
