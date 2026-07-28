@@ -40,11 +40,11 @@
         "eslint-config-prettier": "catalog:",
         "globals": "catalog:",
         "prettier": "catalog:",
-        "react": "^19.2.8",
-        "react-dom": "^19.2.8",
+        "react": "catalog:",
+        "react-dom": "catalog:",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
-        "viem": "^2.55.8",
+        "viem": "catalog:",
         "vite": "catalog:",
         "vite-plugin-dts": "^5.0.3"
     }
