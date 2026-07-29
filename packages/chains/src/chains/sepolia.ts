@@ -10,7 +10,6 @@ import {
     TargetType,
 } from "@metrom-xyz/sdk";
 import { LiquityLogo } from "../assets/logos/liquity-v2-platforms/liquity";
-import { EbisuLogo } from "../assets/logos/liquity-v2-platforms/ebisu";
 import { CarbonLogo } from "../assets/logos/dexes/carbon";
 import type { ChainData } from "../types/chains";
 import { AmmPoolDepositUrlType, ProtocolType } from "../types/protocol";
@@ -58,25 +57,6 @@ export const sepoliaData: ChainData = {
                 decimals: 18,
                 name: "Bold Stablecoin",
                 symbol: "BOLD",
-            },
-            actionUrls: {
-                [TargetType.LiquityV2Debt]:
-                    "https://liquity2-sepolia.vercel.app/borrow",
-                [TargetType.LiquityV2StabilityPool]:
-                    "https://liquity2-sepolia.vercel.app/earn",
-            },
-        },
-        {
-            active: true,
-            type: ProtocolType.LiquityV2,
-            slug: SupportedLiquityV2.Ebisu,
-            logo: EbisuLogo,
-            name: "Ebisu",
-            debtToken: {
-                address: "0xA4E721039da9e14332Fec14F98f463D92623149A",
-                decimals: 18,
-                name: "ebUSD",
-                symbol: "ebUSD",
             },
             actionUrls: {
                 [TargetType.LiquityV2Debt]:

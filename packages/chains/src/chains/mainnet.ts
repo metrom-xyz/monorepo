@@ -56,7 +56,7 @@ export const mainnetData: ChainData = {
     ],
     protocols: [
         {
-            active: true,
+            active: false,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Ebisu,
             logo: EbisuLogo,
