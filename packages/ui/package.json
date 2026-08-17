@@ -45,16 +45,12 @@
         "@storybook/addon-onboarding": "^10.5.7",
         "@storybook/addon-themes": "^10.5.7",
         "@storybook/react-vite": "^10.5.7",
-        "@tailwindcss/vite": "^4.3.3",
         "@types/node": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "classnames": "catalog:",
         "eslint": "catalog:",
-        "eslint-config-next": "catalog:",
         "eslint-config-prettier": "catalog:",
-        "eslint-plugin-prettier": "catalog:",
-        "eslint-plugin-storybook": "^10.5.7",
         "postcss": "^8.5.26",
         "prettier": "catalog:",
         "react": "catalog:",
@@ -66,11 +62,6 @@
         "typescript-eslint": "catalog:",
         "viem": "catalog:",
         "vite": "catalog:"
-    },
-    "eslintConfig": {
-        "extends": [
-            "plugin:storybook/recommended"
-        ]
     },
     "files": [
         "dist"
