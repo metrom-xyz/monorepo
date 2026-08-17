@@ -35,7 +35,7 @@
         "@types/node": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
-        "@vitejs/plugin-react-swc": "^4.3.2",
+        "@vitejs/plugin-react-swc": "^4.3.3",
         "eslint": "catalog:",
         "eslint-config-prettier": "catalog:",
         "globals": "catalog:",
@@ -44,7 +44,7 @@
         "react-dom": "catalog:",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
-        "viem": "catalog:",
+        "viem": "^2.55.13",
         "vite": "catalog:",
         "vite-plugin-dts": "^5.0.3"
     }
