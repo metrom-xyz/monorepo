@@ -25,7 +25,7 @@ const cspHeader = `
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactCompiler: {
-        compilationMode: "infer",
+        turbopackRustReactCompiler: true,
     },
     experimental: {
         optimizePackageImports: [
