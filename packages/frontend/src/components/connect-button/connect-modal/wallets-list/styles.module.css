@@ -21,9 +21,7 @@
 }
 
 .walletButton:disabled {
-    @apply bg-gray-200
-        dark:bg-neutral-800
-        cursor-not-allowed;
+    @apply opacity-60 cursor-not-allowed hover:surface-primary;
 }
 
 .leftContent {
