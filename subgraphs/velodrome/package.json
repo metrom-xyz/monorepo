@@ -7,6 +7,7 @@
         "codegen": "graph codegen",
         "deploy:velodrome:swell": "pnpm prepare:deploy swellchain velodrome && pnpm codegen && graph deploy --studio metrom-velodrome-swell -l 0.0.27",
         "deploy:aerodrome:base": "pnpm prepare:deploy base aerodrome && pnpm codegen && graph deploy --studio metrom-aerodrome-base -l 0.0.2",
+        "deploy:velodrome:ink": "pnpm prepare:deploy ink velodrome && pnpm codegen && graph build && goldsky subgraph deploy metrom-velodrome-ink/0.0.1",
         "lint": "eslint .",
         "format": "eslint --fix ."
     },

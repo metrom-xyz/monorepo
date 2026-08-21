@@ -15,10 +15,8 @@ import {
 } from "../generated/schema";
 import { NonFungiblePositionManager } from "../generated/NonFungiblePositionManager/NonFungiblePositionManager";
 import { AlmCore } from "../generated/AlmCore/AlmCore";
-import { PoolFactory } from "../generated/PoolFactory/PoolFactory";
 import { ClFactory } from "../generated/ClFactory/ClFactory";
 import {
-    POOL_FACTORY_ADDRESS,
     NON_FUNGIBLE_POSITION_MANAGER_ADDRESS,
     CL_FACTORY_ADDRESS,
     ALM_CORE_ADDRESS,
@@ -45,7 +43,6 @@ export const BD_Q192 = BigDecimal.fromString(
 
 export const NonFungiblePositionManagerContract =
     NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
-export const PoolFactoryContract = PoolFactory.bind(POOL_FACTORY_ADDRESS);
 export const ClFactoryContract = ClFactory.bind(CL_FACTORY_ADDRESS);
 export const AlmCoreContract = AlmCore.bind(ALM_CORE_ADDRESS);
 
