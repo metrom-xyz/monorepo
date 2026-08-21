@@ -4,17 +4,11 @@ import {
     DecreaseLiquidity as DecreaseLiquidityEvent,
     Transfer as TransferEvent,
 } from "../../../generated/NonFungiblePositionManager/NonFungiblePositionManager";
-import {
-    ConcentratedLiquidityChange,
-    ConcentratedLiquidityTransfer,
-    ConcentratedPosition,
-    Gauge,
-} from "../../../generated/schema";
+import { ConcentratedPosition, Gauge } from "../../../generated/schema";
 import {
     BI_0,
     ClFactoryContract,
     getConcentratedPositionId,
-    getEventId,
     NonFungiblePositionManagerContract,
 } from "../../commons";
 import { ALM_CORE_ADDRESS } from "../../addresses";
@@ -59,16 +53,6 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
     if (!event.params.liquidity.isZero()) {
         position.liquidity = position.liquidity.plus(event.params.liquidity);
         position.save();
-
-        let liquidityChange = new ConcentratedLiquidityChange(
-            getEventId(event),
-        );
-        liquidityChange.timestamp = event.block.timestamp;
-        liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.liquidity;
-        liquidityChange.pool = position.pool;
-        liquidityChange.position = position.id;
-        liquidityChange.save();
     }
 }
 
@@ -79,16 +63,6 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
     if (!event.params.liquidity.isZero()) {
         position.liquidity = position.liquidity.minus(event.params.liquidity);
         position.save();
-
-        let liquidityChange = new ConcentratedLiquidityChange(
-            getEventId(event),
-        );
-        liquidityChange.timestamp = event.block.timestamp;
-        liquidityChange.blockNumber = event.block.number;
-        liquidityChange.delta = event.params.liquidity.neg();
-        liquidityChange.pool = position.pool;
-        liquidityChange.position = position.id;
-        liquidityChange.save();
     }
 }
 
@@ -113,15 +87,4 @@ export function handleTransfer(event: TransferEvent): void {
 
     position.owner = event.params.to;
     position.save();
-
-    let liquidityTransfer = new ConcentratedLiquidityTransfer(
-        getEventId(event),
-    );
-    liquidityTransfer.timestamp = event.block.timestamp;
-    liquidityTransfer.blockNumber = event.block.number;
-    liquidityTransfer.from = position.owner;
-    liquidityTransfer.to = event.params.to;
-    liquidityTransfer.pool = position.pool;
-    liquidityTransfer.position = position.id;
-    liquidityTransfer.save();
 }

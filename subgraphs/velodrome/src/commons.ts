@@ -1,10 +1,4 @@
-import {
-    Address,
-    BigDecimal,
-    BigInt,
-    Bytes,
-    ethereum,
-} from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
     AlmStrategy,
     AlmStrategyPosition,
@@ -45,12 +39,6 @@ export const NonFungiblePositionManagerContract =
     NonFungiblePositionManager.bind(NON_FUNGIBLE_POSITION_MANAGER_ADDRESS);
 export const ClFactoryContract = ClFactory.bind(CL_FACTORY_ADDRESS);
 export const AlmCoreContract = AlmCore.bind(ALM_CORE_ADDRESS);
-
-export function getEventId(event: ethereum.Event): Bytes {
-    return changetype<Bytes>(
-        event.block.number.leftShift(40).plus(event.logIndex).reverse(),
-    );
-}
 
 export function getConcentratedPoolOrThrow(address: Address): ConcentratedPool {
     let pool = ConcentratedPool.load(address);

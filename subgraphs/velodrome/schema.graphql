@@ -21,11 +21,6 @@ type ConcentratedPool @entity(immutable: false) {
     fee: Int!
     liquidity: BigInt!
     positions: [ConcentratedPosition!]! @derivedFrom(field: "pool")
-    liquidityChanges: [ConcentratedLiquidityChange!]!
-        @derivedFrom(field: "pool")
-    liquidityTransfers: [ConcentratedLiquidityTransfer!]!
-        @derivedFrom(field: "pool")
-    swapChanges: [SwapChange!]! @derivedFrom(field: "pool")
     ticks: [Tick!]! @derivedFrom(field: "pool")
 }
 
@@ -38,38 +33,6 @@ type ConcentratedPosition @entity(immutable: false) {
     pool: ConcentratedPool!
     # If this is non-null, this is a position that is handled by an ALM strategy
     almStrategy: AlmStrategy
-    liquidityChanges: [ConcentratedLiquidityChange!]!
-        @derivedFrom(field: "position")
-    liquidityTransfers: [ConcentratedLiquidityTransfer!]!
-        @derivedFrom(field: "position")
-}
-
-type ConcentratedLiquidityChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    delta: BigInt!
-    pool: ConcentratedPool!
-    position: ConcentratedPosition!
-}
-
-type ConcentratedLiquidityTransfer @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    from: Bytes!
-    to: Bytes!
-    pool: ConcentratedPool!
-    position: ConcentratedPosition!
-}
-
-type SwapChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    pool: ConcentratedPool!
-    tick: Int!
-    sqrtPriceX96: BigInt!
 }
 
 type Tick @entity(immutable: false) {
@@ -93,27 +56,6 @@ type AlmStrategyPosition @entity(immutable: false) {
     id: Bytes!
     owner: Bytes!
     liquidity: BigInt!
-    strategy: AlmStrategy!
-    pool: ConcentratedPool!
-}
-
-type AlmStrategyLiquidityChange @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    delta: BigInt!
-    strategy: AlmStrategy!
-    pool: ConcentratedPool!
-    position: AlmStrategyPosition!
-}
-
-type AlmStrategyLiquidityTransfer @entity(immutable: true) {
-    id: Bytes!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    from: Bytes!
-    to: Bytes!
-    amount: BigInt!
     strategy: AlmStrategy!
     pool: ConcentratedPool!
 }
