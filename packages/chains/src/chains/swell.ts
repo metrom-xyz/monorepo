@@ -17,7 +17,7 @@ import { OrkiDarkLogo } from "../assets/logos/liquity-v2-platforms/orki-dark";
 import { OrkiLightLogo } from "../assets/logos/liquity-v2-platforms/orki-light";
 
 export const swellData: ChainData = {
-    active: true,
+    active: false,
     id: swellchain.id,
     type: ChainType.Evm,
     name: "Swell",
@@ -40,14 +40,14 @@ export const swellData: ChainData = {
         },
         {
             active: false,
-            partner: true,
+            partner: false,
             type: PartnerCampaignType.JumperWhitelistedAmmPoolLiquidity,
             distributables: [DistributablesType.Tokens],
         },
     ],
     protocols: [
         {
-            active: true,
+            active: false,
             type: ProtocolType.Dex,
             slug: SupportedDex.Velodrome,
             logo: VelodromeLogo,
@@ -59,7 +59,7 @@ export const swellData: ChainData = {
             supportsFetchAllPools: true,
         },
         {
-            active: true,
+            active: false,
             type: ProtocolType.LiquityV2,
             slug: SupportedLiquityV2.Orki,
             logo: OrkiDarkLogo,

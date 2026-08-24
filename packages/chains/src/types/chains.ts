@@ -66,6 +66,7 @@ export enum SupportedProductionEvmChain {
     MegaEth = SupportedChainEvm.MegaEth,
     Bsc = SupportedChainEvm.Bsc,
     Mainnet = SupportedChainEvm.Mainnet,
+    Ink = SupportedChainEvm.Ink,
     // These are required for Turtle campaigns
     Katana = katana.id,
     Linea = linea.id,
