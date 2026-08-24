@@ -21,7 +21,7 @@
     },
     "devDependencies": {
         "@eslint/js": "catalog:",
-        "@metrom-xyz/contracts": "^0.56.0",
+        "@metrom-xyz/contracts": "^0.57.0",
         "@tsconfig/node20": "^20.1.9",
         "@types/node": "catalog:",
         "eslint": "catalog:",

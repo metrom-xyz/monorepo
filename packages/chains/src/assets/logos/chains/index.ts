@@ -7,6 +7,7 @@ export * from "./eth";
 export * from "./gnosis";
 export * from "./hemi";
 export * from "./katana";
+export * from "./ink";
 export * from "./lightlink-phoenix";
 export * from "./linea";
 export * from "./lens";

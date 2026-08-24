@@ -22,6 +22,7 @@ import {
     saga,
     megaeth,
     bsc,
+    ink,
 } from "viem/chains";
 import {
     sonicData,
@@ -64,6 +65,7 @@ import {
 } from "./types/chains";
 import { Environment } from "@metrom-xyz/sdk";
 import { suiTestnetData } from "./chains/sui-testnet";
+import { inkData } from "./chains/ink";
 
 export {
     Environment,
@@ -110,6 +112,7 @@ export const EVM_CHAIN_DATA: {
         [SupportedProductionEvmChain.MegaEth]: megaethData,
         [SupportedProductionEvmChain.Bsc]: bscData,
         [SupportedProductionEvmChain.Afx]: afxData,
+        [SupportedProductionEvmChain.Ink]: inkData,
     },
 };
 
@@ -179,6 +182,7 @@ export const SUPPORTED_PRODUCTION_CHAINS: [Chain, ...Chain[]] = [
     megaeth,
     mainnet,
     bsc,
+    ink,
     // These are required for Turtle campaigns
     katana,
     linea,
