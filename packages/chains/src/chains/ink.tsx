@@ -48,7 +48,7 @@ export const inkData: ChainData = {
                 type: AmmPoolDepositUrlType.QueryTokenAddresses,
                 template: `https://velo.drome.eth.limo/deposit?token0={token_0}&token1={token_1}&chain0=${SupportedChain.Ink}&chain1=${SupportedChain.Ink}&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F`,
             },
-            supportsFetchAllPools: true,
+            supportsFetchAllPools: false,
         },
     ],
     baseTokens: [
