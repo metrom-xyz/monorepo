@@ -106,7 +106,7 @@ export const TOKEN_ICONS_URL = `https://raw.githubusercontent.com/metrom-xyz/tok
 
 export const AMM_SUPPORTS_RANGE_INCENTIVES: Record<SupportedAmm, boolean> = {
     [SupportedAmm.AlgebraIntegral]: true,
-    [SupportedAmm.Velodrome]: true,
+    [SupportedAmm.Velodrome]: false,
     [SupportedAmm.UniswapV3]: true,
     [SupportedAmm.UniswapV4]: true,
     [SupportedAmm.Carbon]: true,
