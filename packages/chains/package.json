@@ -43,7 +43,7 @@
         "react-dom": "catalog:",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
-        "viem": "^2.55.13",
+        "viem": "catalog:",
         "vite": "catalog:",
         "vite-plugin-dts": "^5.0.3"
     }
