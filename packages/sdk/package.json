@@ -22,14 +22,14 @@
     "devDependencies": {
         "@eslint/js": "catalog:",
         "@metrom-xyz/contracts": "^0.57.0",
-        "@tsconfig/node20": "^20.1.9",
+        "@tsconfig/node20": "^20.1.10",
         "@types/node": "catalog:",
         "eslint": "catalog:",
         "eslint-config-prettier": "catalog:",
         "prettier": "catalog:",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
-        "viem": "^2.55.13",
+        "viem": "catalog:",
         "vite": "catalog:"
     },
     "peerDependencies": {
