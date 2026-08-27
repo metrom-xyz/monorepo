@@ -24,7 +24,9 @@ export interface UsdPricedOnChainAmount extends OnChainAmount {
 export interface Erc20LpDetails {
     type: "lp";
     dex: string;
+    baseTokenAddress: Address;
     baseTokenSymbol: string;
+    quoteTokenAddress: Address;
     quoteTokenSymbol: string;
 }
 

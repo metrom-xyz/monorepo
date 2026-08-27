@@ -40,7 +40,9 @@ export type BackendResolvedAaveV3CollateralsRegistry = Record<
 export interface BackendErc20LpDetails {
     type: "lp";
     dex: string;
+    baseTokenAddress: Address;
     baseTokenSymbol: string;
+    quoteTokenAddress: Address;
     quoteTokenSymbol: string;
 }
 
@@ -50,9 +52,7 @@ export interface BackendErc20ProtocolDetails {
 }
 
 export type BackendErc20TokenDetails =
-    | BackendErc20LpDetails
-    | BackendErc20ProtocolDetails
-    | null;
+    BackendErc20LpDetails | BackendErc20ProtocolDetails | null;
 
 export interface BackendErc20Token {
     address: Address;

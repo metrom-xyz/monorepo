@@ -1,8 +1,8 @@
 import { FUNGIBLE_ASSET_PROTOCOLS } from "@metrom-xyz/chains";
 import type { Erc20Token } from "@metrom-xyz/sdk";
 
-export function getErc20Protocol(asset: Erc20Token) {
-    if (!asset.details) return undefined;
+export function getErc20Protocol(asset?: Erc20Token) {
+    if (!asset) return undefined;
 
     return asset.details
         ? FUNGIBLE_ASSET_PROTOCOLS.find(({ id }) => {
