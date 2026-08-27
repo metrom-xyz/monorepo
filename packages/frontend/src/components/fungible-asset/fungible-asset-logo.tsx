@@ -1,8 +1,9 @@
 import type { Erc20Token } from "@metrom-xyz/sdk";
-import type { RemoteLogoSize } from "@metrom-xyz/ui";
+import { type RemoteLogoSize } from "@metrom-xyz/ui";
 import { RemoteLogo } from "../remote-logo";
 import { getErc20Protocol } from "@/src/utils/erc20";
 import classNames from "classnames";
+import { PoolRemoteLogo } from "../pool-remote-logo";
 
 import styles from "./styles.module.css";
 
@@ -27,6 +28,19 @@ export function FungibleAssetLogo({
         return (
             <ProtocolIcon
                 className={classNames("logo", { [styles[size]]: size })}
+            />
+        );
+    }
+
+    if (asset.details?.type === "lp") {
+        return (
+            <PoolRemoteLogo
+                chain={chainId}
+                size={size}
+                tokens={[
+                    { address: asset.details.baseTokenAddress },
+                    { address: asset.details.quoteTokenAddress },
+                ]}
             />
         );
     }

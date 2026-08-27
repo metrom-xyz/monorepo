@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { SVGIcon } from "./types/common";
-import { CurveLogo, DeadboxLogo, UniswapLogo } from "./assets";
+import { CurveLogo, DeadboxLogo, InkySwapLogo, UniswapLogo } from "./assets";
 
 export interface FungibleAssetProtocol {
     id: string;
@@ -23,5 +23,10 @@ export const FUNGIBLE_ASSET_PROTOCOLS: FungibleAssetProtocol[] = [
         id: "dead-box",
         name: "Deadbox",
         icon: DeadboxLogo,
+    },
+    {
+        id: "inkyswap",
+        name: "InkySwap",
+        icon: InkySwapLogo,
     },
 ] as const;
