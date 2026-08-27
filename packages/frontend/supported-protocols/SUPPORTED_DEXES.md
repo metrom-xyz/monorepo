@@ -1,14 +1,14 @@
-||Ethereum|Telos|Gnosis|Sonic|Sei|LightLink|Swell|Saga EVM|Base|Plasma|Arbitrum One|Hemi|Taiko|Scroll|Lumia|Aptos|Solana Devnet|Sui Testnet|
+||Ethereum|Telos|Gnosis|Sonic|Sei|LightLink|Saga EVM|Base|Plasma|Arbitrum One|Hemi|Ink|Taiko|Scroll|Lumia|Aptos|Solana Devnet|Sui Testnet|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |[Curve](https://www.curve.finance/)|●|○|○|○|○|○|○|○|○|○|○|○|○|○|○|○|○|○|
-|[Uniswap v3](https://app.uniswap.org/)|○|●|●|●|○|●|○|●|●|○|●|●|●|●|○|○|○|○|
+|[Uniswap v3](https://app.uniswap.org/)|○|●|●|●|○|●|●|●|○|●|●|○|●|●|○|○|○|○|
 |[Carbon DeFi](https://carbondefi.xyz/)|○|○|○|○|●|○|○|○|○|○|○|○|○|○|○|○|○|○|
-|[Velodrome](https://velo.drome.eth.limo/)|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|○|○|
-|[Hydrex](https://www.hydrex.fi/)|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|
-|[Balancer v3](https://balancer.fi/)|○|○|○|○|○|○|○|○|●|●|○|○|○|○|○|○|○|○|
-|[Quickswap](https://dapp.quickswap.exchange/)|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|
-|[Stabull](https://app.stabull.finance/)|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|
-|[Lithos](https://lithos.to/)|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|
+|[Hydrex](https://www.hydrex.fi/)|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|○|
+|[Balancer v3](https://balancer.fi/)|○|○|○|○|○|○|○|●|●|○|○|○|○|○|○|○|○|○|
+|[Quickswap](https://dapp.quickswap.exchange/)|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|○|
+|[Stabull](https://app.stabull.finance/)|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|○|
+|[Lithos](https://lithos.to/)|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|
+|[Velodrome](https://velo.drome.eth.limo/)|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|
 |[Unagi](https://unagiswap.xyz/)|○|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|
 |[Izumi](https://izumi.finance/)|○|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|
 |[Ambient](https://ambient.finance/)|○|○|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|
