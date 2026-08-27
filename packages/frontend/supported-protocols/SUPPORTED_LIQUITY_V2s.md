@@ -1,4 +1,4 @@
-||Swell|Scroll|
-|---|---|---|
-|[Orki](https://www.orki.finance/)|●|○|
-|[Quill](https://app.quill.finance/)|○|●|
+||Ethereum|Plasma|Scroll|
+|---|---|---|---|
+|[Ebisu](https://ebisu.money/)|●|●|○|
+|[Quill](https://app.quill.finance/)|○|○|●|
