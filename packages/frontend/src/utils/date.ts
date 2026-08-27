@@ -3,7 +3,7 @@ import { ENVIRONMENT } from "../commons/env";
 import { Environment } from "@metrom-xyz/sdk";
 
 export const START_DATE_BUFFER_HOURS =
-    ENVIRONMENT === Environment.Production ? 2 : 0.5;
+    ENVIRONMENT === Environment.Production ? 0.5 : 0.5;
 
 export const getClosestAvailableDateTime = (date?: Dayjs | null) => {
     const min = dayjs().add(START_DATE_BUFFER_HOURS, "h");
