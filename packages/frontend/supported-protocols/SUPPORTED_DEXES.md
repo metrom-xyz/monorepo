@@ -8,7 +8,7 @@
 |[Quickswap](https://dapp.quickswap.exchange/)|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|○|
 |[Stabull](https://app.stabull.finance/)|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|○|
 |[Lithos](https://lithos.to/)|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|○|○|○|
-|[Velodrome](https://velo.drome.eth.limo/)|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|
+|[Velodrome](https://velodrome.finance/)|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|○|
 |[Unagi](https://unagiswap.xyz/)|○|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|
 |[Izumi](https://izumi.finance/)|○|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|○|
 |[Ambient](https://ambient.finance/)|○|○|○|○|○|○|○|○|○|○|○|○|○|●|○|○|○|○|

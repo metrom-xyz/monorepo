@@ -26,7 +26,7 @@ const DEX_HOMEPAGE: Record<SupportedDex, string> = {
     [SupportedDex.UniswapV3]: "https://app.uniswap.org/",
     [SupportedDex.UniswapV4]: "https://app.uniswap.org/",
     [SupportedDex.Carbon]: "https://carbondefi.xyz/",
-    [SupportedDex.Velodrome]: "https://velo.drome.eth.limo/",
+    [SupportedDex.Velodrome]: "https://velodrome.finance/",
     [SupportedDex.Morphex]: "https://morphex.exchange/",
     [SupportedDex.Izumi]: "https://izumi.finance/",
     [SupportedDex.Hydrex]: "https://www.hydrex.fi/",
