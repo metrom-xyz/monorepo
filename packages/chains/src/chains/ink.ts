@@ -46,7 +46,7 @@ export const inkData: ChainData = {
             name: "Velodrome",
             depositUrl: {
                 type: AmmPoolDepositUrlType.QueryTokenAddresses,
-                template: `https://velo.drome.eth.limo/deposit?token0={token_0}&token1={token_1}&chain0=${SupportedChain.Ink}&chain1=${SupportedChain.Ink}&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F`,
+                template: `https://velodrome.finance/deposit?token0={token_0}&token1={token_1}&chain0=${SupportedChain.Ink}&chain1=${SupportedChain.Ink}&factory=0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F`,
             },
             supportsFetchAllPools: false,
         },
