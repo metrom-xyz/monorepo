@@ -106,6 +106,8 @@ export function CampaignRow({ type, campaign }: CampaignProps) {
                         logoSize="xs"
                         hideSymbol
                         hideOnExpired
+                        from={campaign.from}
+                        to={campaign.to}
                         status={campaign.status}
                         chainId={campaign.chainId}
                         distributables={campaign.distributables}

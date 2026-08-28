@@ -8,6 +8,7 @@ import type { CampaignItem } from "@/src/types/campaign/common";
 import { DistributablesType, Status, TargetType } from "@metrom-xyz/sdk";
 import { useTranslations } from "next-intl";
 import { CalendarIcon } from "@/src/assets/calendar-icon";
+import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
 
@@ -23,6 +24,9 @@ export function Header({ campaignItem }: HeaderProps) {
 
     const rewards = campaignItem.isDistributing(DistributablesType.Tokens);
     const { from, to, status, chainId, specification } = campaignItem;
+
+    const campaignDaysDuration =
+        dayjs.unix(to).diff(dayjs.unix(from), "hours") / 24;
 
     return (
         <div className={styles.root}>
@@ -41,6 +45,8 @@ export function Header({ campaignItem }: HeaderProps) {
                                         hideSymbol
                                         hideOnExpired
                                         hideUsdValue
+                                        from={campaignItem.from}
+                                        to={campaignItem.to}
                                         status={status}
                                         chainId={chainId}
                                         distributables={
@@ -55,10 +61,18 @@ export function Header({ campaignItem }: HeaderProps) {
                             text={
                                 <Typography size="sm" variant="tertiary">
                                     {t.rich("dailyRewards", {
-                                        usdValue: formatUsdAmount({
-                                            amount: campaignItem.distributables
-                                                .dailyUsd,
-                                        }),
+                                        usdValue:
+                                            campaignDaysDuration <= 1
+                                                ? formatUsdAmount({
+                                                      amount: campaignItem
+                                                          .distributables
+                                                          .amountUsdValue,
+                                                  })
+                                                : formatUsdAmount({
+                                                      amount: campaignItem
+                                                          .distributables
+                                                          .dailyUsd,
+                                                  }),
                                         highlighted: (chunks) => (
                                             <span
                                                 className={

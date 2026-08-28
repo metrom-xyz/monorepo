@@ -14,6 +14,7 @@ import {
 } from "@metrom-xyz/sdk";
 import { CampaignRewardsPopover } from "../../campaign-rewards-popover";
 import { useCampaignTargetValueName } from "@/src/hooks/useCampaignTargetValueName";
+import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
 
@@ -27,7 +28,7 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
         kind: CAMPAIGN_TARGET_TO_KIND[campaign.target.type],
     });
 
-    const { status, apr, usdTvl, opportunitiesAmount } = campaign;
+    const { from, to, status, apr, usdTvl, opportunitiesAmount } = campaign;
 
     const distributingTokens = campaign?.isDistributing(
         DistributablesType.Tokens,
@@ -43,6 +44,9 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
 
     const blueApr = status === Status.Active;
     const orangeApr = status === Status.Active && campaign.hasKpi;
+
+    const campaignDaysDuration =
+        dayjs.unix(to).diff(dayjs.unix(from), "hours") / 24;
 
     if (campaign.status === Status.Expired) return;
 
@@ -160,6 +164,8 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                                 logoSize="base"
                                 symbolSize="xl2"
                                 hideUsdValue
+                                from={campaign.from}
+                                to={campaign.to}
                                 status={campaign.status}
                                 chainId={campaign.chainId}
                                 distributables={campaign.distributables}
@@ -176,9 +182,14 @@ export function ContentHeader({ campaign }: ContentHeaderProps) {
                             {t("dailyRewards")}
                         </Typography>
                         <Typography size="xl2" weight="medium">
-                            {formatUsdAmount({
-                                amount: campaign.distributables.dailyUsd,
-                            })}
+                            {campaignDaysDuration <= 1
+                                ? formatUsdAmount({
+                                      amount: campaign.distributables
+                                          .amountUsdValue,
+                                  })
+                                : formatUsdAmount({
+                                      amount: campaign.distributables.dailyUsd,
+                                  })}
                         </Typography>
                     </div>
                     <div className={styles.rewardBox}>
