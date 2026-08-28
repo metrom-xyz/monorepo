@@ -74,6 +74,8 @@ export function Item({ campaignItem }: ItemProps) {
                             logoSize="xs"
                             hideSymbol
                             hideOnExpired
+                            from={campaignItem.from}
+                            to={campaignItem.to}
                             status={status}
                             chainId={chainId}
                             distributables={campaignItem.distributables}

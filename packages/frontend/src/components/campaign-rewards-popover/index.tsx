@@ -14,12 +14,15 @@ import { useTranslations } from "next-intl";
 import { RemoteLogo } from "@/src/components/remote-logo";
 import classNames from "classnames";
 import { CampaignTokensDistributablesList } from "../campaign-tokens-distributables-list";
+import dayjs from "dayjs";
 
 import styles from "./styles.module.css";
 
 interface CampaignRewardsPopoverProps {
     status: Status;
     chainId: number;
+    from: number;
+    to: number;
     distributables: TokenDistributables;
     hideUsdValue?: boolean;
     hideOnExpired?: boolean;
@@ -31,6 +34,8 @@ interface CampaignRewardsPopoverProps {
 export function CampaignRewardsPopover({
     status,
     chainId,
+    from,
+    to,
     distributables,
     hideUsdValue = false,
     hideOnExpired = false,
@@ -54,6 +59,9 @@ export function CampaignRewardsPopover({
     }
 
     const showRewards = hideOnExpired ? status !== Status.Expired : true;
+
+    const campaignDaysDuration =
+        dayjs.unix(to).diff(dayjs.unix(from), "hours") / 24;
 
     return (
         <div className={styles.root}>
@@ -121,9 +129,13 @@ export function CampaignRewardsPopover({
                     <Typography weight="medium" className={styles.textRewards}>
                         {status === Status.Expired
                             ? "-"
-                            : formatUsdAmount({
-                                  amount: distributables.dailyUsd,
-                              })}
+                            : campaignDaysDuration <= 1
+                              ? formatUsdAmount({
+                                    amount: distributables.amountUsdValue,
+                                })
+                              : formatUsdAmount({
+                                    amount: distributables.dailyUsd,
+                                })}
                     </Typography>
                 )}
             </div>
