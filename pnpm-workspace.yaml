@@ -7,36 +7,36 @@ catalog:
   "@eslint/js": ^10.0.1
   "@graphprotocol/graph-cli": ^0.98.1
   "@graphprotocol/graph-ts": 0.38.1
-  "@tanstack/eslint-plugin-query": ^5.101.4
-  "@tanstack/react-query": ^5.101.4
+  "@tanstack/eslint-plugin-query": ^5.102.8
+  "@tanstack/react-query": ^5.102.8
   "@types/mustache": ^4.2.6
-  "@types/node": ^26.2.0
-  "@types/react": ^19.2.18
-  "@types/react-dom": ^19.2.4
+  "@types/node": ^26.5.1
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
   classnames: ^2.5.1
   dayjs: ^1.11.23
-  eslint: ^10.9.0
-  eslint-config-next: 16.3.2
+  eslint: ^10.10.0
+  eslint-config-next: 16.3.5
   eslint-config-prettier: ^10.1.8
-  eslint-config-turbo: ^2.10.11
+  eslint-config-turbo: ^2.10.12
   eslint-plugin-prettier: ^5.5.6
   eslint-plugin-react-hooks: ^7.1.1
-  globals: ^17.11.0
-  motion: ^13.1.1
+  globals: ^17.12.0
+  motion: ^13.2.0
   mustache: ^4.2.0
   prettier: ^3.9.6
-  react: ^19.2.8
-  react-dom: ^19.2.8
+  react: ^19.3.0
+  react-dom: ^19.3.0
   react-remove-scroll: ^2.7.2
   react-use: ^17.6.1
   sonner: ^2.0.8
   tailwindcss: ^4.3.3
-  tsx: ^4.23.12
+  tsx: ^4.23.13
   typescript: ^6.0.3
-  typescript-eslint: ^8.67.0
-  viem: ^2.55.19
-  vite: ^8.2.2
-  wagmi: ^3.7.6
+  typescript-eslint: ^8.70.0
+  viem: ^2.56.3
+  vite: ^8.3.0
+  wagmi: ^3.7.7
 
 allowBuilds:
   "@parcel/watcher": false

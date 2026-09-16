@@ -11,10 +11,10 @@ import { Avatar } from "../../avatar/avatar";
 import { Account } from "../../account";
 import { ChainType } from "@metrom-xyz/sdk";
 import { useChainType } from "@/src/context/chain-type";
+import { formatUnits } from "@/src/utils/format";
 
 import styles from "./styles.module.css";
 import commonStyles from "../styles.module.css";
-import { formatUnits } from "@/src/utils/format";
 
 export function ConnectButtonEvm() {
     const disconnect = useDisconnect();
