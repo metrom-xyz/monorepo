@@ -16,7 +16,6 @@ import { useClaims } from "@/src/hooks/use-claims";
 import { useAccount } from "@/src/hooks/useAccount";
 import { ThemeToggle } from "../../theme-toggle";
 import { MetromSquareLogo } from "@/src/assets/logos/metrom/metrom-square-logo";
-import { PlusCircleIcon } from "@/src/assets/plus-circle-icon";
 import { EcosystemPicker } from "../ecosystem-picker";
 
 import styles from "./styles.module.css";
@@ -27,7 +26,6 @@ const ROUTES: {
     icon: FunctionComponent<SVGIcon>;
 }[] = [
     { path: "/", label: "discover", icon: DiscoverIcon },
-    { path: "/campaigns/create", label: "newCampaign", icon: PlusCircleIcon },
     { path: "/claims", label: "claims", icon: ClaimsIcon },
 ];
 

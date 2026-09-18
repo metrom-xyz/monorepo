@@ -7,6 +7,7 @@ import {
 } from "@metrom-xyz/sdk";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 interface Params {
     campaignType: CampaignType;
@@ -30,6 +31,8 @@ export default async function PickCampaignDistributablesTypePage({
     const { campaignType, locale } = await params;
 
     setRequestLocale(locale);
+
+    notFound();
 
     return <PickDistributablesType campaignType={campaignType} />;
 }

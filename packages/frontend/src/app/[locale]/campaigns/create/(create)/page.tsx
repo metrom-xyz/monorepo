@@ -1,5 +1,6 @@
 import { CreateCampaign } from "@/src/components/create-campaign";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
     title: "Pick incentivization campaign type",
@@ -9,5 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function PickCampaignTypePage() {
+    notFound();
+
     return <CreateCampaign />;
 }
