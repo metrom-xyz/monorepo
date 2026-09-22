@@ -3,6 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { Nav } from "./nav";
 import { Footer } from "./footer";
+import { ShutdownBanner } from "./shutdown-banner";
 import { useConnection as useAccountEvm, useDisconnect } from "wagmi";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useChainType } from "@/src/context/chain-type";
@@ -103,6 +104,7 @@ export function Layout({ children }: LayoutProps) {
 
     return (
         <div className={styles.layout}>
+            <ShutdownBanner />
             <div className={styles.content}>
                 <Nav />
                 <div className={styles.main}>{children}</div>

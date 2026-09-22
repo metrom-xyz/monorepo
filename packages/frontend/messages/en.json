@@ -1,4 +1,9 @@
 {
+    "shutdownBanner": {
+        "title": "We're shutting down Jan 1st 2027",
+        "message": "Any claims and/or reward reimbursements will be open until then.",
+        "learnMore": "Learn more"
+    },
     "navigation": {
         "discover": "Discover",
         "newCampaign": "New campaign",
